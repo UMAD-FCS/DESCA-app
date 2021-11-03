@@ -22,13 +22,13 @@ source("utils.R")
 
 theme_desca <- bs_theme(
     version = 3,
-    bg = "#FFFFFF", fg = "#3c0aa2", 
-    primary = "#76D7C4",
+    bg = "#FFFFFF", fg = "#6A4AAA", 
+    primary = "#4FA68D",
     base_font = font_google("Poppins"),
     code_font = font_google("Space Mono")
 )
 
-color_defecto <- "#1ABC9C"
+color_defecto <- "#4FA68D"
 # bs_theme_preview(theme_desca)
 
 # thematic::thematic_shiny() 
@@ -157,7 +157,8 @@ ui <- fluidPage(
                 id   = "CP",
                 
                 tabPanel(
-                    "Políticas Públicas y esfuerzo económico", 
+                    "Políticas Públicas y esfuerzo económico",
+
                     br(),
                     
                     sidebarPanel(
@@ -246,8 +247,8 @@ ui <- fluidPage(
                 # * Resultados ----
                 
                 tabPanel(
-                "Resultados", 
-                br(),
+                    "Resultados",
+                    br(),
                 
                 sidebarPanel(
                     
