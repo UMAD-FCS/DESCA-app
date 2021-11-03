@@ -157,7 +157,7 @@ ui <- fluidPage(
                 id   = "CP",
                 
                 tabPanel(
-                    "Políticas Públicas y esuferzo económico", 
+                    "Políticas Públicas y esfuerzo económico", 
                     br(),
                     
                     sidebarPanel(
@@ -343,7 +343,7 @@ ui <- fluidPage(
                 id   = "CP",
                 
                 tabPanel(
-                    "Políticas Públicas y esuferzo económico", 
+                    "Políticas Públicas y esfuerzo económico", 
                     br(),
                     
                     sidebarPanel(
@@ -528,7 +528,7 @@ ui <- fluidPage(
                 id   = "CP",
                 
                 tabPanel(
-                    "Políticas Públicas y esuferzo económico", 
+                    "Políticas Públicas y esfuerzo económico", 
                     br(),
                     
                     sidebarPanel(
@@ -712,7 +712,7 @@ ui <- fluidPage(
                 id   = "CP",
                 
                 tabPanel(
-                    "Políticas Públicas y esuferzo económico", 
+                    "Políticas Públicas y esfuerzo económico", 
                     br(),
                     
                     sidebarPanel(
