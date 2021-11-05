@@ -16,7 +16,7 @@ library(scales)
 library(viridis)
 library(tidyverse)
 library(bslib)
-
+library(shinycssloaders)
 
 source("utils.R")
 
@@ -30,6 +30,11 @@ theme_desca <- bs_theme(
 
 color_defecto <- "#4FA68D"
 # bs_theme_preview(theme_desca)
+
+# Spinner options 
+options(spinner.color = "#4FA68D",
+        spinner.color.background="#ffffff", 
+        spinner.size = 2)
 
 # thematic::thematic_shiny() 
 # 
@@ -227,7 +232,8 @@ ui <- fluidPage(
                         ),
                         tags$h5(uiOutput("subtitle_edu_pp")),
                         br(),
-                        plotOutput("plot_edu_pp", height = "500px" ),
+                        withSpinner(plotOutput("plot_edu_pp", height = "500px"),
+                                    type = 2),
                         br(),
                         downloadButton(outputId = "baja_p_edu_pp", 
                                        label = "Descarga el gráfico"),
@@ -316,7 +322,8 @@ ui <- fluidPage(
                     ),
                     tags$h5(uiOutput("subtitle_edu_r")),
                     br(),
-                    plotOutput("plot_edu_r", height = "500px" ),
+                    withSpinner(plotOutput("plot_edu_r", height = "500px" ),
+                                type = 2),
                     br(),
                     downloadButton(outputId = "baja_p_edu_r", 
                                    label = "Descarga el gráfico"),
@@ -413,7 +420,8 @@ ui <- fluidPage(
                         ),
                         tags$h5(uiOutput("subtitle_salud_pp")),
                         br(),
-                        plotOutput("plot_salud_pp", height = "500px" ),
+                        withSpinner(plotOutput("plot_salud_pp", height = "500px" ),
+                                    type = 2),
                         br(),
                         downloadButton(outputId = "baja_p_salud_pp", 
                                        label = "Descarga el gráfico"),
@@ -502,7 +510,8 @@ ui <- fluidPage(
                         ),
                         tags$h5(uiOutput("subtitle_salud_r")),
                         br(),
-                        plotOutput("plot_salud_r", height = "500px" ),
+                        withSpinner(plotOutput("plot_salud_r", height = "500px" ),
+                                    type = 2),
                         br(),
                         downloadButton(outputId = "baja_p_salud_r", 
                                        label = "Descarga el gráfico"),
@@ -598,7 +607,8 @@ ui <- fluidPage(
                         ),
                         tags$h5(uiOutput("subtitle_ssocial_pp")),
                         br(),
-                        plotOutput("plot_ssocial_pp", height = "500px" ),
+                        withSpinner(plotOutput("plot_ssocial_pp", height = "500px" ),
+                                    type = 2),
                         br(),
                         downloadButton(outputId = "baja_p_ssocial_pp", 
                                        label = "Descarga el gráfico"),
@@ -686,7 +696,8 @@ ui <- fluidPage(
                         ),
                         tags$h5(uiOutput("subtitle_ssocial_r")),
                         br(),
-                        plotOutput("plot_ssocial_r", height = "500px" ),
+                        withSpinner(plotOutput("plot_ssocial_r", height = "500px"),
+                                    type = 2),
                         br(),
                         downloadButton(outputId = "baja_p_ssocial_r", 
                                        label = "Descarga el gráfico"),
@@ -782,7 +793,8 @@ ui <- fluidPage(
                         ),
                         tags$h5(uiOutput("subtitle_vivienda_pp")),
                         br(),
-                        plotOutput("plot_vivienda_pp", height = "500px" ),
+                        withSpinner(plotOutput("plot_vivienda_pp", height = "500px"),
+                                    type = 2),
                         br(),
                         downloadButton(outputId = "baja_p_vivienda_pp", 
                                        label = "Descarga el gráfico"),
@@ -871,7 +883,8 @@ ui <- fluidPage(
                         ),
                         tags$h5(uiOutput("subtitle_vivienda_r")),
                         br(),
-                        plotOutput("plot_vivienda_r", height = "500px" ),
+                        withSpinner(plotOutput("plot_vivienda_r", height = "500px"),
+                                    type = 2),
                         br(),
                         downloadButton(outputId = "baja_p_vivienda_r", 
                                        label = "Descarga el gráfico"),
