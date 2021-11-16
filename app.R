@@ -21,18 +21,20 @@ library(shinycssloaders)
 source("utils.R")
 
 theme_desca <- bs_theme(
-    version = 3,
-    bg = "#FFFFFF", fg = "#6A4AAA", 
-    primary = "#4FA68D",
+    version = 4,
+    bg = "#FFFFFF", fg = "#21618C", 
+    primary = "#21618C",
     base_font = font_google("Poppins"),
-    code_font = font_google("Space Mono")
+    code_font = font_google("Poppins"),
+    heading_font = font_google("Poppins"),
+    font_scale = 0.9
 )
 
-color_defecto <- "#4FA68D"
+color_defecto <- "#21618C"
 # bs_theme_preview(theme_desca)
 
 # Spinner options 
-options(spinner.color = "#4FA68D",
+options(spinner.color = "#21618C",
         spinner.color.background="#ffffff", 
         spinner.size = 2)
 
@@ -136,7 +138,7 @@ paleta_expandida <- c(brewer.pal(8, "Dark2"), "#B76A16", "#75A61A", "#D9318E",
 # Define UI for application that draws a histogram
 ui <- fluidPage(
     
-    tags$style(".fa-calculator {color:#3c0aa2}"),
+    tags$style(".fa-calculator {color:#21618C}"),
     tags$head(HTML("<title>Mirador DESCA</title>")),
     tags$style(type="text/css",
                ".shiny-output-error { visibility: hidden; }",
@@ -163,90 +165,97 @@ ui <- fluidPage(
                 
                 tabPanel(
                     "Políticas Públicas y esfuerzo económico",
+                    icon = icon("fas fa-chart-bar"),
 
                     br(),
                     
-                    sidebarPanel(
+                    fluidRow(
                         
-                        width = 3,
-
-                         selectInput(
-                             inputId = "indicador_edu_pp",
-                             label = "Seleccione indicador:",
-                             choices = ind_edu_pp
-                         ),
+                        sidebarPanel(
+                            
+                            width = 3,
+    
+                             selectInput(
+                                 inputId = "indicador_edu_pp",
+                                 label = "Seleccione indicador:",
+                                 choices = ind_edu_pp
+                             ),
+                            
+                            br(),
+                            
+                            uiOutput("selector_edu_pp_corte"),
+                            
+                            br(),
+                            
+                            uiOutput("s_edu_pp_fecha"),
+                            
+                            br(),
+                            
+                            uiOutput("chbox_edu_pp"),
+                            
+                            br(),
+                            
+                            HTML("<b> Instituciones:</b>"),
+                            
+                            br(),
+                            br(),
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                       "INDDHH",
+                                       style = "font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "INDDHH-Logo.png", height="110%",
+                                    width = "110%")),
+                            
+                            br(),
+                            
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://umad.cienciassociales.edu.uy/",
+                                       "UMAD",
+                                       style = "text-align:right; font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "logo_umad.png", height="110%",
+                                    width = "110%")),
+                            br(),
+    
+                            ),
                         
-                        br(),
-                        
-                        uiOutput("selector_edu_pp_corte"),
-                        
-                        br(),
-                        
-                        uiOutput("s_edu_pp_fecha"),
-                        
-                        br(),
-                        
-                        uiOutput("chbox_edu_pp"),
-                        
-                        br(),
-                        
-                        HTML("<b> Instituciones:</b>"),
-                        
-                        br(),
-                        br(),
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   "INDDHH",
-                                   style = "font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "INDDHH-Logo.png", height="110%",
-                                width = "110%")),
-                        
-                        br(),
-                        
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                   "UMAD",
-                                   style = "text-align:right; font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "logo_umad.png", height="110%",
-                                width = "110%")),
-                        br(),
-
-                        ),
-                    
-                    mainPanel(
-                        
-                        tags$h3(style="display:inline-block;margin: 0px;",
-                                uiOutput("title_edu_pp")),
-                        div(style="display:inline-block;margin: 0px;", 
-                            dropdown(
-                                style = "minimal",
-                                status = "primary",
-                                width = "500px",
-                                right = TRUE,
-                                icon = icon("calculator", lib = "font-awesome"),
-                                uiOutput("calculo_edu_pp"))
-                        ),
-                        tags$h5(uiOutput("subtitle_edu_pp")),
-                        br(),
-                        withSpinner(plotOutput("plot_edu_pp", height = "500px"),
-                                    type = 2),
-                        br(),
-                        downloadButton(outputId = "baja_p_edu_pp", 
-                                       label = "Descarga el gráfico"),
-                        br(),
-                        br(),
-                        DTOutput("table_edu_pp"),
-                        br(),
-                        br(),
-                        downloadButton("dwl_tab_edu_pp", "Descarga la tabla"),
-                        br(),
-                        br()
-                        
-                        )
+                        mainPanel(
+                            
+                            tags$h3(style="display:inline-block;margin: 0px;",
+                                    uiOutput("title_edu_pp")),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                    style = "minimal",
+                                    status = "primary",
+                                    width = "500px",
+                                    right = TRUE,
+                                    icon = icon("calculator", lib = "font-awesome"),
+                                    uiOutput("calculo_edu_pp"))
+                            ),
+                            tags$h5(uiOutput("subtitle_edu_pp")),
+                            br(),
+                            withSpinner(plotOutput("plot_edu_pp", height = "500px"),
+                                        type = 2),
+                            br(),
+                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_edu_pp",
+                                                                   label = "Descarga el gráfico"),
+                                                    style = "float: right"))),
+                            br(),
+                            br(),
+                            DTOutput("table_edu_pp"),
+                            br(),
+                            br(),
+                            fluidRow(column(12, div(downloadButton("dwl_tab_edu_pp",
+                                                                   "Descarga la tabla"),
+                                                    style = "float: right"))),
+                            br(),
+                            br()
+                            
+                            )
+                    )
                     
                     ),
                 
@@ -254,89 +263,97 @@ ui <- fluidPage(
                 
                 tabPanel(
                     "Resultados",
+                    icon = icon("fas fa-chart-bar"),
+                    
                     br(),
                 
-                sidebarPanel(
-                    
-                    width = 3,
-                    
-                    selectInput(
-                        inputId = "indicador_edu_r",
-                        label = "Seleccione indicador:",
-                        choices = ind_edu_r
-                    ),
-                    
-                    br(),
-                    
-                    uiOutput("selector_edu_r_corte"),
-                    
-                    br(),
-                    
-                    uiOutput("s_edu_r_fecha"),
-                    
-                    br(),
-                    
-                    uiOutput("chbox_edu_r"),
-                    
-                    br(),
-                    
-                    HTML("<b> Instituciones:</b>"),
-                    
-                    br(),
-                    br(),
-                    div(style=";vertical-align:top; width: 150px;",
-                        tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                               "INDDHH",
-                               style = "font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                    div(style=";vertical-align:top; width: 150px;",
-                        img(src = "INDDHH-Logo.png", height="110%",
-                            width = "110%")),
-                    
-                    br(),
-                    
-                    div(style=";vertical-align:top; width: 150px;",
-                        tags$a(href="https://umad.cienciassociales.edu.uy/",
-                               "UMAD",
-                               style = "text-align:right; font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                    div(style=";vertical-align:top; width: 150px;",
-                        img(src = "logo_umad.png", height="110%",
-                            width = "110%")),
-                    br(),
-                    
-                ),
-                
-                mainPanel(
-                    
-                    tags$h3(style="display:inline-block",
-                            uiOutput("title_edu_r")),
-                    div(style="display:inline-block", 
-                        dropdown(
-                            style = "minimal",
-                            status = "primary",
-                            width = "500px",
-                            right = TRUE,
-                            icon = icon("calculator", lib = "font-awesome"),
-                            uiOutput("calculo_edu_r"))
-                    ),
-                    tags$h5(uiOutput("subtitle_edu_r")),
-                    br(),
-                    withSpinner(plotOutput("plot_edu_r", height = "500px" ),
-                                type = 2),
-                    br(),
-                    downloadButton(outputId = "baja_p_edu_r", 
-                                   label = "Descarga el gráfico"),
-                    br(),
-                    br(),
-                    DTOutput("table_edu_r"),
-                    br(),
-                    br(),
-                    downloadButton("dwl_tab_edu_r", "Descarga la tabla"),
-                    br(),
-                    br()
-                    )
-                    
+                    fluidRow(
+                        
+                        sidebarPanel(
+                            
+                            width = 3,
+                            
+                            selectInput(
+                                inputId = "indicador_edu_r",
+                                label = "Seleccione indicador:",
+                                choices = ind_edu_r
+                            ),
+                            
+                            br(),
+                            
+                            uiOutput("selector_edu_r_corte"),
+                            
+                            br(),
+                            
+                            uiOutput("s_edu_r_fecha"),
+                            
+                            br(),
+                            
+                            uiOutput("chbox_edu_r"),
+                            
+                            br(),
+                            
+                            HTML("<b> Instituciones:</b>"),
+                            
+                            br(),
+                            br(),
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                       "INDDHH",
+                                       style = "font-size:15px; color:Navy;
+                                                  text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "INDDHH-Logo.png", height="110%",
+                                    width = "110%")),
+                            
+                            br(),
+                            
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://umad.cienciassociales.edu.uy/",
+                                       "UMAD",
+                                       style = "text-align:right; font-size:15px; color:Navy;
+                                                  text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "logo_umad.png", height="110%",
+                                    width = "110%")),
+                            br(),
+                            
+                        ),
+                        
+                        mainPanel(
+                            
+                            tags$h3(style="display:inline-block",
+                                    uiOutput("title_edu_r")),
+                            div(style="display:inline-block", 
+                                dropdown(
+                                    style = "minimal",
+                                    status = "primary",
+                                    width = "500px",
+                                    right = TRUE,
+                                    icon = icon("calculator", lib = "font-awesome"),
+                                    uiOutput("calculo_edu_r"))
+                            ),
+                            tags$h5(uiOutput("subtitle_edu_r")),
+                            br(),
+                            withSpinner(plotOutput("plot_edu_r", height = "500px" ),
+                                        type = 2),
+                            br(),
+                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_edu_r",
+                                                                   label = "Descarga el gráfico"),
+                                                    style = "float: right"))),
+                            br(),
+                            br(),
+                            DTOutput("table_edu_r"),
+                            br(),
+                            br(),
+                            fluidRow(column(12, div(downloadButton("dwl_tab_edu_r", 
+                                                                   "Descarga la tabla"),
+                                                    style = "float: right"))),
+                            br(),
+                            br()
+                            )
+                            
+                        )
                 )
             )
         ),
@@ -352,87 +369,93 @@ ui <- fluidPage(
                 
                 tabPanel(
                     "Políticas Públicas y esfuerzo económico", 
+                    icon = icon("fas fa-chart-bar"),
                     br(),
                     
-                    sidebarPanel(
+                    fluidRow(
                         
-                        width = 3,
+                        sidebarPanel(
                         
-                        selectInput(
-                            inputId = "indicador_salud_pp",
-                            label = "Seleccione indicador:",
-                            choices = ind_salud_pp
+                            width = 3,
+                            
+                            selectInput(
+                                inputId = "indicador_salud_pp",
+                                label = "Seleccione indicador:",
+                                choices = ind_salud_pp
+                            ),
+                            
+                            br(),
+                            
+                            uiOutput("selector_salud_pp_corte"),
+                            
+                            br(),
+                            
+                            uiOutput("s_salud_pp_fecha"),
+                            
+                            br(),
+                            
+                            uiOutput("chbox_salud_pp"),
+                            
+                            br(),
+                            
+                            HTML("<b> Instituciones:</b>"),
+                            
+                            br(),
+                            br(),
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                       "INDDHH",
+                                       style = "font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "INDDHH-Logo.png", height="110%",
+                                    width = "110%")),
+                            
+                            br(),
+                            
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://umad.cienciassociales.edu.uy/",
+                                       "UMAD",
+                                       style = "text-align:right; font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "logo_umad.png", height="110%",
+                                    width = "110%")),
+                            br(),
+                            
                         ),
                         
-                        br(),
-                        
-                        uiOutput("selector_salud_pp_corte"),
-                        
-                        br(),
-                        
-                        uiOutput("s_salud_pp_fecha"),
-                        
-                        br(),
-                        
-                        uiOutput("chbox_salud_pp"),
-                        
-                        br(),
-                        
-                        HTML("<b> Instituciones:</b>"),
-                        
-                        br(),
-                        br(),
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   "INDDHH",
-                                   style = "font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "INDDHH-Logo.png", height="110%",
-                                width = "110%")),
-                        
-                        br(),
-                        
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                   "UMAD",
-                                   style = "text-align:right; font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "logo_umad.png", height="110%",
-                                width = "110%")),
-                        br(),
-                        
-                    ),
-                    
-                    mainPanel(
-                        
-                        tags$h3(style="display:inline-block",
-                                uiOutput("title_salud_pp")),
-                        div(style="display:inline-block", 
-                            dropdown(
-                                style = "minimal",
-                                status = "primary",
-                                width = "500px",
-                                right = TRUE,
-                                icon = icon("calculator", lib = "font-awesome"),
-                                uiOutput("calculo_salud_pp"))
-                        ),
-                        tags$h5(uiOutput("subtitle_salud_pp")),
-                        br(),
-                        withSpinner(plotOutput("plot_salud_pp", height = "500px" ),
-                                    type = 2),
-                        br(),
-                        downloadButton(outputId = "baja_p_salud_pp", 
-                                       label = "Descarga el gráfico"),
-                        br(),
-                        br(),
-                        DTOutput("table_salud_pp"),
-                        br(),
-                        br(),
-                        downloadButton("dwl_tab_salud_pp", "Descarga la tabla"),
-                        br(),
-                        br()
+                        mainPanel(
+                            
+                            tags$h3(style="display:inline-block",
+                                    uiOutput("title_salud_pp")),
+                            div(style="display:inline-block", 
+                                dropdown(
+                                    style = "minimal",
+                                    status = "primary",
+                                    width = "500px",
+                                    right = TRUE,
+                                    icon = icon("calculator", lib = "font-awesome"),
+                                    uiOutput("calculo_salud_pp"))
+                            ),
+                            tags$h5(uiOutput("subtitle_salud_pp")),
+                            br(),
+                            withSpinner(plotOutput("plot_salud_pp", height = "500px" ),
+                                        type = 2),
+                            br(),
+                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_salud_pp",
+                                                                   label = "Descarga el gráfico"),
+                                                    style = "float: right"))),
+                            br(),
+                            br(),
+                            DTOutput("table_salud_pp"),
+                            br(),
+                            br(),
+                            fluidRow(column(12, div(downloadButton("dwl_tab_salud_pp", "Descarga la tabla"),
+                                                    style = "float: right"))),
+                            br(),
+                            br()
+                        )
                     )
                     
                 ),
@@ -441,90 +464,97 @@ ui <- fluidPage(
                 
                 tabPanel(
                     "Resultados", 
+                    icon = icon("fas fa-chart-bar"),
+
                     br(),
                     
-                    sidebarPanel(
+                    fluidRow(
                         
-                        width = 3,
-                        
-                        selectInput(
-                            inputId = "indicador_salud_r",
-                            label = "Seleccione indicador:",
-                            choices = ind_salud_r,
-                            selected = "Esperanza de vida al nacer"
+                        sidebarPanel(
+                            
+                            width = 3,
+                            
+                            selectInput(
+                                inputId = "indicador_salud_r",
+                                label = "Seleccione indicador:",
+                                choices = ind_salud_r,
+                                selected = "Esperanza de vida al nacer"
+                            ),
+                            
+                            br(),
+                            
+                            uiOutput("selector_salud_r_corte"),
+                            
+                            br(),
+                            
+                            uiOutput("s_salud_r_fecha"),
+                            
+                            br(),
+                            
+                            uiOutput("chbox_salud_r"),
+                            
+                            br(),
+                            
+                            HTML("<b> Instituciones:</b>"),
+                            
+                            br(),
+                            br(),
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                       "INDDHH",
+                                       style = "font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "INDDHH-Logo.png", height="110%",
+                                    width = "110%")),
+                            
+                            br(),
+    
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://umad.cienciassociales.edu.uy/",
+                                       "UMAD",
+                                       style = "text-align:right; font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "logo_umad.png", height="110%",
+                                    width = "110%")),
+                            br(),
+                            
                         ),
                         
-                        br(),
-                        
-                        uiOutput("selector_salud_r_corte"),
-                        
-                        br(),
-                        
-                        uiOutput("s_salud_r_fecha"),
-                        
-                        br(),
-                        
-                        uiOutput("chbox_salud_r"),
-                        
-                        br(),
-                        
-                        HTML("<b> Instituciones:</b>"),
-                        
-                        br(),
-                        br(),
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   "INDDHH",
-                                   style = "font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "INDDHH-Logo.png", height="110%",
-                                width = "110%")),
-                        
-                        br(),
-
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                   "UMAD",
-                                   style = "text-align:right; font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "logo_umad.png", height="110%",
-                                width = "110%")),
-                        br(),
-                        
-                    ),
-                    
-                    mainPanel(
-                        
-                        tags$h3(style="display:inline-block",
-                                uiOutput("title_salud_r")),
-                        div(style="display:inline-block", 
-                            dropdown(
-                                style = "minimal",
-                                status = "primary",
-                                width = "500px",
-                                right = TRUE,
-                                icon = icon("calculator", lib = "font-awesome"),
-                                uiOutput("calculo_salud_r"))
-                        ),
-                        tags$h5(uiOutput("subtitle_salud_r")),
-                        br(),
-                        withSpinner(plotOutput("plot_salud_r", height = "500px" ),
-                                    type = 2),
-                        br(),
-                        downloadButton(outputId = "baja_p_salud_r", 
-                                       label = "Descarga el gráfico"),
-                        br(),
-                        br(),
-                        DTOutput("table_salud_r"),
-                        br(),
-                        br(),
-                        downloadButton("dwl_tab_salud_r", "Descarga la tabla"),
-                        br(),
-                        br()
+                        mainPanel(
+                            
+                            tags$h3(style="display:inline-block",
+                                    uiOutput("title_salud_r")),
+                            div(style="display:inline-block", 
+                                dropdown(
+                                    style = "minimal",
+                                    status = "primary",
+                                    width = "500px",
+                                    right = TRUE,
+                                    icon = icon("calculator", lib = "font-awesome"),
+                                    uiOutput("calculo_salud_r"))
+                            ),
+                            tags$h5(uiOutput("subtitle_salud_r")),
+                            br(),
+                            withSpinner(plotOutput("plot_salud_r", height = "500px" ),
+                                        type = 2),
+                            br(),
+                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_salud_r", 
+                                           label = "Descarga el gráfico"),
+                                           style = "float: right"))),
+                            br(),
+                            br(),
+                            DTOutput("table_salud_r"),
+                            br(),
+                            br(),
+                            fluidRow(column(12, div(downloadButton("dwl_tab_salud_r", "Descarga la tabla"),
+                                                    style = "float: right"))),
+                            br(),
+                            br()
+                            )
                         )
-                    )
+                )
             )
         ),
         
@@ -539,176 +569,190 @@ ui <- fluidPage(
                 
                 tabPanel(
                     "Políticas Públicas y esfuerzo económico", 
+                    icon = icon("fas fa-chart-bar"),
+                    
                     br(),
                     
-                    sidebarPanel(
+                    fluidRow(
                         
-                        width = 3,
-                        
-                        selectInput(
-                            inputId = "indicador_ssocial_pp",
-                            label = "Seleccione indicador:",
-                            choices = ind_ssocial_pp
-                        ),
-                        
-                        br(),
-                        
-                        uiOutput("selector_ssocial_pp_corte"),
-                        
-                        br(),
-                        
-                        uiOutput("s_ssocial_pp_fecha"),
-                        
-                        br(),
-                        
-                        uiOutput("chbox_ssocial_pp"),
-                        
-                        br(),
-                        
-                        HTML("<b> Instituciones:</b>"),
-                        
-                        br(),
-                        br(),
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   "INDDHH",
-                                   style = "font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "INDDHH-Logo.png", height="110%",
-                                width = "110%")),
-                        
-                        br(),
-                        
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                   "UMAD",
-                                   style = "text-align:right; font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "logo_umad.png", height="110%",
-                                width = "110%")),
-                        br(),
-                        
-                    ),
                     
-                    mainPanel(
-                        
-                        tags$h3(style="display:inline-block",
-                                uiOutput("title_ssocial_pp")),
-                        div(style="display:inline-block", 
-                            dropdown(
-                                style = "minimal",
-                                status = "primary",
-                                width = "500px",
-                                right = TRUE,
-                                icon = icon("calculator", lib = "font-awesome"),
-                                uiOutput("calculo_ssocial_pp"))
+                        sidebarPanel(
+                            
+                            width = 3,
+                            
+                            selectInput(
+                                inputId = "indicador_ssocial_pp",
+                                label = "Seleccione indicador:",
+                                choices = ind_ssocial_pp
+                            ),
+                            
+                            br(),
+                            
+                            uiOutput("selector_ssocial_pp_corte"),
+                            
+                            br(),
+                            
+                            uiOutput("s_ssocial_pp_fecha"),
+                            
+                            br(),
+                            
+                            uiOutput("chbox_ssocial_pp"),
+                            
+                            br(),
+                            
+                            HTML("<b> Instituciones:</b>"),
+                            
+                            br(),
+                            br(),
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                       "INDDHH",
+                                       style = "font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "INDDHH-Logo.png", height="110%",
+                                    width = "110%")),
+                            
+                            br(),
+                            
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://umad.cienciassociales.edu.uy/",
+                                       "UMAD",
+                                       style = "text-align:right; font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "logo_umad.png", height="110%",
+                                    width = "110%")),
+                            br(),
+                            
                         ),
-                        tags$h5(uiOutput("subtitle_ssocial_pp")),
-                        br(),
-                        withSpinner(plotOutput("plot_ssocial_pp", height = "500px" ),
-                                    type = 2),
-                        br(),
-                        downloadButton(outputId = "baja_p_ssocial_pp", 
-                                       label = "Descarga el gráfico"),
-                        br(),
-                        br(),
-                        DTOutput("table_ssocial_pp"),
-                        br(),
-                        br(),
-                        downloadButton("dwl_tab_ssocial_pp", "Descarga la tabla"),
-                        br(),
-                        br()
+                        
+                        mainPanel(
+                            
+                            tags$h3(style="display:inline-block",
+                                    uiOutput("title_ssocial_pp")),
+                            div(style="display:inline-block", 
+                                dropdown(
+                                    style = "minimal",
+                                    status = "primary",
+                                    width = "500px",
+                                    right = TRUE,
+                                    icon = icon("calculator", lib = "font-awesome"),
+                                    uiOutput("calculo_ssocial_pp"))
+                            ),
+                            tags$h5(uiOutput("subtitle_ssocial_pp")),
+                            br(),
+                            withSpinner(plotOutput("plot_ssocial_pp", height = "500px" ),
+                                        type = 2),
+                            br(),
+                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_ssocial_pp", 
+                                           label = "Descarga el gráfico"),
+                                           style = "float: right"))),
+                            br(),
+                            br(),
+                            DTOutput("table_ssocial_pp"),
+                            br(),
+                            br(),
+                            fluidRow(column(12, div(downloadButton("dwl_tab_ssocial_pp", "Descarga la tabla"),
+                                                    style = "float: right"))),
+                            br(),
+                            br()
+                        )
                     )
-                    
                 ),
                 
                 # * Resultados ----
                 
                 tabPanel(
                     "Resultados", 
+                    icon = icon("fas fa-chart-bar"),
+                    
                     br(),
                     
-                    sidebarPanel(
+                    fluidRow(
                         
-                        width = 3,
-                        
-                        selectInput(
-                            inputId = "indicador_ssocial_r",
-                            label = "Seleccione indicador:",
-                            choices = ind_ssocial_r
+                        sidebarPanel(
+                            
+                            width = 3,
+                            
+                            selectInput(
+                                inputId = "indicador_ssocial_r",
+                                label = "Seleccione indicador:",
+                                choices = ind_ssocial_r
+                            ),
+                            
+                            br(),
+                            
+                            uiOutput("selector_ssocial_r_corte"),
+                            
+                            br(),
+                            
+                            uiOutput("s_ssocial_r_fecha"),
+                            
+                            br(),
+                            
+                            uiOutput("chbox_ssocial_r"),
+                            
+                            br(),
+                            
+                            HTML("<b> Instituciones:</b>"),
+                            
+                            br(),
+                            br(),
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                       "INDDHH",
+                                       style = "font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "INDDHH-Logo.png", height="110%",
+                                    width = "110%")),
+                            
+                            br(),
+                            
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://umad.cienciassociales.edu.uy/",
+                                       "UMAD",
+                                       style = "text-align:right; font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "logo_umad.png", height="110%",
+                                    width = "110%")),
+                            br(),
+                            
                         ),
                         
-                        br(),
-                        
-                        uiOutput("selector_ssocial_r_corte"),
-                        
-                        br(),
-                        
-                        uiOutput("s_ssocial_r_fecha"),
-                        
-                        br(),
-                        
-                        uiOutput("chbox_ssocial_r"),
-                        
-                        br(),
-                        
-                        HTML("<b> Instituciones:</b>"),
-                        
-                        br(),
-                        br(),
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   "INDDHH",
-                                   style = "font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "INDDHH-Logo.png", height="110%",
-                                width = "110%")),
-                        
-                        br(),
-                        
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                   "UMAD",
-                                   style = "text-align:right; font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "logo_umad.png", height="110%",
-                                width = "110%")),
-                        br(),
-                        
-                    ),
-                    
-                    mainPanel(
-                        
-                        tags$h3(style="display:inline-block",
-                                uiOutput("title_ssocial_r")),
-                        div(style="display:inline-block", 
-                            dropdown(
-                                style = "minimal",
-                                status = "primary",
-                                width = "500px",
-                                right = TRUE,
-                                icon = icon("calculator", lib = "font-awesome"),
-                                uiOutput("calculo_ssocial_r"))
-                        ),
-                        tags$h5(uiOutput("subtitle_ssocial_r")),
-                        br(),
-                        withSpinner(plotOutput("plot_ssocial_r", height = "500px"),
-                                    type = 2),
-                        br(),
-                        downloadButton(outputId = "baja_p_ssocial_r", 
-                                       label = "Descarga el gráfico"),
-                        br(),
-                        br(),
-                        DTOutput("table_ssocial_r"),
-                        br(),
-                        br(),
-                        downloadButton("dwl_tab_ssocial_r", "Descarga la tabla"),
-                        br(),
-                        br()
+                        mainPanel(
+                            
+                            tags$h3(style="display:inline-block",
+                                    uiOutput("title_ssocial_r")),
+                            div(style="display:inline-block", 
+                                dropdown(
+                                    style = "minimal",
+                                    status = "primary",
+                                    width = "500px",
+                                    right = TRUE,
+                                    icon = icon("calculator", lib = "font-awesome"),
+                                    uiOutput("calculo_ssocial_r"))
+                            ),
+                            tags$h5(uiOutput("subtitle_ssocial_r")),
+                            br(),
+                            withSpinner(plotOutput("plot_ssocial_r", height = "500px"),
+                                        type = 2),
+                            br(),
+                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_ssocial_r", 
+                                           label = "Descarga el gráfico"),
+                                           style = "float: right"))),
+                            br(),
+                            br(),
+                            DTOutput("table_ssocial_r"),
+                            br(),
+                            br(),
+                            fluidRow(column(12, div(downloadButton("dwl_tab_ssocial_r", "Descarga la tabla"),
+                                                    style = "float: right"))),
+                            br(),
+                            br()
+                        )
                     )
                 )
             )
@@ -725,89 +769,94 @@ ui <- fluidPage(
                 
                 tabPanel(
                     "Políticas Públicas y esfuerzo económico", 
+                    icon = icon("fas fa-chart-bar"),
                     br(),
                     
-                    sidebarPanel(
+                    fluidRow(
                         
-                        width = 3,
-                        
-                        selectInput(
-                            inputId = "indicador_vivienda_pp",
-                            label = "Seleccione indicador:",
-                            choices = ind_vivienda_pp
+                        sidebarPanel(
+                            
+                            width = 3,
+                            
+                            selectInput(
+                                inputId = "indicador_vivienda_pp",
+                                label = "Seleccione indicador:",
+                                choices = ind_vivienda_pp
+                            ),
+                            
+                            br(),
+                            
+                            uiOutput("selector_vivienda_pp_corte"),
+                            
+                            br(),
+                            
+                            uiOutput("s_vivienda_pp_fecha"),
+                            
+                            br(),
+                            
+                            uiOutput("chbox_vivienda_pp"),
+                            
+                            br(),
+                            
+                            HTML("<b> Instituciones:</b>"),
+                            
+                            br(),
+                            br(),
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                       "INDDHH",
+                                       style = "font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "INDDHH-Logo.png", height="110%",
+                                    width = "110%")),
+                            
+                            br(),
+                            
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://umad.cienciassociales.edu.uy/",
+                                       "UMAD",
+                                       style = "text-align:right; font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "logo_umad.png", height="110%",
+                                    width = "110%")),
+                            br(),
+                            
                         ),
                         
-                        br(),
-                        
-                        uiOutput("selector_vivienda_pp_corte"),
-                        
-                        br(),
-                        
-                        uiOutput("s_vivienda_pp_fecha"),
-                        
-                        br(),
-                        
-                        uiOutput("chbox_vivienda_pp"),
-                        
-                        br(),
-                        
-                        HTML("<b> Instituciones:</b>"),
-                        
-                        br(),
-                        br(),
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   "INDDHH",
-                                   style = "font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "INDDHH-Logo.png", height="110%",
-                                width = "110%")),
-                        
-                        br(),
-                        
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                   "UMAD",
-                                   style = "text-align:right; font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "logo_umad.png", height="110%",
-                                width = "110%")),
-                        br(),
-                        
-                    ),
-                    
-                    mainPanel(
-                        
-                        tags$h3(style="display:inline-block",
-                                uiOutput("title_vivienda_pp")),
-                        div(style="display:inline-block", 
-                            dropdown(
-                                style = "minimal",
-                                status = "primary",
-                                width = "500px",
-                                right = TRUE,
-                                icon = icon("calculator", lib = "font-awesome"),
-                                uiOutput("calculo_vivienda_pp"))
-                        ),
-                        tags$h5(uiOutput("subtitle_vivienda_pp")),
-                        br(),
-                        withSpinner(plotOutput("plot_vivienda_pp", height = "500px"),
-                                    type = 2),
-                        br(),
-                        downloadButton(outputId = "baja_p_vivienda_pp", 
-                                       label = "Descarga el gráfico"),
-                        br(),
-                        br(),
-                        DTOutput("table_vivienda_pp"),
-                        br(),
-                        br(),
-                        downloadButton("dwl_tab_vivienda_pp", "Descarga la tabla"),
-                        br(),
-                        br()
+                        mainPanel(
+                            
+                            tags$h3(style="display:inline-block",
+                                    uiOutput("title_vivienda_pp")),
+                            div(style="display:inline-block", 
+                                dropdown(
+                                    style = "minimal",
+                                    status = "primary",
+                                    width = "500px",
+                                    right = TRUE,
+                                    icon = icon("calculator", lib = "font-awesome"),
+                                    uiOutput("calculo_vivienda_pp"))
+                            ),
+                            tags$h5(uiOutput("subtitle_vivienda_pp")),
+                            br(),
+                            withSpinner(plotOutput("plot_vivienda_pp", height = "500px"),
+                                        type = 2),
+                            br(),
+                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_vivienda_pp", 
+                                           label = "Descarga el gráfico"),
+                                           style = "float: right"))),
+                            br(),
+                            br(),
+                            DTOutput("table_vivienda_pp"),
+                            br(),
+                            br(),
+                            fluidRow(column(12, div(downloadButton("dwl_tab_vivienda_pp", "Descarga la tabla"),
+                                                    style = "float: right"))),
+                            br(),
+                            br()
+                        )
                     )
-                    
                 ),
                 
                 # * Resultados ----
@@ -815,87 +864,94 @@ ui <- fluidPage(
                 
                 tabPanel(
                     "Resultados", 
+                    icon = icon("fas fa-chart-bar"),
+                    
                     br(),
                     
-                    sidebarPanel(
+                    fluidRow(
                         
-                        width = 3,
-                        
-                        selectInput(
-                            inputId = "indicador_vivienda_r",
-                            label = "Seleccione indicador:",
-                            choices = ind_vivienda_r
+                        sidebarPanel(
+                            
+                            width = 3,
+                            
+                            selectInput(
+                                inputId = "indicador_vivienda_r",
+                                label = "Seleccione indicador:",
+                                choices = ind_vivienda_r
+                            ),
+                            
+                            br(),
+                            
+                            uiOutput("selector_vivienda_r_corte"),
+                            
+                            br(),
+                            
+                            uiOutput("s_vivienda_r_fecha"),
+                            
+                            br(),
+                            
+                            uiOutput("chbox_vivienda_r"),
+                            
+                            br(),
+                            
+                            HTML("<b> Instituciones:</b>"),
+                            
+                            br(),
+                            br(),
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                       "INDDHH",
+                                       style = "font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "INDDHH-Logo.png", height="110%",
+                                    width = "110%")),
+                            
+                            br(),
+                            
+                            div(style=";vertical-align:top; width: 150px;",
+                                tags$a(href="https://umad.cienciassociales.edu.uy/",
+                                       "UMAD",
+                                       style = "text-align:right; font-size:15px; color:Navy;
+                                              text-decoration:underline;")),
+                            div(style=";vertical-align:top; width: 150px;",
+                                img(src = "logo_umad.png", height="110%",
+                                    width = "110%")),
+                            br(),
+                            
                         ),
                         
-                        br(),
-                        
-                        uiOutput("selector_vivienda_r_corte"),
-                        
-                        br(),
-                        
-                        uiOutput("s_vivienda_r_fecha"),
-                        
-                        br(),
-                        
-                        uiOutput("chbox_vivienda_r"),
-                        
-                        br(),
-                        
-                        HTML("<b> Instituciones:</b>"),
-                        
-                        br(),
-                        br(),
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   "INDDHH",
-                                   style = "font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "INDDHH-Logo.png", height="110%",
-                                width = "110%")),
-                        
-                        br(),
-                        
-                        div(style=";vertical-align:top; width: 150px;",
-                            tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                   "UMAD",
-                                   style = "text-align:right; font-size:15px; color:Navy;
-                                          text-decoration:underline;")),
-                        div(style=";vertical-align:top; width: 150px;",
-                            img(src = "logo_umad.png", height="110%",
-                                width = "110%")),
-                        br(),
-                        
-                    ),
-                    
-                    mainPanel(
-                        
-                        tags$h3(style="display:inline-block",
-                                uiOutput("title_vivienda_r")),
-                        div(style="display:inline-block", 
-                            dropdown(
-                                style = "minimal",
-                                status = "primary",
-                                width = "500px",
-                                right = TRUE,
-                                icon = icon("calculator", lib = "font-awesome"),
-                                uiOutput("calculo_vivienda_r"))
-                        ),
-                        tags$h5(uiOutput("subtitle_vivienda_r")),
-                        br(),
-                        withSpinner(plotOutput("plot_vivienda_r", height = "500px"),
-                                    type = 2),
-                        br(),
-                        downloadButton(outputId = "baja_p_vivienda_r", 
-                                       label = "Descarga el gráfico"),
-                        br(),
-                        br(),
-                        DTOutput("table_vivienda_r"),
-                        br(),
-                        br(),
-                        downloadButton("dwl_tab_vivienda_r", "Descarga la tabla"),
-                        br(),
-                        br()
+                        mainPanel(
+                            
+                            tags$h3(style="display:inline-block",
+                                    uiOutput("title_vivienda_r")),
+                            div(style="display:inline-block", 
+                                dropdown(
+                                    style = "minimal",
+                                    status = "primary",
+                                    width = "500px",
+                                    right = TRUE,
+                                    icon = icon("calculator", lib = "font-awesome"),
+                                    uiOutput("calculo_vivienda_r"))
+                            ),
+                            tags$h5(uiOutput("subtitle_vivienda_r")),
+                            br(),
+                            withSpinner(plotOutput("plot_vivienda_r", height = "500px"),
+                                        type = 2),
+                            br(),
+                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_vivienda_r", 
+                                           label = "Descarga el gráfico"),
+                                           style = "float: right"))),
+                            br(),
+                            br(),
+                            DTOutput("table_vivienda_r"),
+                            br(),
+                            br(),
+                            fluidRow(column(12, div(downloadButton("dwl_tab_vivienda_r", "Descarga la tabla"),
+                                                    style = "float: right"))),
+                            br(),
+                            br()
+                        )
                     )
                 )
             )
