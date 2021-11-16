@@ -1121,8 +1121,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = input$indicador_edu_pp,
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                        unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
             print(plot_edu)
@@ -1185,8 +1184,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_edu_pp,
                                    "según",
                                    tolower(input$edu_pp_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
@@ -1440,8 +1438,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = input$indicador_edu_r,
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
             print(plot_edu)
@@ -1468,8 +1465,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_edu_r, 
                                    "en",
                                    input$fecha_dpto_edu_r),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -1500,8 +1496,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_edu_r,
                                    "según",
                                    tolower(input$edu_r_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
@@ -1756,8 +1751,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = input$indicador_salud_pp,
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
             print(plot_edu)
@@ -1784,8 +1778,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_salud_pp, 
                                    "en",
                                    input$fecha_dpto_salud_pp),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -1816,8 +1809,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_salud_pp,
                                    "según",
                                    tolower(input$salud_pp_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
@@ -2084,8 +2076,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = input$indicador_salud_r,
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
             print(plot_edu)
@@ -2117,8 +2108,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_salud_r,
                                    "según",
                                    tolower(input$salud_r_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_brewer(palette = "Dark2") +
                 facet_wrap(as.formula(paste("~", names(dat_plot[,ncol(dat_plot)-1]))))
@@ -2150,8 +2140,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_salud_r,
                                    "según",
                                    tolower(input$salud_r_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
@@ -2179,8 +2168,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_salud_r, 
                                    "en",
                                    input$fecha_dpto_salud_r),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -2212,8 +2200,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_salud_r,
                                    "según",
                                    tolower(input$salud_r_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
@@ -2502,8 +2489,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = input$indicador_ssocial_pp,
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
             print(plot_edu)
@@ -2530,8 +2516,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_ssocial_pp, 
                                    "en",
                                    input$fecha_dpto_ssocial_pp),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -2562,8 +2547,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_ssocial_pp,
                                    "según",
                                    tolower(input$ssocial_pp_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
@@ -2820,8 +2804,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = input$indicador_ssocial_r,
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
             print(plot_edu)
@@ -2848,8 +2831,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_ssocial_r, 
                                    "en",
                                    input$fecha_dpto_ssocial_r),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -2880,8 +2862,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_ssocial_r,
                                    "según",
                                    tolower(input$ssocial_r_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
@@ -3137,8 +3118,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = input$indicador_vivienda_pp,
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
             print(plot_edu)
@@ -3165,8 +3145,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_vivienda_pp, 
                                    "en",
                                    input$fecha_dpto_vivienda_pp),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -3197,8 +3176,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_vivienda_pp,
                                    "según",
                                    tolower(input$vivienda_pp_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
@@ -3453,8 +3431,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = input$indicador_vivienda_r,
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
             print(plot_edu)
@@ -3481,8 +3458,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_vivienda_r, 
                                    "en",
                                    input$fecha_dpto_vivienda_r),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -3513,8 +3489,7 @@ server <- function(input, output) {
                      title = paste(input$indicador_vivienda_r,
                                    "según",
                                    tolower(input$vivienda_r_corte)),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                     caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
