@@ -146,3 +146,57 @@ addUnits <- function(n) {
                                                                    "error"))))))))
   return(labels)
 }
+
+
+theme_m <- function(base_size = 13,
+                    base_family = "Georgia",
+                    base_line_size = base_size / 170,
+                    base_rect_size = base_size / 170){
+  
+  theme_minimal(base_size = base_size, 
+                base_family = base_family,
+                base_line_size = base_line_size) %+replace%
+    
+    theme(plot.title = element_text(       
+      family = base_family,            
+      size = 16,                
+      face = 'bold',            
+      hjust = 0,
+      vjust = 4),
+      
+      plot.subtitle = element_text(      
+        family = base_family,            
+        size = 14,
+        hjust = 0,                
+        vjust = 2),               
+      
+      plot.caption = element_text(
+        family = base_family,     
+        size = 10,                
+        hjust = 1),               
+      
+      axis.title = element_text(  
+        family = base_family,     
+        size = 14,
+        face="bold"),               
+      
+      axis.text = element_text(    
+        family = base_family,      
+        size = 12),                
+      
+      axis.text.x = element_text(           
+        margin=margin(5, b = 10)),
+      
+      axis.line = element_line(colour = "grey50", size = 1),
+      
+      panel.grid.major.y = element_line(colour = "grey90", size = .75),
+      panel.grid.minor.y = element_blank(),   
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),   
+      
+      plot.margin=unit(c(2,2,2.5,2.2),"cm"),
+      
+      strip.text = element_text(size=14, face="bold", family = base_family)
+      
+    )
+}
