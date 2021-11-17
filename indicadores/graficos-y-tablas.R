@@ -25,8 +25,7 @@ dat <- tibble::as_tibble(x) %>%
   mutate(tipoind = case_when(
     tipoind == "Políticas públicas y esfuerzo económico" ~ "Políticas Públicas y Esfuerzo Económico",
     TRUE ~ tipoind 
-  )) %>% 
-  filter(web == 1)
+  )) 
 
 rm(x)
 
@@ -38,6 +37,7 @@ paleta_expandida <- c(RColorBrewer::brewer.pal(8, "Dark2"), "#B76A16", "#75A61A"
                       "#A9A80F", "#DEAA03")
 
 list_ind <- dat %>% 
+  filter(web == 1) %>% 
   distinct(codindicador) %>% 
   pull()
 
@@ -119,18 +119,109 @@ for (i in seq_along(list_ind)) {
 }
 
 
-## 4. Loop excel  =========================================================
 
-# Filtro base para cada indicador
-dat_ind <- dat %>% 
-  filter(jerarquia == 1) %>% 
-  filter(codindicador == 130101) 
+## 3. Loop graficos población  =============================================
+
+list_ind_pob <- dat %>% 
+  filter(web_pob == 1) %>% 
+  distinct(codindicador) %>% 
+  pull()
+
+datita <- dat %>% 
+  filter(codindicador %in% list_ind_pob)
+
+for (i in seq_along(list_ind_pob)) {
+  
+  # Filtro base para cada indicador
+  ind_cortes <- dat %>% 
+    filter(codindicador == list_ind[i])
+  
+  
+  # Filtro base para cada indicador
+  dat_ind <- dat %>% 
+    filter(codindicador == list_ind[i]) 
+  
+  if(dat_ind$corte == "Total"){
+    
+    # Base para último valor
+    data_ends <- dat_ind %>%
+      arrange(desc(Fecha)) %>%
+      slice(1)
+    
+    # Gráfico
+    temp_plot <- ggplot(dat_ind,
+                        aes(x = fecha, y = Valor)) +
+      geom_line(size = 1, alpha = .6, color = "#1979c6") +
+      geom_point(size = 2.5, color = "#1979c6") +
+      theme_m(base_size = 9) +
+      labs(title = unique(dat_ind$nomindicador),
+           x = "",
+           y = "",
+           caption = wrapit(unique(dat_ind$cita))) +
+      geom_text_repel(
+        aes(label = Valor), data = data_ends,
+        size = 7,
+        vjust = -1,
+        color = "#1979c6") +
+      ylim(min(dat_ind$Valor) - min(dat_ind$Valor)/5, max(dat_ind$Valor) + max(dat_ind$Valor)/5 )
+    
+    # Guardar
+    ggsave(temp_plot, 
+           file = paste0("indicadores/viz/", list_ind[i],".png"), 
+           width = 40, height = 25, units = "cm")
+    
+  } else if (dat_ind$corte != "Total") {
+    
+    dat_ind <- dat_ind %>% 
+      janitor::remove_empty("cols") 
+    
+    # Base para último valor
+    data_ends <- dat_ind %>%
+      group_by(get(names(dat_ind[,ncol(dat_ind)]))) %>% 
+      arrange(desc(Fecha)) %>%
+      slice(1)
+    
+    # Gráfico
+    temp_plot <- ggplot(dat_ind,
+                        aes_string(x = "fecha", y = "Valor",  color = names(dat_ind[,ncol(dat_ind)]))) +
+      geom_line(size = 1, alpha = .6) +
+      geom_point(size = 2.5) +
+      theme_m(base_size = 9) +
+      labs(title = unique(dat_ind$nomindicador),
+           x = "",
+           y = "",
+           caption = wrapit(unique(dat_ind$cita))) +
+      geom_text_repel(
+        aes(label = Valor), data = data_ends,
+        size = 7,
+        vjust = -1,
+        show.legend = FALSE) +
+      ylim(min(dat_ind$Valor) - min(dat_ind$Valor)/10, max(dat_ind$Valor) + max(dat_ind$Valor)/10 )  +
+      scale_color_manual(name = "", values = paleta_expandida) + 
+      theme(legend.position = "bottom",
+            legend.text = element_text(size=10))
+    
+    # Guardar
+    ggsave(temp_plot, 
+           file = paste0("indicadores/viz/", list_ind[i],".png"), 
+           width = 40, height = 25, units = "cm")
+    
+  }
+  
+  print(list_ind[i])
+}
+
+
+
+
+## 4. Loop excel  =========================================================
 
 
 for (i in seq_along(list_ind)) {
   
   # Filtro base para cada indicador
   dat_ind <- dat %>% 
+    filter(web == 1) %>%
     filter(jerarquia == 1) %>% 
     filter(codindicador == list_ind[i]) 
   
