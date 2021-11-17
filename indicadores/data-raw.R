@@ -11,10 +11,12 @@ metadata <- readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
   select(-DERECHO, -TIPOIND, -DIMENSIÓN, -CONINDICADOR, -NOMINDICADOR,
          -FUENTE)
 
+glimpse(metadata)
+
 dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                           col_types = c("numeric", "text", "text","text",
                                         "text", "text", "numeric", "numeric",
-                                        "text", "text", "text", "text", 
+                                        "text", "text", "numeric", "text", 
                                         "text", "text", "text", "text",
                                         "text", "text", "text", "text",
                                         "text", "text", "text", "text",
@@ -27,16 +29,19 @@ dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                                       ifelse(VALOR > 100  & VALOR < 1000, round(VALOR, digits = 0),
                                              ifelse(VALOR > 1000, round(VALOR, digits = 0),
                                                     NA))))))
+
+glimpse(dat)
+
 dat$SEXO <- as.factor(dat$SEXO)
 dat$SEXO <- factor(dat$SEXO, levels = levels(dat$SEXO)[c(1, 3, 2)])
 
 dat$EDAD <- as.factor(dat$EDAD)
 dat$EDAD <- factor(dat$EDAD, levels = levels(dat$EDAD)[c(1,	3,	18,	27,	29,	30,	31,	34,	35,	36,	4,	5,	6,	7,	10,	11,	12,	13,	14,	16,	19,	20,	22,	23,	24,	2, 32,	8,	9,	15,	17,	21,	25,	26,	28,	33,	37)])
 
-table(dat$PRESTADOR)
-dat$PRESTADOR <- as.factor(dat$PRESTADOR)
-dat$PRESTADOR <- factor(dat$PRESTADOR, levels = levels(dat$PRESTADOR)[c(1, 5, 6, 4, 3, 7, 9, 8)])
-table(dat$PRESTADOR)
+# table(dat$PRESTADOR)
+# dat$PRESTADOR <- as.factor(dat$PRESTADOR)
+# dat$PRESTADOR <- factor(dat$PRESTADOR, levels = levels(dat$PRESTADOR)[c(1, 5, 6, 4, 3, 7, 9, 8)])
+# table(dat$PRESTADOR)
 
 dat$REGIÓN <- as.factor(dat$REGIÓN)
 dat$REGIÓN <- factor(dat$REGIÓN, levels = levels(dat$REGIÓN)[c(2, 1, 3)])
@@ -65,10 +70,12 @@ dat$DEPARTAMENTO <- factor(dat$DEPARTAMENTO, levels = levels(dat$DEPARTAMENTO)[c
 # dat$SOLHABITAC <- as.factor(dat$SOLHABITAC)
 # dat$SOLHABITAC <- factor(dat$SOLHABITAC, levels = levels(dat$SOLHABITAC)[c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 12)])
 
+
 dat <- dat %>% 
   left_join(metadata, by = "CODINDICADOR") %>% 
-  relocate(FECHA, id, DEFINICIÓN, CÁLCULO, UNIDAD, COBERTURA_GEO,
-           COBERTURA_TEMPORAL, FRECUENCIA_REPORTE, CITA, UMBRAL, APERTURA, WEB) %>% 
+  relocate(FECHA, DEFINICIÓN, CÁLCULO, UNIDAD, COBERTURA_GEO,
+           COBERTURA_TEMPORAL, FRECUENCIA_REPORTE, CITA, UMBRAL, APERTURA, WEB,
+           WEB_POB, SEXO_POB, ASCENDENCIA_POB, EDAD_POB) %>% 
   # filter(WEB == 1) %>%
   janitor::clean_names()
 

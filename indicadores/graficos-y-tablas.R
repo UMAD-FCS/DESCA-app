@@ -90,7 +90,7 @@ for (i in seq_along(list_ind)) {
     
     # Gráfico
     temp_plot <- ggplot(dat_ind,
-                        aes_string(x = "fecha", y = "Valor", colour = names(dat_ind[,ncol(dat_ind)]))) +
+                        aes_string(x = "fecha", y = "Valor",  color = names(dat_ind[,ncol(dat_ind)]))) +
       geom_line(size = 1, alpha = .6) +
       geom_point(size = 2.5) +
       theme_m(base_size = 9) +
@@ -104,8 +104,9 @@ for (i in seq_along(list_ind)) {
         vjust = -1,
         show.legend = FALSE) +
       ylim(min(dat_ind$Valor) - min(dat_ind$Valor)/10, max(dat_ind$Valor) + max(dat_ind$Valor)/10 )  +
-      scale_colour_manual(name = "", values = paleta_expandida) + 
-      theme(legend.position = "bottom")
+      scale_color_manual(name = "", values = paleta_expandida) + 
+      theme(legend.position = "bottom",
+            legend.text = element_text(size=10))
     
     # Guardar
     ggsave(temp_plot, 
@@ -113,10 +114,18 @@ for (i in seq_along(list_ind)) {
            width = 40, height = 25, units = "cm")
     
   }
+  
+  print(list_ind[i])
 }
 
 
 ## 4. Loop excel  =========================================================
+
+# Filtro base para cada indicador
+dat_ind <- dat %>% 
+  filter(jerarquia == 1) %>% 
+  filter(codindicador == 130101) 
+
 
 for (i in seq_along(list_ind)) {
   
@@ -136,8 +145,8 @@ for (i in seq_along(list_ind)) {
     # Metadata 
     metadat <-  readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
       filter(CODINDICADOR == list_ind[i]) %>% 
-      select(DERECHO, DIMENSIÓN, CONINDICADOR, NOMINDICADOR, 
-             DEFINICIÓN, CÁLCULO) %>% 
+      select(DERECHO, CONINDICADOR, NOMINDICADOR, 
+             DEFINICIÓN, CÁLCULO, TIPOIND, CITA) %>% 
       gather(key = "", value = " ")
     
     # Excel merge
@@ -162,8 +171,8 @@ for (i in seq_along(list_ind)) {
     # Metadata 
     metadat <-  readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
       filter(CODINDICADOR == list_ind[i]) %>% 
-      select(DERECHO, DIMENSIÓN, CONINDICADOR, NOMINDICADOR, 
-             DEFINICIÓN, CÁLCULO) %>% 
+      select(DERECHO, CONINDICADOR, NOMINDICADOR, 
+             DEFINICIÓN, CÁLCULO, TIPOIND, CITA) %>% 
       gather(key = "", value = " ")
     
     # Excel merge

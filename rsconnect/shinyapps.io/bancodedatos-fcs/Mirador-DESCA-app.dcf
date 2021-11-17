@@ -1,0 +1,13 @@
+name: Mirador-DESCA-app
+title: Mirador-DESCA-app
+username:
+account: bancodedatos-fcs
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4840263
+bundleId: 5258824
+url: https://bancodedatos-fcs.shinyapps.io/Mirador-DESCA-app/
+when: 1637083716.09336
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: data-raw.R|Data/Base_fichas_indicadores.xlsx|Data/Base_mirador_desca.xlsx|indicadores|Sintaxis Stata
