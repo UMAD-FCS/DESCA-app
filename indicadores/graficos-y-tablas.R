@@ -119,7 +119,6 @@ for (i in seq_along(list_ind)) {
 }
 
 
-
 ## 3. Loop graficos población  =============================================
 
 list_ind_pob <- dat %>% 
@@ -127,21 +126,17 @@ list_ind_pob <- dat %>%
   distinct(codindicador) %>% 
   pull()
 
-datita <- dat %>% 
-  filter(codindicador %in% list_ind_pob)
+
+## Loop para generar gráficos con todas las combinaciones
 
 for (i in seq_along(list_ind_pob)) {
   
-  # Filtro base para cada indicador
-  ind_cortes <- dat %>% 
-    filter(codindicador == list_ind[i])
-  
-  
-  # Filtro base para cada indicador
+  ## Gráfico total
   dat_ind <- dat %>% 
-    filter(codindicador == list_ind[i]) 
+    filter(codindicador == list_ind_pob[i]) %>% 
+    filter(corte == "Total")
   
-  if(dat_ind$corte == "Total"){
+  if(nrow(dat_ind) > 0){
     
     # Base para último valor
     data_ends <- dat_ind %>%
@@ -167,50 +162,269 @@ for (i in seq_along(list_ind_pob)) {
     
     # Guardar
     ggsave(temp_plot, 
-           file = paste0("indicadores/viz/", list_ind[i],".png"), 
+           file = paste0("indicadores/viz/pob/", list_ind_pob[i],".png"), 
            width = 40, height = 25, units = "cm")
     
-  } else if (dat_ind$corte != "Total") {
+  } else  {
     
-    dat_ind <- dat_ind %>% 
-      janitor::remove_empty("cols") 
+  }
+  
+  ## Gráficos sexo  
+  dat_sexo <- dat %>%
+    filter(codindicador == list_ind_pob[i]) %>%
+    filter(corte == "Sexo")
+  
+  if(nrow(dat_sexo) > 0 & max(dat_sexo$sexo_pob) == 1){
     
     # Base para último valor
-    data_ends <- dat_ind %>%
-      group_by(get(names(dat_ind[,ncol(dat_ind)]))) %>% 
+    data_ends <- dat_sexo %>%
+      group_by(sexo) %>% 
       arrange(desc(Fecha)) %>%
       slice(1)
     
     # Gráfico
-    temp_plot <- ggplot(dat_ind,
-                        aes_string(x = "fecha", y = "Valor",  color = names(dat_ind[,ncol(dat_ind)]))) +
+    temp_plot <- ggplot(dat_sexo,
+                        aes(x = fecha, y = Valor,  color = sexo)) +
       geom_line(size = 1, alpha = .6) +
       geom_point(size = 2.5) +
       theme_m(base_size = 9) +
-      labs(title = unique(dat_ind$nomindicador),
+      labs(title = unique(dat_sexo$nomindicador),
            x = "",
            y = "",
-           caption = wrapit(unique(dat_ind$cita))) +
+           caption = wrapit(unique(dat_sexo$cita))) +
       geom_text_repel(
         aes(label = Valor), data = data_ends,
         size = 7,
         vjust = -1,
         show.legend = FALSE) +
-      ylim(min(dat_ind$Valor) - min(dat_ind$Valor)/10, max(dat_ind$Valor) + max(dat_ind$Valor)/10 )  +
+      ylim(min(dat_sexo$Valor) - min(dat_sexo$Valor)/10, max(dat_sexo$Valor) + max(dat_sexo$Valor)/10 )  +
       scale_color_manual(name = "", values = paleta_expandida) + 
       theme(legend.position = "bottom",
             legend.text = element_text(size=10))
     
     # Guardar
     ggsave(temp_plot, 
-           file = paste0("indicadores/viz/", list_ind[i],".png"), 
+           file = paste0("indicadores/viz/pob/", list_ind_pob[i], "_sexo", ".png"), 
            width = 40, height = 25, units = "cm")
+    
+  } else {
+    
+    print(paste(list_ind_pob[i], "no tiene corte por sexo"))
+  }
+  
+  
+  ## Gráficos edad  
+  dat_edad <- dat %>%
+    filter(codindicador == list_ind_pob[i]) %>%
+    filter(corte == "Edad")
+  
+  if(nrow(dat_edad) > 0 & max(dat_edad$edad_pob) == 1){
+    
+    # Base para último valor
+    data_ends <- dat_edad %>%
+      group_by(edad) %>% 
+      arrange(desc(Fecha)) %>%
+      slice(1)
+    
+    # Gráfico
+    temp_plot <- ggplot(dat_edad,
+                        aes(x = fecha, y = Valor,  color = edad)) +
+      geom_line(size = 1, alpha = .6) +
+      geom_point(size = 2.5) +
+      theme_m(base_size = 9) +
+      labs(title = unique(dat_edad$nomindicador),
+           x = "",
+           y = "",
+           caption = wrapit(unique(dat_edad$cita))) +
+      geom_text_repel(
+        aes(label = Valor), data = data_ends,
+        size = 7,
+        vjust = -1,
+        show.legend = FALSE) +
+      ylim(min(dat_edad$Valor) - min(dat_edad$Valor)/10, max(dat_edad$Valor) + max(dat_edad$Valor)/10 )  +
+      scale_color_manual(name = "", values = paleta_expandida) + 
+      theme(legend.position = "bottom",
+            legend.text = element_text(size=10))
+    
+    # Guardar
+    ggsave(temp_plot, 
+           file = paste0("indicadores/viz/pob/", list_ind_pob[i], "_edad", ".png"), 
+           width = 40, height = 25, units = "cm")
+    
+  } else {
+    
+    print(paste(list_ind_pob[i], "no tiene corte por edad"))
     
   }
   
-  print(list_ind[i])
+  ## Gráficos ascendencia  
+  dat_ascendencia <- dat %>%
+    filter(codindicador == list_ind_pob[i]) %>%
+    filter(corte == "Ascendencia étnico-racial")
+  
+  if(nrow(dat_ascendencia) > 0 & max(dat_ascendencia$ascendencia_pob) == 1){
+    
+    # Base para último valor
+    data_ends <- dat_ascendencia %>%
+      group_by(ascendencia) %>% 
+      arrange(desc(Fecha)) %>%
+      slice(1)
+    
+    # Gráfico
+    temp_plot <- ggplot(dat_ascendencia,
+                        aes(x = fecha, y = Valor,  color = ascendencia)) +
+      geom_line(size = 1, alpha = .6) +
+      geom_point(size = 2.5) +
+      theme_m(base_size = 9) +
+      labs(title = unique(dat_ascendencia$nomindicador),
+           x = "",
+           y = "",
+           caption = wrapit(unique(dat_ascendencia$cita))) +
+      geom_text_repel(
+        aes(label = Valor), data = data_ends,
+        size = 7,
+        vjust = -1,
+        show.legend = FALSE) +
+      ylim(min(dat_ascendencia$Valor) - min(dat_ascendencia$Valor)/10, max(dat_ascendencia$Valor) + max(dat_ascendencia$Valor)/10 )  +
+      scale_color_manual(name = "", values = paleta_expandida) + 
+      theme(legend.position = "bottom",
+            legend.text = element_text(size=10))
+    
+    # Guardar
+    ggsave(temp_plot, 
+           file = paste0("indicadores/viz/pob/", list_ind_pob[i], "_ascendencia", ".png"), 
+           width = 40, height = 25, units = "cm")
+    
+  } else {
+    
+    print(paste(list_ind_pob[i], "no tiene corte por ascendencia"))
+    
+  }
+  
+  # Estado loop
+  print(list_ind_pob[i])
+  
 }
 
+
+## Solución manual para indicador 430101 (gráficos por facetas)
+
+
+#### Sexo
+dat_430101 <- dat %>%
+  filter(codindicador == 430101) %>%
+  filter(corte == "Sexo")
+
+# Base para último valor
+data_ends <- dat_430101 %>%
+  filter(prestador != "Otros") %>% 
+  group_by(sexo, prestador) %>% 
+  arrange(desc(Fecha)) %>%
+  slice(1)
+
+# Gráfico
+temp_plot <- ggplot(dat_430101, aes(x = fecha, y = Valor,  color = prestador)) +
+  geom_line(size = 1, alpha = .6) +
+  geom_point(size = 2.5) +
+  theme_m(base_size = 9) +
+  labs(title = unique(dat_430101$nomindicador),
+       x = "",
+       y = "",
+       caption = wrapit(unique(dat_430101$cita))) +
+  geom_text_repel(
+    aes(label = Valor), data = data_ends,
+    size = 7,
+    vjust = -1,
+    show.legend = FALSE) +
+  ylim(min(dat_430101$Valor) - min(dat_430101$Valor)/10, max(dat_430101$Valor) + max(dat_430101$Valor)/10 )  +
+  scale_color_manual(name = "", values = paleta_expandida) + 
+  theme(legend.position = "bottom",
+        legend.text = element_text(size=10)) +
+  facet_wrap(~ sexo)
+
+# Guardar
+ggsave(temp_plot, 
+       file = "indicadores/viz/pob/430101_sexo.png", 
+       width = 40, height = 25, units = "cm")
+
+
+#### Edad
+dat_430101 <- dat %>%
+  filter(codindicador == 430101) %>%
+  filter(corte == "Edad")
+
+# Base para último valor
+data_ends <- dat_430101 %>%
+  filter(prestador != "Otros") %>% 
+  group_by(edad, prestador) %>% 
+  arrange(desc(Fecha)) %>%
+  slice(1)
+
+# Gráfico
+temp_plot <- ggplot(dat_430101, aes(x = fecha, y = Valor,  color = prestador)) +
+  geom_line(size = 1, alpha = .6) +
+  geom_point(size = 2.5) +
+  theme_m(base_size = 9) +
+  labs(title = unique(dat_430101$nomindicador),
+       x = "",
+       y = "",
+       caption = wrapit(unique(dat_430101$cita))) +
+  geom_text_repel(
+    aes(label = Valor), data = data_ends,
+    size = 5,
+    vjust = -1,
+    show.legend = FALSE) +
+  ylim(min(dat_430101$Valor) - min(dat_430101$Valor)/10, max(dat_430101$Valor) + max(dat_430101$Valor)/10 )  +
+  scale_color_manual(name = "", values = paleta_expandida) + 
+  theme(legend.position = "bottom",
+        legend.text = element_text(size=10)) +
+  facet_wrap(~ edad)
+
+# Guardar
+ggsave(temp_plot, 
+       file = "indicadores/viz/pob/430101_edad.png", 
+       width = 40, height = 25, units = "cm")
+
+
+#### Ascendencia
+dat_430101 <- dat %>%
+  filter(codindicador == 430101) %>%
+  filter(prestador != "Otros") %>%
+  filter(corte == "Ascendencia étnico-racial")
+
+# Base para último valor
+data_ends <- dat_430101 %>%
+  filter(prestador != "Otros") %>% 
+  group_by(ascendencia, prestador) %>% 
+  arrange(desc(Fecha)) %>%
+  slice(1)
+  
+# Gráfico
+temp_plot <- ggplot(dat_430101, aes(x = fecha, y = Valor,  color = prestador)) +
+    geom_line(size = 1, alpha = .6) +
+    geom_point(size = 2.5) +
+    theme_m(base_size = 9) +
+    labs(title = unique(dat_430101$nomindicador),
+         x = "",
+         y = "",
+         caption = wrapit(unique(dat_430101$cita))) +
+    geom_text_repel(
+      aes(label = Valor), data = data_ends,
+      size = 7,
+      vjust = -1,
+      show.legend = FALSE) +
+    ylim(min(dat_430101$Valor) - min(dat_430101$Valor)/10, max(dat_430101$Valor) + max(dat_430101$Valor)/10 )  +
+    scale_color_manual(name = "", values = paleta_expandida) + 
+    theme(legend.position = "bottom",
+          legend.text = element_text(size=10)) +
+  facet_wrap(~ ascendencia)
+  
+# Guardar
+ggsave(temp_plot, 
+         file = "indicadores/viz/pob/430101_ascendencia.png", 
+         width = 40, height = 25, units = "cm")
+
+  
 
 
 
