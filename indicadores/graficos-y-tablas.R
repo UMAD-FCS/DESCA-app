@@ -123,6 +123,7 @@ for (i in seq_along(list_ind)) {
 
 list_ind_pob <- dat %>% 
   filter(web_pob == 1) %>% 
+  filter(codindicador != 430101) %>% 
   distinct(codindicador) %>% 
   pull()
 
@@ -165,6 +166,26 @@ for (i in seq_along(list_ind_pob)) {
            file = paste0("indicadores/viz/pob/", list_ind_pob[i],".png"), 
            width = 40, height = 25, units = "cm")
     
+    ## Exportar excel también 
+    dat_cut <- dat_ind %>% 
+      filter(codindicador == list_ind_pob[i]) %>%
+      select(Fecha, Valor) 
+    
+    # Metadata 
+    metadat <-  readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
+      filter(CODINDICADOR == list_ind_pob[i]) %>% 
+      select(DERECHO, CONINDICADOR, NOMINDICADOR, 
+             DEFINICIÓN, CÁLCULO, TIPOIND, CITA) %>% 
+      gather(key = "", value = " ")
+    
+    # Excel merge
+    lista_excel <- list("Datos" = dat_cut,
+                        "Ficha técnica" = metadat)
+    
+    # Guardar
+    openxlsx::write.xlsx(lista_excel, 
+                         file = paste0("indicadores/tablas/pob/", list_ind_pob[i], ".xlsx")) 
+    
   } else  {
     
   }
@@ -206,6 +227,28 @@ for (i in seq_along(list_ind_pob)) {
     ggsave(temp_plot, 
            file = paste0("indicadores/viz/pob/", list_ind_pob[i], "_sexo", ".png"), 
            width = 40, height = 25, units = "cm")
+
+    ## Excel para exportar
+    dat_cut <- dat_sexo %>% 
+      select(Fecha, Valor, sexo) %>% 
+      pivot_wider(names_from = "sexo",
+                  values_from = "Valor")
+
+    # Metadata 
+    metadat <-  readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
+      filter(CODINDICADOR == list_ind_pob[i]) %>% 
+      select(DERECHO, CONINDICADOR, NOMINDICADOR, 
+             DEFINICIÓN, CÁLCULO, TIPOIND, CITA) %>% 
+      gather(key = "", value = " ")
+    
+    # Excel merge
+    lista_excel <- list("Datos" = dat_cut,
+                        "Ficha técnica" = metadat)
+    
+    # Guardar
+    openxlsx::write.xlsx(lista_excel, 
+                         file = paste0("indicadores/tablas/pob/", list_ind_pob[i], "_sexo.xlsx")) 
+    
     
   } else {
     
@@ -251,6 +294,27 @@ for (i in seq_along(list_ind_pob)) {
            file = paste0("indicadores/viz/pob/", list_ind_pob[i], "_edad", ".png"), 
            width = 40, height = 25, units = "cm")
     
+    ## Excel para exportar
+    dat_cut <- dat_edad %>% 
+      select(Fecha, Valor, edad) %>% 
+      pivot_wider(names_from = "edad",
+                  values_from = "Valor")
+    
+    # Metadata 
+    metadat <-  readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
+      filter(CODINDICADOR == list_ind_pob[i]) %>% 
+      select(DERECHO, CONINDICADOR, NOMINDICADOR, 
+             DEFINICIÓN, CÁLCULO, TIPOIND, CITA) %>% 
+      gather(key = "", value = " ")
+    
+    # Excel merge
+    lista_excel <- list("Datos" = dat_cut,
+                        "Ficha técnica" = metadat)
+    
+    # Guardar
+    openxlsx::write.xlsx(lista_excel, 
+                         file = paste0("indicadores/tablas/pob/", list_ind_pob[i], "_edad.xlsx")) 
+    
   } else {
     
     print(paste(list_ind_pob[i], "no tiene corte por edad"))
@@ -295,6 +359,28 @@ for (i in seq_along(list_ind_pob)) {
            file = paste0("indicadores/viz/pob/", list_ind_pob[i], "_ascendencia", ".png"), 
            width = 40, height = 25, units = "cm")
     
+    
+    ## Excel para exportar
+    dat_cut <- dat_ascendencia %>% 
+      select(Fecha, Valor, ascendencia) %>% 
+      pivot_wider(names_from = "ascendencia",
+                  values_from = "Valor")
+    
+    # Metadata 
+    metadat <-  readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
+      filter(CODINDICADOR == list_ind_pob[i]) %>% 
+      select(DERECHO, CONINDICADOR, NOMINDICADOR, 
+             DEFINICIÓN, CÁLCULO, TIPOIND, CITA) %>% 
+      gather(key = "", value = " ")
+    
+    # Excel merge
+    lista_excel <- list("Datos" = dat_cut,
+                        "Ficha técnica" = metadat)
+    
+    # Guardar
+    openxlsx::write.xlsx(lista_excel, 
+                         file = paste0("indicadores/tablas/pob/", list_ind_pob[i], "_ascendencia.xlsx")) 
+    
   } else {
     
     print(paste(list_ind_pob[i], "no tiene corte por ascendencia"))
@@ -308,7 +394,6 @@ for (i in seq_along(list_ind_pob)) {
 
 
 ## Solución manual para indicador 430101 (gráficos por facetas)
-
 
 #### Sexo
 dat_430101 <- dat %>%
@@ -347,6 +432,27 @@ ggsave(temp_plot,
        file = "indicadores/viz/pob/430101_sexo.png", 
        width = 40, height = 25, units = "cm")
 
+## Excel para exportar
+dat_cut <- dat_430101 %>% 
+  select(Fecha, Valor, prestador, sexo) %>% 
+  pivot_wider(names_from = "sexo",
+              values_from = "Valor")
+
+# Metadata 
+metadat <-  readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
+  filter(CODINDICADOR == 430101) %>% 
+  select(DERECHO, CONINDICADOR, NOMINDICADOR, 
+         DEFINICIÓN, CÁLCULO, TIPOIND, CITA) %>% 
+  gather(key = "", value = " ")
+
+# Excel merge
+lista_excel <- list("Datos" = dat_cut,
+                    "Ficha técnica" = metadat)
+
+# Guardar
+openxlsx::write.xlsx(lista_excel, 
+                     file = paste0("indicadores/tablas/pob/430101_sexo.xlsx")) 
+
 
 #### Edad
 dat_430101 <- dat %>%
@@ -384,6 +490,27 @@ temp_plot <- ggplot(dat_430101, aes(x = fecha, y = Valor,  color = prestador)) +
 ggsave(temp_plot, 
        file = "indicadores/viz/pob/430101_edad.png", 
        width = 40, height = 25, units = "cm")
+
+## Excel para exportar
+dat_cut <- dat_430101 %>% 
+  select(Fecha, Valor, prestador, edad) %>% 
+  pivot_wider(names_from = "edad",
+              values_from = "Valor")
+
+# Metadata 
+metadat <-  readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
+  filter(CODINDICADOR == 430101) %>% 
+  select(DERECHO, CONINDICADOR, NOMINDICADOR, 
+         DEFINICIÓN, CÁLCULO, TIPOIND, CITA) %>% 
+  gather(key = "", value = " ")
+
+# Excel merge
+lista_excel <- list("Datos" = dat_cut,
+                    "Ficha técnica" = metadat)
+
+# Guardar
+openxlsx::write.xlsx(lista_excel, 
+                     file = paste0("indicadores/tablas/pob/430101_edad.xlsx")) 
 
 
 #### Ascendencia
@@ -424,8 +551,26 @@ ggsave(temp_plot,
          file = "indicadores/viz/pob/430101_ascendencia.png", 
          width = 40, height = 25, units = "cm")
 
-  
+## Excel para exportar
+dat_cut <- dat_430101 %>% 
+  select(Fecha, Valor, prestador, ascendencia) %>% 
+  pivot_wider(names_from = "ascendencia",
+              values_from = "Valor")
 
+# Metadata 
+metadat <-  readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
+  filter(CODINDICADOR == 430101) %>% 
+  select(DERECHO, CONINDICADOR, NOMINDICADOR, 
+         DEFINICIÓN, CÁLCULO, TIPOIND, CITA) %>% 
+  gather(key = "", value = " ")
+
+# Excel merge
+lista_excel <- list("Datos" = dat_cut,
+                    "Ficha técnica" = metadat)
+
+# Guardar
+openxlsx::write.xlsx(lista_excel, 
+                     file = paste0("indicadores/tablas/pob/430101_ascendencia.xlsx")) 
 
 
 ## 4. Loop excel  =========================================================
