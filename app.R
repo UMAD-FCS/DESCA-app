@@ -146,7 +146,15 @@ ui <- fluidPage(
                ".shiny-output-error:before { visibility: hidden; }"), # Quita mensajes de error (ojo)
     
     navbarPage(
-        title = div(img(src='logodesca.png', style="margin-top: -2px;", height = 30, width = 100)),
+        title = tags$a(
+          href="https://umad.cienciassociales.edu.uy/", 
+          tags$img(src="logodesca.png", 
+                   style="margin-top: -2px;", height = 30, width = 100,
+                   height=30,
+                   width = 100)
+        ),
+        
+        # div(img(src='logodesca.png', style="margin-top: -2px;", height = 30, width = 100)),
         # titlePanel(title=div(img(src="logo_umad.png", height="5%", width="5%"), "Mirador DESCA")),
         # title = div("Mirador DESCA", img(src="logo_umad.png", height="90%", width = "90%")),
         collapsible = TRUE,
@@ -197,31 +205,31 @@ ui <- fluidPage(
                             br(),
                             
                             HTML("<b> Instituciones:</b>"),
-                            
+                            br(),
+                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                   tags$img(src="INDDHH-Logo.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="75%",
+                                            width = "65%")),
                             br(),
                             br(),
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                       "INDDHH",
-                                       style = "font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "INDDHH-Logo.png", height="110%",
-                                    width = "110%")),
-                            
+                            tags$a( href="https://umad.cienciassociales.edu.uy/",
+                                    tags$img(src="logo_umad.png",
+                                             style=";vertical-align:top;",
+                                             height="75%",
+                                             width = "65%")),
                             br(),
-                            
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                       "UMAD",
-                                       style = "text-align:right; font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "logo_umad.png", height="110%",
-                                    width = "110%")),
                             br(),
-    
-                            ),
+                            HTML("<b> Con el apoyo de:</b>"),    
+                            br(),
+                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                                   tags$img(src="ohchr.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="35%",
+                                            width = "25%")),
+                        ),
                         
                         mainPanel(
                             
@@ -295,30 +303,30 @@ ui <- fluidPage(
                             br(),
                             
                             HTML("<b> Instituciones:</b>"),
-                            
+                            br(),
+                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                   tags$img(src="INDDHH-Logo.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="75%",
+                                            width = "65%")),
                             br(),
                             br(),
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                       "INDDHH",
-                                       style = "font-size:15px; color:Navy;
-                                                  text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "INDDHH-Logo.png", height="110%",
-                                    width = "110%")),
-                            
+                            tags$a( href="https://umad.cienciassociales.edu.uy/",
+                                    tags$img(src="logo_umad.png",
+                                             style=";vertical-align:top;",
+                                             height="75%",
+                                             width = "65%")),
                             br(),
-                            
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                       "UMAD",
-                                       style = "text-align:right; font-size:15px; color:Navy;
-                                                  text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "logo_umad.png", height="110%",
-                                    width = "110%")),
                             br(),
-                            
+                            HTML("<b> Con el apoyo de:</b>"),    
+                            br(),
+                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                                   tags$img(src="ohchr.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="35%",
+                                            width = "25%")),
                         ),
                         
                         mainPanel(
@@ -400,30 +408,30 @@ ui <- fluidPage(
                             br(),
                             
                             HTML("<b> Instituciones:</b>"),
-                            
+                            br(),
+                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                   tags$img(src="INDDHH-Logo.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="75%",
+                                            width = "65%")),
                             br(),
                             br(),
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                       "INDDHH",
-                                       style = "font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "INDDHH-Logo.png", height="110%",
-                                    width = "110%")),
-                            
+                            tags$a( href="https://umad.cienciassociales.edu.uy/",
+                                    tags$img(src="logo_umad.png",
+                                             style=";vertical-align:top;",
+                                             height="75%",
+                                             width = "65%")),
                             br(),
-                            
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                       "UMAD",
-                                       style = "text-align:right; font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "logo_umad.png", height="110%",
-                                    width = "110%")),
                             br(),
-                            
+                            HTML("<b> Con el apoyo de:</b>"),    
+                            br(),
+                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                                   tags$img(src="ohchr.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="35%",
+                                            width = "25%")),
                         ),
                         
                         mainPanel(
@@ -497,30 +505,30 @@ ui <- fluidPage(
                             br(),
                             
                             HTML("<b> Instituciones:</b>"),
-                            
+                            br(),
+                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                   tags$img(src="INDDHH-Logo.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="75%",
+                                            width = "65%")),
                             br(),
                             br(),
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                       "INDDHH",
-                                       style = "font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "INDDHH-Logo.png", height="110%",
-                                    width = "110%")),
-                            
+                            tags$a( href="https://umad.cienciassociales.edu.uy/",
+                                    tags$img(src="logo_umad.png",
+                                             style=";vertical-align:top;",
+                                             height="75%",
+                                             width = "65%")),
                             br(),
-    
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                       "UMAD",
-                                       style = "text-align:right; font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "logo_umad.png", height="110%",
-                                    width = "110%")),
                             br(),
-                            
+                            HTML("<b> Con el apoyo de:</b>"),    
+                            br(),
+                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                                   tags$img(src="ohchr.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="35%",
+                                            width = "25%")),
                         ),
                         
                         mainPanel(
@@ -602,30 +610,30 @@ ui <- fluidPage(
                             br(),
                             
                             HTML("<b> Instituciones:</b>"),
-                            
+                            br(),
+                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                   tags$img(src="INDDHH-Logo.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="75%",
+                                            width = "65%")),
                             br(),
                             br(),
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                       "INDDHH",
-                                       style = "font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "INDDHH-Logo.png", height="110%",
-                                    width = "110%")),
-                            
+                            tags$a( href="https://umad.cienciassociales.edu.uy/",
+                                    tags$img(src="logo_umad.png",
+                                             style=";vertical-align:top;",
+                                             height="75%",
+                                             width = "65%")),
                             br(),
-                            
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                       "UMAD",
-                                       style = "text-align:right; font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "logo_umad.png", height="110%",
-                                    width = "110%")),
                             br(),
-                            
+                            HTML("<b> Con el apoyo de:</b>"),    
+                            br(),
+                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                                   tags$img(src="ohchr.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="35%",
+                                            width = "25%")),
                         ),
                         
                         mainPanel(
@@ -697,30 +705,30 @@ ui <- fluidPage(
                             br(),
                             
                             HTML("<b> Instituciones:</b>"),
-                            
+                            br(),
+                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                   tags$img(src="INDDHH-Logo.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="75%",
+                                            width = "65%")),
                             br(),
                             br(),
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                       "INDDHH",
-                                       style = "font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "INDDHH-Logo.png", height="110%",
-                                    width = "110%")),
-                            
+                            tags$a( href="https://umad.cienciassociales.edu.uy/",
+                                    tags$img(src="logo_umad.png",
+                                             style=";vertical-align:top;",
+                                             height="75%",
+                                             width = "65%")),
                             br(),
-                            
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                       "UMAD",
-                                       style = "text-align:right; font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "logo_umad.png", height="110%",
-                                    width = "110%")),
                             br(),
-                            
+                            HTML("<b> Con el apoyo de:</b>"),    
+                            br(),
+                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                                   tags$img(src="ohchr.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="35%",
+                                            width = "25%")),
                         ),
                         
                         mainPanel(
@@ -800,30 +808,30 @@ ui <- fluidPage(
                             br(),
                             
                             HTML("<b> Instituciones:</b>"),
-                            
+                            br(),
+                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                   tags$img(src="INDDHH-Logo.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="75%",
+                                            width = "65%")),
                             br(),
                             br(),
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                       "INDDHH",
-                                       style = "font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "INDDHH-Logo.png", height="110%",
-                                    width = "110%")),
-                            
+                            tags$a( href="https://umad.cienciassociales.edu.uy/",
+                                    tags$img(src="logo_umad.png",
+                                             style=";vertical-align:top;",
+                                             height="75%",
+                                             width = "65%")),
                             br(),
-                            
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                       "UMAD",
-                                       style = "text-align:right; font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "logo_umad.png", height="110%",
-                                    width = "110%")),
                             br(),
-                            
+                            HTML("<b> Con el apoyo de:</b>"),    
+                            br(),
+                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                                   tags$img(src="ohchr.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="35%",
+                                            width = "25%")),
                         ),
                         
                         mainPanel(
@@ -896,30 +904,30 @@ ui <- fluidPage(
                             br(),
                             
                             HTML("<b> Instituciones:</b>"),
-                            
+                            br(),
+                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                                   tags$img(src="INDDHH-Logo.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="75%",
+                                            width = "65%")),
                             br(),
                             br(),
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                       "INDDHH",
-                                       style = "font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "INDDHH-Logo.png", height="110%",
-                                    width = "110%")),
-                            
+                            tags$a( href="https://umad.cienciassociales.edu.uy/",
+                                    tags$img(src="logo_umad.png",
+                                             style=";vertical-align:top;",
+                                             height="75%",
+                                             width = "65%")),
                             br(),
-                            
-                            div(style=";vertical-align:top; width: 150px;",
-                                tags$a(href="https://umad.cienciassociales.edu.uy/",
-                                       "UMAD",
-                                       style = "text-align:right; font-size:15px; color:Navy;
-                                              text-decoration:underline;")),
-                            div(style=";vertical-align:top; width: 150px;",
-                                img(src = "logo_umad.png", height="110%",
-                                    width = "110%")),
                             br(),
-                            
+                            HTML("<b> Con el apoyo de:</b>"),    
+                            br(),
+                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                                   tags$img(src="ohchr.png",
+                                            style=";vertical-align:top;",
+                                            # title="Example Image Link", 
+                                            height="35%",
+                                            width = "25%")),
                         ),
                         
                         mainPanel(
