@@ -1949,7 +1949,7 @@ server <- function(input, output) {
     
     output$chbox_salud_r <- renderUI({
         
-        if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual tienen derecho vigente"){
+        if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual tienen cobertura vigente"){
             
             checkboxGroupInput(inputId = "checkbox_prestador",
                                label = "Seleccione prestadores de salud",
@@ -2029,7 +2029,7 @@ server <- function(input, output) {
             
             
             # Indicador especial (por prestador tiene dos cortes)
-        } else if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual tienen derecho vigente" & 
+        } else if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual tienen cobertura vigente" & 
                   input$salud_r_corte %notin% c("Prestador")) {
             
             req(input$salud_r_corte, input$indicador_salud_r, 
@@ -2061,7 +2061,7 @@ server <- function(input, output) {
             print(plot_edu_corte)
             ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
             
-        } else if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual tienen derecho vigente" & 
+        } else if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual tienen cobertura vigente" & 
                   input$salud_r_corte == "Prestador") {
             
             req(input$salud_r_corte, input$indicador_salud_r, 
@@ -2093,8 +2093,8 @@ server <- function(input, output) {
             ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
             
         } else if(input$salud_r_corte == "Departamento" & 
-                  input$indicador_salud_r != "Distribución porcentual de personas según institución prestadora en la cual tienen derecho vigente") {
-            
+                  input$indicador_salud_r != "Distribución porcentual de personas según institución prestadora en la cual tienen cobertura vigente") {
+                                              
             req(input$indicador_salud_r, input$fecha_dpto_salud_r)
             
             dat_plot <- dat_salud_r() %>%
