@@ -190,19 +190,11 @@ ui <- fluidPage(
                                  choices = ind_edu_pp
                              ),
                             
-                            br(),
-                            
                             uiOutput("selector_edu_pp_corte"),
-                            
-                            br(),
                             
                             uiOutput("s_edu_pp_fecha"),
                             
-                            br(),
-                            
                             uiOutput("chbox_edu_pp"),
-                            
-                            br(),
                             
                             HTML("<b> Instituciones:</b>"),
                             br(),
@@ -288,19 +280,11 @@ ui <- fluidPage(
                                 choices = ind_edu_r
                             ),
                             
-                            br(),
-                            
                             uiOutput("selector_edu_r_corte"),
-                            
-                            br(),
                             
                             uiOutput("s_edu_r_fecha"),
                             
-                            br(),
-                            
                             uiOutput("chbox_edu_r"),
-                            
-                            br(),
                             
                             HTML("<b> Instituciones:</b>"),
                             br(),
@@ -393,19 +377,11 @@ ui <- fluidPage(
                                 choices = ind_salud_pp
                             ),
                             
-                            br(),
-                            
                             uiOutput("selector_salud_pp_corte"),
-                            
-                            br(),
                             
                             uiOutput("s_salud_pp_fecha"),
                             
-                            br(),
-                            
                             uiOutput("chbox_salud_pp"),
-                            
-                            br(),
                             
                             HTML("<b> Instituciones:</b>"),
                             br(),
@@ -490,19 +466,11 @@ ui <- fluidPage(
                                 selected = "Esperanza de vida al nacer"
                             ),
                             
-                            br(),
-                            
                             uiOutput("selector_salud_r_corte"),
-                            
-                            br(),
                             
                             uiOutput("s_salud_r_fecha"),
                             
-                            br(),
-                            
                             uiOutput("chbox_salud_r"),
-                            
-                            br(),
                             
                             HTML("<b> Instituciones:</b>"),
                             br(),
@@ -595,19 +563,11 @@ ui <- fluidPage(
                                 choices = ind_ssocial_pp
                             ),
                             
-                            br(),
-                            
                             uiOutput("selector_ssocial_pp_corte"),
-                            
-                            br(),
                             
                             uiOutput("s_ssocial_pp_fecha"),
                             
-                            br(),
-                            
                             uiOutput("chbox_ssocial_pp"),
-                            
-                            br(),
                             
                             HTML("<b> Instituciones:</b>"),
                             br(),
@@ -690,19 +650,11 @@ ui <- fluidPage(
                                 choices = ind_ssocial_r
                             ),
                             
-                            br(),
-                            
                             uiOutput("selector_ssocial_r_corte"),
-                            
-                            br(),
                             
                             uiOutput("s_ssocial_r_fecha"),
                             
-                            br(),
-                            
                             uiOutput("chbox_ssocial_r"),
-                            
-                            br(),
                             
                             HTML("<b> Instituciones:</b>"),
                             br(),
@@ -793,19 +745,11 @@ ui <- fluidPage(
                                 choices = ind_vivienda_pp
                             ),
                             
-                            br(),
-                            
                             uiOutput("selector_vivienda_pp_corte"),
-                            
-                            br(),
                             
                             uiOutput("s_vivienda_pp_fecha"),
                             
-                            br(),
-                            
                             uiOutput("chbox_vivienda_pp"),
-                            
-                            br(),
                             
                             HTML("<b> Instituciones:</b>"),
                             br(),
@@ -889,19 +833,11 @@ ui <- fluidPage(
                                 choices = ind_vivienda_r
                             ),
                             
-                            br(),
-                            
                             uiOutput("selector_vivienda_r_corte"),
-                            
-                            br(),
                             
                             uiOutput("s_vivienda_r_fecha"),
                             
-                            br(),
-                            
                             uiOutput("chbox_vivienda_r"),
-                            
-                            br(),
                             
                             HTML("<b> Instituciones:</b>"),
                             br(),
@@ -1257,10 +1193,10 @@ server <- function(input, output) {
     edu_pp_meta <- reactive({
         
         dat_edu_pp() %>%
-            select(nomindicador, derecho, definicion, calculo) %>% 
-            mutate(`Mirado DESCA - Unidad de Métodos y Acceso a Datos (FCS -UdelaR)` = " ") %>% 
-            distinct() %>% 
-            gather(key = "", value = " ")
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+          distinct() %>% 
+          gather(key = "", value = " ")
         
     })
     
@@ -1569,10 +1505,10 @@ server <- function(input, output) {
     edu_r_meta <- reactive({
         
         dat_edu_r() %>%
-            select(nomindicador, derecho, definicion, calculo) %>% 
-            mutate(`Mirado DESCA - Unidad de Métodos y Acceso a Datos (FCS -UdelaR)` = " ") %>% 
-            distinct() %>% 
-            gather(key = "", value = " ")
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+          distinct() %>% 
+          gather(key = "", value = " ")
         
     })
     
@@ -1882,11 +1818,11 @@ server <- function(input, output) {
     salud_pp_meta <- reactive({
         
         dat_salud_pp() %>%
-            select(nomindicador, derecho, definicion, calculo) %>% 
-            mutate(`Mirado DESCA - Unidad de Métodos y Acceso a Datos (FCS -UdelaR)` = " ") %>% 
-            distinct() %>% 
-            gather(key = "", value = " ")
-        
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+          distinct() %>% 
+          gather(key = "", value = " ")
+          
     })
     
     # Excel
@@ -2308,10 +2244,10 @@ server <- function(input, output) {
     salud_r_meta <- reactive({
         
         dat_salud_r() %>%
-            select(nomindicador, derecho, definicion, calculo) %>% 
-            mutate(`Mirado DESCA - Unidad de Métodos y Acceso a Datos (FCS -UdelaR)` = " ") %>% 
-            distinct() %>% 
-            gather(key = "", value = " ")
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+          distinct() %>% 
+          gather(key = "", value = " ")
         
     })
     
@@ -2620,11 +2556,11 @@ server <- function(input, output) {
     ssocial_pp_meta <- reactive({
         
         dat_ssocial_pp() %>%
-            select(nomindicador, derecho, definicion, calculo) %>% 
-            mutate(`Mirado DESCA - Unidad de Métodos y Acceso a Datos (FCS -UdelaR)` = " ") %>% 
-            distinct() %>% 
-            gather(key = "", value = " ")
-        
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+          distinct() %>% 
+          gather(key = "", value = " ")
+      
     })
     
     # Excel
@@ -2935,10 +2871,10 @@ server <- function(input, output) {
     ssocial_r_meta <- reactive({
         
         dat_ssocial_r() %>%
-            select(nomindicador, derecho, definicion, calculo) %>% 
-            mutate(`Mirado DESCA - Unidad de Métodos y Acceso a Datos (FCS -UdelaR)` = " ") %>% 
-            distinct() %>% 
-            gather(key = "", value = " ")
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+          distinct() %>% 
+          gather(key = "", value = " ")
         
     })
     
@@ -3249,10 +3185,10 @@ server <- function(input, output) {
     vivienda_pp_meta <- reactive({
         
         dat_vivienda_pp() %>%
-            select(nomindicador, derecho, definicion, calculo) %>% 
-            mutate(`Mirado DESCA - Unidad de Métodos y Acceso a Datos (FCS -UdelaR)` = " ") %>% 
-            distinct() %>% 
-            gather(key = "", value = " ")
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+          distinct() %>% 
+          gather(key = "", value = " ")
         
     })
     
@@ -3562,10 +3498,10 @@ server <- function(input, output) {
     vivienda_r_meta <- reactive({
         
         dat_vivienda_r() %>%
-            select(nomindicador, derecho, definicion, calculo) %>% 
-            mutate(`Mirado DESCA - Unidad de Métodos y Acceso a Datos (FCS -UdelaR)` = " ") %>% 
-            distinct() %>% 
-            gather(key = "", value = " ")
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+          distinct() %>% 
+          gather(key = "", value = " ")
         
     })
     
