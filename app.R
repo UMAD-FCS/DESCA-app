@@ -1,6 +1,6 @@
 
 ## ***************************************************************************
-## shiny para Mirador DESCA
+## Shiny app para Mirador DESCA
 ## 11/2021
 ## ***************************************************************************
 
@@ -147,7 +147,7 @@ ui <- fluidPage(
     
     navbarPage(
         title = tags$a(
-          href="https://umad.cienciassociales.edu.uy/", 
+          href="http://patricio.com.uy/desca/", 
           tags$img(src="logodesca.png", 
                    style="margin-top: -2px;", height = 30, width = 100,
                    height=30,
@@ -223,12 +223,12 @@ ui <- fluidPage(
                             br(),
                             HTML("<b> Con el apoyo de:</b>"),    
                             br(),
-                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
                                    tags$img(src="ohchr.png",
                                             style=";vertical-align:top;",
                                             # title="Example Image Link", 
-                                            height="35%",
-                                            width = "25%")),
+                                            height="60%",
+                                            width = "45%")),
                         ),
                         
                         mainPanel(
@@ -321,12 +321,12 @@ ui <- fluidPage(
                             br(),
                             HTML("<b> Con el apoyo de:</b>"),    
                             br(),
-                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
                                    tags$img(src="ohchr.png",
                                             style=";vertical-align:top;",
                                             # title="Example Image Link", 
-                                            height="35%",
-                                            width = "25%")),
+                                            height="60%",
+                                            width = "45%")),
                         ),
                         
                         mainPanel(
@@ -426,12 +426,12 @@ ui <- fluidPage(
                             br(),
                             HTML("<b> Con el apoyo de:</b>"),    
                             br(),
-                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
                                    tags$img(src="ohchr.png",
                                             style=";vertical-align:top;",
                                             # title="Example Image Link", 
-                                            height="35%",
-                                            width = "25%")),
+                                            height="60%",
+                                            width = "45%")),
                         ),
                         
                         mainPanel(
@@ -523,12 +523,12 @@ ui <- fluidPage(
                             br(),
                             HTML("<b> Con el apoyo de:</b>"),    
                             br(),
-                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
                                    tags$img(src="ohchr.png",
                                             style=";vertical-align:top;",
                                             # title="Example Image Link", 
-                                            height="35%",
-                                            width = "25%")),
+                                            height="60%",
+                                            width = "45%")),
                         ),
                         
                         mainPanel(
@@ -628,12 +628,12 @@ ui <- fluidPage(
                             br(),
                             HTML("<b> Con el apoyo de:</b>"),    
                             br(),
-                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
                                    tags$img(src="ohchr.png",
                                             style=";vertical-align:top;",
                                             # title="Example Image Link", 
-                                            height="35%",
-                                            width = "25%")),
+                                            height="60%",
+                                            width = "45%")),
                         ),
                         
                         mainPanel(
@@ -723,12 +723,12 @@ ui <- fluidPage(
                             br(),
                             HTML("<b> Con el apoyo de:</b>"),    
                             br(),
-                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
                                    tags$img(src="ohchr.png",
                                             style=";vertical-align:top;",
                                             # title="Example Image Link", 
-                                            height="35%",
-                                            width = "25%")),
+                                            height="60%",
+                                            width = "45%")),
                         ),
                         
                         mainPanel(
@@ -826,12 +826,12 @@ ui <- fluidPage(
                             br(),
                             HTML("<b> Con el apoyo de:</b>"),    
                             br(),
-                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
                                    tags$img(src="ohchr.png",
                                             style=";vertical-align:top;",
                                             # title="Example Image Link", 
-                                            height="35%",
-                                            width = "25%")),
+                                            height="60%",
+                                            width = "45%")),
                         ),
                         
                         mainPanel(
@@ -922,12 +922,12 @@ ui <- fluidPage(
                             br(),
                             HTML("<b> Con el apoyo de:</b>"),    
                             br(),
-                            tags$a(href="https://www.ohchr.org/sp/Pages/Home.aspx",
+                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
                                    tags$img(src="ohchr.png",
                                             style=";vertical-align:top;",
                                             # title="Example Image Link", 
-                                            height="35%",
-                                            width = "25%")),
+                                            height="60%",
+                                            width = "45%")),
                         ),
                         
                         mainPanel(
