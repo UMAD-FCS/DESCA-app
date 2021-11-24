@@ -1065,7 +1065,7 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = input$indicador_edu_pp,
+                     title = wrapit(input$indicador_edu_pp),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
@@ -1126,9 +1126,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_edu_pp,
+                     title = wrapit(paste(input$indicador_edu_pp,
                                    "según",
-                                   tolower(input$edu_pp_corte)),
+                                   tolower(input$edu_pp_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
@@ -1382,7 +1382,7 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = input$indicador_edu_r,
+                     title = wrapit(input$indicador_edu_r),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
@@ -1407,9 +1407,9 @@ server <- function(input, output) {
                                                viri_opt = "plasma",
                                                l = "n") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_edu_r, 
+                     title = wrapit(paste(input$indicador_edu_r, 
                                    "en",
-                                   input$fecha_dpto_edu_r),
+                                   input$fecha_dpto_edu_r)),
                      caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
@@ -1438,9 +1438,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_edu_r,
+                     title = wrapit(paste(input$indicador_edu_r,
                                    "según",
-                                   tolower(input$edu_r_corte)),
+                                   tolower(input$edu_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
@@ -1695,7 +1695,7 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = input$indicador_salud_pp,
+                     title = wrapit(input$indicador_salud_pp),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
@@ -1720,9 +1720,9 @@ server <- function(input, output) {
                                                viri_opt = "plasma",
                                                l = "n") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_salud_pp, 
+                     title = wrapit(paste(input$indicador_salud_pp, 
                                    "en",
-                                   input$fecha_dpto_salud_pp),
+                                   input$fecha_dpto_salud_pp)),
                      caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
@@ -1751,9 +1751,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_salud_pp,
+                     title = wrapit(paste(input$indicador_salud_pp,
                                    "según",
-                                   tolower(input$salud_pp_corte)),
+                                   tolower(input$salud_pp_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
@@ -2020,7 +2020,7 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = input$indicador_salud_r,
+                     title = wrapit(input$indicador_salud_r),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
@@ -2050,9 +2050,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_salud_r,
+                     title = wrapit(paste(input$indicador_salud_r,
                                    "según",
-                                   tolower(input$salud_r_corte)),
+                                   tolower(input$salud_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_brewer(palette = "Dark2") +
@@ -2082,9 +2082,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_salud_r,
+                     title = wrapit(paste(input$indicador_salud_r,
                                    "según",
-                                   tolower(input$salud_r_corte)),
+                                   tolower(input$salud_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
@@ -2110,9 +2110,9 @@ server <- function(input, output) {
                                                viri_opt = "plasma",
                                                l = "n") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_salud_r, 
+                     title = wrapit(paste(input$indicador_salud_r, 
                                    "en",
-                                   input$fecha_dpto_salud_r),
+                                   input$fecha_dpto_salud_r)),
                      caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
@@ -2142,9 +2142,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_salud_r,
+                     title = wrapit(paste(input$indicador_salud_r,
                                    "según",
-                                   tolower(input$salud_r_corte)),
+                                   tolower(input$salud_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
@@ -2433,7 +2433,7 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = input$indicador_ssocial_pp,
+                     title = wrapit(input$indicador_ssocial_pp),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
@@ -2458,9 +2458,9 @@ server <- function(input, output) {
                                                viri_opt = "plasma",
                                                l = "n") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_ssocial_pp, 
+                     title = wrapit(paste(input$indicador_ssocial_pp, 
                                    "en",
-                                   input$fecha_dpto_ssocial_pp),
+                                   input$fecha_dpto_ssocial_pp)),
                      caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
@@ -2489,9 +2489,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_ssocial_pp,
+                     title = wrapit(paste(input$indicador_ssocial_pp,
                                    "según",
-                                   tolower(input$ssocial_pp_corte)),
+                                   tolower(input$ssocial_pp_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
@@ -2748,7 +2748,7 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = input$indicador_ssocial_r,
+                     title = wrapit(input$indicador_ssocial_r),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
@@ -2773,9 +2773,9 @@ server <- function(input, output) {
                                                viri_opt = "plasma",
                                                l = "n") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_ssocial_r, 
+                     title = wrapit(paste(input$indicador_ssocial_r, 
                                    "en",
-                                   input$fecha_dpto_ssocial_r),
+                                   input$fecha_dpto_ssocial_r)),
                      caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
@@ -2804,9 +2804,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_ssocial_r,
+                     title = wrapit(paste(input$indicador_ssocial_r,
                                    "según",
-                                   tolower(input$ssocial_r_corte)),
+                                   tolower(input$ssocial_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
@@ -3062,7 +3062,7 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = input$indicador_vivienda_pp,
+                     title = wrapit(input$indicador_vivienda_pp),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
@@ -3087,9 +3087,9 @@ server <- function(input, output) {
                                                viri_opt = "plasma",
                                                l = "n") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_vivienda_pp, 
+                     title = wrapit(paste(input$indicador_vivienda_pp, 
                                    "en",
-                                   input$fecha_dpto_vivienda_pp),
+                                   input$fecha_dpto_vivienda_pp)),
                      caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
@@ -3118,9 +3118,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_vivienda_pp,
+                     title = wrapit(paste(input$indicador_vivienda_pp,
                                    "según",
-                                   tolower(input$vivienda_pp_corte)),
+                                   tolower(input$vivienda_pp_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
@@ -3375,7 +3375,7 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = input$indicador_vivienda_r,
+                     title = wrapit(input$indicador_vivienda_r),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits)
             
@@ -3400,9 +3400,9 @@ server <- function(input, output) {
                                                viri_opt = "plasma",
                                                l = "n") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_vivienda_r, 
+                     title = wrapit(paste(input$indicador_vivienda_r, 
                                    "en",
-                                   input$fecha_dpto_vivienda_r),
+                                   input$fecha_dpto_vivienda_r)),
                      caption = wrapit(unique(dat_plot$cita))) +
                 theme_bdd(base_size = 14)
             
@@ -3431,9 +3431,9 @@ server <- function(input, output) {
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_vivienda_r,
+                     title = wrapit(paste(input$indicador_vivienda_r,
                                    "según",
-                                   tolower(input$vivienda_r_corte)),
+                                   tolower(input$vivienda_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
                 scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
