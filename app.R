@@ -1081,8 +1081,8 @@ server <- function(input, output) {
                  
             dat_plot <- dat_edu_pp() %>%
                 filter(corte == "Departamento") %>%
-                filter(ano == input$fecha_dpto_edu_pp) %>% 
-                select(departamento, Valor, fuente)
+                filter(ano == input$fecha_dpto_edu_pp) %>%
+                select(departamento, Valor, fuente, cita)
             
             dep_j <- dep %>%
                 left_join(dat_plot, by = c("nombre" = "departamento"))
@@ -1092,11 +1092,10 @@ server <- function(input, output) {
                                        viri_opt = "plasma",
                                        l = "n") +
                 labs(x = "",  y = "",
-                     title = paste(input$indicador_edu_pp, 
+                     title = wrapit(paste(input$indicador_edu_pp, 
                                    "en",
-                                   input$fecha_dpto_edu_pp),
-                     caption = wrapit(paste("Fuente: Unidad de Métodos y Acceso a Datos (FCS - UdelaR) en base a datos de",
-                                            unique(dat_plot$fuente)))) +
+                                   input$fecha_dpto_edu_pp), w = 80),
+                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -1397,7 +1396,7 @@ server <- function(input, output) {
             dat_plot <- dat_edu_r() %>%
                 filter(corte == "Departamento") %>%
                 filter(ano == input$fecha_dpto_edu_r) %>% 
-                select(departamento, Valor, fuente)
+                select(departamento, Valor, fuente, cita)
             
             dep_j <- dep %>%
                 left_join(dat_plot, by = c("nombre" = "departamento"))
@@ -1409,8 +1408,8 @@ server <- function(input, output) {
                 labs(x = "",  y = "",
                      title = wrapit(paste(input$indicador_edu_r, 
                                    "en",
-                                   input$fecha_dpto_edu_r)),
-                     caption = wrapit(unique(dat_plot$cita))) +
+                                   input$fecha_dpto_edu_r), w = 80),
+                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -1710,8 +1709,8 @@ server <- function(input, output) {
             dat_plot <- dat_salud_pp() %>%
                 filter(corte == "Departamento") %>%
                 filter(ano == input$fecha_dpto_salud_pp) %>% 
-                select(departamento, Valor, fuente)
-            
+              select(departamento, Valor, fuente, cita)
+              
             dep_j <- dep %>%
                 left_join(dat_plot, by = c("nombre" = "departamento"))
             
@@ -1722,8 +1721,8 @@ server <- function(input, output) {
                 labs(x = "",  y = "",
                      title = wrapit(paste(input$indicador_salud_pp, 
                                    "en",
-                                   input$fecha_dpto_salud_pp)),
-                     caption = wrapit(unique(dat_plot$cita))) +
+                                   input$fecha_dpto_salud_pp), w = 80),
+                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -2100,7 +2099,7 @@ server <- function(input, output) {
             dat_plot <- dat_salud_r() %>%
                 filter(corte == "Departamento") %>%
                 filter(ano == input$fecha_dpto_salud_r) %>% 
-                select(departamento, Valor, fuente)
+                select(departamento, Valor, fuente, cita)
             
             dep_j <- dep %>%
                 left_join(dat_plot, by = c("nombre" = "departamento"))
@@ -2112,8 +2111,8 @@ server <- function(input, output) {
                 labs(x = "",  y = "",
                      title = wrapit(paste(input$indicador_salud_r, 
                                    "en",
-                                   input$fecha_dpto_salud_r)),
-                     caption = wrapit(unique(dat_plot$cita))) +
+                                   input$fecha_dpto_salud_r), w = 80),
+                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -2448,7 +2447,7 @@ server <- function(input, output) {
             dat_plot <- dat_ssocial_pp() %>%
                 filter(corte == "Departamento") %>%
                 filter(ano == input$fecha_dpto_ssocial_pp) %>% 
-                select(departamento, Valor, fuente)
+                select(departamento, Valor, fuente, cita)
             
             dep_j <- dep %>%
                 left_join(dat_plot, by = c("nombre" = "departamento"))
@@ -2460,8 +2459,8 @@ server <- function(input, output) {
                 labs(x = "",  y = "",
                      title = wrapit(paste(input$indicador_ssocial_pp, 
                                    "en",
-                                   input$fecha_dpto_ssocial_pp)),
-                     caption = wrapit(unique(dat_plot$cita))) +
+                                   input$fecha_dpto_ssocial_pp), w = 80),
+                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -2763,7 +2762,7 @@ server <- function(input, output) {
             dat_plot <- dat_ssocial_r() %>%
                 filter(corte == "Departamento") %>%
                 filter(ano == input$fecha_dpto_ssocial_r) %>% 
-                select(departamento, Valor, fuente)
+                select(departamento, Valor, fuente, cita)
             
             dep_j <- dep %>%
                 left_join(dat_plot, by = c("nombre" = "departamento"))
@@ -2775,8 +2774,8 @@ server <- function(input, output) {
                 labs(x = "",  y = "",
                      title = wrapit(paste(input$indicador_ssocial_r, 
                                    "en",
-                                   input$fecha_dpto_ssocial_r)),
-                     caption = wrapit(unique(dat_plot$cita))) +
+                                   input$fecha_dpto_ssocial_r),w = 80),
+                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -3077,7 +3076,7 @@ server <- function(input, output) {
             dat_plot <- dat_vivienda_pp() %>%
                 filter(corte == "Departamento") %>%
                 filter(ano == input$fecha_dpto_vivienda_pp) %>% 
-                select(departamento, Valor, fuente)
+                select(departamento, Valor, fuente, cita)
             
             dep_j <- dep %>%
                 left_join(dat_plot, by = c("nombre" = "departamento"))
@@ -3089,8 +3088,8 @@ server <- function(input, output) {
                 labs(x = "",  y = "",
                      title = wrapit(paste(input$indicador_vivienda_pp, 
                                    "en",
-                                   input$fecha_dpto_vivienda_pp)),
-                     caption = wrapit(unique(dat_plot$cita))) +
+                                   input$fecha_dpto_vivienda_pp), w = 80),
+                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
@@ -3390,7 +3389,7 @@ server <- function(input, output) {
             dat_plot <- dat_vivienda_r() %>%
                 filter(corte == "Departamento") %>%
                 filter(ano == input$fecha_dpto_vivienda_r) %>% 
-                select(departamento, Valor, fuente)
+               select(departamento, Valor, fuente, cita)
             
             dep_j <- dep %>%
                 left_join(dat_plot, by = c("nombre" = "departamento"))
@@ -3402,8 +3401,8 @@ server <- function(input, output) {
                 labs(x = "",  y = "",
                      title = wrapit(paste(input$indicador_vivienda_r, 
                                    "en",
-                                   input$fecha_dpto_vivienda_r)),
-                     caption = wrapit(unique(dat_plot$cita))) +
+                                   input$fecha_dpto_vivienda_r), w = 80),
+                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
                 theme_bdd(base_size = 14)
             
             print(plot_edu_dpto)
