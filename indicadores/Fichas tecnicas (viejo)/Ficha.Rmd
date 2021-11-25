@@ -26,9 +26,12 @@ id <- 123 #UNICO PARAMETRO A SETEAR: CODIGO DEL INDICADOR#
 
 ```{r}
 suppressPackageStartupMessages(library(kableExtra))
+suppressPackageStartupMessages(library(tidyverse))
 
-base             <- readxl::read_excel("Base_fichas_indicadores.xlsx")
-base             <- base[order(base$id),]
+base <- readxl::read_excel("Base_fichas_indicadores.xlsx") %>% 
+  mutate(id = row_number())
+
+base <- base[order(base$id),]
 
 cod <- base[base$id == id,]
 cod <- min(cod$id)
@@ -39,7 +42,6 @@ cod <- min(cod$id)
 <br />
 
 <div style="text-align: justify">
-
 
 
 ## **Ficha metodológica**
