@@ -1,0 +1,97 @@
+---
+title: ''
+output:
+  html_document
+params:
+  lista_id: 1
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+
+```{r echo = FALSE}
+suppressPackageStartupMessages(library(kableExtra))
+suppressPackageStartupMessages(library(tidyverse))
+
+htmltools::img(src = knitr::image_uri("logo.png"), 
+               alt = 'logo', 
+               style = 'position:absolute; top:0; right:0; padding:15px;max-width: 45%;')
+
+base <- readxl::read_excel("Base Normativa Completa.xlsx", 3)
+
+base <- base %>% 
+  filter(Derecho != "Todos") %>% 
+  select(- Población) %>% 
+  filter(id == params$lista_id)
+
+## Defino tamaño de letra
+fuente_size <- 14
+```
+
+
+```{r}
+def <- paste("Ley", pull(base, `N° de Ley`))
+instrumento_f <- text_spec(def, color = "#884EA0", font_size = 22,
+                           align = "center", bold = TRUE)
+```
+
+<br />
+<br />
+<br />
+
+`r instrumento_f`
+
+<div style="text-align: justify">
+
+<br />
+
+```{r}
+def <- pull(base, Derecho)
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = fuente_size, align = "justify"),
+  collapse = " ")
+```
+
+> **Derecho:** `r def_formatted`
+
+```{r}
+def <- pull(base, `Tipo de Normativa`)
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = fuente_size, align = "justify"),
+  collapse = " ")
+```
+
+> **Tipo de Normativa:** `r def_formatted`
+
+```{r}
+def <- pull(base, Nota)
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = fuente_size, align = "justify"),
+  collapse = " ")
+```
+
+> **Nota:** `r def_formatted`
+
+```{r}
+indicador <- pull(base, `Año de Aprobación`)
+indicador_formatted <- paste(
+  text_spec(indicador, color = 1, font_size = fuente_size, align = "justify"),
+  collapse = " ")
+```
+
+> **Aprobación:** `r indicador_formatted`
+
+```{r}
+indicador <- pull(base, `Texto Completo`)
+indicador_formatted <- paste(
+  text_spec(indicador, color = "#884EA0", font_size = fuente_size, align = "left"),
+  collapse = " ")
+```
+
+> **Texto completo:** `r indicador_formatted`
+
+</div>
+  
+  

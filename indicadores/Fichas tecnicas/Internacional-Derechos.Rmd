@@ -126,7 +126,7 @@ indicador_formatted <- paste(
   collapse = " ")
 ```
 
-> **Enlace:** `r indicador_formatted`
+> **Texto completo:** `r indicador_formatted`
 
 </div>
   
