@@ -147,7 +147,7 @@ ui <- fluidPage(
     
     navbarPage(
         title = tags$a(
-          href="http://patricio.com.uy/desca/", 
+          href="http://miradordesca.uy/", 
           tags$img(src="logodesca.png", 
                    style="margin-top: -2px;", height = 30, width = 100,
                    height=30,
