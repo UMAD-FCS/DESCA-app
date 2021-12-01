@@ -13,6 +13,8 @@ metadata <- readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
 
 glimpse(metadata)
 
+ind_con_ceros <- c(220105, 220106, 230501, 130201, 430305)
+
 dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                           col_types = c("numeric", "text", "text","text",
                                         "text", "text", "numeric", "numeric",
@@ -23,12 +25,13 @@ dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                                         "text", "text", "text", "text",
                                         "text", "text", "text", "text")) %>%
   mutate(FECHA = as.Date(ISOdate(AÑO, 1, 1))) %>% 
+
   mutate(VALOR = ifelse(VALOR  > 0.00001 & VALOR < 0.1, round(VALOR, digits = 3),
                         ifelse(VALOR >= 0.1 & VALOR  < 1, round(VALOR, digits = 2),
-                               ifelse(VALOR > 1 & VALOR < 100, round(VALOR, digits = 1),
-                                      ifelse(VALOR > 100  & VALOR < 1000, round(VALOR, digits = 0),
-                                             ifelse(VALOR > 1000, round(VALOR, digits = 0),
-                                                    NA))))))
+                               ifelse(VALOR >= 1 & VALOR < 100, round(VALOR, digits = 1),
+                                      ifelse(VALOR >= 100  & VALOR < 1000, round(VALOR, digits = 0),
+                                             ifelse(VALOR >= 1000, round(VALOR, digits = 0),
+                                                    VALOR))))))
 
 glimpse(dat)
 

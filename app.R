@@ -1066,8 +1066,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = wrapit(input$indicador_edu_pp),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits)
+                     caption = wrapit(unique(dat_plot$cita))) 
             
             print(plot_edu)
             ggsave("www/indicador educacion pp.png", width = 30, height = 20, units = "cm")
@@ -1129,7 +1128,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$edu_pp_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
             print(plot_edu_corte)
@@ -1283,6 +1281,9 @@ server <- function(input, output) {
                 selected = 2019
             )
             
+        } else if (input$indicador_edu_r == "Porcentaje de estudiantes de tercer año de educación media con bajo desempeño en prueba Aristas (Niveles Bajo 1, Nivel 1, Nivel 2)"){
+          
+          return(NULL)  
             
         } else  {
             
@@ -1325,6 +1326,10 @@ server <- function(input, output) {
         if(input$edu_r_corte %in% c("Departamento", "Total")) {
             
             return(NULL)
+          
+        } else if (input$indicador_edu_r == "Porcentaje de estudiantes de tercer año de educación media con bajo desempeño en prueba Aristas (Niveles Bajo 1, Nivel 1, Nivel 2)"){
+          
+          return(NULL)  
             
         } else if(input$edu_r_corte != "Total") {
             
@@ -1382,12 +1387,35 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = wrapit(input$indicador_edu_r),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits)
+                     caption = wrapit(unique(dat_plot$cita))) 
             
             print(plot_edu)
             ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
             
+        } else if(input$indicador_edu_r == "Porcentaje de estudiantes de tercer año de educación media con bajo desempeño en prueba Aristas (Niveles Bajo 1, Nivel 1, Nivel 2)") {
+          
+          req(input$edu_r_corte, input$indicador_edu_r)
+          
+          dat_plot <- dat_edu_r() %>%
+            filter(corte == input$edu_r_corte) %>%
+            janitor::remove_empty("cols")
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", fill = names(dat_plot[,ncol(dat_plot)]))) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_edu_r,
+                                      "según",
+                                      tolower(input$edu_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_edu_corte)
+          ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+          
             
         } else if(input$edu_r_corte == "Departamento") {
             
@@ -1441,7 +1469,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$edu_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
             print(plot_edu_corte)
@@ -1695,8 +1722,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = wrapit(input$indicador_salud_pp),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits)
+                     caption = wrapit(unique(dat_plot$cita))) 
             
             print(plot_edu)
             ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
@@ -1754,7 +1780,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$salud_pp_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
             print(plot_edu_corte)
@@ -1890,7 +1915,7 @@ server <- function(input, output) {
     # Selector de fecha
     output$s_salud_r_fecha <- renderUI({
         
-        if(input$salud_r_corte == "Departamento") {
+        if(input$salud_r_corte == "Departamento" & input$indicador_salud_r != "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente") {
             
             req(input$salud_r_corte, input$indicador_salud_r)
             
@@ -1909,6 +1934,9 @@ server <- function(input, output) {
                 selected = 2019
             )
             
+        } else if (input$indicador_salud_r == "Porcentaje de usuarios que ha recibido alguna información respecto a sus derechos y obligaciones (promedio por tipo de institución prestadora del SNIS)"){
+          
+          return(NULL)
             
         } else  {
             
@@ -1958,7 +1986,11 @@ server <- function(input, output) {
                                    pull(),
                                selected = c("IAMC", "Público (ASSE)")
             )
+          
+        } else if (input$indicador_salud_r == "Porcentaje de usuarios que ha recibido alguna información respecto a sus derechos y obligaciones (promedio por tipo de institución prestadora del SNIS)"){
             
+          return(NULL)
+          
         } else if(input$salud_r_corte %in% c("Departamento", "Total")) {
             
             return(NULL)
@@ -2020,14 +2052,37 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = wrapit(input$indicador_salud_r),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits)
+                     caption = wrapit(unique(dat_plot$cita))) 
             
             print(plot_edu)
             ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
             
-            
-            # Indicador especial (por prestador tiene dos cortes)
+            # Indicador especial (tiene solo una fecha entonces va con barras)
+        } else if(input$indicador_salud_r == "Porcentaje de usuarios que ha recibido alguna información respecto a sus derechos y obligaciones (promedio por tipo de institución prestadora del SNIS)") {
+
+          req(input$salud_r_corte, input$indicador_salud_r)
+          
+          dat_plot <- dat_salud_r() %>%
+            filter(corte == input$salud_r_corte) %>%
+            janitor::remove_empty("cols")
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", fill = names(dat_plot[,ncol(dat_plot)]))) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_salud_r,
+                                      "según",
+                                      tolower(input$salud_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_edu_corte)
+          ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+          
+          # Indicador especial (por prestador tiene dos cortes)
         } else if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente" & 
                   input$salud_r_corte %notin% c("Prestador")) {
             
@@ -2053,7 +2108,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$salud_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_brewer(palette = "Dark2") +
                 facet_wrap(as.formula(paste("~", names(dat_plot[,ncol(dat_plot)-1]))))
             
@@ -2085,7 +2139,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$salud_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
             print(plot_edu_corte)
@@ -2118,6 +2171,7 @@ server <- function(input, output) {
             print(plot_edu_dpto)
             ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
             
+            
         } else if(input$salud_r_corte != "Total") {
             
             req(input$salud_r_corte, input$indicador_salud_r, 
@@ -2145,7 +2199,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$salud_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
             print(plot_edu_corte)
@@ -2433,8 +2486,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = wrapit(input$indicador_ssocial_pp),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits)
+                     caption = wrapit(unique(dat_plot$cita))) 
             
             print(plot_edu)
             ggsave("www/indicador seguridad social pp.png", width = 30, height = 20, units = "cm")
@@ -2492,7 +2544,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$ssocial_pp_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
             print(plot_edu_corte)
@@ -2748,8 +2799,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = wrapit(input$indicador_ssocial_r),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits)
+                     caption = wrapit(unique(dat_plot$cita))) 
             
             print(plot_edu)
             ggsave("www/indicador seguridad social r.png", width = 30, height = 20, units = "cm")
@@ -2807,7 +2857,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$ssocial_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
             print(plot_edu_corte)
@@ -3062,8 +3111,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = wrapit(input$indicador_vivienda_pp),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits)
+                     caption = wrapit(unique(dat_plot$cita))) 
             
             print(plot_edu)
             ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
@@ -3121,7 +3169,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$vivienda_pp_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
             print(plot_edu_corte)
@@ -3375,8 +3422,7 @@ server <- function(input, output) {
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
                      title = wrapit(input$indicador_vivienda_r),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits)
+                     caption = wrapit(unique(dat_plot$cita))) 
             
             print(plot_edu)
             ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
@@ -3434,7 +3480,6 @@ server <- function(input, output) {
                                    "según",
                                    tolower(input$vivienda_r_corte))),
                      caption = wrapit(unique(dat_plot$cita))) +
-                scale_y_continuous(labels = addUnits) +
                 scale_colour_manual(name = "", values = paleta_expandida) 
             
             print(plot_edu_corte)
