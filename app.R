@@ -49,6 +49,11 @@ file.copy("www/Titillium Web.ttf", "~/.fonts")
 system('fc-cache -f ~/.fonts')
 
 
+pr <- dat %>% 
+  group_by(nomindicador) %>% 
+  summarise(n=n())
+
+
 ##  1.  PREPARAR DATA  ======================================================
 
 dat <- load("Data/data_motor.rda")
@@ -900,7 +905,9 @@ ui <- fluidPage(
                     )
                 )
             )
-        )
+        ),
+        
+        
     )
 )
 
