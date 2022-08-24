@@ -200,3 +200,50 @@ theme_m <- function(base_size = 13,
       
     )
 }
+
+
+# Function to change from varnames to proper_names
+to_proper_name <- function(list){
+  
+  metadata <- readxl::read_excel("data/keys.xlsx")
+  
+  metadata %>%
+    filter(names_var %in% list) %>%
+    pull(names_proper)
+  
+}
+
+
+# Function to change from proper_names to varnames
+to_varname <- function(list){
+  
+  metadata <- readxl::read_excel("data/keys.xlsx")
+  
+  metadata %>%
+    filter(names_proper %in% list) %>%
+    pull(names_var)
+  
+}
+
+firstup <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
+}
+
+
+simpleCap <- function(x,abr) {
+  s <- strsplit(x, " ")[[1]]
+  loc = which(!s %in% abr)
+  loc_abr = which(s %in% abr)
+  tmp_s = s[!s %in% abr]
+  
+  paste(toupper(substring(tmp_s, 1,1)), tolower(substring(tmp_s, 2)),
+        sep="", collapse=" ")
+  
+  result = character(length(s))
+  result[loc] = strsplit(paste(toupper(substring(tmp_s, 1,1)), tolower(substring(tmp_s, 2)),
+                               sep="", collapse=" ")," ")[[1]]
+  result[loc_abr] = abr
+  result = paste(result,collapse = " ")
+  return(result)
+}

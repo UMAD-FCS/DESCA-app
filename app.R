@@ -1910,7 +1910,9 @@ server <- function(input, output) {
             selected = dat_salud_r() %>% 
                 filter(jerarquia == "1") %>% 
                 distinct(corte) %>% 
-                pull())
+                pull()
+            )
+
     })
     
     
@@ -2059,6 +2061,7 @@ server <- function(input, output) {
             print(plot_edu)
             ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
             
+            
             # Indicador especial (tiene solo una fecha entonces va con barras)
         } else if(input$indicador_salud_r == "Porcentaje de usuarios que ha recibido alguna información respecto a sus derechos y obligaciones (promedio por tipo de institución prestadora del SNIS)") {
 
@@ -2084,12 +2087,15 @@ server <- function(input, output) {
           print(plot_edu_corte)
           ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
           
+          
           # Indicador especial (por prestador tiene dos cortes)
         } else if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente" & 
                   input$salud_r_corte %notin% c("Prestador")) {
             
             req(input$salud_r_corte, input$indicador_salud_r, 
                 input$fecha_salud_r, input$checkbox_prestador)
+          
+          salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
             
             dat_plot <- dat_salud_r() %>%
                 filter(ano >= input$fecha_salud_r[1] &
@@ -2099,7 +2105,7 @@ server <- function(input, output) {
                 filter(prestador %in% input$checkbox_prestador)
             
             plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
+                                     aes_string(x = "fecha", y = "Valor", colour = salud_r_corte_var)) +
                 geom_line(size = 1, alpha = 0.5) +
                 geom_point(size = 3) +
                 theme_bdd(base_size = 12) +
@@ -2129,8 +2135,10 @@ server <- function(input, output) {
                 janitor::remove_empty("cols") %>% 
                 filter(prestador %in% input$checkbox_prestador)
             
+            salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+            
             plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
+                                     aes_string(x = "fecha", y = "Valor", colour = salud_r_corte_var)) +
                 geom_line(size = 1, alpha = 0.5) +
                 geom_point(size = 3) +
                 theme_bdd(base_size = 12) +
@@ -2188,9 +2196,10 @@ server <- function(input, output) {
             dat_plot <- filter(dat_plot,
                                get(names(dat_plot[,ncol(dat_plot)])) %in% input$checkbox_salud_r)
             
+            salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
             
             plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
+                                     aes_string(x = "fecha", y = "Valor", colour = salud_r_corte_var)) +
                 geom_line(size = 1, alpha = 0.5) +
                 geom_point(size = 3) +
                 theme_bdd(base_size = 12) +
@@ -2245,18 +2254,21 @@ server <- function(input, output) {
             
             req(input$salud_r_corte, input$indicador_salud_r, input$fecha_salud_r)
             
+          
             dat_cut <- dat_salud_r() %>%
                 filter(corte == input$salud_r_corte) %>%
                 janitor::remove_empty("cols") %>% 
                 filter(prestador %in% input$checkbox_prestador)
             
+            salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+            
             dat_cut %>%
                 filter(ano >= input$fecha_salud_r[1] &
                            ano <= input$fecha_salud_r[2]) %>%
-                select(Fecha, names(dat_cut[,ncol(dat_cut)]), Valor) %>%
+                select(Fecha, salud_r_corte_var, Valor) %>%
                 arrange(desc(Fecha)) %>%
                 pivot_wider(values_from = "Valor",
-                            names_from = names(dat_cut[,ncol(dat_cut)]))
+                            names_from = salud_r_corte_var)
             
         } else if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente" &
                   input$salud_r_corte %notin% c("Prestador")) {
@@ -2268,17 +2280,21 @@ server <- function(input, output) {
                 janitor::remove_empty("cols") %>% 
                 filter(prestador %in% input$checkbox_prestador)
             
+            salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+            
             dat_cut %>%
                 filter(ano >= input$fecha_salud_r[1] &
                            ano <= input$fecha_salud_r[2]) %>%
-                select(Fecha, names(dat_cut[,ncol(dat_cut)]), names(dat_cut[,ncol(dat_cut)-1]), Valor) %>%
+                select(Fecha, salud_r_corte_var, names(dat_cut[,ncol(dat_cut)-1]), Valor) %>%
                 arrange(desc(Fecha)) %>%
                 pivot_wider(values_from = "Valor",
-                            names_from = names(dat_cut[,ncol(dat_cut)]))
+                            names_from = salud_r_corte_var)
         } else if(input$salud_r_corte != "Total") {
             
             req(input$salud_r_corte, input$indicador_salud_r, input$fecha_salud_r)
             
+          salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+          
             dat_cut <- dat_salud_r() %>%
                 filter(corte == input$salud_r_corte) %>%
                 janitor::remove_empty("cols") 
@@ -2286,10 +2302,10 @@ server <- function(input, output) {
             dat_cut %>%     
                 filter(ano >= input$fecha_salud_r[1] &
                            ano <= input$fecha_salud_r[2]) %>% 
-                select(Fecha, names(dat_cut[,ncol(dat_cut)]), Valor) %>%
+                select(Fecha, salud_r_corte_var, Valor) %>%
                 arrange(desc(Fecha)) %>% 
                 pivot_wider(values_from = "Valor",
-                            names_from = names(dat_cut[,ncol(dat_cut)]))
+                            names_from = salud_r_corte_var)
             
         }
     })
