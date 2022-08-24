@@ -19,7 +19,7 @@ ind_con_ceros <- c(220105, 220106, 230501, 130201, 430305)
 
 dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                           col_types = c("numeric", "text", "text","text",
-                                        "text", "text", "numeric", "numeric",
+                                        "text", "text", "numeric", "text", "numeric",
                                         "text", "text", "numeric", "text",
                                         "text", "text", "text", "text",
                                         "text", "text", "text", "text", "text",
@@ -27,7 +27,10 @@ dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                                         "text", "text", "text", "text",
                                         "text", "text", "text", "text")) %>%
   mutate(FECHA = as.Date(ISOdate(AÑO, 1, 1))) %>% 
-
+  mutate(fecha_cat = case_when(
+    is.na(fecha_cat) ~ as.character(AÑO),
+    TRUE ~ fecha_cat
+  )) %>% 
   mutate(VALOR = ifelse(VALOR  > 0.00001 & VALOR < 0.1, round(VALOR, digits = 3),
                         ifelse(VALOR >= 0.1 & VALOR  < 1, round(VALOR, digits = 2),
                                ifelse(VALOR >= 1 & VALOR < 100, round(VALOR, digits = 1),
@@ -62,8 +65,8 @@ rio::export(dat, 'Data/data_motor.rda')
 # Crear clave de variables y nombres a presentar
 test <- readxl::read_excel("Data/Base_mirador_desca.xlsx")
 
-names_proper <- firstup(tolower(gsub("_", " ", names(readxl::read_excel("Data/Base_mirador_desca_2.xlsx")))))
-names_var <- names(janitor::clean_names(readxl::read_excel("Data/Base_mirador_desca_2.xlsx")))
+names_proper <- firstup(tolower(gsub("_", " ", names(readxl::read_excel("Data/Base_mirador_desca.xlsx")))))
+names_var <- names(janitor::clean_names(readxl::read_excel("Data/Base_mirador_desca.xlsx")))
 df_keys <- tibble(names_proper = names_proper,
                   names_var = names_var)
 writexl::write_xlsx(df_keys, "data/keys.xlsx")

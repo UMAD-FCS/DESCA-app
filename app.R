@@ -1904,7 +1904,7 @@ server <- function(input, output) {
     
     # 4.2.1. Data reactiva   =================================================
     
-    dat_salud_r_init <- reactive({
+    dat_salud_r <- reactive({
         
         req(input$indicador_salud_r)
         
@@ -1918,12 +1918,12 @@ server <- function(input, output) {
         selectInput(
             inputId = "salud_r_corte",
             label = "Seleccione corte:",
-            choices = dat_salud_r_init() %>% 
+            choices = dat_salud_r() %>% 
                 select(corte) %>%
                 arrange(corte) %>% 
                 unique() %>% 
                 pull(),
-            selected = dat_salud_r_init() %>% 
+            selected = dat_salud_r() %>% 
                 filter(jerarquia == "1") %>% 
                 distinct(corte) %>% 
                 pull()
@@ -1938,12 +1938,12 @@ server <- function(input, output) {
       selectInput(
         inputId = "salud_r_corte_2",
         label = "Seleccione primer corte:",
-        choices = dat_salud_r_init() %>% 
+        choices = dat_salud_r() %>% 
           select(corte_2) %>%
           arrange(corte_2) %>% 
           unique() %>% 
           pull(),
-        selected = dat_salud_r_init() %>% 
+        selected = dat_salud_r() %>% 
           filter(jerarquia == "1") %>% 
           distinct(corte_2) %>% 
           pull()
@@ -1959,16 +1959,16 @@ server <- function(input, output) {
     # Selector de fecha
     output$s_salud_r_fecha <- renderUI({
         
-        if(input$salud_r_corte == "Departamento" & input$indicador_salud_r != "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente") {
+        if(input$salud_r_corte == "Departamento" & input$indicador_salud_r %notin% lista_ind_2) {
             
             req(input$salud_r_corte, input$indicador_salud_r)
             
-            req(nrow(dat_salud_r_init()) > 0)
+            req(nrow(dat_salud_r()) > 0)
             
             selectInput(
                 inputId = "fecha_dpto_salud_r",
                 label = "Seleccione año:",
-                choices = dat_salud_r_init() %>% 
+                choices = dat_salud_r() %>% 
                     filter(nomindicador == input$indicador_salud_r) %>%
                     drop_na(Valor) %>%
                     select(ano) %>%
@@ -1978,14 +1978,14 @@ server <- function(input, output) {
                 selected = 2019
             )
             
-        } else if (input$indicador_salud_r == "Porcentaje de usuarios que ha recibido alguna información respecto a sus derechos y obligaciones (promedio por tipo de institución prestadora del SNIS)"){
+        } else if (input$indicador_salud_r %in% lista_vunico){
           
           return(NULL)
             
         } else  {
             
             req(input$salud_r_corte, input$indicador_salud_r)
-            req(nrow(dat_salud_r_init()) > 0)
+            req(nrow(dat_salud_r()) > 0)
             
             tagList(
                 # tags$style(type = 'text/css', 
@@ -1996,27 +1996,16 @@ server <- function(input, output) {
                             label = "Rango de tiempo", 
                             sep = "",
                             dragRange = T,
-                            min = min(dat_salud_r_init()$ano), 
-                            max = max(dat_salud_r_init()$ano), 
-                            value = c(min(dat_salud_r_init()$ano), 
-                                      max(dat_salud_r_init()$ano))
+                            min = min(dat_salud_r()$ano), 
+                            max = max(dat_salud_r()$ano), 
+                            value = c(min(dat_salud_r()$ano), 
+                                      max(dat_salud_r()$ano))
                 )
             )
-            # )
-            
+
         }
     })
     
-    # Selector de corte según categoría y data temporal
-    dat_salud_r_temp <- reactive({
-        
-        req(input$salud_r_corte)
-        
-      dat_salud_r_init() %>%
-            filter(corte == input$salud_r_corte) %>%
-            janitor::remove_empty("cols")
-        
-    })
     
     output$chbox_salud_r <- renderUI({
         
@@ -2027,42 +2016,43 @@ server <- function(input, output) {
         checkboxGroupInput(inputId = "checkbox_salud_r",
                            label = "Seleccione categorías",
                            inline = TRUE,
-                           choices =  dat_salud_r_temp() %>%
+                           choices =  dat_salud_r() %>%
+                             filter(corte == input$salud_r_corte) %>% 
                              distinct(!!salud_r_corte_var) %>%
                              pull(),
-                           selected = dat_salud_r_temp() %>%
+                           selected = dat_salud_r() %>%
+                             filter(corte == input$salud_r_corte) %>% 
                              distinct(!!salud_r_corte_var) %>%
-                             pull() 
-        )
+                             pull()
+                           )
         
       } else {
             
           return(NULL)
+      }
           
-        } 
-        
     })
     
-    # Selector de corte según categoría y data temporal
-    dat_salud_r <- reactive({
-      
-      req(input$salud_r_corte)
-      
-      if(input$indicador_salud_r %in% lista_ind_2){
-        
-        dat_salarios <- dat_salud_r_init() %>%
-          filter(corte_2 == input$salud_r_corte_2) %>% 
-          filter(corte == input$salud_r_corte) %>%
-          janitor::remove_empty("cols")
-        
-      } else {
-        
-        dat_salud_r_init() %>%
-          filter(corte == input$salud_r_corte) %>%
-          janitor::remove_empty("cols")
-        
-      }
-    })
+    # # Selector de corte según categoría y data temporal
+    # dat_salud_r <- reactive({
+    #   
+    #   req(input$salud_r_corte)
+    #   
+    #   if(input$indicador_salud_r %in% lista_ind_2){
+    #     
+    #     dat_salarios <- dat_salud_r() %>%
+    #       filter(corte_2 == input$salud_r_corte_2) %>% 
+    #       filter(corte == input$salud_r_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   } else {
+    #     
+    #     dat_salud_r() %>%
+    #       filter(corte == input$salud_r_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   }
+    # })
     
     # 4.2.2. Metadata   ======================================================
     
@@ -2085,8 +2075,101 @@ server <- function(input, output) {
     # 4.2.3. Gráficos   ======================================================
     
     output$plot_salud_r <- renderPlot({
+      
+      req(input$indicador_salud_r)
+      
+      # Indicador especial (tiene solo una fecha entonces va con barras)
+      
+      if(input$indicador_salud_r %in% lista_vunico) {
+      
+      req(input$salud_r_corte, input$indicador_salud_r)
+      
+        dat_plot <- dat_salud_r() %>%
+          filter(corte == input$salud_r_corte) %>%
+          janitor::remove_empty("cols")
         
-        if(input$salud_r_corte == "Total") {
+        salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = salud_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_salud_r,
+                                    "según",
+                                    tolower(input$salud_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      } else if(input$indicador_salud_r %in% lista_ind_2) {
+        
+        req(input$salud_r_corte, input$salud_r_corte_2,
+            input$fecha_salud_r, input$checkbox_salud_r)
+        
+        salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+        
+        dat_plot <- dat_salud_r() %>%
+          filter(ano >= input$fecha_salud_r[1] &
+                   ano <= input$fecha_salud_r[2]) %>%
+          filter(corte == input$salud_r_corte) %>%
+          filter(prestador %in% input$checkbox_salud_r)
+        
+        if(input$salud_r_corte_2 == "Total"){
+          
+          dat_plot <- dat_plot %>% 
+            filter(corte_2 == "Total")
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = salud_r_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_salud_r,
+                                      "según",
+                                      tolower(input$salud_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_manual(name = "", values = paleta_expandida) 
+          
+        } else if(input$salud_r_corte_2 != "Total") {
+          
+          salud_r_corte_var_2 <- rlang::sym(to_varname(input$salud_r_corte_2))
+          
+          dat_plot <- dat_plot %>%
+            filter(corte_2 == input$salud_r_corte_2)  
+            
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = salud_r_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_salud_r,
+                                      "según",
+                                      tolower(input$salud_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_brewer(palette = "Dark2") +
+            facet_wrap(as.formula(paste("~", salud_r_corte_var_2)))
+          
+        }
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+      
+      } else if(input$salud_r_corte == "Total") {
             
             req(input$indicador_salud_r, input$fecha_salud_r)
             
@@ -2110,108 +2193,8 @@ server <- function(input, output) {
             ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
             
             
-            # Indicador especial (tiene solo una fecha entonces va con barras)
-        } else if(input$indicador_salud_r %in% lista_vunico) {
-
-          req(input$salud_r_corte, input$indicador_salud_r)
-          
-          dat_plot <- dat_salud_r() %>%
-            filter(corte == input$salud_r_corte) %>%
-            janitor::remove_empty("cols")
-          
-          salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
-          
-          plot_edu_corte <- ggplot(dat_plot,
-                                   aes_string(x = "fecha", y = "Valor", fill = salud_r_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_salud_r,
-                                      "según",
-                                      tolower(input$salud_r_corte))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_fill_brewer(name = "", palette = "Paired") 
-          
-          print(plot_edu_corte)
-          ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
-          
-          
-          # Indicador especial (por prestador tiene dos cortes)
-        # } else if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente" & 
-        #           input$salud_r_corte %notin% c("Prestador")) {
-            
-        } else if(input$indicador_salud_r %in% lista_ind_2 & input$salud_r_corte_2 != "Total") {
-          
-          req(input$salud_r_corte, input$indicador_salud_r, 
-                input$fecha_salud_r, input$checkbox_salud_r)
-          
-          salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
-            
-            dat_plot <- dat_salud_r() %>%
-                filter(ano >= input$fecha_salud_r[1] &
-                           ano <= input$fecha_salud_r[2]) %>%
-                filter(corte == input$salud_r_corte) %>%
-                janitor::remove_empty("cols") %>% 
-                filter(prestador %in% input$checkbox_salud_r)
-            
-            salud_r_corte_var_2 <- rlang::sym(to_varname(input$salud_r_corte_2))
-            
-            plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = salud_r_corte_var)) +
-                geom_line(size = 1, alpha = 0.5) +
-                geom_point(size = 3) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_salud_r,
-                                   "según",
-                                   tolower(input$salud_r_corte))),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_colour_brewer(palette = "Dark2") +
-                facet_wrap(as.formula(paste("~", salud_r_corte_var_2)))
-            
-            print(plot_edu_corte)
-            ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
-            
-        # } else if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente" & 
-        #           input$salud_r_corte == "Prestador") {
-            
-        } else if(input$indicador_salud_r %in% lista_ind_2 & input$salud_r_corte_2 == "Total") {
-
-            req(input$salud_r_corte, input$indicador_salud_r, 
-                input$fecha_salud_r, input$checkbox_salud_r)
-            
-            dat_plot <- dat_salud_r() %>%
-                filter(ano >= input$fecha_salud_r[1] &
-                           ano <= input$fecha_salud_r[2]) %>%
-                filter(corte == input$salud_r_corte) %>%
-                janitor::remove_empty("cols") %>% 
-                filter(prestador %in% input$checkbox_salud_r)
-            
-            salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
-            
-            plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = salud_r_corte_var)) +
-                geom_line(size = 1, alpha = 0.5) +
-                geom_point(size = 3) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_salud_r,
-                                   "según",
-                                   tolower(input$salud_r_corte))),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_colour_manual(name = "", values = paleta_expandida) 
-            
-            print(plot_edu_corte)
-            ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
-            
         } else if(input$salud_r_corte == "Departamento" & 
-                  input$indicador_salud_r %notin% input$indicador_salud_r %in% lista_ind_2 ) {
+                  input$indicador_salud_r %notin% lista_ind_2 ) {
                                               
             req(input$indicador_salud_r, input$fecha_dpto_salud_r)
             
@@ -2249,10 +2232,10 @@ server <- function(input, output) {
                 filter(corte == input$salud_r_corte) %>%
                 janitor::remove_empty("cols")
             
-            dat_plot <- filter(dat_plot,
-                               get(names(dat_plot[,ncol(dat_plot)])) %in% input$checkbox_salud_r)
-            
             salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+            
+            dat_plot <- filter(dat_plot,
+                               !!salud_r_corte_var %in% input$checkbox_salud_r)
             
             plot_edu_corte <- ggplot(dat_plot,
                                      aes_string(x = "fecha", y = "Valor", colour = salud_r_corte_var)) +
@@ -2294,7 +2277,43 @@ server <- function(input, output) {
     # Data
     salud_r_tab <- reactive({
         
-        if(input$salud_r_corte == "Total") {
+      if(input$indicador_salud_r %in% lista_ind_2) {
+      
+      req(input$salud_r_corte, input$indicador_salud_r, input$fecha_salud_r)
+      
+      dat_cut <- dat_salud_r() %>%
+        filter(corte == input$salud_r_corte) %>%
+        filter(prestador %in% input$checkbox_salud_r)
+      
+      salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+      
+      if(input$salud_r_corte_2 == "Total"){
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_salud_r[1] &
+                   ano <= input$fecha_salud_r[2]) %>%
+          filter(corte_2 == "Total") %>% 
+          select(Fecha, salud_r_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = salud_r_corte_var)
+        
+      } else if(input$salud_r_corte_2 != "Total") {
+        
+        salud_r_corte_var_2 <- rlang::sym(to_varname(input$salud_r_corte_2))
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_salud_r[1] &
+                   ano <= input$fecha_salud_r[2]) %>%
+          filter(corte_2 == input$salud_r_corte_2) %>% 
+          select(Fecha, salud_r_corte_var, salud_r_corte_var_2, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = salud_r_corte_var) 
+        
+      }
+          
+      } else if(input$salud_r_corte == "Total") {
             
             req(input$salud_r_corte, input$indicador_salud_r, input$fecha_salud_r)
             
@@ -2304,46 +2323,6 @@ server <- function(input, output) {
                            ano <= input$fecha_salud_r[2]) %>%
                 select(Fecha, Valor) %>%
                 arrange(desc(Fecha))
-            
-        } else if(input$indicador_salud_r %in% lista_ind_2 & input$salud_r_corte_2 == "Total") {
-          
-            req(input$salud_r_corte, input$indicador_salud_r, input$fecha_salud_r)
-            
-          
-            dat_cut <- dat_salud_r() %>%
-                filter(corte == input$salud_r_corte) %>%
-                janitor::remove_empty("cols") %>% 
-                filter(prestador %in% input$checkbox_salud_r)
-            
-            salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
-            
-            dat_cut %>%
-                filter(ano >= input$fecha_salud_r[1] &
-                           ano <= input$fecha_salud_r[2]) %>%
-                select(Fecha, salud_r_corte_var, Valor) %>%
-                arrange(desc(Fecha)) %>%
-                pivot_wider(values_from = "Valor",
-                            names_from = salud_r_corte_var)
-            
-        } else if(input$indicador_salud_r %in% lista_ind_2 & input$salud_r_corte_2 != "Total") {
-          
-            req(input$salud_r_corte, input$indicador_salud_r, input$fecha_salud_r)
-            
-            dat_cut <- dat_salud_r() %>%
-                filter(corte == input$salud_r_corte) %>%
-                janitor::remove_empty("cols") %>% 
-                filter(prestador %in% input$checkbox_salud_r)
-            
-            salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
-            salud_r_corte_var_2 <- rlang::sym(to_varname(input$salud_r_corte_2))
-            
-            dat_cut %>%
-                filter(ano >= input$fecha_salud_r[1] &
-                           ano <= input$fecha_salud_r[2]) %>%
-                select(Fecha, salud_r_corte_var, salud_r_corte_var_2, Valor) %>%
-                arrange(desc(Fecha)) %>%
-                pivot_wider(values_from = "Valor",
-                            names_from = salud_r_corte_var)
             
         } else if(input$salud_r_corte != "Total") {
             
