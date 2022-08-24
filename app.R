@@ -133,6 +133,14 @@ lista_ind_2 <- dat %>%
   distinct(nomindicador) %>% 
   pull()
 
+# Lista indicadore con valores únicos
+lista_vunico <- dat %>% 
+  group_by(nomindicador) %>% 
+  distinct(fecha) %>% 
+  summarise(n = n()) %>% 
+  filter(n == 1) %>% 
+  pull(nomindicador)
+
 # Paleta de colores expandida
 library(RColorBrewer)
 paleta_expandida <- c(brewer.pal(8, "Dark2"), "#B76A16", "#75A61A", "#D9318E",
@@ -2012,40 +2020,26 @@ server <- function(input, output) {
     
     output$chbox_salud_r <- renderUI({
         
-        if(input$indicador_salud_r == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente"){
-            
-            checkboxGroupInput(inputId = "checkbox_prestador",
-                               label = "Seleccione prestadores de salud",
-                               inline = TRUE,
-                               choices = dat_salud_r_init() %>%
-                                   distinct(prestador) %>%
-                                   pull(),
-                               selected = c("IAMC", "Público (ASSE)")
-            )
-          
-        } else if (input$indicador_salud_r == "Porcentaje de usuarios que ha recibido alguna información respecto a sus derechos y obligaciones (promedio por tipo de institución prestadora del SNIS)"){
+      if(input$salud_r_corte != "Total") {
+        
+        salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+        
+        checkboxGroupInput(inputId = "checkbox_salud_r",
+                           label = "Seleccione categorías",
+                           inline = TRUE,
+                           choices =  dat_salud_r_temp() %>%
+                             distinct(!!salud_r_corte_var) %>%
+                             pull(),
+                           selected = dat_salud_r_temp() %>%
+                             distinct(!!salud_r_corte_var) %>%
+                             pull() 
+        )
+        
+      } else {
             
           return(NULL)
           
-        } else if(input$salud_r_corte %in% c("Departamento", "Total")) {
-            
-            return(NULL)
-            
-        } else if(input$salud_r_corte != "Total") {
-            
-          salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
-          
-            checkboxGroupInput(inputId = "checkbox_salud_r",
-                               label = "Seleccione categorías",
-                               inline = TRUE,
-                               choices =  dat_salud_r_temp() %>%
-                                   distinct(!!salud_r_corte_var) %>%
-                                   pull(),
-                               selected = dat_salud_r_temp() %>%
-                                   distinct(!!salud_r_corte_var) %>%
-                                   pull() 
-            )
-        }
+        } 
         
     })
     
@@ -2117,7 +2111,7 @@ server <- function(input, output) {
             
             
             # Indicador especial (tiene solo una fecha entonces va con barras)
-        } else if(input$indicador_salud_r == "Porcentaje de usuarios que ha recibido alguna información respecto a sus derechos y obligaciones (promedio por tipo de institución prestadora del SNIS)") {
+        } else if(input$indicador_salud_r %in% lista_vunico) {
 
           req(input$salud_r_corte, input$indicador_salud_r)
           
@@ -2151,7 +2145,7 @@ server <- function(input, output) {
         } else if(input$indicador_salud_r %in% lista_ind_2 & input$salud_r_corte_2 != "Total") {
           
           req(input$salud_r_corte, input$indicador_salud_r, 
-                input$fecha_salud_r, input$checkbox_prestador)
+                input$fecha_salud_r, input$checkbox_salud_r)
           
           salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
             
@@ -2160,7 +2154,7 @@ server <- function(input, output) {
                            ano <= input$fecha_salud_r[2]) %>%
                 filter(corte == input$salud_r_corte) %>%
                 janitor::remove_empty("cols") %>% 
-                filter(prestador %in% input$checkbox_prestador)
+                filter(prestador %in% input$checkbox_salud_r)
             
             salud_r_corte_var_2 <- rlang::sym(to_varname(input$salud_r_corte_2))
             
@@ -2188,14 +2182,14 @@ server <- function(input, output) {
         } else if(input$indicador_salud_r %in% lista_ind_2 & input$salud_r_corte_2 == "Total") {
 
             req(input$salud_r_corte, input$indicador_salud_r, 
-                input$fecha_salud_r, input$checkbox_prestador)
+                input$fecha_salud_r, input$checkbox_salud_r)
             
             dat_plot <- dat_salud_r() %>%
                 filter(ano >= input$fecha_salud_r[1] &
                            ano <= input$fecha_salud_r[2]) %>%
                 filter(corte == input$salud_r_corte) %>%
                 janitor::remove_empty("cols") %>% 
-                filter(prestador %in% input$checkbox_prestador)
+                filter(prestador %in% input$checkbox_salud_r)
             
             salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
             
@@ -2217,7 +2211,7 @@ server <- function(input, output) {
             ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
             
         } else if(input$salud_r_corte == "Departamento" & 
-                  input$indicador_salud_r != "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente") {
+                  input$indicador_salud_r %notin% input$indicador_salud_r %in% lista_ind_2 ) {
                                               
             req(input$indicador_salud_r, input$fecha_dpto_salud_r)
             
@@ -2319,7 +2313,7 @@ server <- function(input, output) {
             dat_cut <- dat_salud_r() %>%
                 filter(corte == input$salud_r_corte) %>%
                 janitor::remove_empty("cols") %>% 
-                filter(prestador %in% input$checkbox_prestador)
+                filter(prestador %in% input$checkbox_salud_r)
             
             salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
             
@@ -2338,7 +2332,7 @@ server <- function(input, output) {
             dat_cut <- dat_salud_r() %>%
                 filter(corte == input$salud_r_corte) %>%
                 janitor::remove_empty("cols") %>% 
-                filter(prestador %in% input$checkbox_prestador)
+                filter(prestador %in% input$checkbox_salud_r)
             
             salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
             salud_r_corte_var_2 <- rlang::sym(to_varname(input$salud_r_corte_2))
