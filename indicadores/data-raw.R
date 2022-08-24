@@ -20,9 +20,9 @@ ind_con_ceros <- c(220105, 220106, 230501, 130201, 430305)
 dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                           col_types = c("numeric", "text", "text","text",
                                         "text", "text", "numeric", "numeric",
-                                        "text", "text", "numeric", "text", 
+                                        "text", "text", "numeric", "text",
                                         "text", "text", "text", "text",
-                                        "text", "text", "text", "text",
+                                        "text", "text", "text", "text", "text",
                                         "text", "text", "text", "text",
                                         "text", "text", "text", "text",
                                         "text", "text", "text", "text")) %>%
@@ -37,17 +37,17 @@ dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
 
 glimpse(dat)
 
-dat$SEXO <- as.factor(dat$SEXO)
-dat$SEXO <- factor(dat$SEXO, levels = levels(dat$SEXO)[c(1, 3, 2)])
+dat$Sexo <- as.factor(dat$Sexo)
+dat$Sexo <- factor(dat$Sexo, levels = levels(dat$Sexo)[c(1, 3, 2)])
 
-dat$EDAD <- as.factor(dat$EDAD)
-dat$EDAD <- factor(dat$EDAD, levels = levels(dat$EDAD)[c(1,	3,	18,	27,	29,	30,	31,	34,	35,	36,	4,	5,	6,	7,	10,	11,	12,	13,	14,	16,	19,	20,	22,	23,	24,	2, 32,	8,	9,	15,	17,	21,	25,	26,	28,	33,	37)])
+dat$Edad <- as.factor(dat$Edad)
+dat$Edad <- factor(dat$Edad, levels = levels(dat$Edad)[c(1,	3,	18,	27,	29,	30,	31,	34,	35,	36,	4,	5,	6,	7,	10,	11,	12,	13,	14,	16,	19,	20,	22,	23,	24,	2, 32,	8,	9,	15,	17,	21,	25,	26,	28,	33,	37)])
 
-dat$REGIÓN <- as.factor(dat$REGIÓN)
-dat$REGIÓN <- factor(dat$REGIÓN, levels = levels(dat$REGIÓN)[c(2, 1, 3)])
+dat$Región <- as.factor(dat$Región)
+dat$Región <- factor(dat$Región, levels = levels(dat$Región)[c(2, 1, 3)])
 
-dat$DEPARTAMENTO <- as.factor(dat$DEPARTAMENTO)
-dat$DEPARTAMENTO <- factor(dat$DEPARTAMENTO, levels = levels(dat$DEPARTAMENTO)[c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 19)])
+dat$Departamento <- as.factor(dat$Departamento)
+dat$Departamento <- factor(dat$Departamento, levels = levels(dat$Departamento)[c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 19)])
 
 dat <- dat %>% 
   left_join(metadata, by = "CODINDICADOR") %>% 
