@@ -204,6 +204,8 @@ ui <- fluidPage(
                                  choices = ind_edu_pp
                              ),
                             
+                            uiOutput("selector_edu_pp_corte_2"),
+                            
                             uiOutput("selector_edu_pp_corte"),
                             
                             uiOutput("s_edu_pp_fecha"),
@@ -293,6 +295,8 @@ ui <- fluidPage(
                                 label = "Seleccione indicador:",
                                 choices = ind_edu_r
                             ),
+                            
+                            uiOutput("selector_edu_r_corte_2"),
                             
                             uiOutput("selector_edu_r_corte"),
                             
@@ -390,6 +394,8 @@ ui <- fluidPage(
                                 label = "Seleccione indicador:",
                                 choices = ind_salud_pp
                             ),
+                            
+                            uiOutput("selector_salud_pp_corte_2"),
                             
                             uiOutput("selector_salud_pp_corte"),
                             
@@ -579,6 +585,8 @@ ui <- fluidPage(
                                 choices = ind_ssocial_pp
                             ),
                             
+                            uiOutput("selector_ssocial_pp_corte_2"),
+                            
                             uiOutput("selector_ssocial_pp_corte"),
                             
                             uiOutput("s_ssocial_pp_fecha"),
@@ -665,6 +673,8 @@ ui <- fluidPage(
                                 label = "Seleccione indicador:",
                                 choices = ind_ssocial_r
                             ),
+                            
+                            uiOutput("selector_ssocial_r_corte_2"),
                             
                             uiOutput("selector_ssocial_r_corte"),
                             
@@ -761,6 +771,8 @@ ui <- fluidPage(
                                 choices = ind_vivienda_pp
                             ),
                             
+                            uiOutput("selector_vivienda_pp_corte_2"),
+                            
                             uiOutput("selector_vivienda_pp_corte"),
                             
                             uiOutput("s_vivienda_pp_fecha"),
@@ -849,6 +861,8 @@ ui <- fluidPage(
                                 choices = ind_vivienda_r
                             ),
                             
+                            uiOutput("selector_vivienda_r_corte_2"),
+                            
                             uiOutput("selector_vivienda_r_corte"),
                             
                             uiOutput("s_vivienda_r_fecha"),
@@ -927,978 +941,1475 @@ ui <- fluidPage(
 
 server <- function(input, output) {
     
-
-### 3.1. Educación Políticas   ==============================================
+  
+  ### 3.1. Educación Políticas   ==============================================
+  
+  # 3.1.1. Data reactiva   =================================================
+  
+  dat_edu_pp <- reactive({
     
-    # 3.1.1. Data reactiva   ================================================
+    req(input$indicador_edu_pp)
     
-    dat_edu_pp <- reactive({
-        
-        req(input$indicador_edu_pp)
-        
-        dat %>%
-            filter(nomindicador == input$indicador_edu_pp) 
-        
-    })
+    dat %>%
+      filter(nomindicador == input$indicador_edu_pp) 
     
-    # Selector de corte
-    output$selector_edu_pp_corte <- renderUI({
-        
-        req(nrow(dat_edu_pp()) > 0)
-        
-        selectInput(
-            inputId = "edu_pp_corte",
-            label = "Seleccione corte:",
-            choices = dat_edu_pp() %>% 
-                select(corte) %>%
-                arrange(corte) %>% 
-                unique() %>% 
-                pull(),
-            selected = dat_edu_pp() %>% 
-                filter(jerarquia == "1") %>% 
-                distinct(corte) %>% 
-                pull())
-    })
+  })
+  
+  output$selector_edu_pp_corte <- renderUI({
     
-    # Selector de fecha
-    output$s_edu_pp_fecha <- renderUI({
+    selectInput(
+      inputId = "edu_pp_corte",
+      label = "Seleccione corte:",
+      choices = dat_edu_pp() %>% 
+        select(corte) %>%
+        arrange(corte) %>% 
+        unique() %>% 
+        pull(),
+      selected = dat_edu_pp() %>% 
+        filter(jerarquia == "1") %>% 
+        distinct(corte) %>% 
+        pull()
+    )
+    
+  })
+  
+  output$selector_edu_pp_corte_2 <- renderUI({
+    
+    if(input$indicador_edu_pp %in% lista_ind_2){
+      
+      selectInput(
+        inputId = "edu_pp_corte_2",
+        label = "Seleccione primer corte:",
+        choices = dat_edu_pp() %>% 
+          select(corte_2) %>%
+          arrange(corte_2) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_edu_pp() %>% 
+          filter(jerarquia == "1") %>% 
+          distinct(corte_2) %>% 
+          pull()
+      )
+      
+    } else {
+      
+      NULL
+    }
+    
+  })
+  
+  # Selector de fecha
+  output$s_edu_pp_fecha <- renderUI({
+    
+    if(input$edu_pp_corte == "Departamento" & input$indicador_edu_pp %notin% lista_ind_2) {
+      
+      req(input$edu_pp_corte, input$indicador_edu_pp)
+      
+      req(nrow(dat_edu_pp()) > 0)
+      
+      selectInput(
+        inputId = "fecha_dpto_edu_pp",
+        label = "Seleccione año:",
+        choices = dat_edu_pp() %>% 
+          filter(nomindicador == input$indicador_edu_pp) %>%
+          drop_na(Valor) %>%
+          select(ano) %>%
+          arrange(desc(ano)) %>% 
+          unique() %>% 
+          pull(),
+        selected = 2019
+      )
+      
+    } else if (input$indicador_edu_pp %in% lista_vunico){
+      
+      return(NULL)
+      
+    } else  {
+      
+      req(input$edu_pp_corte, input$indicador_edu_pp)
+      req(nrow(dat_edu_pp()) > 0)
+      
+      tagList(
+        # tags$style(type = 'text/css', 
+        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+        # div(id = 'big_slider',
         
-        if(input$edu_pp_corte == "Departamento") {
-            
-            req(input$edu_pp_corte, input$indicador_edu_pp)
-            
-            req(nrow(dat_edu_pp()) > 0)
-            
-            selectInput(
-                inputId = "fecha_dpto_edu_pp",
-                label = "Seleccione año:",
-                choices = dat_edu_pp() %>% 
-                    filter(nomindicador == input$indicador_edu_pp) %>%
-                    drop_na(Valor) %>%
-                    select(ano) %>%
-                    arrange(desc(ano)) %>% 
-                    unique() %>% 
-                    pull(),
-                selected = 2019
-            )
-
-        
-        } else  {
-
-            req(input$edu_pp_corte, input$indicador_edu_pp)
-            req(nrow(dat_edu_pp()) > 0)
-            
-            tagList(
-                # tags$style(type = 'text/css', 
-                #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-                # div(id = 'big_slider',
-                
-                sliderInput("fecha_edu_pp", 
-                            label = "Rango de tiempo", 
-                            sep = "",
-                            dragRange = T,
-                            min = min(dat_edu_pp()$ano), 
-                            max = max(dat_edu_pp()$ano), 
-                            value = c(min(dat_edu_pp()$ano), 
-                                      max(dat_edu_pp()$ano))
-                )
-            )
-            # )
-            
-        }
-    })
-
-    # Selector de corte según categoría y data temporal
-    dat_edu_pp_temp <- reactive({
-
-    req(input$edu_pp_corte)
-        
-    dat_edu_pp() %>%
+        sliderInput("fecha_edu_pp", 
+                    label = "Rango de tiempo", 
+                    sep = "",
+                    dragRange = T,
+                    min = min(dat_edu_pp()$ano), 
+                    max = max(dat_edu_pp()$ano), 
+                    value = c(min(dat_edu_pp()$ano), 
+                              max(dat_edu_pp()$ano))
+        )
+      )
+      
+    }
+  })
+  
+  
+  output$chbox_edu_pp <- renderUI({
+    
+    if(input$edu_pp_corte != "Total" & input$indicador_edu_pp %notin% lista_vunico) {
+      
+      edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+      
+      checkboxGroupInput(inputId = "checkbox_edu_pp",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_edu_pp() %>%
+                           filter(corte == input$edu_pp_corte) %>% 
+                           distinct(!!edu_pp_corte_var) %>%
+                           pull(),
+                         selected = dat_edu_pp() %>%
+                           filter(corte == input$edu_pp_corte) %>% 
+                           distinct(!!edu_pp_corte_var) %>%
+                           pull()
+      )
+      
+    } else {
+      
+      return(NULL)
+    }
+    
+  })
+  
+  # # Selector de corte según categoría y data temporal
+  # dat_edu_pp <- reactive({
+  #   
+  #   req(input$edu_pp_corte)
+  #   
+  #   if(input$indicador_edu_pp %in% lista_ind_2){
+  #     
+  #     dat_salarios <- dat_edu_pp() %>%
+  #       filter(corte_2 == input$edu_pp_corte_2) %>% 
+  #       filter(corte == input$edu_pp_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   } else {
+  #     
+  #     dat_edu_pp() %>%
+  #       filter(corte == input$edu_pp_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   }
+  # })
+  
+  # 3.1.2. Metadata   ======================================================
+  
+  # Title
+  output$title_edu_pp <- renderUI({ 
+    helpText(HTML(unique(dat_edu_pp()$nomindicador)))
+  })
+  
+  # Subtitle
+  output$subtitle_edu_pp <- renderUI({ 
+    helpText(HTML(unique(dat_edu_pp()$definicion)))
+  })
+  
+  # Calculo
+  output$calculo_edu_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_edu_pp()$calculo))))
+  })
+  
+  
+  # 3.1.3. Gráficos   ======================================================
+  
+  output$plot_edu_pp <- renderPlot({
+    
+    req(input$indicador_edu_pp)
+    
+    # Indicador especial (tiene solo una fecha entonces va con barras)
+    
+    if(input$indicador_edu_pp %in% lista_vunico) {
+      
+      req(input$edu_pp_corte, input$indicador_edu_pp)
+      
+      dat_plot <- dat_edu_pp() %>%
         filter(corte == input$edu_pp_corte) %>%
         janitor::remove_empty("cols")
+      
+      edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+      
+      plot_edu_corte <- ggplot(dat_plot,
+                               aes_string(x = "fecha_cat", y = "Valor",
+                                          fill = edu_pp_corte_var)) +
+        geom_col(position = "dodge", width = .7, alpha = .8) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x=element_blank(),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_edu_pp,
+                                  "según",
+                                  tolower(input$edu_pp_corte),
+                                  "en",
+                                  unique(dat_plot$fecha_cat))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_fill_brewer(name = "", palette = "Paired") 
+      
+      print(plot_edu_corte)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+    } else if(input$indicador_edu_pp %in% lista_ind_2) {
+      
+      req(input$edu_pp_corte, input$edu_pp_corte_2,
+          input$fecha_edu_pp, input$checkbox_edu_pp)
+      
+      edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+      
+      dat_plot <- dat_edu_pp() %>%
+        filter(ano >= input$fecha_edu_pp[1] &
+                 ano <= input$fecha_edu_pp[2]) %>%
+        filter(corte == input$edu_pp_corte) %>%
+        filter(prestador %in% input$checkbox_edu_pp)
+      
+      if(input$edu_pp_corte_2 == "Total"){
         
-    })
-    
-    output$chbox_edu_pp <- renderUI({
+        dat_plot <- dat_plot %>% 
+          filter(corte_2 == "Total")
         
-        if(input$edu_pp_corte %in% c("Departamento", "Total")) {
-            
-            return(NULL)
-            
-            } else if(input$edu_pp_corte != "Total") {
-
-            checkboxGroupInput(inputId = "checkbox_edu_pp",
-                               label = "Seleccione categorías",
-                               inline = TRUE,
-                               choices =  dat_edu_pp_temp() %>%
-                                   distinct(get(names(dat_edu_pp_temp()[,ncol(dat_edu_pp_temp())]))) %>%
-                                   pull(),
-                               selected = dat_edu_pp_temp() %>%
-                                   distinct(get(names(dat_edu_pp_temp()[,ncol(dat_edu_pp_temp())]))) %>%
-                                   pull() 
-                               )
-            }
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = edu_pp_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_edu_pp,
+                                    "según",
+                                    tolower(input$edu_pp_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) 
         
-        })
-
-
-    # 3.1.2. Metadata   ======================================================
-    
-    # Title
-    output$title_edu_pp <- renderUI({ 
-        helpText(HTML(unique(dat_edu_pp()$nomindicador)))
-    })
-    
-    # Subtitle
-    output$subtitle_edu_pp <- renderUI({ 
-        helpText(HTML(unique(dat_edu_pp()$definicion)))
-    })
-    
-    # Calculo
-    output$calculo_edu_pp <- renderUI({ 
-        helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_edu_pp()$calculo))))
-    })
-    
-    
-    # 3.1.3. Gráficos   ======================================================
-    
-    output$plot_edu_pp <- renderPlot({
+      } else if(input$edu_pp_corte_2 != "Total") {
         
-         if(input$edu_pp_corte == "Total") {
-
-            req(input$indicador_edu_pp, input$fecha_edu_pp)
-            
-             req(nrow(dat_edu_pp()) > 0)
-             
-            dat_plot <- dat_edu_pp() %>% 
-                filter(ano >= input$fecha_edu_pp[1] &
-                           ano <= input$fecha_edu_pp[2]) %>% 
-                filter(corte == "Total")
-            
-            plot_edu <- ggplot(dat_plot,
-                                   aes(x = fecha, y = Valor)) +
-                geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-                geom_point(size = 3, colour = color_defecto) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(input$indicador_edu_pp),
-                     caption = wrapit(unique(dat_plot$cita))) 
-            
-            print(plot_edu)
-            ggsave("www/indicador educacion pp.png", width = 30, height = 20, units = "cm")
-            
- 
-             } else if(input$edu_pp_corte == "Departamento") {
-
-            req(input$indicador_edu_pp, input$fecha_dpto_edu_pp)
-            
-            req(nrow(dat_edu_pp()) > 0)
-                 
-            dat_plot <- dat_edu_pp() %>%
-                filter(corte == "Departamento") %>%
-                filter(ano == input$fecha_dpto_edu_pp) %>%
-                select(departamento, Valor, fuente, cita)
-            
-            dep_j <- dep %>%
-                left_join(dat_plot, by = c("nombre" = "departamento"))
-
-            plot_edu_dpto <- geouy::plot_geouy(dep_j,
-                                       "Valor",
-                                       viri_opt = "plasma",
-                                       l = "n") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_edu_pp, 
-                                   "en",
-                                   input$fecha_dpto_edu_pp), w = 80),
-                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
-                theme_bdd(base_size = 14)
-            
-            print(plot_edu_dpto)
-            ggsave("www/indicador educacion pp.png", width = 30, height = 20, units = "cm")
+        edu_pp_corte_var_2 <- rlang::sym(to_varname(input$edu_pp_corte_2))
         
-        } else if(input$edu_pp_corte != "Total") {
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == input$edu_pp_corte_2)  
         
-            req(input$edu_pp_corte, input$indicador_edu_pp,
-                input$fecha_edu_pp, input$checkbox_edu_pp)
-            
-            req(nrow(dat_edu_pp()) > 0)
-            
-            dat_plot <- dat_edu_pp() %>%
-                filter(ano >= input$fecha_edu_pp[1] &
-                           ano <= input$fecha_edu_pp[2]) %>%
-                filter(corte == input$edu_pp_corte) %>%
-                janitor::remove_empty("cols") 
-            
-            dat_plot <- filter(dat_plot,
-                               get(names(dat_plot[,ncol(dat_plot)])) %in% input$checkbox_edu_pp)
-            
-            plot_edu_corte <- ggplot(dat_plot,
-                               aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
-                geom_line(size = 1, alpha = 0.5) +
-                geom_point(size = 3) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_edu_pp,
-                                   "según",
-                                   tolower(input$edu_pp_corte))),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_colour_manual(name = "", values = paleta_expandida) 
-            
-            print(plot_edu_corte)
-            ggsave("www/indicador educacion pp.png", width = 30, height = 20, units = "cm")
-         
-        }
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = edu_pp_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_edu_pp,
+                                    "según",
+                                    tolower(input$edu_pp_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_brewer(palette = "Dark2") +
+          facet_wrap(as.formula(paste("~", edu_pp_corte_var_2)))
         
-        })
+      }
+      
+      print(plot_edu_corte)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$edu_pp_corte == "Total") {
+      
+      req(input$indicador_edu_pp, input$fecha_edu_pp)
+      
+      dat_plot <- dat_edu_pp() %>% 
+        filter(ano >= input$fecha_edu_pp[1] &
+                 ano <= input$fecha_edu_pp[2]) %>% 
+        filter(corte == "Total")
+      
+      plot_edu <- ggplot(dat_plot,
+                         aes(x = fecha, y = Valor)) +
+        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+        geom_point(size = 3, colour = color_defecto) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(input$indicador_edu_pp),
+             caption = wrapit(unique(dat_plot$cita))) 
+      
+      print(plot_edu)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$edu_pp_corte == "Departamento" & 
+              input$indicador_edu_pp %notin% lista_ind_2 ) {
+      
+      req(input$indicador_edu_pp, input$fecha_dpto_edu_pp)
+      
+      dat_plot <- dat_edu_pp() %>%
+        filter(corte == "Departamento") %>%
+        filter(ano == input$fecha_dpto_edu_pp) %>% 
+        select(departamento, Valor, fuente, cita)
+      
+      dep_j <- dep %>%
+        left_join(dat_plot, by = c("nombre" = "departamento"))
+      
+      plot_edu_dpto <- geouy::plot_geouy(dep_j,
+                                         "Valor",
+                                         viri_opt = "plasma",
+                                         l = "n") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_edu_pp, 
+                                  "en",
+                                  input$fecha_dpto_edu_pp), w = 80),
+             caption = wrapit(unique(dat_plot$cita), w = 80)) +
+        theme_bdd(base_size = 14)
+      
+      print(plot_edu_dpto)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$edu_pp_corte != "Total") {
+      
+      req(input$edu_pp_corte, input$indicador_edu_pp, 
+          input$fecha_edu_pp, input$checkbox_edu_pp)
+      
+      dat_plot <- dat_edu_pp() %>%
+        filter(ano >= input$fecha_edu_pp[1] &
+                 ano <= input$fecha_edu_pp[2]) %>%
+        filter(corte == input$edu_pp_corte) %>%
+        janitor::remove_empty("cols")
+      
+      edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+      
+      dat_plot <- filter(dat_plot,
+                         !!edu_pp_corte_var %in% input$checkbox_edu_pp)
+      
+      plot_edu_corte <- ggplot(dat_plot,
+                               aes_string(x = "fecha", y = "Valor", colour = edu_pp_corte_var)) +
+        geom_line(size = 1, alpha = 0.5) +
+        geom_point(size = 3) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_edu_pp,
+                                  "según",
+                                  tolower(input$edu_pp_corte))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_colour_manual(name = "", values = paleta_expandida) 
+      
+      print(plot_edu_corte)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+    }
     
-    # 3.1.4. Descarga gráficos   =============================================
+  })
+  
+  # 3.1.4. Descarga gráficos   =============================================
+  
+  output$baja_p_edu_pp <- downloadHandler(
+    filename <- function() {
+      paste("indicador salud r", "png", sep = ".")
+    },
     
-    output$baja_p_edu_pp <- downloadHandler(
-        filename <- function() {
-            paste("indicador educacion pp", "png", sep = ".")
-        },
+    content <- function(file) {
+      file.copy("www/indicador salud r.png", file)
+    },
+    contentType = "www/indicador salud r"
+  )
+  
+  
+  # 3.1.5. Tablas   ========================================================
+  
+  # Data
+  edu_pp_tab <- reactive({
+    
+    if(input$indicador_edu_pp %in% lista_ind_2) {
+      
+      req(input$edu_pp_corte, input$indicador_edu_pp, input$fecha_edu_pp)
+      
+      dat_cut <- dat_edu_pp() %>%
+        filter(corte == input$edu_pp_corte) %>%
+        filter(prestador %in% input$checkbox_edu_pp)
+      
+      edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+      
+      if(input$edu_pp_corte_2 == "Total"){
         
-        content <- function(file) {
-            file.copy("www/indicador educacion pp.png", file)
-        },
-        contentType = "www/indicador educacion pp"
+        dat_cut %>%
+          filter(ano >= input$fecha_edu_pp[1] &
+                   ano <= input$fecha_edu_pp[2]) %>%
+          filter(corte_2 == "Total") %>% 
+          select(Fecha, edu_pp_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = edu_pp_corte_var)
+        
+      } else if(input$edu_pp_corte_2 != "Total") {
+        
+        edu_pp_corte_var_2 <- rlang::sym(to_varname(input$edu_pp_corte_2))
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_edu_pp[1] &
+                   ano <= input$fecha_edu_pp[2]) %>%
+          filter(corte_2 == input$edu_pp_corte_2) %>% 
+          select(Fecha, edu_pp_corte_var, edu_pp_corte_var_2, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = edu_pp_corte_var) 
+        
+      }
+      
+    } else if(input$edu_pp_corte == "Total") {
+      
+      req(input$edu_pp_corte, input$indicador_edu_pp, input$fecha_edu_pp)
+      
+      dat_edu_pp() %>%
+        filter(corte == "Total") %>% 
+        filter(ano >= input$fecha_edu_pp[1] &
+                 ano <= input$fecha_edu_pp[2]) %>%
+        select(Fecha, Valor) %>%
+        arrange(desc(Fecha))
+      
+    } else if(input$edu_pp_corte != "Total") {
+      
+      req(input$edu_pp_corte, input$indicador_edu_pp, input$fecha_edu_pp)
+      
+      edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+      
+      dat_cut <- dat_edu_pp() %>%
+        filter(corte == input$edu_pp_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        filter(ano >= input$fecha_edu_pp[1] &
+                 ano <= input$fecha_edu_pp[2]) %>% 
+        select(Fecha, edu_pp_corte_var, Valor) %>%
+        arrange(desc(Fecha)) %>% 
+        pivot_wider(values_from = "Valor",
+                    names_from = edu_pp_corte_var)
+      
+    }
+  })
+  
+  # Metadata 
+  edu_pp_meta <- reactive({
+    
+    dat_edu_pp() %>%
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+      distinct() %>% 
+      gather(key = "", value = " ")
+    
+  })
+  
+  # Excel
+  list_edu_pp <- reactive({
+    list_edu_pp <- list("Data" = edu_pp_tab(),
+                         "Metadata" = edu_pp_meta())
+  })
+  
+  # Render
+  output$table_edu_pp <- renderDT({
+    
+    DT::datatable(edu_pp_tab(),
+                  rownames = FALSE,
+                  caption = htmltools::tags$caption(
+                    input$indicador_edu_pp,
+                    style = "color:black; font-size:110%;")
+    ) 
+    
+  })
+  
+  # 3.1.6. Descarga tablas   ================================================
+  
+  output$dwl_tab_edu_pp <- downloadHandler(
+    
+    filename = function() {
+      paste("resultados-", input$indicador_edu_pp, ".xlsx", sep = "")
+    },
+    content = function(file) {
+      
+      openxlsx::write.xlsx(list_edu_pp(), file)
+      
+    }
+  )
+  
+  
+  ### 3.2. Educación Resultados   =============================================
+  
+  # 3.2.1. Data reactiva   =================================================
+  
+  dat_edu_r <- reactive({
+    
+    req(input$indicador_edu_r)
+    
+    dat %>%
+      filter(nomindicador == input$indicador_edu_r) 
+    
+  })
+  
+  output$selector_edu_r_corte <- renderUI({
+    
+    selectInput(
+      inputId = "edu_r_corte",
+      label = "Seleccione corte:",
+      choices = dat_edu_r() %>% 
+        select(corte) %>%
+        arrange(corte) %>% 
+        unique() %>% 
+        pull(),
+      selected = dat_edu_r() %>% 
+        filter(jerarquia == "1") %>% 
+        distinct(corte) %>% 
+        pull()
     )
     
+  })
+  
+  output$selector_edu_r_corte_2 <- renderUI({
     
-    # 3.1.5. Tablas   ========================================================
+    if(input$indicador_edu_r %in% lista_ind_2){
+      
+      selectInput(
+        inputId = "edu_r_corte_2",
+        label = "Seleccione primer corte:",
+        choices = dat_edu_r() %>% 
+          select(corte_2) %>%
+          arrange(corte_2) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_edu_r() %>% 
+          filter(jerarquia == "1") %>% 
+          distinct(corte_2) %>% 
+          pull()
+      )
+      
+    } else {
+      
+      NULL
+    }
     
-    # Data
-    edu_pp_tab <- reactive({
+  })
+  
+  # Selector de fecha
+  output$s_edu_r_fecha <- renderUI({
+    
+    if(input$edu_r_corte == "Departamento" & input$indicador_edu_r %notin% lista_ind_2) {
+      
+      req(input$edu_r_corte, input$indicador_edu_r)
+      
+      req(nrow(dat_edu_r()) > 0)
+      
+      selectInput(
+        inputId = "fecha_dpto_edu_r",
+        label = "Seleccione año:",
+        choices = dat_edu_r() %>% 
+          filter(nomindicador == input$indicador_edu_r) %>%
+          drop_na(Valor) %>%
+          select(ano) %>%
+          arrange(desc(ano)) %>% 
+          unique() %>% 
+          pull(),
+        selected = 2019
+      )
+      
+    } else if (input$indicador_edu_r %in% lista_vunico){
+      
+      return(NULL)
+      
+    } else  {
+      
+      req(input$edu_r_corte, input$indicador_edu_r)
+      req(nrow(dat_edu_r()) > 0)
+      
+      tagList(
+        # tags$style(type = 'text/css', 
+        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+        # div(id = 'big_slider',
         
-        if(input$edu_pp_corte == "Total") {
+        sliderInput("fecha_edu_r", 
+                    label = "Rango de tiempo", 
+                    sep = "",
+                    dragRange = T,
+                    min = min(dat_edu_r()$ano), 
+                    max = max(dat_edu_r()$ano), 
+                    value = c(min(dat_edu_r()$ano), 
+                              max(dat_edu_r()$ano))
+        )
+      )
+      
+    }
+  })
+  
+  
+  output$chbox_edu_r <- renderUI({
+    
+    if(input$edu_r_corte != "Total" & input$indicador_edu_r %notin% lista_vunico) {
+      
+      edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+      
+      checkboxGroupInput(inputId = "checkbox_edu_r",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_edu_r() %>%
+                           filter(corte == input$edu_r_corte) %>% 
+                           distinct(!!edu_r_corte_var) %>%
+                           pull(),
+                         selected = dat_edu_r() %>%
+                           filter(corte == input$edu_r_corte) %>% 
+                           distinct(!!edu_r_corte_var) %>%
+                           pull()
+      )
+      
+    } else {
+      
+      return(NULL)
+    }
+    
+  })
+  
+  # # Selector de corte según categoría y data temporal
+  # dat_edu_r <- reactive({
+  #   
+  #   req(input$edu_r_corte)
+  #   
+  #   if(input$indicador_edu_r %in% lista_ind_2){
+  #     
+  #     dat_salarios <- dat_edu_r() %>%
+  #       filter(corte_2 == input$edu_r_corte_2) %>% 
+  #       filter(corte == input$edu_r_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   } else {
+  #     
+  #     dat_edu_r() %>%
+  #       filter(corte == input$edu_r_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   }
+  # })
+  
+  # 3.2.2. Metadata   ======================================================
+  
+  # Title
+  output$title_edu_r <- renderUI({ 
+    helpText(HTML(unique(dat_edu_r()$nomindicador)))
+  })
+  
+  # Subtitle
+  output$subtitle_edu_r <- renderUI({ 
+    helpText(HTML(unique(dat_edu_r()$definicion)))
+  })
+  
+  # Calculo
+  output$calculo_edu_r <- renderUI({ 
+    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_edu_r()$calculo))))
+  })
+  
+  
+  # 3.2.3. Gráficos   ======================================================
+  
+  output$plot_edu_r <- renderPlot({
+    
+    req(input$indicador_edu_r)
+    
+    # Indicador especial (tiene solo una fecha entonces va con barras)
+    
+    if(input$indicador_edu_r %in% lista_vunico) {
+      
+      req(input$edu_r_corte, input$indicador_edu_r)
+      
+      dat_plot <- dat_edu_r() %>%
+        filter(corte == input$edu_r_corte) %>%
+        janitor::remove_empty("cols")
+      
+      edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+      
+      plot_edu_corte <- ggplot(dat_plot,
+                               aes_string(x = "fecha_cat", y = "Valor",
+                                          fill = edu_r_corte_var)) +
+        geom_col(position = "dodge", width = .7, alpha = .8) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x=element_blank(),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_edu_r,
+                                  "según",
+                                  tolower(input$edu_r_corte),
+                                  "en",
+                                  unique(dat_plot$fecha_cat))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_fill_brewer(name = "", palette = "Paired") 
+      
+      print(plot_edu_corte)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+    } else if(input$indicador_edu_r %in% lista_ind_2) {
+      
+      req(input$edu_r_corte, input$edu_r_corte_2,
+          input$fecha_edu_r, input$checkbox_edu_r)
+      
+      edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+      
+      dat_plot <- dat_edu_r() %>%
+        filter(ano >= input$fecha_edu_r[1] &
+                 ano <= input$fecha_edu_r[2]) %>%
+        filter(corte == input$edu_r_corte) %>%
+        filter(prestador %in% input$checkbox_edu_r)
+      
+      if(input$edu_r_corte_2 == "Total"){
         
-            req(input$edu_pp_corte, input$indicador_edu_pp, input$fecha_edu_pp)
-            
-            dat_edu_pp() %>%
-                filter(corte == "Total") %>% 
-                filter(ano >= input$fecha_edu_pp[1] &
-                           ano <= input$fecha_edu_pp[2]) %>%
-                select(Fecha, Valor) %>%
-                arrange(desc(Fecha))
-            
-            } else if(input$edu_pp_corte != "Total") {
-                
-                req(input$edu_pp_corte, input$indicador_edu_pp, input$fecha_edu_pp)
-                
-                dat_cut <- dat_edu_pp() %>%
-                    filter(corte == input$edu_pp_corte) %>%
-                    janitor::remove_empty("cols") 
+        dat_plot <- dat_plot %>% 
+          filter(corte_2 == "Total")
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = edu_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_edu_r,
+                                    "según",
+                                    tolower(input$edu_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) 
+        
+      } else if(input$edu_r_corte_2 != "Total") {
+        
+        edu_r_corte_var_2 <- rlang::sym(to_varname(input$edu_r_corte_2))
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == input$edu_r_corte_2)  
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = edu_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_edu_r,
+                                    "según",
+                                    tolower(input$edu_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_brewer(palette = "Dark2") +
+          facet_wrap(as.formula(paste("~", edu_r_corte_var_2)))
+        
+      }
+      
+      print(plot_edu_corte)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$edu_r_corte == "Total") {
+      
+      req(input$indicador_edu_r, input$fecha_edu_r)
+      
+      dat_plot <- dat_edu_r() %>% 
+        filter(ano >= input$fecha_edu_r[1] &
+                 ano <= input$fecha_edu_r[2]) %>% 
+        filter(corte == "Total")
+      
+      plot_edu <- ggplot(dat_plot,
+                         aes(x = fecha, y = Valor)) +
+        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+        geom_point(size = 3, colour = color_defecto) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(input$indicador_edu_r),
+             caption = wrapit(unique(dat_plot$cita))) 
+      
+      print(plot_edu)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$edu_r_corte == "Departamento" & 
+              input$indicador_edu_r %notin% lista_ind_2 ) {
+      
+      req(input$indicador_edu_r, input$fecha_dpto_edu_r)
+      
+      dat_plot <- dat_edu_r() %>%
+        filter(corte == "Departamento") %>%
+        filter(ano == input$fecha_dpto_edu_r) %>% 
+        select(departamento, Valor, fuente, cita)
+      
+      dep_j <- dep %>%
+        left_join(dat_plot, by = c("nombre" = "departamento"))
+      
+      plot_edu_dpto <- geouy::plot_geouy(dep_j,
+                                         "Valor",
+                                         viri_opt = "plasma",
+                                         l = "n") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_edu_r, 
+                                  "en",
+                                  input$fecha_dpto_edu_r), w = 80),
+             caption = wrapit(unique(dat_plot$cita), w = 80)) +
+        theme_bdd(base_size = 14)
+      
+      print(plot_edu_dpto)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$edu_r_corte != "Total") {
+      
+      req(input$edu_r_corte, input$indicador_edu_r, 
+          input$fecha_edu_r, input$checkbox_edu_r)
+      
+      dat_plot <- dat_edu_r() %>%
+        filter(ano >= input$fecha_edu_r[1] &
+                 ano <= input$fecha_edu_r[2]) %>%
+        filter(corte == input$edu_r_corte) %>%
+        janitor::remove_empty("cols")
+      
+      edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+      
+      dat_plot <- filter(dat_plot,
+                         !!edu_r_corte_var %in% input$checkbox_edu_r)
+      
+      plot_edu_corte <- ggplot(dat_plot,
+                               aes_string(x = "fecha", y = "Valor", colour = edu_r_corte_var)) +
+        geom_line(size = 1, alpha = 0.5) +
+        geom_point(size = 3) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_edu_r,
+                                  "según",
+                                  tolower(input$edu_r_corte))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_colour_manual(name = "", values = paleta_expandida) 
+      
+      print(plot_edu_corte)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+    }
+    
+  })
+  
+  # 3.2.4. Descarga gráficos   =============================================
+  
+  output$baja_p_edu_r <- downloadHandler(
+    filename <- function() {
+      paste("indicador salud r", "png", sep = ".")
+    },
+    
+    content <- function(file) {
+      file.copy("www/indicador salud r.png", file)
+    },
+    contentType = "www/indicador salud r"
+  )
+  
+  
+  # 3.2.5. Tablas   ========================================================
+  
+  # Data
+  edu_r_tab <- reactive({
+    
+    if(input$indicador_edu_r %in% lista_ind_2) {
+      
+      req(input$edu_r_corte, input$indicador_edu_r, input$fecha_edu_r)
+      
+      dat_cut <- dat_edu_r() %>%
+        filter(corte == input$edu_r_corte) %>%
+        filter(prestador %in% input$checkbox_edu_r)
+      
+      edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+      
+      if(input$edu_r_corte_2 == "Total"){
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_edu_r[1] &
+                   ano <= input$fecha_edu_r[2]) %>%
+          filter(corte_2 == "Total") %>% 
+          select(Fecha, edu_r_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = edu_r_corte_var)
+        
+      } else if(input$edu_r_corte_2 != "Total") {
+        
+        edu_r_corte_var_2 <- rlang::sym(to_varname(input$edu_r_corte_2))
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_edu_r[1] &
+                   ano <= input$fecha_edu_r[2]) %>%
+          filter(corte_2 == input$edu_r_corte_2) %>% 
+          select(Fecha, edu_r_corte_var, edu_r_corte_var_2, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = edu_r_corte_var) 
+        
+      }
+      
+    } else if(input$edu_r_corte == "Total") {
+      
+      req(input$edu_r_corte, input$indicador_edu_r, input$fecha_edu_r)
+      
+      dat_edu_r() %>%
+        filter(corte == "Total") %>% 
+        filter(ano >= input$fecha_edu_r[1] &
+                 ano <= input$fecha_edu_r[2]) %>%
+        select(Fecha, Valor) %>%
+        arrange(desc(Fecha))
+      
+    } else if(input$edu_r_corte != "Total") {
+      
+      req(input$edu_r_corte, input$indicador_edu_r, input$fecha_edu_r)
+      
+      edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+      
+      dat_cut <- dat_edu_r() %>%
+        filter(corte == input$edu_r_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        filter(ano >= input$fecha_edu_r[1] &
+                 ano <= input$fecha_edu_r[2]) %>% 
+        select(Fecha, edu_r_corte_var, Valor) %>%
+        arrange(desc(Fecha)) %>% 
+        pivot_wider(values_from = "Valor",
+                    names_from = edu_r_corte_var)
+      
+    }
+  })
+  
+  # Metadata 
+  edu_r_meta <- reactive({
+    
+    dat_edu_r() %>%
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+      distinct() %>% 
+      gather(key = "", value = " ")
+    
+  })
+  
+  # Excel
+  list_edu_r <- reactive({
+    list_edu_r <- list("Data" = edu_r_tab(),
+                        "Metadata" = edu_r_meta())
+  })
+  
+  # Render
+  output$table_edu_r <- renderDT({
+    
+    DT::datatable(edu_r_tab(),
+                  rownames = FALSE,
+                  caption = htmltools::tags$caption(
+                    input$indicador_edu_r,
+                    style = "color:black; font-size:110%;")
+    ) 
+    
+  })
+  
+  # 3.2.6. Descarga tablas   ================================================
+  
+  output$dwl_tab_edu_r <- downloadHandler(
+    
+    filename = function() {
+      paste("resultados-", input$indicador_edu_r, ".xlsx", sep = "")
+    },
+    content = function(file) {
+      
+      openxlsx::write.xlsx(list_edu_r(), file)
+      
+    }
+  )
+  
+  
+        
+  
+  ### 4.1. Salud Políticas   ==============================================
+  
+  # 4.1.1. Data reactiva   =================================================
+  
+  dat_salud_pp <- reactive({
+    
+    req(input$indicador_salud_pp)
+    
+    dat %>%
+      filter(nomindicador == input$indicador_salud_pp) 
+    
+  })
+  
+  output$selector_salud_pp_corte <- renderUI({
+    
+    selectInput(
+      inputId = "salud_pp_corte",
+      label = "Seleccione corte:",
+      choices = dat_salud_pp() %>% 
+        select(corte) %>%
+        arrange(corte) %>% 
+        unique() %>% 
+        pull(),
+      selected = dat_salud_pp() %>% 
+        filter(jerarquia == "1") %>% 
+        distinct(corte) %>% 
+        pull()
+    )
+    
+  })
+  
+  output$selector_salud_pp_corte_2 <- renderUI({
+    
+    if(input$indicador_salud_pp %in% lista_ind_2){
+      
+      selectInput(
+        inputId = "salud_pp_corte_2",
+        label = "Seleccione primer corte:",
+        choices = dat_salud_pp() %>% 
+          select(corte_2) %>%
+          arrange(corte_2) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_salud_pp() %>% 
+          filter(jerarquia == "1") %>% 
+          distinct(corte_2) %>% 
+          pull()
+      )
+      
+    } else {
+      
+      NULL
+    }
+    
+  })
+  
+  # Selector de fecha
+  output$s_salud_pp_fecha <- renderUI({
+    
+    if(input$salud_pp_corte == "Departamento" & input$indicador_salud_pp %notin% lista_ind_2) {
+      
+      req(input$salud_pp_corte, input$indicador_salud_pp)
+      
+      req(nrow(dat_salud_pp()) > 0)
+      
+      selectInput(
+        inputId = "fecha_dpto_salud_pp",
+        label = "Seleccione año:",
+        choices = dat_salud_pp() %>% 
+          filter(nomindicador == input$indicador_salud_pp) %>%
+          drop_na(Valor) %>%
+          select(ano) %>%
+          arrange(desc(ano)) %>% 
+          unique() %>% 
+          pull(),
+        selected = 2019
+      )
+      
+    } else if (input$indicador_salud_pp %in% lista_vunico){
+      
+      return(NULL)
+      
+    } else  {
+      
+      req(input$salud_pp_corte, input$indicador_salud_pp)
+      req(nrow(dat_salud_pp()) > 0)
+      
+      tagList(
+        # tags$style(type = 'text/css', 
+        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+        # div(id = 'big_slider',
+        
+        sliderInput("fecha_salud_pp", 
+                    label = "Rango de tiempo", 
+                    sep = "",
+                    dragRange = T,
+                    min = min(dat_salud_pp()$ano), 
+                    max = max(dat_salud_pp()$ano), 
+                    value = c(min(dat_salud_pp()$ano), 
+                              max(dat_salud_pp()$ano))
+        )
+      )
+      
+    }
+  })
+  
+  
+  output$chbox_salud_pp <- renderUI({
+    
+    if(input$salud_pp_corte != "Total" & input$indicador_salud_pp %notin% lista_vunico) {
+      
+      salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
+      
+      checkboxGroupInput(inputId = "checkbox_salud_pp",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_salud_pp() %>%
+                           filter(corte == input$salud_pp_corte) %>% 
+                           distinct(!!salud_pp_corte_var) %>%
+                           pull(),
+                         selected = dat_salud_pp() %>%
+                           filter(corte == input$salud_pp_corte) %>% 
+                           distinct(!!salud_pp_corte_var) %>%
+                           pull()
+      )
+      
+    } else {
+      
+      return(NULL)
+    }
+    
+  })
+  
+  # # Selector de corte según categoría y data temporal
+  # dat_salud_pp <- reactive({
+  #   
+  #   req(input$salud_pp_corte)
+  #   
+  #   if(input$indicador_salud_pp %in% lista_ind_2){
+  #     
+  #     dat_salarios <- dat_salud_pp() %>%
+  #       filter(corte_2 == input$salud_pp_corte_2) %>% 
+  #       filter(corte == input$salud_pp_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   } else {
+  #     
+  #     dat_salud_pp() %>%
+  #       filter(corte == input$salud_pp_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   }
+  # })
+  
+  # 4.1.2. Metadata   ======================================================
+  
+  # Title
+  output$title_salud_pp <- renderUI({ 
+    helpText(HTML(unique(dat_salud_pp()$nomindicador)))
+  })
+  
+  # Subtitle
+  output$subtitle_salud_pp <- renderUI({ 
+    helpText(HTML(unique(dat_salud_pp()$definicion)))
+  })
+  
+  # Calculo
+  output$calculo_salud_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_salud_pp()$calculo))))
+  })
+  
+  
+  # 4.1.3. Gráficos   ======================================================
+  
+  output$plot_salud_pp <- renderPlot({
+    
+    req(input$indicador_salud_pp)
+    
+    # Indicador especial (tiene solo una fecha entonces va con barras)
+    
+    if(input$indicador_salud_pp %in% lista_vunico) {
+      
+      req(input$salud_pp_corte, input$indicador_salud_pp)
+      
+      dat_plot <- dat_salud_pp() %>%
+        filter(corte == input$salud_pp_corte) %>%
+        janitor::remove_empty("cols")
+      
+      salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
+      
+      plot_edu_corte <- ggplot(dat_plot,
+                               aes_string(x = "fecha_cat", y = "Valor",
+                                          fill = salud_pp_corte_var)) +
+        geom_col(position = "dodge", width = .7, alpha = .8) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x=element_blank(),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_salud_pp,
+                                  "según",
+                                  tolower(input$salud_pp_corte),
+                                  "en",
+                                  unique(dat_plot$fecha_cat))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_fill_brewer(name = "", palette = "Paired") 
+      
+      print(plot_edu_corte)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+    } else if(input$indicador_salud_pp %in% lista_ind_2) {
+      
+      req(input$salud_pp_corte, input$salud_pp_corte_2,
+          input$fecha_salud_pp, input$checkbox_salud_pp)
+      
+      salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
+      
+      dat_plot <- dat_salud_pp() %>%
+        filter(ano >= input$fecha_salud_pp[1] &
+                 ano <= input$fecha_salud_pp[2]) %>%
+        filter(corte == input$salud_pp_corte) %>%
+        filter(prestador %in% input$checkbox_salud_pp)
+      
+      if(input$salud_pp_corte_2 == "Total"){
+        
+        dat_plot <- dat_plot %>% 
+          filter(corte_2 == "Total")
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = salud_pp_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_salud_pp,
+                                    "según",
+                                    tolower(input$salud_pp_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) 
+        
+      } else if(input$salud_pp_corte_2 != "Total") {
+        
+        salud_pp_corte_var_2 <- rlang::sym(to_varname(input$salud_pp_corte_2))
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == input$salud_pp_corte_2)  
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = salud_pp_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_salud_pp,
+                                    "según",
+                                    tolower(input$salud_pp_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_brewer(palette = "Dark2") +
+          facet_wrap(as.formula(paste("~", salud_pp_corte_var_2)))
+        
+      }
+      
+      print(plot_edu_corte)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$salud_pp_corte == "Total") {
+      
+      req(input$indicador_salud_pp, input$fecha_salud_pp)
+      
+      dat_plot <- dat_salud_pp() %>% 
+        filter(ano >= input$fecha_salud_pp[1] &
+                 ano <= input$fecha_salud_pp[2]) %>% 
+        filter(corte == "Total")
+      
+      plot_edu <- ggplot(dat_plot,
+                         aes(x = fecha, y = Valor)) +
+        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+        geom_point(size = 3, colour = color_defecto) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(input$indicador_salud_pp),
+             caption = wrapit(unique(dat_plot$cita))) 
+      
+      print(plot_edu)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$salud_pp_corte == "Departamento" & 
+              input$indicador_salud_pp %notin% lista_ind_2 ) {
+      
+      req(input$indicador_salud_pp, input$fecha_dpto_salud_pp)
+      
+      dat_plot <- dat_salud_pp() %>%
+        filter(corte == "Departamento") %>%
+        filter(ano == input$fecha_dpto_salud_pp) %>% 
+        select(departamento, Valor, fuente, cita)
+      
+      dep_j <- dep %>%
+        left_join(dat_plot, by = c("nombre" = "departamento"))
+      
+      plot_edu_dpto <- geouy::plot_geouy(dep_j,
+                                         "Valor",
+                                         viri_opt = "plasma",
+                                         l = "n") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_salud_pp, 
+                                  "en",
+                                  input$fecha_dpto_salud_pp), w = 80),
+             caption = wrapit(unique(dat_plot$cita), w = 80)) +
+        theme_bdd(base_size = 14)
+      
+      print(plot_edu_dpto)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$salud_pp_corte != "Total") {
+      
+      req(input$salud_pp_corte, input$indicador_salud_pp, 
+          input$fecha_salud_pp, input$checkbox_salud_pp)
+      
+      dat_plot <- dat_salud_pp() %>%
+        filter(ano >= input$fecha_salud_pp[1] &
+                 ano <= input$fecha_salud_pp[2]) %>%
+        filter(corte == input$salud_pp_corte) %>%
+        janitor::remove_empty("cols")
+      
+      salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
+      
+      dat_plot <- filter(dat_plot,
+                         !!salud_pp_corte_var %in% input$checkbox_salud_pp)
+      
+      plot_edu_corte <- ggplot(dat_plot,
+                               aes_string(x = "fecha", y = "Valor", colour = salud_pp_corte_var)) +
+        geom_line(size = 1, alpha = 0.5) +
+        geom_point(size = 3) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_salud_pp,
+                                  "según",
+                                  tolower(input$salud_pp_corte))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_colour_manual(name = "", values = paleta_expandida) 
+      
+      print(plot_edu_corte)
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      
+    }
+    
+  })
+  
+  # 4.1.4. Descarga gráficos   =============================================
+  
+  output$baja_p_salud_pp <- downloadHandler(
+    filename <- function() {
+      paste("indicador salud r", "png", sep = ".")
+    },
+    
+    content <- function(file) {
+      file.copy("www/indicador salud r.png", file)
+    },
+    contentType = "www/indicador salud r"
+  )
+  
+  
+  # 4.1.5. Tablas   ========================================================
+  
+  # Data
+  salud_pp_tab <- reactive({
+    
+    if(input$indicador_salud_pp %in% lista_ind_2) {
+      
+      req(input$salud_pp_corte, input$indicador_salud_pp, input$fecha_salud_pp)
+      
+      dat_cut <- dat_salud_pp() %>%
+        filter(corte == input$salud_pp_corte) %>%
+        filter(prestador %in% input$checkbox_salud_pp)
+      
+      salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
+      
+      if(input$salud_pp_corte_2 == "Total"){
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_salud_pp[1] &
+                   ano <= input$fecha_salud_pp[2]) %>%
+          filter(corte_2 == "Total") %>% 
+          select(Fecha, salud_pp_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = salud_pp_corte_var)
+        
+      } else if(input$salud_pp_corte_2 != "Total") {
+        
+        salud_pp_corte_var_2 <- rlang::sym(to_varname(input$salud_pp_corte_2))
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_salud_pp[1] &
+                   ano <= input$fecha_salud_pp[2]) %>%
+          filter(corte_2 == input$salud_pp_corte_2) %>% 
+          select(Fecha, salud_pp_corte_var, salud_pp_corte_var_2, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = salud_pp_corte_var) 
+        
+      }
+      
+    } else if(input$salud_pp_corte == "Total") {
+      
+      req(input$salud_pp_corte, input$indicador_salud_pp, input$fecha_salud_pp)
+      
+      dat_salud_pp() %>%
+        filter(corte == "Total") %>% 
+        filter(ano >= input$fecha_salud_pp[1] &
+                 ano <= input$fecha_salud_pp[2]) %>%
+        select(Fecha, Valor) %>%
+        arrange(desc(Fecha))
+      
+    } else if(input$salud_pp_corte != "Total") {
+      
+      req(input$salud_pp_corte, input$indicador_salud_pp, input$fecha_salud_pp)
+      
+      salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
+      
+      dat_cut <- dat_salud_pp() %>%
+        filter(corte == input$salud_pp_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        filter(ano >= input$fecha_salud_pp[1] &
+                 ano <= input$fecha_salud_pp[2]) %>% 
+        select(Fecha, salud_pp_corte_var, Valor) %>%
+        arrange(desc(Fecha)) %>% 
+        pivot_wider(values_from = "Valor",
+                    names_from = salud_pp_corte_var)
+      
+    }
+  })
+  
+  # Metadata 
+  salud_pp_meta <- reactive({
+    
+    dat_salud_pp() %>%
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+      distinct() %>% 
+      gather(key = "", value = " ")
+    
+  })
+  
+  # Excel
+  list_salud_pp <- reactive({
+    list_salud_pp <- list("Data" = salud_pp_tab(),
+                        "Metadata" = salud_pp_meta())
+  })
+  
+  # Render
+  output$table_salud_pp <- renderDT({
+    
+    DT::datatable(salud_pp_tab(),
+                  rownames = FALSE,
+                  caption = htmltools::tags$caption(
+                    input$indicador_salud_pp,
+                    style = "color:black; font-size:110%;")
+    ) 
+    
+  })
+  
+  # 4.1.6. Descarga tablas   ================================================
+  
+  output$dwl_tab_salud_pp <- downloadHandler(
+    
+    filename = function() {
+      paste("resultados-", input$indicador_salud_pp, ".xlsx", sep = "")
+    },
+    content = function(file) {
+      
+      openxlsx::write.xlsx(list_salud_pp(), file)
+      
+    }
+  )
 
-                dat_cut %>%     
-                    filter(ano >= input$fecha_edu_pp[1] &
-                               ano <= input$fecha_edu_pp[2]) %>% 
-                    select(Fecha, names(dat_cut[,ncol(dat_cut)]), Valor) %>%
-                    arrange(desc(Fecha)) %>% 
-                    pivot_wider(values_from = "Valor",
-                                names_from = names(dat_cut[,ncol(dat_cut)]))
-                
-                }
-            })
-        
-    # Metadata 
-    edu_pp_meta <- reactive({
-        
-        dat_edu_pp() %>%
-          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
-          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-          distinct() %>% 
-          gather(key = "", value = " ")
-        
-    })
-    
-    # Excel
-    list_edu_pp <- reactive({
-        list_edu_pp <- list("Data" = edu_pp_tab(),
-                            "Metadata" = edu_pp_meta())
-    })
-    
-    # Render
-    output$table_edu_pp <- renderDT({
-        
-        DT::datatable(edu_pp_tab(),
-                      rownames = FALSE,
-                      caption = htmltools::tags$caption(
-                          input$indicador_edu_pp,
-                          style = "color:black; font-size:110%;")
-                      ) 
-        
-    })
-    
-    # 3.1.6. Descarga tablas   ================================================
-    
-    output$dwl_tab_edu_pp <- downloadHandler(
-        
-        filename = function() {
-            paste("resultados-", input$indicador_edu_pp, ".xlsx", sep = "")
-        },
-        content = function(file) {
-            
-            openxlsx::write.xlsx(list_edu_pp(), file)
-            
-        }
-    )
-
-    
-### 3.2. Educación Resultados   =============================================
-    
-    # 3.2.1. Data reactiva   =================================================
-    
-    dat_edu_r <- reactive({
-        
-        req(input$indicador_edu_r)
-        
-        dat %>%
-            filter(nomindicador == input$indicador_edu_r) 
-        
-    })
-    
-    output$selector_edu_r_corte <- renderUI({
-        
-        selectInput(
-            inputId = "edu_r_corte",
-            label = "Seleccione corte:",
-            choices = dat_edu_r() %>% 
-                select(corte) %>%
-                arrange(corte) %>% 
-                unique() %>% 
-                pull(),
-            selected = dat_edu_r() %>% 
-                filter(jerarquia == "1") %>% 
-                distinct(corte) %>% 
-                pull())
-    })
-    
-    # Selector de fecha
-    output$s_edu_r_fecha <- renderUI({
-        
-        if(input$edu_r_corte == "Departamento") {
-            
-            req(input$edu_r_corte, input$indicador_edu_r)
-            
-            req(nrow(dat_edu_r()) > 0)
-            
-            selectInput(
-                inputId = "fecha_dpto_edu_r",
-                label = "Seleccione año:",
-                choices = dat_edu_r() %>% 
-                    filter(nomindicador == input$indicador_edu_r) %>%
-                    drop_na(Valor) %>%
-                    select(ano) %>%
-                    arrange(desc(ano)) %>% 
-                    unique() %>% 
-                    pull(),
-                selected = 2019
-            )
-            
-        } else if (input$indicador_edu_r == "Porcentaje de estudiantes de tercer año de educación media con bajo desempeño en prueba Aristas (Niveles Bajo 1, Nivel 1, Nivel 2)"){
-          
-          return(NULL)  
-            
-        } else  {
-            
-            req(input$edu_r_corte, input$indicador_edu_r)
-            req(nrow(dat_edu_r()) > 0)
-            
-            tagList(
-                # tags$style(type = 'text/css', 
-                #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-                # div(id = 'big_slider',
-                
-                sliderInput("fecha_edu_r", 
-                            label = "Rango de tiempo", 
-                            sep = "",
-                            dragRange = T,
-                            min = min(dat_edu_r()$ano), 
-                            max = max(dat_edu_r()$ano), 
-                            value = c(min(dat_edu_r()$ano), 
-                                      max(dat_edu_r()$ano))
-                )
-            )
-            # )
-            
-        }
-    })
-    
-    # Selector de corte según categoría y data temporal
-    dat_edu_r_temp <- reactive({
-        
-        req(input$edu_r_corte)
-        
-        dat_edu_r() %>%
-            filter(corte == input$edu_r_corte) %>%
-            janitor::remove_empty("cols")
-        
-    })
-    
-    output$chbox_edu_r <- renderUI({
-        
-        if(input$edu_r_corte %in% c("Departamento", "Total")) {
-            
-            return(NULL)
-          
-        } else if (input$indicador_edu_r == "Porcentaje de estudiantes de tercer año de educación media con bajo desempeño en prueba Aristas (Niveles Bajo 1, Nivel 1, Nivel 2)"){
-          
-          return(NULL)  
-            
-        } else if(input$edu_r_corte != "Total") {
-            
-            checkboxGroupInput(inputId = "checkbox_edu_r",
-                               label = "Seleccione categorías",
-                               inline = TRUE,
-                               choices =  dat_edu_r_temp() %>%
-                                   distinct(get(names(dat_edu_r_temp()[,ncol(dat_edu_r_temp())]))) %>%
-                                   pull(),
-                               selected = dat_edu_r_temp() %>%
-                                   distinct(get(names(dat_edu_r_temp()[,ncol(dat_edu_r_temp())]))) %>%
-                                   pull() 
-            )
-        }
-        
-    })
-    
-    # 3.2.2. Metadata   ======================================================
-    
-    # Title
-    output$title_edu_r <- renderUI({ 
-        helpText(HTML(unique(dat_edu_r()$nomindicador)))
-    })
-    
-    # Subtitle
-    output$subtitle_edu_r <- renderUI({ 
-        helpText(HTML(unique(dat_edu_r()$definicion)))
-    })
-    
-    # Calculo
-    output$calculo_edu_r <- renderUI({ 
-        helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_edu_r()$calculo))))
-    })
-    
-    
-    # 3.2.3. Gráficos   ======================================================
-    
-    output$plot_edu_r <- renderPlot({
-        
-        if(input$edu_r_corte == "Total") {
-            
-            req(input$indicador_edu_r, input$fecha_edu_r)
-            
-            dat_plot <- dat_edu_r() %>% 
-                filter(ano >= input$fecha_edu_r[1] &
-                           ano <= input$fecha_edu_r[2]) %>% 
-                filter(corte == "Total")
-            
-            plot_edu <- ggplot(dat_plot,
-                               aes(x = fecha, y = Valor)) +
-                geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-                geom_point(size = 3, colour = color_defecto) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(input$indicador_edu_r),
-                     caption = wrapit(unique(dat_plot$cita))) 
-            
-            print(plot_edu)
-            ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
-            
-        } else if(input$indicador_edu_r == "Porcentaje de estudiantes de tercer año de educación media con bajo desempeño en prueba Aristas (Niveles Bajo 1, Nivel 1, Nivel 2)") {
-          
-          req(input$edu_r_corte, input$indicador_edu_r)
-          
-          dat_plot <- dat_edu_r() %>%
-            filter(corte == input$edu_r_corte) %>%
-            janitor::remove_empty("cols")
-          
-          plot_edu_corte <- ggplot(dat_plot,
-                                   aes_string(x = "fecha", y = "Valor", fill = names(dat_plot[,ncol(dat_plot)]))) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_edu_r,
-                                      "según",
-                                      tolower(input$edu_r_corte))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_fill_brewer(name = "", palette = "Paired") 
-          
-          print(plot_edu_corte)
-          ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
-          
-            
-        } else if(input$edu_r_corte == "Departamento") {
-            
-            req(input$indicador_edu_r, input$fecha_dpto_edu_r)
-            
-            dat_plot <- dat_edu_r() %>%
-                filter(corte == "Departamento") %>%
-                filter(ano == input$fecha_dpto_edu_r) %>% 
-                select(departamento, Valor, fuente, cita)
-            
-            dep_j <- dep %>%
-                left_join(dat_plot, by = c("nombre" = "departamento"))
-            
-            plot_edu_dpto <- geouy::plot_geouy(dep_j,
-                                               "Valor",
-                                               viri_opt = "plasma",
-                                               l = "n") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_edu_r, 
-                                   "en",
-                                   input$fecha_dpto_edu_r), w = 80),
-                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
-                theme_bdd(base_size = 14)
-            
-            print(plot_edu_dpto)
-            ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
-            
-        } else if(input$edu_r_corte != "Total") {
-            
-            req(input$edu_r_corte, input$indicador_edu_r,
-                input$fecha_edu_r, input$checkbox_edu_r)
-            
-            dat_plot <- dat_edu_r() %>%
-                filter(ano >= input$fecha_edu_r[1] &
-                           ano <= input$fecha_edu_r[2]) %>%
-                filter(corte == input$edu_r_corte) %>%
-                janitor::remove_empty("cols")
-
-            dat_plot <- filter(dat_plot,
-                               get(names(dat_plot[,ncol(dat_plot)])) %in% input$checkbox_edu_r)
-            
-            plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
-                geom_line(size = 1, alpha = 0.5) +
-                geom_point(size = 3) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_edu_r,
-                                   "según",
-                                   tolower(input$edu_r_corte))),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_colour_manual(name = "", values = paleta_expandida) 
-            
-            print(plot_edu_corte)
-            ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
-            
-        }
-        
-    })
-    
-    # 3.2.4. Descarga gráficos   =============================================
-    
-    output$baja_p_edu_r <- downloadHandler(
-        filename <- function() {
-            paste("indicador edu r", "png", sep = ".")
-        },
-        
-        content <- function(file) {
-            file.copy("www/indicador edu r.png", file)
-        },
-        contentType = "www/indicador edu r"
-    )
-    
-    
-    # 3.2.5. Tablas   ========================================================
-    
-    # Data
-    edu_r_tab <- reactive({
-        
-        if(input$edu_r_corte == "Total") {
-            
-            req(input$edu_r_corte, input$indicador_edu_r, input$fecha_edu_r)
-            
-            dat_edu_r() %>%
-                filter(corte == "Total") %>% 
-                filter(ano >= input$fecha_edu_r[1] &
-                           ano <= input$fecha_edu_r[2]) %>%
-                select(Fecha, Valor) %>%
-                arrange(desc(Fecha))
-            
-        } else if(input$edu_r_corte != "Total") {
-            
-            req(input$edu_r_corte, input$indicador_edu_r, input$fecha_edu_r)
-            
-            dat_cut <- dat_edu_r() %>%
-                filter(corte == input$edu_r_corte) %>%
-                janitor::remove_empty("cols") 
-            
-            dat_cut %>%     
-                filter(ano >= input$fecha_edu_r[1] &
-                           ano <= input$fecha_edu_r[2]) %>% 
-                select(Fecha, names(dat_cut[,ncol(dat_cut)]), Valor) %>%
-                arrange(desc(Fecha)) %>% 
-                pivot_wider(values_from = "Valor",
-                            names_from = names(dat_cut[,ncol(dat_cut)]))
-            
-        }
-    })
-    
-    # Metadata 
-    edu_r_meta <- reactive({
-        
-        dat_edu_r() %>%
-          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
-          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-          distinct() %>% 
-          gather(key = "", value = " ")
-        
-    })
-    
-    # Excel
-    list_edu_r <- reactive({
-        list_edu_r <- list("Data" = edu_r_tab(),
-                            "Metadata" = edu_r_meta())
-    })
-    
-    # Render
-    output$table_edu_r <- renderDT({
-        
-        DT::datatable(edu_r_tab(),
-                      rownames = FALSE,
-                      caption = htmltools::tags$caption(
-                          input$indicador_edu_r,
-                          style = "color:black; font-size:110%;")
-        ) 
-        
-    })
-    
-    # 3.2.6. Descarga tablas   ================================================
-    
-    output$dwl_tab_edu_r <- downloadHandler(
-        
-        filename = function() {
-            paste("resultados-", input$indicador_edu_r, ".xlsx", sep = "")
-        },
-        content = function(file) {
-            
-            openxlsx::write.xlsx(list_edu_r(), file)
-            
-        }
-    )
-
-        
-### 4.1. Salud Políticas   ==============================================
-    
-    # 4.1.1. Data reactiva   ================================================
-    
-    dat_salud_pp <- reactive({
-        
-        req(input$indicador_salud_pp)
-        
-        dat %>%
-            filter(nomindicador == input$indicador_salud_pp) 
-        
-    })
-    
-    output$selector_salud_pp_corte <- renderUI({
-        
-        selectInput(
-            inputId = "salud_pp_corte",
-            label = "Seleccione corte:",
-            choices = dat_salud_pp() %>% 
-                select(corte) %>%
-                arrange(corte) %>% 
-                unique() %>% 
-                pull(),
-            selected = dat_salud_pp() %>% 
-                filter(jerarquia == "1") %>% 
-                distinct(corte) %>% 
-                pull())
-    })
-    
-    
-    # Selector de fecha
-    output$s_salud_pp_fecha <- renderUI({
-        
-        if(input$salud_pp_corte == "Departamento") {
-            
-            req(input$salud_pp_corte, input$indicador_salud_pp)
-            
-            req(nrow(dat_salud_pp()) > 0)
-            
-            selectInput(
-                inputId = "fecha_dpto_salud_pp",
-                label = "Seleccione año:",
-                choices = dat_salud_pp() %>% 
-                    filter(nomindicador == input$indicador_salud_pp) %>%
-                    drop_na(Valor) %>%
-                    select(ano) %>%
-                    arrange(desc(ano)) %>% 
-                    unique() %>% 
-                    pull(),
-                selected = 2019
-            )
-            
-            
-        } else  {
-            
-            req(input$salud_pp_corte, input$indicador_salud_pp)
-            req(nrow(dat_salud_pp()) > 0)
-            
-            tagList(
-                # tags$style(type = 'text/css', 
-                #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-                # div(id = 'big_slider',
-                
-                sliderInput("fecha_salud_pp", 
-                            label = "Rango de tiempo", 
-                            sep = "",
-                            dragRange = T,
-                            min = min(dat_salud_pp()$ano), 
-                            max = max(dat_salud_pp()$ano), 
-                            value = c(min(dat_salud_pp()$ano), 
-                                      max(dat_salud_pp()$ano))
-                )
-            )
-            # )
-            
-        }
-    })
-    
-    # Selector de corte según categoría y data temporal
-    dat_salud_pp_temp <- reactive({
-        
-        req(input$salud_pp_corte)
-        
-        dat_salud_pp() %>%
-            filter(corte == input$salud_pp_corte) %>%
-            janitor::remove_empty("cols")
-        
-    })
-    
-    output$chbox_salud_pp <- renderUI({
-        
-        if(input$salud_pp_corte %in% c("Departamento", "Total")) {
-            
-            return(NULL)
-            
-        } else if(input$salud_pp_corte != "Total") {
-            
-            checkboxGroupInput(inputId = "checkbox_salud_pp",
-                               label = "Seleccione categorías",
-                               inline = TRUE,
-                               choices =  dat_salud_pp_temp() %>%
-                                   distinct(get(names(dat_salud_pp_temp()[,ncol(dat_salud_pp_temp())]))) %>%
-                                   pull(),
-                               selected = dat_salud_pp_temp() %>%
-                                   distinct(get(names(dat_salud_pp_temp()[,ncol(dat_salud_pp_temp())]))) %>%
-                                   pull() 
-            )
-        }
-        
-    })
-    
-    # 4.1.2. Metadata   ======================================================
-    
-    # Title
-    output$title_salud_pp <- renderUI({ 
-        helpText(HTML(unique(dat_salud_pp()$nomindicador)))
-    })
-    
-    # Subtitle
-    output$subtitle_salud_pp <- renderUI({ 
-        helpText(HTML(unique(dat_salud_pp()$definicion)))
-    })
-    
-    # Calculo
-    output$calculo_salud_pp <- renderUI({ 
-        helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_salud_pp()$calculo))))
-    })
-    
-    
-    # 4.1.3. Gráficos   ======================================================
-    
-    output$plot_salud_pp <- renderPlot({
-        
-        if(input$salud_pp_corte == "Total") {
-            
-            req(input$indicador_salud_pp, input$fecha_salud_pp)
-            
-            dat_plot <- dat_salud_pp() %>% 
-                filter(ano >= input$fecha_salud_pp[1] &
-                           ano <= input$fecha_salud_pp[2]) %>% 
-                filter(corte == "Total")
-            
-            plot_edu <- ggplot(dat_plot,
-                               aes(x = fecha, y = Valor)) +
-                geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-                geom_point(size = 3, colour = color_defecto) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(input$indicador_salud_pp),
-                     caption = wrapit(unique(dat_plot$cita))) 
-            
-            print(plot_edu)
-            ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
-            
-            
-        } else if(input$salud_pp_corte == "Departamento") {
-            
-            req(input$indicador_salud_pp, input$fecha_dpto_salud_pp)
-            
-            dat_plot <- dat_salud_pp() %>%
-                filter(corte == "Departamento") %>%
-                filter(ano == input$fecha_dpto_salud_pp) %>% 
-              select(departamento, Valor, fuente, cita)
-              
-            dep_j <- dep %>%
-                left_join(dat_plot, by = c("nombre" = "departamento"))
-            
-            plot_edu_dpto <- geouy::plot_geouy(dep_j,
-                                               "Valor",
-                                               viri_opt = "plasma",
-                                               l = "n") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_salud_pp, 
-                                   "en",
-                                   input$fecha_dpto_salud_pp), w = 80),
-                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
-                theme_bdd(base_size = 14)
-            
-            print(plot_edu_dpto)
-            ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
-            
-        } else if(input$salud_pp_corte != "Total") {
-            
-            req(input$salud_pp_corte, input$indicador_salud_pp, 
-                input$fecha_salud_pp, input$checkbox_salud_pp)
-            
-            dat_plot <- dat_salud_pp() %>%
-                filter(ano >= input$fecha_salud_pp[1] &
-                           ano <= input$fecha_salud_pp[2]) %>%
-                filter(corte == input$salud_pp_corte) %>%
-                janitor::remove_empty("cols")
-            
-            dat_plot <- filter(dat_plot,
-                               get(names(dat_plot[,ncol(dat_plot)])) %in% input$checkbox_salud_pp)
-            
-            plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
-                geom_line(size = 1, alpha = 0.5) +
-                geom_point(size = 3) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_salud_pp,
-                                   "según",
-                                   tolower(input$salud_pp_corte))),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_colour_manual(name = "", values = paleta_expandida) 
-            
-            print(plot_edu_corte)
-            ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
-            
-        }
-        
-    })
-    
-    # 4.1.4. Descarga gráficos   =============================================
-    
-    output$baja_p_salud_pp <- downloadHandler(
-        filename <- function() {
-            paste("indicador salud pp", "png", sep = ".")
-        },
-        
-        content <- function(file) {
-            file.copy("www/indicador salud pp.png", file)
-        },
-        contentType = "www/indicador salud pp"
-    )
-    
-    
-    # 4.1.5. Tablas   ========================================================
-    
-    # Data
-    salud_pp_tab <- reactive({
-        
-        if(input$salud_pp_corte == "Total") {
-            
-            req(input$salud_pp_corte, input$indicador_salud_pp, input$fecha_salud_pp)
-            
-            dat_salud_pp() %>%
-                filter(corte == "Total") %>% 
-                filter(ano >= input$fecha_salud_pp[1] &
-                           ano <= input$fecha_salud_pp[2]) %>%
-                select(Fecha, Valor) %>%
-                arrange(desc(Fecha))
-            
-        } else if(input$salud_pp_corte != "Total") {
-            
-            req(input$salud_pp_corte, input$indicador_salud_pp, input$fecha_salud_pp)
-            
-            dat_cut <- dat_salud_pp() %>%
-                filter(corte == input$salud_pp_corte) %>%
-                janitor::remove_empty("cols") 
-            
-            dat_cut %>%     
-                filter(ano >= input$fecha_salud_pp[1] &
-                           ano <= input$fecha_salud_pp[2]) %>% 
-                select(Fecha, names(dat_cut[,ncol(dat_cut)]), Valor) %>%
-                arrange(desc(Fecha)) %>% 
-                pivot_wider(values_from = "Valor",
-                            names_from = names(dat_cut[,ncol(dat_cut)]))
-            
-        }
-    })
-    
-    # Metadata 
-    salud_pp_meta <- reactive({
-        
-        dat_salud_pp() %>%
-          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
-          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-          distinct() %>% 
-          gather(key = "", value = " ")
-          
-    })
-    
-    # Excel
-    list_salud_pp <- reactive({
-        list_salud_pp <- list("Data" = salud_pp_tab(),
-                            "Metadata" = salud_pp_meta())
-    })
-    
-    # Render
-    output$table_salud_pp <- renderDT({
-        
-        DT::datatable(salud_pp_tab(),
-                      rownames = FALSE,
-                      caption = htmltools::tags$caption(
-                          input$indicador_salud_pp,
-                          style = "color:black; font-size:110%;")
-        ) 
-        
-    })
-    
-    # 4.1.6. Descarga tablas   ================================================
-    
-    output$dwl_tab_salud_pp <- downloadHandler(
-        
-        filename = function() {
-            paste("resultados-", input$indicador_salud_pp, ".xlsx", sep = "")
-        },
-        content = function(file) {
-            
-            openxlsx::write.xlsx(list_salud_pp(), file)
-            
-        }
-    )
-    
     
 ### 4.2. Salud Resultados   =============================================
     
@@ -2009,7 +2520,7 @@ server <- function(input, output) {
     
     output$chbox_salud_r <- renderUI({
         
-      if(input$salud_r_corte != "Total") {
+      if(input$salud_r_corte != "Total" & input$indicador_salud_r %notin% lista_vunico) {
         
         salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
         
@@ -2388,235 +2899,377 @@ server <- function(input, output) {
         }
     )
     
-### 5.1. Seguridad Social Políticas   ==============================================
     
-    # 5.1.1. Data reactiva   ================================================
+    
+    ### 5.1. Seguridad Social Políticas   ==============================================
+    
+    # 5.1.1. Data reactiva   =================================================
     
     dat_ssocial_pp <- reactive({
-        
-        req(input$indicador_ssocial_pp)
-        
-        dat %>%
-            filter(nomindicador == input$indicador_ssocial_pp) 
-        
+      
+      req(input$indicador_ssocial_pp)
+      
+      dat %>%
+        filter(nomindicador == input$indicador_ssocial_pp) 
+      
     })
     
     output$selector_ssocial_pp_corte <- renderUI({
-        
-        selectInput(
-            inputId = "ssocial_pp_corte",
-            label = "Seleccione corte:",
-            choices = dat_ssocial_pp() %>% 
-                select(corte) %>%
-                arrange(corte) %>% 
-                unique() %>% 
-                pull(),
-            selected = dat_ssocial_pp() %>% 
-                filter(jerarquia == "1") %>% 
-                distinct(corte) %>% 
-                pull())
+      
+      selectInput(
+        inputId = "ssocial_pp_corte",
+        label = "Seleccione corte:",
+        choices = dat_ssocial_pp() %>% 
+          select(corte) %>%
+          arrange(corte) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_ssocial_pp() %>% 
+          filter(jerarquia == "1") %>% 
+          distinct(corte) %>% 
+          pull()
+      )
+      
     })
     
+    output$selector_ssocial_pp_corte_2 <- renderUI({
+      
+      if(input$indicador_ssocial_pp %in% lista_ind_2){
+        
+        selectInput(
+          inputId = "ssocial_pp_corte_2",
+          label = "Seleccione primer corte:",
+          choices = dat_ssocial_pp() %>% 
+            select(corte_2) %>%
+            arrange(corte_2) %>% 
+            unique() %>% 
+            pull(),
+          selected = dat_ssocial_pp() %>% 
+            filter(jerarquia == "1") %>% 
+            distinct(corte_2) %>% 
+            pull()
+        )
+        
+      } else {
+        
+        NULL
+      }
+      
+    })
     
     # Selector de fecha
     output$s_ssocial_pp_fecha <- renderUI({
+      
+      if(input$ssocial_pp_corte == "Departamento" & input$indicador_ssocial_pp %notin% lista_ind_2) {
         
-        if(input$ssocial_pp_corte == "Departamento") {
-            
-            req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-            
-            req(nrow(dat_ssocial_pp()) > 0)
-            
-            selectInput(
-                inputId = "fecha_dpto_ssocial_pp",
-                label = "Seleccione año:",
-                choices = dat_ssocial_pp() %>% 
-                    filter(nomindicador == input$indicador_ssocial_pp) %>%
-                    drop_na(Valor) %>%
-                    select(ano) %>%
-                    arrange(desc(ano)) %>% 
-                    unique() %>% 
-                    pull(),
-                selected = 2019
-            )
-            
-            
-        } else  {
-            
-            req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-            req(nrow(dat_ssocial_pp()) > 0)
-            
-            tagList(
-                # tags$style(type = 'text/css', 
-                #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-                # div(id = 'big_slider',
-                
-                sliderInput("fecha_ssocial_pp", 
-                            label = "Rango de tiempo", 
-                            sep = "",
-                            dragRange = T,
-                            min = min(dat_ssocial_pp()$ano), 
-                            max = max(dat_ssocial_pp()$ano), 
-                            value = c(min(dat_ssocial_pp()$ano), 
-                                      max(dat_ssocial_pp()$ano))
-                )
-            )
-            # )
-            
-        }
+        req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+        
+        req(nrow(dat_ssocial_pp()) > 0)
+        
+        selectInput(
+          inputId = "fecha_dpto_ssocial_pp",
+          label = "Seleccione año:",
+          choices = dat_ssocial_pp() %>% 
+            filter(nomindicador == input$indicador_ssocial_pp) %>%
+            drop_na(Valor) %>%
+            select(ano) %>%
+            arrange(desc(ano)) %>% 
+            unique() %>% 
+            pull(),
+          selected = 2019
+        )
+        
+      } else if (input$indicador_ssocial_pp %in% lista_vunico){
+        
+        return(NULL)
+        
+      } else  {
+        
+        req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+        req(nrow(dat_ssocial_pp()) > 0)
+        
+        tagList(
+          # tags$style(type = 'text/css', 
+          #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+          # div(id = 'big_slider',
+          
+          sliderInput("fecha_ssocial_pp", 
+                      label = "Rango de tiempo", 
+                      sep = "",
+                      dragRange = T,
+                      min = min(dat_ssocial_pp()$ano), 
+                      max = max(dat_ssocial_pp()$ano), 
+                      value = c(min(dat_ssocial_pp()$ano), 
+                                max(dat_ssocial_pp()$ano))
+          )
+        )
+        
+      }
     })
     
-    # Selector de corte según categoría y data temporal
-    dat_ssocial_pp_temp <- reactive({
-        
-        req(input$ssocial_pp_corte)
-        
-        dat_ssocial_pp() %>%
-            filter(corte == input$ssocial_pp_corte) %>%
-            janitor::remove_empty("cols")
-        
-    })
     
     output$chbox_ssocial_pp <- renderUI({
+      
+      if(input$ssocial_pp_corte != "Total" & input$indicador_ssocial_pp %notin% lista_vunico) {
         
-        if(input$ssocial_pp_corte %in% c("Departamento", "Total")) {
-            
-            return(NULL)
-            
-        } else if(input$ssocial_pp_corte != "Total") {
-            
-            checkboxGroupInput(inputId = "checkbox_ssocial_pp",
-                               label = "Seleccione categorías",
-                               inline = TRUE,
-                               choices =  dat_ssocial_pp_temp() %>%
-                                   distinct(get(names(dat_ssocial_pp_temp()[,ncol(dat_ssocial_pp_temp())]))) %>%
-                                   pull(),
-                               selected = dat_ssocial_pp_temp() %>%
-                                   distinct(get(names(dat_ssocial_pp_temp()[,ncol(dat_ssocial_pp_temp())]))) %>%
-                                   pull() 
-            )
-        }
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
         
+        checkboxGroupInput(inputId = "checkbox_ssocial_pp",
+                           label = "Seleccione categorías",
+                           inline = TRUE,
+                           choices =  dat_ssocial_pp() %>%
+                             filter(corte == input$ssocial_pp_corte) %>% 
+                             distinct(!!ssocial_pp_corte_var) %>%
+                             pull(),
+                           selected = dat_ssocial_pp() %>%
+                             filter(corte == input$ssocial_pp_corte) %>% 
+                             distinct(!!ssocial_pp_corte_var) %>%
+                             pull()
+        )
+        
+      } else {
+        
+        return(NULL)
+      }
+      
     })
+    
+    # # Selector de corte según categoría y data temporal
+    # dat_ssocial_pp <- reactive({
+    #   
+    #   req(input$ssocial_pp_corte)
+    #   
+    #   if(input$indicador_ssocial_pp %in% lista_ind_2){
+    #     
+    #     dat_salarios <- dat_ssocial_pp() %>%
+    #       filter(corte_2 == input$ssocial_pp_corte_2) %>% 
+    #       filter(corte == input$ssocial_pp_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   } else {
+    #     
+    #     dat_ssocial_pp() %>%
+    #       filter(corte == input$ssocial_pp_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   }
+    # })
     
     # 5.1.2. Metadata   ======================================================
     
     # Title
     output$title_ssocial_pp <- renderUI({ 
-        helpText(HTML(unique(dat_ssocial_pp()$nomindicador)))
+      helpText(HTML(unique(dat_ssocial_pp()$nomindicador)))
     })
     
     # Subtitle
     output$subtitle_ssocial_pp <- renderUI({ 
-        helpText(HTML(unique(dat_ssocial_pp()$definicion)))
+      helpText(HTML(unique(dat_ssocial_pp()$definicion)))
     })
     
     # Calculo
     output$calculo_ssocial_pp <- renderUI({ 
-        helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_pp()$calculo))))
+      helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_pp()$calculo))))
     })
     
     
     # 5.1.3. Gráficos   ======================================================
     
     output$plot_ssocial_pp <- renderPlot({
+      
+      req(input$indicador_ssocial_pp)
+      
+      # Indicador especial (tiene solo una fecha entonces va con barras)
+      
+      if(input$indicador_ssocial_pp %in% lista_vunico) {
         
-        if(input$ssocial_pp_corte == "Total") {
-            
-            req(input$indicador_ssocial_pp, input$fecha_ssocial_pp)
-            
-            dat_plot <- dat_ssocial_pp() %>% 
-                filter(ano >= input$fecha_ssocial_pp[1] &
-                           ano <= input$fecha_ssocial_pp[2]) %>% 
-                filter(corte == "Total")
-            
-            plot_edu <- ggplot(dat_plot,
-                               aes(x = fecha, y = Valor)) +
-                geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-                geom_point(size = 3, colour = color_defecto) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(input$indicador_ssocial_pp),
-                     caption = wrapit(unique(dat_plot$cita))) 
-            
-            print(plot_edu)
-            ggsave("www/indicador seguridad social pp.png", width = 30, height = 20, units = "cm")
-            
-            
-        } else if(input$ssocial_pp_corte == "Departamento") {
-            
-            req(input$indicador_ssocial_pp, input$fecha_dpto_ssocial_pp)
-            
-            dat_plot <- dat_ssocial_pp() %>%
-                filter(corte == "Departamento") %>%
-                filter(ano == input$fecha_dpto_ssocial_pp) %>% 
-                select(departamento, Valor, fuente, cita)
-            
-            dep_j <- dep %>%
-                left_join(dat_plot, by = c("nombre" = "departamento"))
-            
-            plot_edu_dpto <- geouy::plot_geouy(dep_j,
-                                               "Valor",
-                                               viri_opt = "plasma",
-                                               l = "n") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_ssocial_pp, 
-                                   "en",
-                                   input$fecha_dpto_ssocial_pp), w = 80),
-                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
-                theme_bdd(base_size = 14)
-            
-            print(plot_edu_dpto)
-            ggsave("www/indicador seguridad social pp.png", width = 30, height = 20, units = "cm")
-            
-        } else if(input$ssocial_pp_corte != "Total") {
-            
-            req(input$ssocial_pp_corte, input$indicador_ssocial_pp,
-                input$fecha_ssocial_pp, input$checkbox_ssocial_pp)
-            
-            dat_plot <- dat_ssocial_pp() %>%
-                filter(ano >= input$fecha_ssocial_pp[1] &
-                           ano <= input$fecha_ssocial_pp[2]) %>%
-                filter(corte == input$ssocial_pp_corte) %>%
-                janitor::remove_empty("cols")
-            
-            dat_plot <- filter(dat_plot,
-                               get(names(dat_plot[,ncol(dat_plot)])) %in% input$checkbox_ssocial_pp)
-            
-            plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
-                geom_line(size = 1, alpha = 0.5) +
-                geom_point(size = 3) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_ssocial_pp,
-                                   "según",
-                                   tolower(input$ssocial_pp_corte))),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_colour_manual(name = "", values = paleta_expandida) 
-            
-            print(plot_edu_corte)
-            ggsave("www/indicador seguridad social pp.png", width = 30, height = 20, units = "cm")
-            
+        req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+        
+        dat_plot <- dat_ssocial_pp() %>%
+          filter(corte == input$ssocial_pp_corte) %>%
+          janitor::remove_empty("cols")
+        
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = ssocial_pp_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp,
+                                    "según",
+                                    tolower(input$ssocial_pp_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+      } else if(input$indicador_ssocial_pp %in% lista_ind_2) {
+        
+        req(input$ssocial_pp_corte, input$ssocial_pp_corte_2,
+            input$fecha_ssocial_pp, input$checkbox_ssocial_pp)
+        
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        
+        dat_plot <- dat_ssocial_pp() %>%
+          filter(ano >= input$fecha_ssocial_pp[1] &
+                   ano <= input$fecha_ssocial_pp[2]) %>%
+          filter(corte == input$ssocial_pp_corte) %>%
+          filter(prestador %in% input$checkbox_ssocial_pp)
+        
+        if(input$ssocial_pp_corte_2 == "Total"){
+          
+          dat_plot <- dat_plot %>% 
+            filter(corte_2 == "Total")
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = ssocial_pp_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ssocial_pp,
+                                      "según",
+                                      tolower(input$ssocial_pp_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_manual(name = "", values = paleta_expandida) 
+          
+        } else if(input$ssocial_pp_corte_2 != "Total") {
+          
+          ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+          
+          dat_plot <- dat_plot %>%
+            filter(corte_2 == input$ssocial_pp_corte_2)  
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = ssocial_pp_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ssocial_pp,
+                                      "según",
+                                      tolower(input$ssocial_pp_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_brewer(palette = "Dark2") +
+            facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
+          
         }
         
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$ssocial_pp_corte == "Total") {
+        
+        req(input$indicador_ssocial_pp, input$fecha_ssocial_pp)
+        
+        dat_plot <- dat_ssocial_pp() %>% 
+          filter(ano >= input$fecha_ssocial_pp[1] &
+                   ano <= input$fecha_ssocial_pp[2]) %>% 
+          filter(corte == "Total")
+        
+        plot_edu <- ggplot(dat_plot,
+                           aes(x = fecha, y = Valor)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_ssocial_pp),
+               caption = wrapit(unique(dat_plot$cita))) 
+        
+        print(plot_edu)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$ssocial_pp_corte == "Departamento" & 
+                input$indicador_ssocial_pp %notin% lista_ind_2 ) {
+        
+        req(input$indicador_ssocial_pp, input$fecha_dpto_ssocial_pp)
+        
+        dat_plot <- dat_ssocial_pp() %>%
+          filter(corte == "Departamento") %>%
+          filter(ano == input$fecha_dpto_ssocial_pp) %>% 
+          select(departamento, Valor, fuente, cita)
+        
+        dep_j <- dep %>%
+          left_join(dat_plot, by = c("nombre" = "departamento"))
+        
+        plot_edu_dpto <- geouy::plot_geouy(dep_j,
+                                           "Valor",
+                                           viri_opt = "plasma",
+                                           l = "n") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp, 
+                                    "en",
+                                    input$fecha_dpto_ssocial_pp), w = 80),
+               caption = wrapit(unique(dat_plot$cita), w = 80)) +
+          theme_bdd(base_size = 14)
+        
+        print(plot_edu_dpto)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$ssocial_pp_corte != "Total") {
+        
+        req(input$ssocial_pp_corte, input$indicador_ssocial_pp, 
+            input$fecha_ssocial_pp, input$checkbox_ssocial_pp)
+        
+        dat_plot <- dat_ssocial_pp() %>%
+          filter(ano >= input$fecha_ssocial_pp[1] &
+                   ano <= input$fecha_ssocial_pp[2]) %>%
+          filter(corte == input$ssocial_pp_corte) %>%
+          janitor::remove_empty("cols")
+        
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        
+        dat_plot <- filter(dat_plot,
+                           !!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp)
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = ssocial_pp_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp,
+                                    "según",
+                                    tolower(input$ssocial_pp_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
     })
     
     # 5.1.4. Descarga gráficos   =============================================
     
     output$baja_p_ssocial_pp <- downloadHandler(
-        filename <- function() {
-            paste("indicador seguridad social pp", "png", sep = ".")
-        },
-        
-        content <- function(file) {
-            file.copy("www/indicador seguridad social pp.png", file)
-        },
-        contentType = "www/indicador seguridad social pp"
+      filename <- function() {
+        paste("indicador salud r", "png", sep = ".")
+      },
+      
+      content <- function(file) {
+        file.copy("www/indicador salud r.png", file)
+      },
+      contentType = "www/indicador salud r"
     )
     
     
@@ -2624,312 +3277,487 @@ server <- function(input, output) {
     
     # Data
     ssocial_pp_tab <- reactive({
+      
+      if(input$indicador_ssocial_pp %in% lista_ind_2) {
         
-        if(input$ssocial_pp_corte == "Total") {
-            
-            req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
-            
-            dat_ssocial_pp() %>%
-                filter(corte == "Total") %>% 
-                filter(ano >= input$fecha_ssocial_pp[1] &
-                           ano <= input$fecha_ssocial_pp[2]) %>%
-                select(Fecha, Valor) %>%
-                arrange(desc(Fecha))
-            
-        } else if(input$ssocial_pp_corte != "Total") {
-            
-            req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
-            
-            dat_cut <- dat_ssocial_pp() %>%
-                filter(corte == input$ssocial_pp_corte) %>%
-                janitor::remove_empty("cols") 
-            
-            dat_cut %>%     
-                filter(ano >= input$fecha_ssocial_pp[1] &
-                           ano <= input$fecha_ssocial_pp[2]) %>% 
-                select(Fecha, names(dat_cut[,ncol(dat_cut)]), Valor) %>%
-                arrange(desc(Fecha)) %>% 
-                pivot_wider(values_from = "Valor",
-                            names_from = names(dat_cut[,ncol(dat_cut)]))
-            
+        req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
+        
+        dat_cut <- dat_ssocial_pp() %>%
+          filter(corte == input$ssocial_pp_corte) %>%
+          filter(prestador %in% input$checkbox_ssocial_pp)
+        
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        
+        if(input$ssocial_pp_corte_2 == "Total"){
+          
+          dat_cut %>%
+            filter(ano >= input$fecha_ssocial_pp[1] &
+                     ano <= input$fecha_ssocial_pp[2]) %>%
+            filter(corte_2 == "Total") %>% 
+            select(Fecha, ssocial_pp_corte_var, Valor) %>%
+            arrange(desc(Fecha)) %>%
+            pivot_wider(values_from = "Valor",
+                        names_from = ssocial_pp_corte_var)
+          
+        } else if(input$ssocial_pp_corte_2 != "Total") {
+          
+          ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+          
+          dat_cut %>%
+            filter(ano >= input$fecha_ssocial_pp[1] &
+                     ano <= input$fecha_ssocial_pp[2]) %>%
+            filter(corte_2 == input$ssocial_pp_corte_2) %>% 
+            select(Fecha, ssocial_pp_corte_var, ssocial_pp_corte_var_2, Valor) %>%
+            arrange(desc(Fecha)) %>%
+            pivot_wider(values_from = "Valor",
+                        names_from = ssocial_pp_corte_var) 
+          
         }
+        
+      } else if(input$ssocial_pp_corte == "Total") {
+        
+        req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
+        
+        dat_ssocial_pp() %>%
+          filter(corte == "Total") %>% 
+          filter(ano >= input$fecha_ssocial_pp[1] &
+                   ano <= input$fecha_ssocial_pp[2]) %>%
+          select(Fecha, Valor) %>%
+          arrange(desc(Fecha))
+        
+      } else if(input$ssocial_pp_corte != "Total") {
+        
+        req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
+        
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        
+        dat_cut <- dat_ssocial_pp() %>%
+          filter(corte == input$ssocial_pp_corte) %>%
+          janitor::remove_empty("cols") 
+        
+        dat_cut %>%     
+          filter(ano >= input$fecha_ssocial_pp[1] &
+                   ano <= input$fecha_ssocial_pp[2]) %>% 
+          select(Fecha, ssocial_pp_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>% 
+          pivot_wider(values_from = "Valor",
+                      names_from = ssocial_pp_corte_var)
+        
+      }
     })
     
     # Metadata 
     ssocial_pp_meta <- reactive({
-        
-        dat_ssocial_pp() %>%
-          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
-          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-          distinct() %>% 
-          gather(key = "", value = " ")
+      
+      dat_ssocial_pp() %>%
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+        distinct() %>% 
+        gather(key = "", value = " ")
       
     })
     
     # Excel
     list_ssocial_pp <- reactive({
-        list_ssocial_pp <- list("Data" = ssocial_pp_tab(),
-                              "Metadata" = ssocial_pp_meta())
+      list_ssocial_pp <- list("Data" = ssocial_pp_tab(),
+                            "Metadata" = ssocial_pp_meta())
     })
     
     # Render
     output$table_ssocial_pp <- renderDT({
-        
-        DT::datatable(ssocial_pp_tab(),
-                      rownames = FALSE,
-                      caption = htmltools::tags$caption(
-                          input$indicador_ssocial_pp,
-                          style = "color:black; font-size:110%;")
-        ) 
-        
+      
+      DT::datatable(ssocial_pp_tab(),
+                    rownames = FALSE,
+                    caption = htmltools::tags$caption(
+                      input$indicador_ssocial_pp,
+                      style = "color:black; font-size:110%;")
+      ) 
+      
     })
     
     # 5.1.6. Descarga tablas   ================================================
     
     output$dwl_tab_ssocial_pp <- downloadHandler(
+      
+      filename = function() {
+        paste("resultados-", input$indicador_ssocial_pp, ".xlsx", sep = "")
+      },
+      content = function(file) {
         
-        filename = function() {
-            paste("resultados-", input$indicador_ssocial_pp, ".xlsx", sep = "")
-        },
-        content = function(file) {
-            
-            openxlsx::write.xlsx(list_ssocial_pp(), file)
-            
-        }
+        openxlsx::write.xlsx(list_ssocial_pp(), file)
+        
+      }
     )
     
-    
-### 5.2. Seguridad Social Resultados   =============================================
+  ### 5.2. Seguridad Social Resultados   ===================================
     
     # 5.2.1. Data reactiva   =================================================
     
     dat_ssocial_r <- reactive({
-        
-        req(input$indicador_ssocial_r)
-        
-        dat %>%
-            filter(nomindicador == input$indicador_ssocial_r) 
-        
+      
+      req(input$indicador_ssocial_r)
+      
+      dat %>%
+        filter(nomindicador == input$indicador_ssocial_r) 
+      
     })
     
     output$selector_ssocial_r_corte <- renderUI({
-        
-        selectInput(
-            inputId = "ssocial_r_corte",
-            label = "Seleccione corte:",
-            choices = dat_ssocial_r() %>% 
-                select(corte) %>%
-                arrange(corte) %>% 
-                unique() %>% 
-                pull(),
-            selected = dat_ssocial_r() %>% 
-                filter(jerarquia == "1") %>% 
-                distinct(corte) %>% 
-                pull())
+      
+      selectInput(
+        inputId = "ssocial_r_corte",
+        label = "Seleccione corte:",
+        choices = dat_ssocial_r() %>% 
+          select(corte) %>%
+          arrange(corte) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_ssocial_r() %>% 
+          filter(jerarquia == "1") %>% 
+          distinct(corte) %>% 
+          pull()
+      )
+      
     })
     
+    output$selector_ssocial_r_corte_2 <- renderUI({
+      
+      if(input$indicador_ssocial_r %in% lista_ind_2){
+        
+        selectInput(
+          inputId = "ssocial_r_corte_2",
+          label = "Seleccione primer corte:",
+          choices = dat_ssocial_r() %>% 
+            select(corte_2) %>%
+            arrange(corte_2) %>% 
+            unique() %>% 
+            pull(),
+          selected = dat_ssocial_r() %>% 
+            filter(jerarquia == "1") %>% 
+            distinct(corte_2) %>% 
+            pull()
+        )
+        
+      } else {
+        
+        NULL
+      }
+      
+    })
     
     # Selector de fecha
     output$s_ssocial_r_fecha <- renderUI({
+      
+      if(input$ssocial_r_corte == "Departamento" & input$indicador_ssocial_r %notin% lista_ind_2) {
         
-        if(input$ssocial_r_corte == "Departamento") {
-            
-            req(input$ssocial_r_corte, input$indicador_ssocial_r)
-            
-            req(nrow(dat_ssocial_r()) > 0)
-            
-            selectInput(
-                inputId = "fecha_dpto_ssocial_r",
-                label = "Seleccione año:",
-                choices = dat_ssocial_r() %>% 
-                    filter(nomindicador == input$indicador_ssocial_r) %>%
-                    drop_na(Valor) %>%
-                    select(ano) %>%
-                    arrange(desc(ano)) %>% 
-                    unique() %>% 
-                    pull(),
-                selected = 2019
-            )
-            
-            
-        } else  {
-            
-            req(input$ssocial_r_corte, input$indicador_ssocial_r)
-            req(nrow(dat_ssocial_r()) > 0)
-            
-            tagList(
-                # tags$style(type = 'text/css', 
-                #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-                # div(id = 'big_slider',
-                
-                sliderInput("fecha_ssocial_r", 
-                            label = "Rango de tiempo", 
-                            sep = "",
-                            dragRange = T,
-                            min = min(dat_ssocial_r()$ano), 
-                            max = max(dat_ssocial_r()$ano), 
-                            value = c(min(dat_ssocial_r()$ano), 
-                                      max(dat_ssocial_r()$ano))
-                )
-            )
-            # )
-            
-        }
+        req(input$ssocial_r_corte, input$indicador_ssocial_r)
+        
+        req(nrow(dat_ssocial_r()) > 0)
+        
+        selectInput(
+          inputId = "fecha_dpto_ssocial_r",
+          label = "Seleccione año:",
+          choices = dat_ssocial_r() %>% 
+            filter(nomindicador == input$indicador_ssocial_r) %>%
+            drop_na(Valor) %>%
+            select(ano) %>%
+            arrange(desc(ano)) %>% 
+            unique() %>% 
+            pull(),
+          selected = 2019
+        )
+        
+      } else if (input$indicador_ssocial_r %in% lista_vunico){
+        
+        return(NULL)
+        
+      } else  {
+        
+        req(input$ssocial_r_corte, input$indicador_ssocial_r)
+        req(nrow(dat_ssocial_r()) > 0)
+        
+        tagList(
+          # tags$style(type = 'text/css', 
+          #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+          # div(id = 'big_slider',
+          
+          sliderInput("fecha_ssocial_r", 
+                      label = "Rango de tiempo", 
+                      sep = "",
+                      dragRange = T,
+                      min = min(dat_ssocial_r()$ano), 
+                      max = max(dat_ssocial_r()$ano), 
+                      value = c(min(dat_ssocial_r()$ano), 
+                                max(dat_ssocial_r()$ano))
+          )
+        )
+        
+      }
     })
     
-    
-    # Selector de corte según categoría y data temporal
-    dat_ssocial_r_temp <- reactive({
-        
-        req(input$ssocial_r_corte)
-        
-        dat_ssocial_r() %>%
-            filter(corte == input$ssocial_r_corte) %>%
-            janitor::remove_empty("cols")
-        
-    })
     
     output$chbox_ssocial_r <- renderUI({
+      
+      if(input$ssocial_r_corte != "Total" & input$indicador_ssocial_r %notin% lista_vunico) {
         
-        if(input$ssocial_r_corte %in% c("Departamento", "Total")) {
-            
-            return(NULL)
-            
-        } else if(input$ssocial_r_corte != "Total") {
-            
-            checkboxGroupInput(inputId = "checkbox_ssocial_r",
-                               label = "Seleccione categorías",
-                               inline = TRUE,
-                               choices =  dat_ssocial_r_temp() %>%
-                                   distinct(get(names(dat_ssocial_r_temp()[,ncol(dat_ssocial_r_temp())]))) %>%
-                                   pull(),
-                               selected = dat_ssocial_r_temp() %>%
-                                   distinct(get(names(dat_ssocial_r_temp()[,ncol(dat_ssocial_r_temp())]))) %>%
-                                   pull() 
-            )
-        }
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
         
+        checkboxGroupInput(inputId = "checkbox_ssocial_r",
+                           label = "Seleccione categorías",
+                           inline = TRUE,
+                           choices =  dat_ssocial_r() %>%
+                             filter(corte == input$ssocial_r_corte) %>% 
+                             distinct(!!ssocial_r_corte_var) %>%
+                             pull(),
+                           selected = dat_ssocial_r() %>%
+                             filter(corte == input$ssocial_r_corte) %>% 
+                             distinct(!!ssocial_r_corte_var) %>%
+                             pull()
+        )
+        
+      } else {
+        
+        return(NULL)
+      }
+      
     })
     
+    # # Selector de corte según categoría y data temporal
+    # dat_ssocial_r <- reactive({
+    #   
+    #   req(input$ssocial_r_corte)
+    #   
+    #   if(input$indicador_ssocial_r %in% lista_ind_2){
+    #     
+    #     dat_salarios <- dat_ssocial_r() %>%
+    #       filter(corte_2 == input$ssocial_r_corte_2) %>% 
+    #       filter(corte == input$ssocial_r_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   } else {
+    #     
+    #     dat_ssocial_r() %>%
+    #       filter(corte == input$ssocial_r_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   }
+    # })
     
     # 5.2.2. Metadata   ======================================================
     
     # Title
     output$title_ssocial_r <- renderUI({ 
-        helpText(HTML(unique(dat_ssocial_r()$nomindicador)))
+      helpText(HTML(unique(dat_ssocial_r()$nomindicador)))
     })
     
     # Subtitle
     output$subtitle_ssocial_r <- renderUI({ 
-        helpText(HTML(unique(dat_ssocial_r()$definicion)))
+      helpText(HTML(unique(dat_ssocial_r()$definicion)))
     })
     
     # Calculo
     output$calculo_ssocial_r <- renderUI({ 
-        helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_r()$calculo))))
+      helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_r()$calculo))))
     })
     
     
     # 5.2.3. Gráficos   ======================================================
     
     output$plot_ssocial_r <- renderPlot({
+      
+      req(input$indicador_ssocial_r)
+      
+      # Indicador especial (tiene solo una fecha entonces va con barras)
+      
+      if(input$indicador_ssocial_r %in% lista_vunico) {
         
-        if(input$ssocial_r_corte == "Total") {
-            
-            req(input$indicador_ssocial_r, input$fecha_ssocial_r)
-            
-            dat_plot <- dat_ssocial_r() %>% 
-                filter(ano >= input$fecha_ssocial_r[1] &
-                           ano <= input$fecha_ssocial_r[2]) %>% 
-                filter(corte == "Total")
-            
-            plot_edu <- ggplot(dat_plot,
-                               aes(x = fecha, y = Valor)) +
-                geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-                geom_point(size = 3, colour = color_defecto) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(input$indicador_ssocial_r),
-                     caption = wrapit(unique(dat_plot$cita))) 
-            
-            print(plot_edu)
-            ggsave("www/indicador seguridad social r.png", width = 30, height = 20, units = "cm")
-            
-            
-        } else if(input$ssocial_r_corte == "Departamento") {
-            
-            req(input$indicador_ssocial_r, input$fecha_dpto_ssocial_r)
-            
-            dat_plot <- dat_ssocial_r() %>%
-                filter(corte == "Departamento") %>%
-                filter(ano == input$fecha_dpto_ssocial_r) %>% 
-                select(departamento, Valor, fuente, cita)
-            
-            dep_j <- dep %>%
-                left_join(dat_plot, by = c("nombre" = "departamento"))
-            
-            plot_edu_dpto <- geouy::plot_geouy(dep_j,
-                                               "Valor",
-                                               viri_opt = "plasma",
-                                               l = "n") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_ssocial_r, 
-                                   "en",
-                                   input$fecha_dpto_ssocial_r),w = 80),
-                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
-                theme_bdd(base_size = 14)
-            
-            print(plot_edu_dpto)
-            ggsave("www/indicador seguridad social r.png", width = 30, height = 20, units = "cm")
-            
-        } else if(input$ssocial_r_corte != "Total") {
-            
-            req(input$ssocial_r_corte, input$indicador_ssocial_r, 
-                input$fecha_ssocial_r, input$checkbox_ssocial_r)
-            
-            dat_plot <- dat_ssocial_r() %>%
-                filter(ano >= input$fecha_ssocial_r[1] &
-                           ano <= input$fecha_ssocial_r[2]) %>%
-                filter(corte == input$ssocial_r_corte) %>%
-                janitor::remove_empty("cols")
-            
-            dat_plot <- filter(dat_plot,
-                               get(names(dat_plot[,ncol(dat_plot)])) %in% input$checkbox_ssocial_r)
-            
-            plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
-                geom_line(size = 1, alpha = 0.5) +
-                geom_point(size = 3) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_ssocial_r,
-                                   "según",
-                                   tolower(input$ssocial_r_corte))),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_colour_manual(name = "", values = paleta_expandida) 
-            
-            print(plot_edu_corte)
-            ggsave("www/indicador seguridad social r.png", width = 30, height = 20, units = "cm")
-            
+        req(input$ssocial_r_corte, input$indicador_ssocial_r)
+        
+        dat_plot <- dat_ssocial_r() %>%
+          filter(corte == input$ssocial_r_corte) %>%
+          janitor::remove_empty("cols")
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = ssocial_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+      } else if(input$indicador_ssocial_r %in% lista_ind_2) {
+        
+        req(input$ssocial_r_corte, input$ssocial_r_corte_2,
+            input$fecha_ssocial_r, input$checkbox_ssocial_r)
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
+        dat_plot <- dat_ssocial_r() %>%
+          filter(ano >= input$fecha_ssocial_r[1] &
+                   ano <= input$fecha_ssocial_r[2]) %>%
+          filter(corte == input$ssocial_r_corte) %>%
+          filter(prestador %in% input$checkbox_ssocial_r)
+        
+        if(input$ssocial_r_corte_2 == "Total"){
+          
+          dat_plot <- dat_plot %>% 
+            filter(corte_2 == "Total")
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = ssocial_r_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ssocial_r,
+                                      "según",
+                                      tolower(input$ssocial_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_manual(name = "", values = paleta_expandida) 
+          
+        } else if(input$ssocial_r_corte_2 != "Total") {
+          
+          ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+          
+          dat_plot <- dat_plot %>%
+            filter(corte_2 == input$ssocial_r_corte_2)  
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = ssocial_r_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ssocial_r,
+                                      "según",
+                                      tolower(input$ssocial_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_brewer(palette = "Dark2") +
+            facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
+          
         }
         
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$ssocial_r_corte == "Total") {
+        
+        req(input$indicador_ssocial_r, input$fecha_ssocial_r)
+        
+        dat_plot <- dat_ssocial_r() %>% 
+          filter(ano >= input$fecha_ssocial_r[1] &
+                   ano <= input$fecha_ssocial_r[2]) %>% 
+          filter(corte == "Total")
+        
+        plot_edu <- ggplot(dat_plot,
+                           aes(x = fecha, y = Valor)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_ssocial_r),
+               caption = wrapit(unique(dat_plot$cita))) 
+        
+        print(plot_edu)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$ssocial_r_corte == "Departamento" & 
+                input$indicador_ssocial_r %notin% lista_ind_2 ) {
+        
+        req(input$indicador_ssocial_r, input$fecha_dpto_ssocial_r)
+        
+        dat_plot <- dat_ssocial_r() %>%
+          filter(corte == "Departamento") %>%
+          filter(ano == input$fecha_dpto_ssocial_r) %>% 
+          select(departamento, Valor, fuente, cita)
+        
+        dep_j <- dep %>%
+          left_join(dat_plot, by = c("nombre" = "departamento"))
+        
+        plot_edu_dpto <- geouy::plot_geouy(dep_j,
+                                           "Valor",
+                                           viri_opt = "plasma",
+                                           l = "n") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r, 
+                                    "en",
+                                    input$fecha_dpto_ssocial_r), w = 80),
+               caption = wrapit(unique(dat_plot$cita), w = 80)) +
+          theme_bdd(base_size = 14)
+        
+        print(plot_edu_dpto)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$ssocial_r_corte != "Total") {
+        
+        req(input$ssocial_r_corte, input$indicador_ssocial_r, 
+            input$fecha_ssocial_r, input$checkbox_ssocial_r)
+        
+        dat_plot <- dat_ssocial_r() %>%
+          filter(ano >= input$fecha_ssocial_r[1] &
+                   ano <= input$fecha_ssocial_r[2]) %>%
+          filter(corte == input$ssocial_r_corte) %>%
+          janitor::remove_empty("cols")
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
+        dat_plot <- filter(dat_plot,
+                           !!ssocial_r_corte_var %in% input$checkbox_ssocial_r)
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = ssocial_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
     })
     
     # 5.2.4. Descarga gráficos   =============================================
     
     output$baja_p_ssocial_r <- downloadHandler(
-        filename <- function() {
-            paste("indicador seguridad social r", "png", sep = ".")
-        },
-        
-        content <- function(file) {
-            file.copy("www/indicador seguridad social r.png", file)
-        },
-        contentType = "www/indicador seguridad social r"
+      filename <- function() {
+        paste("indicador salud r", "png", sep = ".")
+      },
+      
+      content <- function(file) {
+        file.copy("www/indicador salud r.png", file)
+      },
+      contentType = "www/indicador salud r"
     )
     
     
@@ -2937,311 +3765,494 @@ server <- function(input, output) {
     
     # Data
     ssocial_r_tab <- reactive({
+      
+      if(input$indicador_ssocial_r %in% lista_ind_2) {
         
-        if(input$ssocial_r_corte == "Total") {
-            
-            req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
-            
-            dat_ssocial_r() %>%
-                filter(corte == "Total") %>% 
-                filter(ano >= input$fecha_ssocial_r[1] &
-                           ano <= input$fecha_ssocial_r[2]) %>%
-                select(Fecha, Valor) %>%
-                arrange(desc(Fecha))
-            
-        } else if(input$ssocial_r_corte != "Total") {
-            
-            req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
-            
-            dat_cut <- dat_ssocial_r() %>%
-                filter(corte == input$ssocial_r_corte) %>%
-                janitor::remove_empty("cols") 
-            
-            dat_cut %>%     
-                filter(ano >= input$fecha_ssocial_r[1] &
-                           ano <= input$fecha_ssocial_r[2]) %>% 
-                select(Fecha, names(dat_cut[,ncol(dat_cut)]), Valor) %>%
-                arrange(desc(Fecha)) %>% 
-                pivot_wider(values_from = "Valor",
-                            names_from = names(dat_cut[,ncol(dat_cut)]))
-            
+        req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
+        
+        dat_cut <- dat_ssocial_r() %>%
+          filter(corte == input$ssocial_r_corte) %>%
+          filter(prestador %in% input$checkbox_ssocial_r)
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
+        if(input$ssocial_r_corte_2 == "Total"){
+          
+          dat_cut %>%
+            filter(ano >= input$fecha_ssocial_r[1] &
+                     ano <= input$fecha_ssocial_r[2]) %>%
+            filter(corte_2 == "Total") %>% 
+            select(Fecha, ssocial_r_corte_var, Valor) %>%
+            arrange(desc(Fecha)) %>%
+            pivot_wider(values_from = "Valor",
+                        names_from = ssocial_r_corte_var)
+          
+        } else if(input$ssocial_r_corte_2 != "Total") {
+          
+          ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+          
+          dat_cut %>%
+            filter(ano >= input$fecha_ssocial_r[1] &
+                     ano <= input$fecha_ssocial_r[2]) %>%
+            filter(corte_2 == input$ssocial_r_corte_2) %>% 
+            select(Fecha, ssocial_r_corte_var, ssocial_r_corte_var_2, Valor) %>%
+            arrange(desc(Fecha)) %>%
+            pivot_wider(values_from = "Valor",
+                        names_from = ssocial_r_corte_var) 
+          
         }
+        
+      } else if(input$ssocial_r_corte == "Total") {
+        
+        req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
+        
+        dat_ssocial_r() %>%
+          filter(corte == "Total") %>% 
+          filter(ano >= input$fecha_ssocial_r[1] &
+                   ano <= input$fecha_ssocial_r[2]) %>%
+          select(Fecha, Valor) %>%
+          arrange(desc(Fecha))
+        
+      } else if(input$ssocial_r_corte != "Total") {
+        
+        req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
+        dat_cut <- dat_ssocial_r() %>%
+          filter(corte == input$ssocial_r_corte) %>%
+          janitor::remove_empty("cols") 
+        
+        dat_cut %>%     
+          filter(ano >= input$fecha_ssocial_r[1] &
+                   ano <= input$fecha_ssocial_r[2]) %>% 
+          select(Fecha, ssocial_r_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>% 
+          pivot_wider(values_from = "Valor",
+                      names_from = ssocial_r_corte_var)
+        
+      }
     })
     
     # Metadata 
     ssocial_r_meta <- reactive({
-        
-        dat_ssocial_r() %>%
-          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
-          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-          distinct() %>% 
-          gather(key = "", value = " ")
-        
+      
+      dat_ssocial_r() %>%
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+        distinct() %>% 
+        gather(key = "", value = " ")
+      
     })
     
     # Excel
     list_ssocial_r <- reactive({
-        list_ssocial_r <- list("Data" = ssocial_r_tab(),
-                             "Metadata" = ssocial_r_meta())
+      list_ssocial_r <- list("Data" = ssocial_r_tab(),
+                              "Metadata" = ssocial_r_meta())
     })
     
     # Render
     output$table_ssocial_r <- renderDT({
-        
-        DT::datatable(ssocial_r_tab(),
-                      rownames = FALSE,
-                      caption = htmltools::tags$caption(
-                          input$indicador_ssocial_r,
-                          style = "color:black; font-size:110%;")
-        ) 
-        
+      
+      DT::datatable(ssocial_r_tab(),
+                    rownames = FALSE,
+                    caption = htmltools::tags$caption(
+                      input$indicador_ssocial_r,
+                      style = "color:black; font-size:110%;")
+      ) 
+      
     })
     
     # 5.2.6. Descarga tablas   ================================================
     
     output$dwl_tab_ssocial_r <- downloadHandler(
+      
+      filename = function() {
+        paste("resultados-", input$indicador_ssocial_r, ".xlsx", sep = "")
+      },
+      content = function(file) {
         
-        filename = function() {
-            paste("resultados-", input$indicador_ssocial_r, ".xlsx", sep = "")
-        },
-        content = function(file) {
-            
-            openxlsx::write.xlsx(list_ssocial_r(), file)
-            
-        }
+        openxlsx::write.xlsx(list_ssocial_r(), file)
+        
+      }
     )
     
     
-### 6.1. Vivienda Políticas   ===============================================
     
-    # 6.1.1. Data reactiva   ================================================
+    
+    
+    
+    
+    
+    ### 6.1. Vivienda Políticas   ===============================================
+    
+    # 6.1.1. Data reactiva   =================================================
     
     dat_vivienda_pp <- reactive({
-        
-        req(input$indicador_vivienda_pp)
-        
-        dat %>%
-            filter(nomindicador == input$indicador_vivienda_pp) 
-        
+      
+      req(input$indicador_vivienda_pp)
+      
+      dat %>%
+        filter(nomindicador == input$indicador_vivienda_pp) 
+      
     })
     
     output$selector_vivienda_pp_corte <- renderUI({
-        
-        selectInput(
-            inputId = "vivienda_pp_corte",
-            label = "Seleccione corte:",
-            choices = dat_vivienda_pp() %>% 
-                select(corte) %>%
-                arrange(corte) %>% 
-                unique() %>% 
-                pull(),
-            selected = dat_vivienda_pp() %>% 
-                filter(jerarquia == "1") %>% 
-                distinct(corte) %>% 
-                pull())
+      
+      selectInput(
+        inputId = "vivienda_pp_corte",
+        label = "Seleccione corte:",
+        choices = dat_vivienda_pp() %>% 
+          select(corte) %>%
+          arrange(corte) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_vivienda_pp() %>% 
+          filter(jerarquia == "1") %>% 
+          distinct(corte) %>% 
+          pull()
+      )
+      
     })
     
+    output$selector_vivienda_pp_corte_2 <- renderUI({
+      
+      if(input$indicador_vivienda_pp %in% lista_ind_2){
+        
+        selectInput(
+          inputId = "vivienda_pp_corte_2",
+          label = "Seleccione primer corte:",
+          choices = dat_vivienda_pp() %>% 
+            select(corte_2) %>%
+            arrange(corte_2) %>% 
+            unique() %>% 
+            pull(),
+          selected = dat_vivienda_pp() %>% 
+            filter(jerarquia == "1") %>% 
+            distinct(corte_2) %>% 
+            pull()
+        )
+        
+      } else {
+        
+        NULL
+      }
+      
+    })
     
     # Selector de fecha
     output$s_vivienda_pp_fecha <- renderUI({
+      
+      if(input$vivienda_pp_corte == "Departamento" & input$indicador_vivienda_pp %notin% lista_ind_2) {
         
-        if(input$vivienda_pp_corte == "Departamento") {
-            
-            req(input$vivienda_pp_corte, input$indicador_vivienda_pp)
-            
-            req(nrow(dat_vivienda_pp()) > 0)
-            
-            selectInput(
-                inputId = "fecha_dpto_vivienda_pp",
-                label = "Seleccione año:",
-                choices = dat_vivienda_pp() %>% 
-                    filter(nomindicador == input$indicador_vivienda_pp) %>%
-                    drop_na(Valor) %>%
-                    select(ano) %>%
-                    arrange(desc(ano)) %>% 
-                    unique() %>% 
-                    pull(),
-                selected = 2019
-            )
-            
-            
-        } else  {
-            
-            req(input$vivienda_pp_corte, input$indicador_vivienda_pp)
-            req(nrow(dat_vivienda_pp()) > 0)
-            
-            tagList(
-                # tags$style(type = 'text/css', 
-                #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-                # div(id = 'big_slider',
-                
-                sliderInput("fecha_vivienda_pp", 
-                            label = "Rango de tiempo", 
-                            sep = "",
-                            dragRange = T,
-                            min = min(dat_vivienda_pp()$ano), 
-                            max = max(dat_vivienda_pp()$ano), 
-                            value = c(min(dat_vivienda_pp()$ano), 
-                                      max(dat_vivienda_pp()$ano))
-                )
-            )
-            # )
-            
-        }
+        req(input$vivienda_pp_corte, input$indicador_vivienda_pp)
+        
+        req(nrow(dat_vivienda_pp()) > 0)
+        
+        selectInput(
+          inputId = "fecha_dpto_vivienda_pp",
+          label = "Seleccione año:",
+          choices = dat_vivienda_pp() %>% 
+            filter(nomindicador == input$indicador_vivienda_pp) %>%
+            drop_na(Valor) %>%
+            select(ano) %>%
+            arrange(desc(ano)) %>% 
+            unique() %>% 
+            pull(),
+          selected = 2019
+        )
+        
+      } else if (input$indicador_vivienda_pp %in% lista_vunico){
+        
+        return(NULL)
+        
+      } else  {
+        
+        req(input$vivienda_pp_corte, input$indicador_vivienda_pp)
+        req(nrow(dat_vivienda_pp()) > 0)
+        
+        tagList(
+          # tags$style(type = 'text/css', 
+          #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+          # div(id = 'big_slider',
+          
+          sliderInput("fecha_vivienda_pp", 
+                      label = "Rango de tiempo", 
+                      sep = "",
+                      dragRange = T,
+                      min = min(dat_vivienda_pp()$ano), 
+                      max = max(dat_vivienda_pp()$ano), 
+                      value = c(min(dat_vivienda_pp()$ano), 
+                                max(dat_vivienda_pp()$ano))
+          )
+        )
+        
+      }
     })
     
-    
-    # Selector de corte según categoría y data temporal
-    dat_vivienda_pp_temp <- reactive({
-        
-        req(input$vivienda_pp_corte)
-        
-        dat_vivienda_pp() %>%
-            filter(corte == input$vivienda_pp_corte) %>%
-            janitor::remove_empty("cols")
-        
-    })
     
     output$chbox_vivienda_pp <- renderUI({
+      
+      if(input$vivienda_pp_corte != "Total" & input$indicador_vivienda_pp %notin% lista_vunico) {
         
-        if(input$vivienda_pp_corte %in% c("Departamento", "Total")) {
-            
-            return(NULL)
-            
-        } else if(input$vivienda_pp_corte != "Total") {
-            
-            checkboxGroupInput(inputId = "checkbox_vivienda_pp",
-                               label = "Seleccione categorías",
-                               inline = TRUE,
-                               choices =  dat_vivienda_pp_temp() %>%
-                                   distinct(get(names(dat_vivienda_pp_temp()[,ncol(dat_vivienda_pp_temp())]))) %>%
-                                   pull(),
-                               selected = dat_vivienda_pp_temp() %>%
-                                   distinct(get(names(dat_vivienda_pp_temp()[,ncol(dat_vivienda_pp_temp())]))) %>%
-                                   pull() 
-            )
-        }
+        vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
         
+        checkboxGroupInput(inputId = "checkbox_vivienda_pp",
+                           label = "Seleccione categorías",
+                           inline = TRUE,
+                           choices =  dat_vivienda_pp() %>%
+                             filter(corte == input$vivienda_pp_corte) %>% 
+                             distinct(!!vivienda_pp_corte_var) %>%
+                             pull(),
+                           selected = dat_vivienda_pp() %>%
+                             filter(corte == input$vivienda_pp_corte) %>% 
+                             distinct(!!vivienda_pp_corte_var) %>%
+                             pull()
+        )
+        
+      } else {
+        
+        return(NULL)
+      }
+      
     })
+    
+    # # Selector de corte según categoría y data temporal
+    # dat_vivienda_pp <- reactive({
+    #   
+    #   req(input$vivienda_pp_corte)
+    #   
+    #   if(input$indicador_vivienda_pp %in% lista_ind_2){
+    #     
+    #     dat_salarios <- dat_vivienda_pp() %>%
+    #       filter(corte_2 == input$vivienda_pp_corte_2) %>% 
+    #       filter(corte == input$vivienda_pp_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   } else {
+    #     
+    #     dat_vivienda_pp() %>%
+    #       filter(corte == input$vivienda_pp_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   }
+    # })
     
     # 6.1.2. Metadata   ======================================================
     
     # Title
     output$title_vivienda_pp <- renderUI({ 
-        helpText(HTML(unique(dat_vivienda_pp()$nomindicador)))
+      helpText(HTML(unique(dat_vivienda_pp()$nomindicador)))
     })
     
     # Subtitle
     output$subtitle_vivienda_pp <- renderUI({ 
-        helpText(HTML(unique(dat_vivienda_pp()$definicion)))
+      helpText(HTML(unique(dat_vivienda_pp()$definicion)))
     })
     
     # Calculo
     output$calculo_vivienda_pp <- renderUI({ 
-        helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_vivienda_pp()$calculo))))
+      helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_vivienda_pp()$calculo))))
     })
     
     
     # 6.1.3. Gráficos   ======================================================
     
     output$plot_vivienda_pp <- renderPlot({
+      
+      req(input$indicador_vivienda_pp)
+      
+      # Indicador especial (tiene solo una fecha entonces va con barras)
+      
+      if(input$indicador_vivienda_pp %in% lista_vunico) {
         
-        if(input$vivienda_pp_corte == "Total") {
-            
-            req(input$indicador_vivienda_pp, input$fecha_vivienda_pp)
-            
-            dat_plot <- dat_vivienda_pp() %>% 
-                filter(ano >= input$fecha_vivienda_pp[1] &
-                           ano <= input$fecha_vivienda_pp[2]) %>% 
-                filter(corte == "Total")
-            
-            plot_edu <- ggplot(dat_plot,
-                               aes(x = fecha, y = Valor)) +
-                geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-                geom_point(size = 3, colour = color_defecto) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(input$indicador_vivienda_pp),
-                     caption = wrapit(unique(dat_plot$cita))) 
-            
-            print(plot_edu)
-            ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
-            
-            
-        } else if(input$vivienda_pp_corte == "Departamento") {
-            
-            req(input$indicador_vivienda_pp, input$fecha_dpto_vivienda_pp)
-            
-            dat_plot <- dat_vivienda_pp() %>%
-                filter(corte == "Departamento") %>%
-                filter(ano == input$fecha_dpto_vivienda_pp) %>% 
-                select(departamento, Valor, fuente, cita)
-            
-            dep_j <- dep %>%
-                left_join(dat_plot, by = c("nombre" = "departamento"))
-            
-            plot_edu_dpto <- geouy::plot_geouy(dep_j,
-                                               "Valor",
-                                               viri_opt = "plasma",
-                                               l = "n") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_vivienda_pp, 
-                                   "en",
-                                   input$fecha_dpto_vivienda_pp), w = 80),
-                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
-                theme_bdd(base_size = 14)
-            
-            print(plot_edu_dpto)
-            ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
-            
-        } else if(input$vivienda_pp_corte != "Total") {
-            
-            req(input$vivienda_pp_corte, input$indicador_vivienda_pp, 
-                input$fecha_vivienda_pp, input$checkbox_vivienda_pp)
-            
-            dat_plot <- dat_vivienda_pp() %>%
-                filter(ano >= input$fecha_vivienda_pp[1] &
-                           ano <= input$fecha_vivienda_pp[2]) %>%
-                filter(corte == input$vivienda_pp_corte) %>%
-                janitor::remove_empty("cols")
-            
-            dat_plot <- filter(dat_plot,
-                               get(names(dat_plot[,ncol(dat_plot)])) %in% input$checkbox_vivienda_pp)
-            
-            plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
-                geom_line(size = 1, alpha = 0.5) +
-                geom_point(size = 3) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_vivienda_pp,
-                                   "según",
-                                   tolower(input$vivienda_pp_corte))),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_colour_manual(name = "", values = paleta_expandida) 
-            
-            print(plot_edu_corte)
-            ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
-            
+        req(input$vivienda_pp_corte, input$indicador_vivienda_pp)
+        
+        dat_plot <- dat_vivienda_pp() %>%
+          filter(corte == input$vivienda_pp_corte) %>%
+          janitor::remove_empty("cols")
+        
+        vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = vivienda_pp_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_vivienda_pp,
+                                    "según",
+                                    tolower(input$vivienda_pp_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+      } else if(input$indicador_vivienda_pp %in% lista_ind_2) {
+        
+        req(input$vivienda_pp_corte, input$vivienda_pp_corte_2,
+            input$fecha_vivienda_pp, input$checkbox_vivienda_pp)
+        
+        vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
+        
+        dat_plot <- dat_vivienda_pp() %>%
+          filter(ano >= input$fecha_vivienda_pp[1] &
+                   ano <= input$fecha_vivienda_pp[2]) %>%
+          filter(corte == input$vivienda_pp_corte) %>%
+          filter(prestador %in% input$checkbox_vivienda_pp)
+        
+        if(input$vivienda_pp_corte_2 == "Total"){
+          
+          dat_plot <- dat_plot %>% 
+            filter(corte_2 == "Total")
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = vivienda_pp_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_vivienda_pp,
+                                      "según",
+                                      tolower(input$vivienda_pp_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_manual(name = "", values = paleta_expandida) 
+          
+        } else if(input$vivienda_pp_corte_2 != "Total") {
+          
+          vivienda_pp_corte_var_2 <- rlang::sym(to_varname(input$vivienda_pp_corte_2))
+          
+          dat_plot <- dat_plot %>%
+            filter(corte_2 == input$vivienda_pp_corte_2)  
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = vivienda_pp_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_vivienda_pp,
+                                      "según",
+                                      tolower(input$vivienda_pp_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_brewer(palette = "Dark2") +
+            facet_wrap(as.formula(paste("~", vivienda_pp_corte_var_2)))
+          
         }
         
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$vivienda_pp_corte == "Total") {
+        
+        req(input$indicador_vivienda_pp, input$fecha_vivienda_pp)
+        
+        dat_plot <- dat_vivienda_pp() %>% 
+          filter(ano >= input$fecha_vivienda_pp[1] &
+                   ano <= input$fecha_vivienda_pp[2]) %>% 
+          filter(corte == "Total")
+        
+        plot_edu <- ggplot(dat_plot,
+                           aes(x = fecha, y = Valor)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_vivienda_pp),
+               caption = wrapit(unique(dat_plot$cita))) 
+        
+        print(plot_edu)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$vivienda_pp_corte == "Departamento" & 
+                input$indicador_vivienda_pp %notin% lista_ind_2 ) {
+        
+        req(input$indicador_vivienda_pp, input$fecha_dpto_vivienda_pp)
+        
+        dat_plot <- dat_vivienda_pp() %>%
+          filter(corte == "Departamento") %>%
+          filter(ano == input$fecha_dpto_vivienda_pp) %>% 
+          select(departamento, Valor, fuente, cita)
+        
+        dep_j <- dep %>%
+          left_join(dat_plot, by = c("nombre" = "departamento"))
+        
+        plot_edu_dpto <- geouy::plot_geouy(dep_j,
+                                           "Valor",
+                                           viri_opt = "plasma",
+                                           l = "n") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_vivienda_pp, 
+                                    "en",
+                                    input$fecha_dpto_vivienda_pp), w = 80),
+               caption = wrapit(unique(dat_plot$cita), w = 80)) +
+          theme_bdd(base_size = 14)
+        
+        print(plot_edu_dpto)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$vivienda_pp_corte != "Total") {
+        
+        req(input$vivienda_pp_corte, input$indicador_vivienda_pp, 
+            input$fecha_vivienda_pp, input$checkbox_vivienda_pp)
+        
+        dat_plot <- dat_vivienda_pp() %>%
+          filter(ano >= input$fecha_vivienda_pp[1] &
+                   ano <= input$fecha_vivienda_pp[2]) %>%
+          filter(corte == input$vivienda_pp_corte) %>%
+          janitor::remove_empty("cols")
+        
+        vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
+        
+        dat_plot <- filter(dat_plot,
+                           !!vivienda_pp_corte_var %in% input$checkbox_vivienda_pp)
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = vivienda_pp_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_vivienda_pp,
+                                    "según",
+                                    tolower(input$vivienda_pp_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
     })
     
     # 6.1.4. Descarga gráficos   =============================================
     
     output$baja_p_vivienda_pp <- downloadHandler(
-        filename <- function() {
-            paste("indicador vivienda pp", "png", sep = ".")
-        },
-        
-        content <- function(file) {
-            file.copy("www/indicador vivienda pp.png", file)
-        },
-        contentType = "www/indicador vivienda pp"
+      filename <- function() {
+        paste("indicador salud r", "png", sep = ".")
+      },
+      
+      content <- function(file) {
+        file.copy("www/indicador salud r.png", file)
+      },
+      contentType = "www/indicador salud r"
     )
     
     
@@ -3249,310 +4260,489 @@ server <- function(input, output) {
     
     # Data
     vivienda_pp_tab <- reactive({
+      
+      if(input$indicador_vivienda_pp %in% lista_ind_2) {
         
-        if(input$vivienda_pp_corte == "Total") {
-            
-            req(input$vivienda_pp_corte, input$indicador_vivienda_pp, input$fecha_vivienda_pp)
-            
-            dat_vivienda_pp() %>%
-                filter(corte == "Total") %>% 
-                filter(ano >= input$fecha_vivienda_pp[1] &
-                           ano <= input$fecha_vivienda_pp[2]) %>%
-                select(Fecha, Valor) %>%
-                arrange(desc(Fecha))
-            
-        } else if(input$vivienda_pp_corte != "Total") {
-            
-            req(input$vivienda_pp_corte, input$indicador_vivienda_pp, input$fecha_vivienda_pp)
-            
-            dat_cut <- dat_vivienda_pp() %>%
-                filter(corte == input$vivienda_pp_corte) %>%
-                janitor::remove_empty("cols") 
-            
-            dat_cut %>%     
-                filter(ano >= input$fecha_vivienda_pp[1] &
-                           ano <= input$fecha_vivienda_pp[2]) %>% 
-                select(Fecha, names(dat_cut[,ncol(dat_cut)]), Valor) %>%
-                arrange(desc(Fecha)) %>% 
-                pivot_wider(values_from = "Valor",
-                            names_from = names(dat_cut[,ncol(dat_cut)]))
-            
+        req(input$vivienda_pp_corte, input$indicador_vivienda_pp, input$fecha_vivienda_pp)
+        
+        dat_cut <- dat_vivienda_pp() %>%
+          filter(corte == input$vivienda_pp_corte) %>%
+          filter(prestador %in% input$checkbox_vivienda_pp)
+        
+        vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
+        
+        if(input$vivienda_pp_corte_2 == "Total"){
+          
+          dat_cut %>%
+            filter(ano >= input$fecha_vivienda_pp[1] &
+                     ano <= input$fecha_vivienda_pp[2]) %>%
+            filter(corte_2 == "Total") %>% 
+            select(Fecha, vivienda_pp_corte_var, Valor) %>%
+            arrange(desc(Fecha)) %>%
+            pivot_wider(values_from = "Valor",
+                        names_from = vivienda_pp_corte_var)
+          
+        } else if(input$vivienda_pp_corte_2 != "Total") {
+          
+          vivienda_pp_corte_var_2 <- rlang::sym(to_varname(input$vivienda_pp_corte_2))
+          
+          dat_cut %>%
+            filter(ano >= input$fecha_vivienda_pp[1] &
+                     ano <= input$fecha_vivienda_pp[2]) %>%
+            filter(corte_2 == input$vivienda_pp_corte_2) %>% 
+            select(Fecha, vivienda_pp_corte_var, vivienda_pp_corte_var_2, Valor) %>%
+            arrange(desc(Fecha)) %>%
+            pivot_wider(values_from = "Valor",
+                        names_from = vivienda_pp_corte_var) 
+          
         }
+        
+      } else if(input$vivienda_pp_corte == "Total") {
+        
+        req(input$vivienda_pp_corte, input$indicador_vivienda_pp, input$fecha_vivienda_pp)
+        
+        dat_vivienda_pp() %>%
+          filter(corte == "Total") %>% 
+          filter(ano >= input$fecha_vivienda_pp[1] &
+                   ano <= input$fecha_vivienda_pp[2]) %>%
+          select(Fecha, Valor) %>%
+          arrange(desc(Fecha))
+        
+      } else if(input$vivienda_pp_corte != "Total") {
+        
+        req(input$vivienda_pp_corte, input$indicador_vivienda_pp, input$fecha_vivienda_pp)
+        
+        vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
+        
+        dat_cut <- dat_vivienda_pp() %>%
+          filter(corte == input$vivienda_pp_corte) %>%
+          janitor::remove_empty("cols") 
+        
+        dat_cut %>%     
+          filter(ano >= input$fecha_vivienda_pp[1] &
+                   ano <= input$fecha_vivienda_pp[2]) %>% 
+          select(Fecha, vivienda_pp_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>% 
+          pivot_wider(values_from = "Valor",
+                      names_from = vivienda_pp_corte_var)
+        
+      }
     })
     
     # Metadata 
     vivienda_pp_meta <- reactive({
-        
-        dat_vivienda_pp() %>%
-          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
-          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-          distinct() %>% 
-          gather(key = "", value = " ")
-        
+      
+      dat_vivienda_pp() %>%
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+        distinct() %>% 
+        gather(key = "", value = " ")
+      
     })
     
     # Excel
     list_vivienda_pp <- reactive({
-        list_vivienda_pp <- list("Data" = vivienda_pp_tab(),
-                                "Metadata" = vivienda_pp_meta())
+      list_vivienda_pp <- list("Data" = vivienda_pp_tab(),
+                              "Metadata" = vivienda_pp_meta())
     })
     
     # Render
     output$table_vivienda_pp <- renderDT({
-        
-        DT::datatable(vivienda_pp_tab(),
-                      rownames = FALSE,
-                      caption = htmltools::tags$caption(
-                          input$indicador_vivienda_pp,
-                          style = "color:black; font-size:110%;")
-        ) 
-        
+      
+      DT::datatable(vivienda_pp_tab(),
+                    rownames = FALSE,
+                    caption = htmltools::tags$caption(
+                      input$indicador_vivienda_pp,
+                      style = "color:black; font-size:110%;")
+      ) 
+      
     })
     
     # 6.1.6. Descarga tablas   ================================================
     
     output$dwl_tab_vivienda_pp <- downloadHandler(
+      
+      filename = function() {
+        paste("resultados-", input$indicador_vivienda_pp, ".xlsx", sep = "")
+      },
+      content = function(file) {
         
-        filename = function() {
-            paste("resultados-", input$indicador_vivienda_pp, ".xlsx", sep = "")
-        },
-        content = function(file) {
-            
-            openxlsx::write.xlsx(list_vivienda_pp(), file)
-            
-        }
+        openxlsx::write.xlsx(list_vivienda_pp(), file)
+        
+      }
     )
     
     
-    ### 6.2. Salud Resultados   =============================================
+    
+    ### 6.2. Vivienda Resultados   =============================================
     
     # 6.2.1. Data reactiva   =================================================
     
     dat_vivienda_r <- reactive({
-        
-        req(input$indicador_vivienda_r)
-        
-        dat %>%
-            filter(nomindicador == input$indicador_vivienda_r) 
-        
+      
+      req(input$indicador_vivienda_r)
+      
+      dat %>%
+        filter(nomindicador == input$indicador_vivienda_r) 
+      
     })
     
     output$selector_vivienda_r_corte <- renderUI({
-        
-        selectInput(
-            inputId = "vivienda_r_corte",
-            label = "Seleccione corte:",
-            choices = dat_vivienda_r() %>% 
-                select(corte) %>%
-                arrange(corte) %>% 
-                unique() %>% 
-                pull(),
-            selected = dat_vivienda_r() %>% 
-                filter(jerarquia == "1") %>% 
-                distinct(corte) %>% 
-                pull())
+      
+      selectInput(
+        inputId = "vivienda_r_corte",
+        label = "Seleccione corte:",
+        choices = dat_vivienda_r() %>% 
+          select(corte) %>%
+          arrange(corte) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_vivienda_r() %>% 
+          filter(jerarquia == "1") %>% 
+          distinct(corte) %>% 
+          pull()
+      )
+      
     })
     
+    output$selector_vivienda_r_corte_2 <- renderUI({
+      
+      if(input$indicador_vivienda_r %in% lista_ind_2){
+        
+        selectInput(
+          inputId = "vivienda_r_corte_2",
+          label = "Seleccione primer corte:",
+          choices = dat_vivienda_r() %>% 
+            select(corte_2) %>%
+            arrange(corte_2) %>% 
+            unique() %>% 
+            pull(),
+          selected = dat_vivienda_r() %>% 
+            filter(jerarquia == "1") %>% 
+            distinct(corte_2) %>% 
+            pull()
+        )
+        
+      } else {
+        
+        NULL
+      }
+      
+    })
     
     # Selector de fecha
     output$s_vivienda_r_fecha <- renderUI({
+      
+      if(input$vivienda_r_corte == "Departamento" & input$indicador_vivienda_r %notin% lista_ind_2) {
         
-        if(input$vivienda_r_corte == "Departamento") {
-            
-            req(input$vivienda_r_corte, input$indicador_vivienda_r)
-            
-            req(nrow(dat_vivienda_r()) > 0)
-            
-            selectInput(
-                inputId = "fecha_dpto_vivienda_r",
-                label = "Seleccione año:",
-                choices = dat_vivienda_r() %>% 
-                    filter(nomindicador == input$indicador_vivienda_r) %>%
-                    drop_na(Valor) %>%
-                    select(ano) %>%
-                    arrange(desc(ano)) %>% 
-                    unique() %>% 
-                    pull(),
-                selected = 2019
-            )
-            
-            
-        } else  {
-            
-            req(input$vivienda_r_corte, input$indicador_vivienda_r)
-            req(nrow(dat_vivienda_r()) > 0)
-            
-            tagList(
-                # tags$style(type = 'text/css', 
-                #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-                # div(id = 'big_slider',
-                
-                sliderInput("fecha_vivienda_r", 
-                            label = "Rango de tiempo", 
-                            sep = "",
-                            dragRange = T,
-                            min = min(dat_vivienda_r()$ano), 
-                            max = max(dat_vivienda_r()$ano), 
-                            value = c(min(dat_vivienda_r()$ano), 
-                                      max(dat_vivienda_r()$ano))
-                )
-            )
-            # )
-            
-        }
+        req(input$vivienda_r_corte, input$indicador_vivienda_r)
+        
+        req(nrow(dat_vivienda_r()) > 0)
+        
+        selectInput(
+          inputId = "fecha_dpto_vivienda_r",
+          label = "Seleccione año:",
+          choices = dat_vivienda_r() %>% 
+            filter(nomindicador == input$indicador_vivienda_r) %>%
+            drop_na(Valor) %>%
+            select(ano) %>%
+            arrange(desc(ano)) %>% 
+            unique() %>% 
+            pull(),
+          selected = 2019
+        )
+        
+      } else if (input$indicador_vivienda_r %in% lista_vunico){
+        
+        return(NULL)
+        
+      } else  {
+        
+        req(input$vivienda_r_corte, input$indicador_vivienda_r)
+        req(nrow(dat_vivienda_r()) > 0)
+        
+        tagList(
+          # tags$style(type = 'text/css', 
+          #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+          # div(id = 'big_slider',
+          
+          sliderInput("fecha_vivienda_r", 
+                      label = "Rango de tiempo", 
+                      sep = "",
+                      dragRange = T,
+                      min = min(dat_vivienda_r()$ano), 
+                      max = max(dat_vivienda_r()$ano), 
+                      value = c(min(dat_vivienda_r()$ano), 
+                                max(dat_vivienda_r()$ano))
+          )
+        )
+        
+      }
     })
     
-    # Selector de corte según categoría y data temporal
-    dat_vivienda_r_temp <- reactive({
-        
-        req(input$vivienda_r_corte)
-        
-        dat_vivienda_r() %>%
-            filter(corte == input$vivienda_r_corte) %>%
-            janitor::remove_empty("cols")
-        
-    })
     
     output$chbox_vivienda_r <- renderUI({
+      
+      if(input$vivienda_r_corte != "Total" & input$indicador_vivienda_r %notin% lista_vunico) {
         
-        if(input$vivienda_r_corte %in% c("Departamento", "Total")) {
-            
-            return(NULL)
-            
-        } else if(input$vivienda_r_corte != "Total") {
-            
-            checkboxGroupInput(inputId = "checkbox_vivienda_r",
-                               label = "Seleccione categorías",
-                               inline = TRUE,
-                               choices =  dat_vivienda_r_temp() %>%
-                                   distinct(get(names(dat_vivienda_r_temp()[,ncol(dat_vivienda_r_temp())]))) %>%
-                                   pull(),
-                               selected = dat_vivienda_r_temp() %>%
-                                   distinct(get(names(dat_vivienda_r_temp()[,ncol(dat_vivienda_r_temp())]))) %>%
-                                   pull() 
-            )
-        }
+        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
         
+        checkboxGroupInput(inputId = "checkbox_vivienda_r",
+                           label = "Seleccione categorías",
+                           inline = TRUE,
+                           choices =  dat_vivienda_r() %>%
+                             filter(corte == input$vivienda_r_corte) %>% 
+                             distinct(!!vivienda_r_corte_var) %>%
+                             pull(),
+                           selected = dat_vivienda_r() %>%
+                             filter(corte == input$vivienda_r_corte) %>% 
+                             distinct(!!vivienda_r_corte_var) %>%
+                             pull()
+        )
+        
+      } else {
+        
+        return(NULL)
+      }
+      
     })
+    
+    # # Selector de corte según categoría y data temporal
+    # dat_vivienda_r <- reactive({
+    #   
+    #   req(input$vivienda_r_corte)
+    #   
+    #   if(input$indicador_vivienda_r %in% lista_ind_2){
+    #     
+    #     dat_salarios <- dat_vivienda_r() %>%
+    #       filter(corte_2 == input$vivienda_r_corte_2) %>% 
+    #       filter(corte == input$vivienda_r_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   } else {
+    #     
+    #     dat_vivienda_r() %>%
+    #       filter(corte == input$vivienda_r_corte) %>%
+    #       janitor::remove_empty("cols")
+    #     
+    #   }
+    # })
     
     # 6.2.2. Metadata   ======================================================
     
     # Title
     output$title_vivienda_r <- renderUI({ 
-        helpText(HTML(unique(dat_vivienda_r()$nomindicador)))
+      helpText(HTML(unique(dat_vivienda_r()$nomindicador)))
     })
     
     # Subtitle
     output$subtitle_vivienda_r <- renderUI({ 
-        helpText(HTML(unique(dat_vivienda_r()$definicion)))
+      helpText(HTML(unique(dat_vivienda_r()$definicion)))
     })
     
     # Calculo
     output$calculo_vivienda_r <- renderUI({ 
-        helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_vivienda_r()$calculo))))
+      helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_vivienda_r()$calculo))))
     })
     
     
     # 6.2.3. Gráficos   ======================================================
     
     output$plot_vivienda_r <- renderPlot({
+      
+      req(input$indicador_vivienda_r)
+      
+      # Indicador especial (tiene solo una fecha entonces va con barras)
+      
+      if(input$indicador_vivienda_r %in% lista_vunico) {
         
-        if(input$vivienda_r_corte == "Total") {
-            
-            req(input$indicador_vivienda_r, input$fecha_vivienda_r)
-            
-            dat_plot <- dat_vivienda_r() %>% 
-                filter(ano >= input$fecha_vivienda_r[1] &
-                           ano <= input$fecha_vivienda_r[2]) %>% 
-                filter(corte == "Total")
-            
-            plot_edu <- ggplot(dat_plot,
-                               aes(x = fecha, y = Valor)) +
-                geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-                geom_point(size = 3, colour = color_defecto) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(input$indicador_vivienda_r),
-                     caption = wrapit(unique(dat_plot$cita))) 
-            
-            print(plot_edu)
-            ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
-            
-            
-        } else if(input$vivienda_r_corte == "Departamento") {
-            
-            req(input$indicador_vivienda_r, input$fecha_dpto_vivienda_r)
-            
-            dat_plot <- dat_vivienda_r() %>%
-                filter(corte == "Departamento") %>%
-                filter(ano == input$fecha_dpto_vivienda_r) %>% 
-               select(departamento, Valor, fuente, cita)
-            
-            dep_j <- dep %>%
-                left_join(dat_plot, by = c("nombre" = "departamento"))
-            
-            plot_edu_dpto <- geouy::plot_geouy(dep_j,
-                                               "Valor",
-                                               viri_opt = "plasma",
-                                               l = "n") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_vivienda_r, 
-                                   "en",
-                                   input$fecha_dpto_vivienda_r), w = 80),
-                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
-                theme_bdd(base_size = 14)
-            
-            print(plot_edu_dpto)
-            ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
-            
-        } else if(input$vivienda_r_corte != "Total") {
-            
-            req(input$vivienda_r_corte, input$indicador_vivienda_r,
-                input$fecha_vivienda_r, input$checkbox_vivienda_r)
-            
-            dat_plot <- dat_vivienda_r() %>%
-                filter(ano >= input$fecha_vivienda_r[1] &
-                           ano <= input$fecha_vivienda_r[2]) %>%
-                filter(corte == input$vivienda_r_corte) %>%
-                janitor::remove_empty("cols")
-            
-            dat_plot <- filter(dat_plot,
-                               get(names(dat_plot[,ncol(dat_plot)])) %in% input$checkbox_vivienda_r)
-            
-            plot_edu_corte <- ggplot(dat_plot,
-                                     aes_string(x = "fecha", y = "Valor", colour = names(dat_plot[,ncol(dat_plot)]))) +
-                geom_line(size = 1, alpha = 0.5) +
-                geom_point(size = 3) +
-                theme_bdd(base_size = 12) +
-                theme(axis.text.x = element_text(angle = 0),
-                      legend.position = "bottom") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_vivienda_r,
-                                   "según",
-                                   tolower(input$vivienda_r_corte))),
-                     caption = wrapit(unique(dat_plot$cita))) +
-                scale_colour_manual(name = "", values = paleta_expandida) 
-            
-            print(plot_edu_corte)
-            ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
-            
+        req(input$vivienda_r_corte, input$indicador_vivienda_r)
+        
+        dat_plot <- dat_vivienda_r() %>%
+          filter(corte == input$vivienda_r_corte) %>%
+          janitor::remove_empty("cols")
+        
+        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = vivienda_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_vivienda_r,
+                                    "según",
+                                    tolower(input$vivienda_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+      } else if(input$indicador_vivienda_r %in% lista_ind_2) {
+        
+        req(input$vivienda_r_corte, input$vivienda_r_corte_2,
+            input$fecha_vivienda_r, input$checkbox_vivienda_r)
+        
+        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
+        
+        dat_plot <- dat_vivienda_r() %>%
+          filter(ano >= input$fecha_vivienda_r[1] &
+                   ano <= input$fecha_vivienda_r[2]) %>%
+          filter(corte == input$vivienda_r_corte) %>%
+          filter(prestador %in% input$checkbox_vivienda_r)
+        
+        if(input$vivienda_r_corte_2 == "Total"){
+          
+          dat_plot <- dat_plot %>% 
+            filter(corte_2 == "Total")
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = vivienda_r_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_vivienda_r,
+                                      "según",
+                                      tolower(input$vivienda_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_manual(name = "", values = paleta_expandida) 
+          
+        } else if(input$vivienda_r_corte_2 != "Total") {
+          
+          vivienda_r_corte_var_2 <- rlang::sym(to_varname(input$vivienda_r_corte_2))
+          
+          dat_plot <- dat_plot %>%
+            filter(corte_2 == input$vivienda_r_corte_2)  
+          
+          plot_edu_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha", y = "Valor", colour = vivienda_r_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_vivienda_r,
+                                      "según",
+                                      tolower(input$vivienda_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_brewer(palette = "Dark2") +
+            facet_wrap(as.formula(paste("~", vivienda_r_corte_var_2)))
+          
         }
         
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$vivienda_r_corte == "Total") {
+        
+        req(input$indicador_vivienda_r, input$fecha_vivienda_r)
+        
+        dat_plot <- dat_vivienda_r() %>% 
+          filter(ano >= input$fecha_vivienda_r[1] &
+                   ano <= input$fecha_vivienda_r[2]) %>% 
+          filter(corte == "Total")
+        
+        plot_edu <- ggplot(dat_plot,
+                           aes(x = fecha, y = Valor)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_vivienda_r),
+               caption = wrapit(unique(dat_plot$cita))) 
+        
+        print(plot_edu)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$vivienda_r_corte == "Departamento" & 
+                input$indicador_vivienda_r %notin% lista_ind_2 ) {
+        
+        req(input$indicador_vivienda_r, input$fecha_dpto_vivienda_r)
+        
+        dat_plot <- dat_vivienda_r() %>%
+          filter(corte == "Departamento") %>%
+          filter(ano == input$fecha_dpto_vivienda_r) %>% 
+          select(departamento, Valor, fuente, cita)
+        
+        dep_j <- dep %>%
+          left_join(dat_plot, by = c("nombre" = "departamento"))
+        
+        plot_edu_dpto <- geouy::plot_geouy(dep_j,
+                                           "Valor",
+                                           viri_opt = "plasma",
+                                           l = "n") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_vivienda_r, 
+                                    "en",
+                                    input$fecha_dpto_vivienda_r), w = 80),
+               caption = wrapit(unique(dat_plot$cita), w = 80)) +
+          theme_bdd(base_size = 14)
+        
+        print(plot_edu_dpto)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$vivienda_r_corte != "Total") {
+        
+        req(input$vivienda_r_corte, input$indicador_vivienda_r, 
+            input$fecha_vivienda_r, input$checkbox_vivienda_r)
+        
+        dat_plot <- dat_vivienda_r() %>%
+          filter(ano >= input$fecha_vivienda_r[1] &
+                   ano <= input$fecha_vivienda_r[2]) %>%
+          filter(corte == input$vivienda_r_corte) %>%
+          janitor::remove_empty("cols")
+        
+        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
+        
+        dat_plot <- filter(dat_plot,
+                           !!vivienda_r_corte_var %in% input$checkbox_vivienda_r)
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha", y = "Valor", colour = vivienda_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_vivienda_r,
+                                    "según",
+                                    tolower(input$vivienda_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
     })
     
     # 6.2.4. Descarga gráficos   =============================================
     
     output$baja_p_vivienda_r <- downloadHandler(
-        filename <- function() {
-            paste("indicador vivienda r", "png", sep = ".")
-        },
-        
-        content <- function(file) {
-            file.copy("www/indicador vivienda r.png", file)
-        },
-        contentType = "www/indicador vivienda r"
+      filename <- function() {
+        paste("indicador salud r", "png", sep = ".")
+      },
+      
+      content <- function(file) {
+        file.copy("www/indicador salud r.png", file)
+      },
+      contentType = "www/indicador salud r"
     )
     
     
@@ -3560,79 +4750,118 @@ server <- function(input, output) {
     
     # Data
     vivienda_r_tab <- reactive({
+      
+      if(input$indicador_vivienda_r %in% lista_ind_2) {
         
-        if(input$vivienda_r_corte == "Total") {
-            
-            req(input$vivienda_r_corte, input$indicador_vivienda_r, input$fecha_vivienda_r)
-            
-            dat_vivienda_r() %>%
-                filter(corte == "Total") %>% 
-                filter(ano >= input$fecha_vivienda_r[1] &
-                           ano <= input$fecha_vivienda_r[2]) %>%
-                select(Fecha, Valor) %>%
-                arrange(desc(Fecha))
-            
-        } else if(input$vivienda_r_corte != "Total") {
-            
-            req(input$vivienda_r_corte, input$indicador_vivienda_r, input$fecha_vivienda_r)
-            
-            dat_cut <- dat_vivienda_r() %>%
-                filter(corte == input$vivienda_r_corte) %>%
-                janitor::remove_empty("cols") 
-            
-            dat_cut %>%     
-                filter(ano >= input$fecha_vivienda_r[1] &
-                           ano <= input$fecha_vivienda_r[2]) %>% 
-                select(Fecha, names(dat_cut[,ncol(dat_cut)]), Valor) %>%
-                arrange(desc(Fecha)) %>% 
-                pivot_wider(values_from = "Valor",
-                            names_from = names(dat_cut[,ncol(dat_cut)]))
-            
+        req(input$vivienda_r_corte, input$indicador_vivienda_r, input$fecha_vivienda_r)
+        
+        dat_cut <- dat_vivienda_r() %>%
+          filter(corte == input$vivienda_r_corte) %>%
+          filter(prestador %in% input$checkbox_vivienda_r)
+        
+        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
+        
+        if(input$vivienda_r_corte_2 == "Total"){
+          
+          dat_cut %>%
+            filter(ano >= input$fecha_vivienda_r[1] &
+                     ano <= input$fecha_vivienda_r[2]) %>%
+            filter(corte_2 == "Total") %>% 
+            select(Fecha, vivienda_r_corte_var, Valor) %>%
+            arrange(desc(Fecha)) %>%
+            pivot_wider(values_from = "Valor",
+                        names_from = vivienda_r_corte_var)
+          
+        } else if(input$vivienda_r_corte_2 != "Total") {
+          
+          vivienda_r_corte_var_2 <- rlang::sym(to_varname(input$vivienda_r_corte_2))
+          
+          dat_cut %>%
+            filter(ano >= input$fecha_vivienda_r[1] &
+                     ano <= input$fecha_vivienda_r[2]) %>%
+            filter(corte_2 == input$vivienda_r_corte_2) %>% 
+            select(Fecha, vivienda_r_corte_var, vivienda_r_corte_var_2, Valor) %>%
+            arrange(desc(Fecha)) %>%
+            pivot_wider(values_from = "Valor",
+                        names_from = vivienda_r_corte_var) 
+          
         }
+        
+      } else if(input$vivienda_r_corte == "Total") {
+        
+        req(input$vivienda_r_corte, input$indicador_vivienda_r, input$fecha_vivienda_r)
+        
+        dat_vivienda_r() %>%
+          filter(corte == "Total") %>% 
+          filter(ano >= input$fecha_vivienda_r[1] &
+                   ano <= input$fecha_vivienda_r[2]) %>%
+          select(Fecha, Valor) %>%
+          arrange(desc(Fecha))
+        
+      } else if(input$vivienda_r_corte != "Total") {
+        
+        req(input$vivienda_r_corte, input$indicador_vivienda_r, input$fecha_vivienda_r)
+        
+        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
+        
+        dat_cut <- dat_vivienda_r() %>%
+          filter(corte == input$vivienda_r_corte) %>%
+          janitor::remove_empty("cols") 
+        
+        dat_cut %>%     
+          filter(ano >= input$fecha_vivienda_r[1] &
+                   ano <= input$fecha_vivienda_r[2]) %>% 
+          select(Fecha, vivienda_r_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>% 
+          pivot_wider(values_from = "Valor",
+                      names_from = vivienda_r_corte_var)
+        
+      }
     })
     
     # Metadata 
     vivienda_r_meta <- reactive({
-        
-        dat_vivienda_r() %>%
-          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
-          mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-          distinct() %>% 
-          gather(key = "", value = " ")
-        
+      
+      dat_vivienda_r() %>%
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+        distinct() %>% 
+        gather(key = "", value = " ")
+      
     })
     
     # Excel
     list_vivienda_r <- reactive({
-        list_vivienda_r <- list("Data" = vivienda_r_tab(),
+      list_vivienda_r <- list("Data" = vivienda_r_tab(),
                                "Metadata" = vivienda_r_meta())
     })
     
     # Render
     output$table_vivienda_r <- renderDT({
-        
-        DT::datatable(vivienda_r_tab(),
-                      rownames = FALSE,
-                      caption = htmltools::tags$caption(
-                          input$indicador_vivienda_r,
-                          style = "color:black; font-size:110%;")
-        ) 
-        
+      
+      DT::datatable(vivienda_r_tab(),
+                    rownames = FALSE,
+                    caption = htmltools::tags$caption(
+                      input$indicador_vivienda_r,
+                      style = "color:black; font-size:110%;")
+      ) 
+      
     })
     
     # 6.2.6. Descarga tablas   ================================================
     
     output$dwl_tab_vivienda_r <- downloadHandler(
+      
+      filename = function() {
+        paste("resultados-", input$indicador_vivienda_r, ".xlsx", sep = "")
+      },
+      content = function(file) {
         
-        filename = function() {
-            paste("resultados-", input$indicador_vivienda_r, ".xlsx", sep = "")
-        },
-        content = function(file) {
-            
-            openxlsx::write.xlsx(list_vivienda_r(), file)
-            
-        }
+        openxlsx::write.xlsx(list_vivienda_r(), file)
+        
+      }
     )
+    
 }
 
 # Run the application
