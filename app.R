@@ -136,7 +136,7 @@ lista_ind_2 <- dat %>%
 # Lista indicadore con valores únicos
 lista_vunico <- dat %>% 
   group_by(nomindicador) %>% 
-  distinct(fecha) %>% 
+  distinct(fecha_cat) %>% 
   summarise(n = n()) %>% 
   filter(n == 1) %>% 
   pull(nomindicador)
