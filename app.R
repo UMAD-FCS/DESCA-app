@@ -1467,6 +1467,7 @@ server <- function(input, output) {
                            pull(),
                          selected = dat_edu_pp() %>%
                            filter(corte == input$edu_pp_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
                            distinct(!!edu_pp_corte_var) %>%
                            pull()
       )
@@ -1956,6 +1957,7 @@ server <- function(input, output) {
                            pull(),
                          selected = dat_edu_r() %>%
                            filter(corte == input$edu_r_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
                            distinct(!!edu_r_corte_var) %>%
                            pull()
       )
@@ -2447,6 +2449,7 @@ server <- function(input, output) {
                            pull(),
                          selected = dat_salud_pp() %>%
                            filter(corte == input$salud_pp_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
                            distinct(!!salud_pp_corte_var) %>%
                            pull()
       )
@@ -2936,6 +2939,7 @@ server <- function(input, output) {
                              pull(),
                            selected = dat_salud_r() %>%
                              filter(corte == input$salud_r_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
                              distinct(!!salud_r_corte_var) %>%
                              pull()
                            )
@@ -3426,6 +3430,7 @@ server <- function(input, output) {
                              pull(),
                            selected = dat_ssocial_pp() %>%
                              filter(corte == input$ssocial_pp_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
                              distinct(!!ssocial_pp_corte_var) %>%
                              pull()
         )
@@ -3914,6 +3919,7 @@ server <- function(input, output) {
                              pull(),
                            selected = dat_ssocial_r() %>%
                              filter(corte == input$ssocial_r_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
                              distinct(!!ssocial_r_corte_var) %>%
                              pull()
         )
@@ -4409,6 +4415,7 @@ server <- function(input, output) {
                              pull(),
                            selected = dat_vivienda_pp() %>%
                              filter(corte == input$vivienda_pp_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
                              distinct(!!vivienda_pp_corte_var) %>%
                              pull()
         )
@@ -4899,6 +4906,7 @@ server <- function(input, output) {
                              pull(),
                            selected = dat_vivienda_r() %>%
                              filter(corte == input$vivienda_r_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
                              distinct(!!vivienda_r_corte_var) %>%
                              pull()
         )
@@ -5387,6 +5395,7 @@ server <- function(input, output) {
                              pull(),
                            selected = dat_trabajo_pp() %>%
                              filter(corte == input$trabajo_pp_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
                              distinct(!!trabajo_pp_corte_var) %>%
                              pull()
         )
@@ -5877,6 +5886,7 @@ server <- function(input, output) {
                              pull(),
                            selected = dat_trabajo_r() %>%
                              filter(corte == input$trabajo_r_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
                              distinct(!!trabajo_r_corte_var) %>%
                              pull()
         )
@@ -6365,6 +6375,7 @@ server <- function(input, output) {
                              pull(),
                            selected = dat_ambiente_pp() %>%
                              filter(corte == input$ambiente_pp_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
                              distinct(!!ambiente_pp_corte_var) %>%
                              pull()
         )
@@ -6855,6 +6866,7 @@ server <- function(input, output) {
                              pull(),
                            selected = dat_ambiente_r() %>%
                              filter(corte == input$ambiente_r_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
                              distinct(!!ambiente_r_corte_var) %>%
                              pull()
         )
