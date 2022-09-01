@@ -1525,7 +1525,7 @@ server <- function(input, output) {
     
     # Indicador especial (tiene solo una fecha entonces va con barras)
     
-    if(input$indicador_edu_pp %in% lista_vunico) {
+    if(input$indicador_edu_pp %in% lista_vunico & input$edu_pp_corte != "Departamento") {
       
       req(input$edu_pp_corte, input$indicador_edu_pp)
       
@@ -2014,7 +2014,7 @@ server <- function(input, output) {
     
     # Indicador especial (tiene solo una fecha entonces va con barras)
     
-    if(input$indicador_edu_r %in% lista_vunico) {
+    if(input$indicador_edu_r %in% lista_vunico & input$edu_r_corte != "Departamento") {
       
       req(input$edu_r_corte, input$indicador_edu_r)
       
@@ -2505,7 +2505,7 @@ server <- function(input, output) {
     
     # Indicador especial (tiene solo una fecha entonces va con barras)
     
-    if(input$indicador_salud_pp %in% lista_vunico) {
+    if(input$indicador_salud_pp %in% lista_vunico & input$salud_pp_corte != "Departamento") {
       
       req(input$salud_pp_corte, input$indicador_salud_pp)
       
@@ -2994,7 +2994,7 @@ server <- function(input, output) {
       
       # Indicador especial (tiene solo una fecha entonces va con barras)
       
-      if(input$indicador_salud_r %in% lista_vunico) {
+      if(input$indicador_salud_r %in% lista_vunico & input$salud_r_corte != "Departamento") {
       
       req(input$salud_r_corte, input$indicador_salud_r)
       
@@ -3484,7 +3484,7 @@ server <- function(input, output) {
       
       # Indicador especial (tiene solo una fecha entonces va con barras)
       
-      if(input$indicador_ssocial_pp %in% lista_vunico) {
+      if(input$indicador_ssocial_pp %in% lista_vunico & input$social_pp_corte != "Departamento") {
         
         req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
         
@@ -3972,7 +3972,7 @@ server <- function(input, output) {
       
       # Indicador especial (tiene solo una fecha entonces va con barras)
       
-      if(input$indicador_ssocial_r %in% lista_vunico) {
+      if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte != "Departamento") {
         
         req(input$ssocial_r_corte, input$indicador_ssocial_r)
         
@@ -4467,7 +4467,7 @@ server <- function(input, output) {
       
       # Indicador especial (tiene solo una fecha entonces va con barras)
       
-      if(input$indicador_vivienda_pp %in% lista_vunico) {
+      if(input$indicador_vivienda_pp %in% lista_vunico & input$vivienda_pp_corte != "Departamento") {
         
         req(input$vivienda_pp_corte, input$indicador_vivienda_pp)
         
@@ -4957,7 +4957,7 @@ server <- function(input, output) {
       
       # Indicador especial (tiene solo una fecha entonces va con barras)
       
-      if(input$indicador_vivienda_r %in% lista_vunico) {
+      if(input$indicador_vivienda_r %in% lista_vunico & input$vivienda_r_corte != "Departamento") {
         
         req(input$vivienda_r_corte, input$indicador_vivienda_r)
         
@@ -5445,7 +5445,7 @@ server <- function(input, output) {
       
       # Indicador especial (tiene solo una fecha entonces va con barras)
       
-      if(input$indicador_trabajo_pp %in% lista_vunico) {
+      if(input$indicador_trabajo_pp %in% lista_vunico & input$trabajo_pp_corte != "Departamento") {
         
         req(input$trabajo_pp_corte, input$indicador_trabajo_pp)
         
@@ -5935,7 +5935,7 @@ server <- function(input, output) {
       
       # Indicador especial (tiene solo una fecha entonces va con barras)
       
-      if(input$indicador_trabajo_r %in% lista_vunico) {
+      if(input$indicador_trabajo_r %in% lista_vunico & input$trabajo_r_corte != "Departamento") {
         
         req(input$trabajo_r_corte, input$indicador_trabajo_r)
         
@@ -6423,7 +6423,7 @@ server <- function(input, output) {
       
       # Indicador especial (tiene solo una fecha entonces va con barras)
       
-      if(input$indicador_ambiente_pp %in% lista_vunico) {
+      if(input$indicador_ambiente_pp %in% lista_vunico & input$ambiente_pp_corte != "Departamento") {
         
         req(input$ambiente_pp_corte, input$indicador_ambiente_pp)
         
@@ -6913,7 +6913,7 @@ server <- function(input, output) {
       
       # Indicador especial (tiene solo una fecha entonces va con barras)
       
-      if(input$indicador_ambiente_r %in% lista_vunico) {
+      if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte != "Departamento") {
         
         req(input$ambiente_r_corte, input$indicador_ambiente_r)
         
