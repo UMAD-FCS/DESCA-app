@@ -1606,7 +1606,7 @@ server <- function(input, output) {
                                     "según",
                                     tolower(input$edu_pp_corte))),
                caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_brewer(palette = "Dark2") +
+          scale_colour_manual(name = "", values = paleta_expandida) + 
           facet_wrap(as.formula(paste("~", edu_pp_corte_var_2)))
         
       }
@@ -1727,11 +1727,11 @@ server <- function(input, output) {
       
       req(input$edu_pp_corte, input$indicador_edu_pp, input$fecha_edu_pp)
       
+      edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+      
       dat_cut <- dat_edu_pp() %>%
         filter(corte == input$edu_pp_corte) %>%
-        filter(prestador %in% input$checkbox_edu_pp)
-      
-      edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+        filter(!!edu_pp_corte_var %in% input$checkbox_edu_pp)
       
       if(input$edu_pp_corte_2 == "Total"){
         
@@ -2096,7 +2096,7 @@ server <- function(input, output) {
                                     "según",
                                     tolower(input$edu_r_corte))),
                caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_brewer(palette = "Dark2") +
+          scale_colour_manual(name = "", values = paleta_expandida) + 
           facet_wrap(as.formula(paste("~", edu_r_corte_var_2)))
         
       }
@@ -2217,11 +2217,11 @@ server <- function(input, output) {
       
       req(input$edu_r_corte, input$indicador_edu_r, input$fecha_edu_r)
       
+      edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+      
       dat_cut <- dat_edu_r() %>%
         filter(corte == input$edu_r_corte) %>%
-        filter(prestador %in% input$checkbox_edu_r)
-      
-      edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+        filter(!!edu_r_corte_var %in% input$checkbox_edu_r)
       
       if(input$edu_r_corte_2 == "Total"){
         
@@ -2588,7 +2588,7 @@ server <- function(input, output) {
                                     "según",
                                     tolower(input$salud_pp_corte))),
                caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_brewer(palette = "Dark2") +
+          scale_colour_manual(name = "", values = paleta_expandida) + 
           facet_wrap(as.formula(paste("~", salud_pp_corte_var_2)))
         
       }
@@ -2709,11 +2709,11 @@ server <- function(input, output) {
       
       req(input$salud_pp_corte, input$indicador_salud_pp, input$fecha_salud_pp)
       
+      salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
+      
       dat_cut <- dat_salud_pp() %>%
         filter(corte == input$salud_pp_corte) %>%
-        filter(prestador %in% input$checkbox_salud_pp)
-      
-      salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
+        filter(!!salud_pp_corte_var %in% input$checkbox_salud_pp)
       
       if(input$salud_pp_corte_2 == "Total"){
         
@@ -3078,7 +3078,7 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$salud_r_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_brewer(palette = "Dark2") +
+            scale_colour_manual(name = "", values = paleta_expandida) + 
             facet_wrap(as.formula(paste("~", salud_r_corte_var_2)))
           
         }
@@ -3198,12 +3198,12 @@ server <- function(input, output) {
       if(input$indicador_salud_r %in% lista_ind_2) {
       
       req(input$salud_r_corte, input$indicador_salud_r, input$fecha_salud_r)
-      
-      dat_cut <- dat_salud_r() %>%
+        
+        salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+        
+        dat_cut <- dat_salud_r() %>%
         filter(corte == input$salud_r_corte) %>%
-        filter(prestador %in% input$checkbox_salud_r)
-      
-      salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+        filter(!!salud_r_corte_var %in% input$checkbox_salud_r)
       
       if(input$salud_r_corte_2 == "Total"){
         
@@ -3569,7 +3569,7 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$ssocial_pp_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_brewer(palette = "Dark2") +
+            scale_colour_manual(name = "", values = paleta_expandida) + 
             facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
           
         }
@@ -3690,11 +3690,11 @@ server <- function(input, output) {
         
         req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
         
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        
         dat_cut <- dat_ssocial_pp() %>%
           filter(corte == input$ssocial_pp_corte) %>%
-          filter(prestador %in% input$checkbox_ssocial_pp)
-        
-        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+          filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp)
         
         if(input$ssocial_pp_corte_2 == "Total"){
           
@@ -4058,7 +4058,7 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$ssocial_r_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_brewer(palette = "Dark2") +
+            scale_colour_manual(name = "", values = paleta_expandida) + 
             facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
           
         }
@@ -4179,11 +4179,11 @@ server <- function(input, output) {
         
         req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
         
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
         dat_cut <- dat_ssocial_r() %>%
           filter(corte == input$ssocial_r_corte) %>%
-          filter(prestador %in% input$checkbox_ssocial_r)
-        
-        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+          filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r)
         
         if(input$ssocial_r_corte_2 == "Total"){
           
@@ -4554,7 +4554,7 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$vivienda_pp_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_brewer(palette = "Dark2") +
+            scale_colour_manual(name = "", values = paleta_expandida) + 
             facet_wrap(as.formula(paste("~", vivienda_pp_corte_var_2)))
           
         }
@@ -4675,11 +4675,11 @@ server <- function(input, output) {
         
         req(input$vivienda_pp_corte, input$indicador_vivienda_pp, input$fecha_vivienda_pp)
         
+        vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
+        
         dat_cut <- dat_vivienda_pp() %>%
           filter(corte == input$vivienda_pp_corte) %>%
-          filter(prestador %in% input$checkbox_vivienda_pp)
-        
-        vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
+          filter(!!vivienda_pp_corte_var %in% input$checkbox_vivienda_pp)
         
         if(input$vivienda_pp_corte_2 == "Total"){
           
@@ -5045,7 +5045,7 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$vivienda_r_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_brewer(palette = "Dark2") +
+            scale_colour_manual(name = "", values = paleta_expandida) + 
             facet_wrap(as.formula(paste("~", vivienda_r_corte_var_2)))
           
         }
@@ -5166,11 +5166,11 @@ server <- function(input, output) {
         
         req(input$vivienda_r_corte, input$indicador_vivienda_r, input$fecha_vivienda_r)
         
+        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
+        
         dat_cut <- dat_vivienda_r() %>%
           filter(corte == input$vivienda_r_corte) %>%
-          filter(prestador %in% input$checkbox_vivienda_r)
-        
-        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
+          filter(!!vivienda_r_corte_var %in% input$checkbox_vivienda_r)
         
         if(input$vivienda_r_corte_2 == "Total"){
           
@@ -5534,7 +5534,7 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$trabajo_pp_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_brewer(palette = "Dark2") +
+            scale_colour_manual(name = "", values = paleta_expandida) + 
             facet_wrap(as.formula(paste("~", trabajo_pp_corte_var_2)))
           
         }
@@ -5655,11 +5655,11 @@ server <- function(input, output) {
         
         req(input$trabajo_pp_corte, input$indicador_trabajo_pp, input$fecha_trabajo_pp)
         
+        trabajo_pp_corte_var <- rlang::sym(to_varname(input$trabajo_pp_corte))
+        
         dat_cut <- dat_trabajo_pp() %>%
           filter(corte == input$trabajo_pp_corte) %>%
-          filter(prestador %in% input$checkbox_trabajo_pp)
-        
-        trabajo_pp_corte_var <- rlang::sym(to_varname(input$trabajo_pp_corte))
+          filter(!!trabajo_pp_corte_var %in% input$checkbox_trabajo_pp)
         
         if(input$trabajo_pp_corte_2 == "Total"){
           
@@ -6025,7 +6025,7 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$trabajo_r_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_brewer(palette = "Dark2") +
+            scale_colour_manual(name = "", values = paleta_expandida) +
             facet_wrap(as.formula(paste("~", trabajo_r_corte_var_2)))
           
         }
@@ -6146,11 +6146,11 @@ server <- function(input, output) {
         
         req(input$trabajo_r_corte, input$indicador_trabajo_r, input$fecha_trabajo_r)
         
+        trabajo_r_corte_var <- rlang::sym(to_varname(input$trabajo_r_corte))
+        
         dat_cut <- dat_trabajo_r() %>%
           filter(corte == input$trabajo_r_corte) %>%
-          filter(prestador %in% input$checkbox_trabajo_r)
-        
-        trabajo_r_corte_var <- rlang::sym(to_varname(input$trabajo_r_corte))
+          filter(!!trabajo_r_corte_var %in% input$checkbox_trabajo_r)
         
         if(input$trabajo_r_corte_2 == "Total"){
           
@@ -6514,8 +6514,8 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$ambiente_pp_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_brewer(palette = "Dark2") +
-            facet_wrap(as.formula(paste("~", ambiente_pp_corte_var_2)))
+            scale_colour_manual(name = "", values = paleta_expandida) + 
+          facet_wrap(as.formula(paste("~", ambiente_pp_corte_var_2)))
           
         }
         
@@ -6635,11 +6635,11 @@ server <- function(input, output) {
         
         req(input$ambiente_pp_corte, input$indicador_ambiente_pp, input$fecha_ambiente_pp)
         
+        ambiente_pp_corte_var <- rlang::sym(to_varname(input$ambiente_pp_corte))
+        
         dat_cut <- dat_ambiente_pp() %>%
           filter(corte == input$ambiente_pp_corte) %>%
-          filter(prestador %in% input$checkbox_ambiente_pp)
-        
-        ambiente_pp_corte_var <- rlang::sym(to_varname(input$ambiente_pp_corte))
+          filter(!!ambiente_pp_corte_var %in% input$checkbox_ambiente_pp)
         
         if(input$ambiente_pp_corte_2 == "Total"){
           
@@ -7005,8 +7005,8 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$ambiente_r_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_brewer(palette = "Dark2") +
-            facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
+            scale_colour_manual(name = "", values = paleta_expandida) +
+          facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
           
         }
         
@@ -7126,11 +7126,11 @@ server <- function(input, output) {
         
         req(input$ambiente_r_corte, input$indicador_ambiente_r, input$fecha_ambiente_r)
         
+        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+        
         dat_cut <- dat_ambiente_r() %>%
           filter(corte == input$ambiente_r_corte) %>%
-          filter(prestador %in% input$checkbox_ambiente_r)
-        
-        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+          filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
         
         if(input$ambiente_r_corte_2 == "Total"){
           
