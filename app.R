@@ -1534,9 +1534,32 @@ server <- function(input, output) {
         filter(corte == input$edu_pp_corte) %>%
         janitor::remove_empty("cols")
       
-      edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+      if(input$edu_pp_corte == "Total"){
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor")) +
+          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_edu_pp,
+                                    "según",
+                                    tolower(input$edu_pp_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else {
       
-      plot_edu_corte <- ggplot(dat_plot,
+        edu_pp_corte_var <- rlang::sym(to_varname(input$edu_pp_corte))
+        
+        plot_edu_corte <- ggplot(dat_plot,
                                aes_string(x = "fecha_cat", y = "Valor",
                                           fill = edu_pp_corte_var)) +
         geom_col(position = "dodge", width = .7, alpha = .8) +
@@ -1554,6 +1577,9 @@ server <- function(input, output) {
       
       print(plot_edu_corte)
       ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      
+      }
+      
       
     } else if(input$indicador_edu_pp %in% lista_ind_2) {
       
@@ -2024,23 +2050,51 @@ server <- function(input, output) {
         filter(corte == input$edu_r_corte) %>%
         janitor::remove_empty("cols")
       
-      edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
-      
-      plot_edu_corte <- ggplot(dat_plot,
-                               aes_string(x = "fecha_cat", y = "Valor",
-                                          fill = edu_r_corte_var)) +
-        geom_col(position = "dodge", width = .7, alpha = .8) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x=element_blank(),
-              legend.position = "bottom") +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_edu_r,
-                                  "según",
-                                  tolower(input$edu_r_corte),
-                                  "en",
-                                  unique(dat_plot$fecha_cat))),
-             caption = wrapit(unique(dat_plot$cita))) +
-        scale_fill_brewer(name = "", palette = "Paired") 
+      if(input$edu_r_corte == "Total"){
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor")) +
+          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_edu_r,
+                                    "según",
+                                    tolower(input$edu_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else {
+        
+        edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+        
+        plot_edu_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = edu_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_edu_r,
+                                    "según",
+                                    tolower(input$edu_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") 
+        
+        print(plot_edu_corte)
+        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+        
+      }
       
       print(plot_edu_corte)
       ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
@@ -2516,23 +2570,51 @@ server <- function(input, output) {
         filter(corte == input$salud_pp_corte) %>%
         janitor::remove_empty("cols")
       
-      salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
-      
-      plot_salud_corte <- ggplot(dat_plot,
-                               aes_string(x = "fecha_cat", y = "Valor",
-                                          fill = salud_pp_corte_var)) +
-        geom_col(position = "dodge", width = .7, alpha = .8) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x=element_blank(),
-              legend.position = "bottom") +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_salud_pp,
-                                  "según",
-                                  tolower(input$salud_pp_corte),
-                                  "en",
-                                  unique(dat_plot$fecha_cat))),
-             caption = wrapit(unique(dat_plot$cita))) +
-        scale_fill_brewer(name = "", palette = "Paired") 
+      if(input$salud_pp_corte == "Total"){
+        
+        plot_salud_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor")) +
+          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_salud_pp,
+                                    "según",
+                                    tolower(input$salud_pp_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) 
+        
+        print(plot_salud_corte)
+        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else {
+        
+        salud_pp_corte_var <- rlang::sym(to_varname(input$salud_pp_corte))
+        
+        plot_salud_corte <- ggplot(dat_plot,
+                                 aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = salud_pp_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_salud_pp,
+                                    "según",
+                                    tolower(input$salud_pp_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") 
+        
+        print(plot_salud_corte)
+        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+        
+      }
       
       print(plot_salud_corte)
       ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
@@ -3006,23 +3088,51 @@ server <- function(input, output) {
           filter(corte == input$salud_r_corte) %>%
           janitor::remove_empty("cols")
         
-        salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
-        
-        plot_salud_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = salud_r_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_salud_r,
-                                    "según",
-                                    tolower(input$salud_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") 
+        if(input$salud_r_corte == "Total"){
+          
+          plot_salud_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha_cat", y = "Valor")) +
+            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_salud_r,
+                                      "según",
+                                      tolower(input$salud_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+          print(plot_salud_corte)
+          ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+          
+          
+        } else {
+          
+          salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+          
+          plot_salud_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha_cat", y = "Valor",
+                                              fill = salud_r_corte_var)) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_salud_r,
+                                      "según",
+                                      tolower(input$salud_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_salud_corte)
+          ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+          
+        }
         
         print(plot_salud_corte)
         ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
@@ -3497,23 +3607,51 @@ server <- function(input, output) {
           filter(corte == input$ssocial_pp_corte) %>%
           janitor::remove_empty("cols")
         
-        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-        
-        plot_ssocial_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = ssocial_pp_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_pp,
-                                    "según",
-                                    tolower(input$ssocial_pp_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") 
+        if(input$ssocial_pp_corte == "Total"){
+          
+          plot_ssocial_corte <- ggplot(dat_plot,
+                                     aes_string(x = "fecha_cat", y = "Valor")) +
+            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ssocial_pp,
+                                      "según",
+                                      tolower(input$ssocial_pp_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+          print(plot_ssocial_corte)
+          ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+          
+          
+        } else {
+          
+          ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+          
+          plot_ssocial_corte <- ggplot(dat_plot,
+                                     aes_string(x = "fecha_cat", y = "Valor",
+                                                fill = ssocial_pp_corte_var)) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ssocial_pp,
+                                      "según",
+                                      tolower(input$ssocial_pp_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_ssocial_corte)
+          ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+          
+        }
         
         print(plot_ssocial_corte)
         ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
@@ -3986,23 +4124,51 @@ server <- function(input, output) {
           filter(corte == input$ssocial_r_corte) %>%
           janitor::remove_empty("cols")
         
-        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-        
-        plot_ssocial_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = ssocial_r_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_r,
-                                    "según",
-                                    tolower(input$ssocial_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") 
+        if(input$ssocial_r_corte == "Total"){
+          
+          plot_ssocial_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha_cat", y = "Valor")) +
+            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ssocial_r,
+                                      "según",
+                                      tolower(input$ssocial_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+          print(plot_ssocial_corte)
+          ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+          
+          
+        } else {
+          
+          ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+          
+          plot_ssocial_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha_cat", y = "Valor",
+                                                  fill = ssocial_r_corte_var)) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ssocial_r,
+                                      "según",
+                                      tolower(input$ssocial_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_ssocial_corte)
+          ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+          
+        }
         
         print(plot_ssocial_corte)
         ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
@@ -4482,23 +4648,51 @@ server <- function(input, output) {
           filter(corte == input$vivienda_pp_corte) %>%
           janitor::remove_empty("cols")
         
-        vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
-        
-        plot_vivienda_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = vivienda_pp_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_vivienda_pp,
-                                    "según",
-                                    tolower(input$vivienda_pp_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") 
+        if(input$vivienda_pp_corte == "Total"){
+          
+          plot_vivienda_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha_cat", y = "Valor")) +
+            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_vivienda_pp,
+                                      "según",
+                                      tolower(input$vivienda_pp_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+          print(plot_vivienda_corte)
+          ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+          
+          
+        } else {
+          
+          vivienda_pp_corte_var <- rlang::sym(to_varname(input$vivienda_pp_corte))
+          
+          plot_vivienda_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha_cat", y = "Valor",
+                                                  fill = vivienda_pp_corte_var)) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_vivienda_pp,
+                                      "según",
+                                      tolower(input$vivienda_pp_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_vivienda_corte)
+          ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+          
+        }
         
         print(plot_vivienda_corte)
         ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
@@ -4973,23 +5167,51 @@ server <- function(input, output) {
           filter(corte == input$vivienda_r_corte) %>%
           janitor::remove_empty("cols")
         
-        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
-        
-        plot_vivienda_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = vivienda_r_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_vivienda_r,
-                                    "según",
-                                    tolower(input$vivienda_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") 
+        if(input$vivienda_r_corte == "Total"){
+          
+          plot_vivienda_corte <- ggplot(dat_plot,
+                                        aes_string(x = "fecha_cat", y = "Valor")) +
+            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_vivienda_r,
+                                      "según",
+                                      tolower(input$vivienda_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+          print(plot_vivienda_corte)
+          ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+          
+          
+        } else {
+          
+          vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
+          
+          plot_vivienda_corte <- ggplot(dat_plot,
+                                        aes_string(x = "fecha_cat", y = "Valor",
+                                                   fill = vivienda_r_corte_var)) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_vivienda_r,
+                                      "según",
+                                      tolower(input$vivienda_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_vivienda_corte)
+          ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+          
+        }
         
         print(plot_vivienda_corte)
         ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
@@ -5462,23 +5684,51 @@ server <- function(input, output) {
           filter(corte == input$trabajo_pp_corte) %>%
           janitor::remove_empty("cols")
         
-        trabajo_pp_corte_var <- rlang::sym(to_varname(input$trabajo_pp_corte))
-        
-        plot_trabajo_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = trabajo_pp_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_trabajo_pp,
-                                    "según",
-                                    tolower(input$trabajo_pp_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") 
+        if(input$trabajo_pp_corte == "Total"){
+          
+          plot_trabajo_corte <- ggplot(dat_plot,
+                                        aes_string(x = "fecha_cat", y = "Valor")) +
+            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_trabajo_pp,
+                                      "según",
+                                      tolower(input$trabajo_pp_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+          print(plot_trabajo_corte)
+          ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+          
+          
+        } else {
+          
+          trabajo_pp_corte_var <- rlang::sym(to_varname(input$trabajo_pp_corte))
+          
+          plot_trabajo_corte <- ggplot(dat_plot,
+                                        aes_string(x = "fecha_cat", y = "Valor",
+                                                   fill = trabajo_pp_corte_var)) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_trabajo_pp,
+                                      "según",
+                                      tolower(input$trabajo_pp_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_trabajo_corte)
+          ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+          
+        }
         
         print(plot_trabajo_corte)
         ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
@@ -5953,23 +6203,51 @@ server <- function(input, output) {
           filter(corte == input$trabajo_r_corte) %>%
           janitor::remove_empty("cols")
         
-        trabajo_r_corte_var <- rlang::sym(to_varname(input$trabajo_r_corte))
-        
-        plot_trabajo_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = trabajo_r_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_trabajo_r,
-                                    "según",
-                                    tolower(input$trabajo_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") 
+        if(input$trabajo_r_corte == "Total"){
+          
+          plot_trabajo_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha_cat", y = "Valor")) +
+            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_trabajo_r,
+                                      "según",
+                                      tolower(input$trabajo_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+          print(plot_trabajo_corte)
+          ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+          
+          
+        } else {
+          
+          trabajo_r_corte_var <- rlang::sym(to_varname(input$trabajo_r_corte))
+          
+          plot_trabajo_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha_cat", y = "Valor",
+                                                  fill = trabajo_r_corte_var)) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_trabajo_r,
+                                      "según",
+                                      tolower(input$trabajo_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_trabajo_corte)
+          ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+          
+        }
         
         print(plot_trabajo_corte)
         ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
@@ -6442,23 +6720,51 @@ server <- function(input, output) {
           filter(corte == input$ambiente_pp_corte) %>%
           janitor::remove_empty("cols")
         
-        ambiente_pp_corte_var <- rlang::sym(to_varname(input$ambiente_pp_corte))
-        
-        plot_ambiente_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = ambiente_pp_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ambiente_pp,
-                                    "según",
-                                    tolower(input$ambiente_pp_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") 
+        if(input$ambiente_pp_corte == "Total"){
+          
+          plot_ambiente_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha_cat", y = "Valor")) +
+            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ambiente_pp,
+                                      "según",
+                                      tolower(input$ambiente_pp_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+          print(plot_ambiente_corte)
+          ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+          
+          
+        } else {
+          
+          ambiente_pp_corte_var <- rlang::sym(to_varname(input$ambiente_pp_corte))
+          
+          plot_ambiente_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha_cat", y = "Valor",
+                                                  fill = ambiente_pp_corte_var)) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ambiente_pp,
+                                      "según",
+                                      tolower(input$ambiente_pp_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_ambiente_corte)
+          ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+          
+        }
         
         print(plot_ambiente_corte)
         ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
@@ -6933,23 +7239,51 @@ server <- function(input, output) {
           filter(corte == input$ambiente_r_corte) %>%
           janitor::remove_empty("cols")
         
-        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-        
-        plot_ambiente_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = ambiente_r_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ambiente_r,
-                                    "según",
-                                    tolower(input$ambiente_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") 
+        if(input$ambiente_r_corte == "Total"){
+          
+          plot_ambiente_corte <- ggplot(dat_plot,
+                                        aes_string(x = "fecha_cat", y = "Valor")) +
+            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ambiente_r,
+                                      "según",
+                                      tolower(input$ambiente_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+          print(plot_ambiente_corte)
+          ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+          
+          
+        } else {
+          
+          ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+          
+          plot_ambiente_corte <- ggplot(dat_plot,
+                                        aes_string(x = "fecha_cat", y = "Valor",
+                                                   fill = ambiente_r_corte_var)) +
+            geom_col(position = "dodge", width = .7, alpha = .8) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x=element_blank(),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_ambiente_r,
+                                      "según",
+                                      tolower(input$ambiente_r_corte),
+                                      "en",
+                                      unique(dat_plot$fecha_cat))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_fill_brewer(name = "", palette = "Paired") 
+          
+          print(plot_ambiente_corte)
+          ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+          
+        }
         
         print(plot_ambiente_corte)
         ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
