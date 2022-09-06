@@ -74,5 +74,5 @@ names_var <- names(janitor::clean_names(readxl::read_excel("Data/Base_mirador_de
 df_keys <- tibble(names_proper = names_proper,
                   names_var = names_var)
 
-writexl::write_xlsx(df_keys, "data/keys.xlsx")
+writexl::write_xlsx(df_keys, "Data/keys.xlsx")
 
