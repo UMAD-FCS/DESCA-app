@@ -161,8 +161,11 @@ lista_ind_2 <- dat %>%
   distinct(nomindicador) %>% 
   pull()
 
-test <- dat %>% 
-  filter(nomindicador == "Demanda Bioquímica de Oxígeno (DBO5) en agua superficial (mgO2/L)")
+# Lista indicadores serie_cat
+lista_serie_cat <- dat %>% 
+  filter(serie_cat == 1) %>% 
+  distinct(nomindicador)  %>% 
+  pull()
 
 # Lista indicadore con valores únicos
 lista_vunico <- dat %>% 
@@ -1423,6 +1426,10 @@ server <- function(input, output) {
         selected = 2019
       )
       
+    } else if (input$indicador_edu_pp %in% lista_serie_cat){
+      
+      return(NULL)
+
     } else if (input$indicador_edu_pp %in% lista_vunico){
       
       return(NULL)
@@ -1996,6 +2003,10 @@ server <- function(input, output) {
           pull(),
         selected = 2019
       )
+      
+    } else if (input$indicador_edu_r %in% lista_serie_cat){
+      
+      return(NULL)
       
     } else if (input$indicador_edu_r %in% lista_vunico){
       
@@ -2575,6 +2586,10 @@ server <- function(input, output) {
         selected = 2019
       )
       
+    } else if (input$indicador_salud_pp %in% lista_serie_cat){
+      
+      return(NULL)
+      
     } else if (input$indicador_salud_pp %in% lista_vunico){
       
       return(NULL)
@@ -3151,6 +3166,10 @@ server <- function(input, output) {
                 selected = 2019
             )
             
+        } else if (input$indicador_salud_r %in% lista_serie_cat){
+          
+          return(NULL)
+          
         } else if (input$indicador_salud_r %in% lista_vunico){
           
           return(NULL)
@@ -3762,6 +3781,10 @@ server <- function(input, output) {
           selected = 2019
         )
         
+      } else if (input$indicador_ssocial_pp %in% lista_serie_cat){
+        
+        return(NULL)
+        
       } else if (input$indicador_ssocial_pp %in% lista_vunico){
         
         return(NULL)
@@ -4337,7 +4360,11 @@ server <- function(input, output) {
           selected = 2019
         )
         
-      } else if (input$indicador_ssocial_r %in% lista_vunico){
+      } else if (input$indicador_ssocial_r %in% lista_serie_cat){
+        
+        return(NULL)
+      
+        } else if (input$indicador_ssocial_r %in% lista_vunico){
         
         return(NULL)
         
@@ -4921,6 +4948,10 @@ server <- function(input, output) {
           selected = 2019
         )
         
+      } else if (input$indicador_vivienda_pp %in% lista_serie_cat){
+        
+        return(NULL)
+        
       } else if (input$indicador_vivienda_pp %in% lista_vunico){
         
         return(NULL)
@@ -5498,7 +5529,11 @@ server <- function(input, output) {
           selected = 2019
         )
         
-      } else if (input$indicador_vivienda_r %in% lista_vunico){
+      } else if (input$indicador_vivienda_r %in% lista_serie_cat){
+        
+        return(NULL)
+      
+        } else if (input$indicador_vivienda_r %in% lista_vunico){
         
         return(NULL)
         
@@ -6072,6 +6107,10 @@ server <- function(input, output) {
             pull(),
           selected = 2019
         )
+        
+      } else if (input$indicador_trabajo_pp %in% lista_serie_cat){
+        
+        return(NULL)
         
       } else if (input$indicador_trabajo_pp %in% lista_vunico){
         
@@ -6650,7 +6689,11 @@ server <- function(input, output) {
           selected = 2019
         )
         
-      } else if (input$indicador_trabajo_r %in% lista_vunico){
+      } else if (input$indicador_trabajo_r %in% lista_serie_cat){
+        
+        return(NULL)
+        
+        } else if (input$indicador_trabajo_r %in% lista_vunico){
         
         return(NULL)
         
@@ -6907,12 +6950,15 @@ server <- function(input, output) {
         req(input$indicador_trabajo_r, input$fecha_trabajo_r)
         
         dat_plot <- dat_trabajo_r() %>% 
-          filter(ano >= input$fecha_trabajo_r[1] &
-                   ano <= input$fecha_trabajo_r[2]) %>% 
           filter(corte == "Total")
         
+        if(input$indicador_trabajo_r %in% lista_serie_cat){
+          
+        dat_plot <- dat_plot %>% 
+          mutate(fecha = fecha_cat)
+        
         plot_trabajo <- ggplot(dat_plot,
-                           aes(x = fecha, y = Valor)) +
+                               aes(x = fecha, y = Valor, group = 1)) +
           geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
           geom_point(size = 3, colour = color_defecto) +
           theme_bdd(base_size = 12) +
@@ -6921,6 +6967,24 @@ server <- function(input, output) {
           labs(x = "",  y = "",
                title = wrapit(input$indicador_trabajo_r),
                caption = wrapit(unique(dat_plot$cita))) 
+            
+        } else{
+          
+          dat_plot <- dat_plot %>% 
+            filter(ano >= input$fecha_trabajo_r[1] &
+                     ano <= input$fecha_trabajo_r[2]) 
+          
+          plot_trabajo <- ggplot(dat_plot,
+                                 aes(x = fecha, y = Valor)) +
+            geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+            geom_point(size = 3, colour = color_defecto) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(input$indicador_trabajo_r),
+                 caption = wrapit(unique(dat_plot$cita)))
+        }
         
         print(plot_trabajo)
         ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
@@ -6960,8 +7024,6 @@ server <- function(input, output) {
             input$fecha_trabajo_r, input$checkbox_trabajo_r)
         
         dat_plot <- dat_trabajo_r() %>%
-          filter(ano >= input$fecha_trabajo_r[1] &
-                   ano <= input$fecha_trabajo_r[2]) %>%
           filter(corte == input$trabajo_r_corte) %>%
           janitor::remove_empty("cols")
         
@@ -6970,19 +7032,46 @@ server <- function(input, output) {
         dat_plot <- filter(dat_plot,
                            !!trabajo_r_corte_var %in% input$checkbox_trabajo_r)
         
-        plot_trabajo_corte <- ggplot(dat_plot,
-                                 aes_string(x = "fecha", y = "Valor", colour = trabajo_r_corte_var)) +
-          geom_line(size = 1, alpha = 0.5) +
-          geom_point(size = 3) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_trabajo_r,
-                                    "según",
-                                    tolower(input$trabajo_r_corte))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_manual(name = "", values = paleta_expandida) 
+        if(input$indicador_trabajo_r %in% lista_serie_cat){
+          
+          dat_plot <- dat_plot %>% 
+            mutate(fecha = fecha_cat)
+          
+          plot_trabajo_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha", y = "Valor", colour = trabajo_r_corte_var, group = trabajo_r_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_trabajo_r,
+                                      "según",
+                                      tolower(input$trabajo_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_manual(name = "", values = paleta_expandida) 
+          
+        } else{
+          
+          dat_plot <- dat_plot %>% 
+            filter(ano >= input$fecha_trabajo_r[1] &
+                     ano <= input$fecha_trabajo_r[2])
+          
+          plot_trabajo_corte <- ggplot(dat_plot,
+                                       aes_string(x = "fecha", y = "Valor", colour = trabajo_r_corte_var)) +
+            geom_line(size = 1, alpha = 0.5) +
+            geom_point(size = 3) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(paste(input$indicador_trabajo_r,
+                                      "según",
+                                      tolower(input$trabajo_r_corte))),
+                 caption = wrapit(unique(dat_plot$cita))) +
+            scale_colour_manual(name = "", values = paleta_expandida) 
+          
+        }
         
         print(plot_trabajo_corte)
         ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
@@ -7225,7 +7314,11 @@ server <- function(input, output) {
           selected = 2019
         )
         
-      } else if (input$indicador_ambiente_pp %in% lista_vunico){
+      } else if (input$indicador_ambiente_pp %in% lista_serie_cat){
+        
+        return(NULL)
+      
+        } else if (input$indicador_ambiente_pp %in% lista_vunico){
         
         return(NULL)
         
@@ -7802,6 +7895,11 @@ server <- function(input, output) {
           selected = 2019
         )
         
+      } else if (input$indicador_ambiente_r %in% lista_serie_cat){
+        
+        return(NULL)
+        
+      
       } else if (input$indicador_ambiente_r %in% lista_vunico){
         
         return(NULL)

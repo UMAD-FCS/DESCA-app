@@ -205,7 +205,7 @@ theme_m <- function(base_size = 13,
 # Function to change from varnames to proper_names
 to_proper_name <- function(list){
   
-  metadata <- readxl::read_excel("data/keys.xlsx")
+  metadata <- readxl::read_excel("Data/keys.xlsx")
   
   metadata %>%
     filter(names_var %in% list) %>%
@@ -217,7 +217,7 @@ to_proper_name <- function(list){
 # Function to change from proper_names to varnames
 to_varname <- function(list){
   
-  metadata <- readxl::read_excel("data/keys.xlsx")
+  metadata <- readxl::read_excel("Data/keys.xlsx")
   
   metadata %>%
     filter(names_proper %in% list) %>%
