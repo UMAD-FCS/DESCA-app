@@ -73,5 +73,6 @@ names_proper <- firstup(tolower(gsub("_", " ", names(readxl::read_excel("Data/Ba
 names_var <- names(janitor::clean_names(readxl::read_excel("Data/Base_mirador_desca.xlsx")))
 df_keys <- tibble(names_proper = names_proper,
                   names_var = names_var)
+
 writexl::write_xlsx(df_keys, "data/keys.xlsx")
 
