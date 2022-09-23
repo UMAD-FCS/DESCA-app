@@ -28,7 +28,7 @@ dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                                         "text", "text", "text", "text", "text",
                                         "text", "text", "text", "text", "text",
                                         "text", "text", "text", "text", "text",
-                                        "text", "text", "text", "text", "text")) %>%
+                                        "text", "text", "text", "text", "text", "text")) %>%
   mutate(FECHA = as.Date(ISOdate(AÑO, 1, 1))) %>% 
   mutate(fecha_cat = case_when(
     is.na(fecha_cat) ~ as.character(AÑO),
