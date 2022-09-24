@@ -1423,7 +1423,7 @@ server <- function(input, output) {
           arrange(desc(ano)) %>% 
           unique() %>% 
           pull(),
-        selected = 2019
+        selected = max(input$ano)
       )
       
     } else if (input$indicador_edu_pp %in% lista_serie_cat){
@@ -2001,7 +2001,7 @@ server <- function(input, output) {
           arrange(desc(ano)) %>% 
           unique() %>% 
           pull(),
-        selected = 2019
+        selected = max(input$ano)
       )
       
     } else if (input$indicador_edu_r %in% lista_serie_cat){
@@ -2583,7 +2583,7 @@ server <- function(input, output) {
           arrange(desc(ano)) %>% 
           unique() %>% 
           pull(),
-        selected = 2019
+        selected = max(input$ano)
       )
       
     } else if (input$indicador_salud_pp %in% lista_serie_cat){
@@ -3163,7 +3163,7 @@ server <- function(input, output) {
                     arrange(desc(ano)) %>% 
                     unique() %>% 
                     pull(),
-                selected = 2019
+                selected = max(input$ano)
             )
             
         } else if (input$indicador_salud_r %in% lista_serie_cat){
@@ -3778,7 +3778,7 @@ server <- function(input, output) {
             arrange(desc(ano)) %>% 
             unique() %>% 
             pull(),
-          selected = 2019
+          selected = max(input$ano)
         )
         
       } else if (input$indicador_ssocial_pp %in% lista_serie_cat){
@@ -4357,7 +4357,7 @@ server <- function(input, output) {
             arrange(desc(ano)) %>% 
             unique() %>% 
             pull(),
-          selected = 2019
+          selected = max(input$ano)
         )
         
       } else if (input$indicador_ssocial_r %in% lista_serie_cat){
@@ -4945,7 +4945,7 @@ server <- function(input, output) {
             arrange(desc(ano)) %>% 
             unique() %>% 
             pull(),
-          selected = 2019
+          selected = max(input$ano)
         )
         
       } else if (input$indicador_vivienda_pp %in% lista_serie_cat){
@@ -5526,7 +5526,7 @@ server <- function(input, output) {
             arrange(desc(ano)) %>% 
             unique() %>% 
             pull(),
-          selected = 2019
+          selected = max(input$ano)
         )
         
       } else if (input$indicador_vivienda_r %in% lista_serie_cat){
@@ -6105,7 +6105,7 @@ server <- function(input, output) {
             arrange(desc(ano)) %>% 
             unique() %>% 
             pull(),
-          selected = 2019
+          selected = max(input$ano)
         )
         
       } else if (input$indicador_trabajo_pp %in% lista_serie_cat){
@@ -6686,7 +6686,7 @@ server <- function(input, output) {
             arrange(desc(ano)) %>% 
             unique() %>% 
             pull(),
-          selected = 2019
+          selected = max(input$ano)
         )
         
       } else if (input$indicador_trabajo_r %in% lista_serie_cat){
@@ -7311,7 +7311,7 @@ server <- function(input, output) {
             arrange(desc(ano)) %>% 
             unique() %>% 
             pull(),
-          selected = 2019
+          selected = max(input$ano)
         )
         
       } else if (input$indicador_ambiente_pp %in% lista_serie_cat){
@@ -7892,7 +7892,7 @@ server <- function(input, output) {
             arrange(desc(ano)) %>% 
             unique() %>% 
             pull(),
-          selected = 2019
+          selected = max(input$ano)
         )
         
       } else if (input$indicador_ambiente_r %in% lista_serie_cat){
