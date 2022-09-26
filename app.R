@@ -1886,7 +1886,7 @@ server <- function(input, output) {
   edu_pp_meta <- reactive({
     
     dat_edu_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = "", value = " ")
@@ -2466,7 +2466,7 @@ server <- function(input, output) {
   edu_r_meta <- reactive({
     
     dat_edu_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = "", value = " ")
@@ -3048,7 +3048,7 @@ server <- function(input, output) {
   salud_pp_meta <- reactive({
     
     dat_salud_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = "", value = " ")
@@ -3662,7 +3662,7 @@ server <- function(input, output) {
     salud_r_meta <- reactive({
         
         dat_salud_r() %>%
-          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
           mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
           distinct() %>% 
           gather(key = "", value = " ")
@@ -4243,7 +4243,7 @@ server <- function(input, output) {
     ssocial_pp_meta <- reactive({
       
       dat_ssocial_pp() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -4824,7 +4824,7 @@ server <- function(input, output) {
     ssocial_r_meta <- reactive({
       
       dat_ssocial_r() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -5410,7 +5410,7 @@ server <- function(input, output) {
     vivienda_pp_meta <- reactive({
       
       dat_vivienda_pp() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -5991,7 +5991,7 @@ server <- function(input, output) {
     vivienda_r_meta <- reactive({
       
       dat_vivienda_r() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -6570,7 +6570,7 @@ server <- function(input, output) {
     trabajo_pp_meta <- reactive({
       
       dat_trabajo_pp() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -7197,7 +7197,7 @@ server <- function(input, output) {
     trabajo_r_meta <- reactive({
       
       dat_trabajo_r() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -7776,7 +7776,7 @@ server <- function(input, output) {
     ambiente_pp_meta <- reactive({
       
       dat_ambiente_pp() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -8358,7 +8358,7 @@ server <- function(input, output) {
     ambiente_r_meta <- reactive({
       
       dat_ambiente_r() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
