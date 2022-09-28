@@ -188,6 +188,7 @@ paleta_expandida <- c(brewer.pal(8, "Dark2"), "#B76A16", "#75A61A", "#D9318E",
 ui <- fluidPage(
     
     tags$style(".fa-calculator {color:#21618C}"),
+    tags$style(".fa-exclamation-triangle {color:#21618C}"),
     tags$head(HTML("<title>Mirador DESCA</title>")),
     tags$style(type="text/css",
                ".shiny-output-error { visibility: hidden; }",
