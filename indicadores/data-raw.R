@@ -59,7 +59,7 @@ dat$Departamento <- factor(dat$Departamento, levels = levels(dat$Departamento)[c
 dat <- dat %>% 
   left_join(metadata, by = "CODINDICADOR") %>% 
   relocate(FECHA, DEFINICIÓN, CÁLCULO, UNIDAD, COBERTURA_GEO,
-           COBERTURA_TEMPORAL, FRECUENCIA_REPORTE, CITA, UMBRAL, APERTURA, WEB,
+           COBERTURA_TEMPORAL, FRECUENCIA_REPORTE, CITA, UMBRAL, APERTURA, OBSERVACIONES, WEB,
            WEB_POB, SEXO_POB, ASCENDENCIA_POB, EDAD_POB) %>% 
   # filter(WEB == 1) %>%
   janitor::clean_names()

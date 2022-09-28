@@ -286,6 +286,15 @@ ui <- fluidPage(
                                     icon = icon("calculator", lib = "font-awesome"),
                                     uiOutput("calculo_edu_pp"))
                             ),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-exclamation-triangle"),
+                                  uiOutput("observacion_edu_pp"))
+                            ),
                             tags$h5(uiOutput("subtitle_edu_pp")),
                             br(),
                             withSpinner(plotOutput("plot_edu_pp", height = "500px"),
@@ -377,6 +386,15 @@ ui <- fluidPage(
                                     right = TRUE,
                                     icon = icon("calculator", lib = "font-awesome"),
                                     uiOutput("calculo_edu_r"))
+                            ),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-exclamation-triangle"),
+                                  uiOutput("observacion_edu_r"))
                             ),
                             tags$h5(uiOutput("subtitle_edu_r")),
                             br(),
@@ -477,6 +495,15 @@ ui <- fluidPage(
                                     icon = icon("calculator", lib = "font-awesome"),
                                     uiOutput("calculo_salud_pp"))
                             ),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-exclamation-triangle"),
+                                  uiOutput("observacion_salud_pp"))
+                            ),
                             tags$h5(uiOutput("subtitle_salud_pp")),
                             br(),
                             withSpinner(plotOutput("plot_salud_pp", height = "500px" ),
@@ -567,6 +594,15 @@ ui <- fluidPage(
                                     right = TRUE,
                                     icon = icon("calculator", lib = "font-awesome"),
                                     uiOutput("calculo_salud_r"))
+                            ),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-exclamation-triangle"),
+                                  uiOutput("observacion_salud_r"))
                             ),
                             tags$h5(uiOutput("subtitle_salud_r")),
                             br(),
@@ -667,6 +703,15 @@ ui <- fluidPage(
                                     icon = icon("calculator", lib = "font-awesome"),
                                     uiOutput("calculo_ssocial_pp"))
                             ),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-exclamation-triangle"),
+                                  uiOutput("observacion_ssocial_pp"))
+                            ),
                             tags$h5(uiOutput("subtitle_ssocial_pp")),
                             br(),
                             withSpinner(plotOutput("plot_ssocial_pp", height = "500px" ),
@@ -755,6 +800,15 @@ ui <- fluidPage(
                                     right = TRUE,
                                     icon = icon("calculator", lib = "font-awesome"),
                                     uiOutput("calculo_ssocial_r"))
+                            ),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-exclamation-triangle"),
+                                  uiOutput("observacion_ssocial_r"))
                             ),
                             tags$h5(uiOutput("subtitle_ssocial_r")),
                             br(),
@@ -853,6 +907,15 @@ ui <- fluidPage(
                                     icon = icon("calculator", lib = "font-awesome"),
                                     uiOutput("calculo_vivienda_pp"))
                             ),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-exclamation-triangle"),
+                                  uiOutput("observacion_vivienda_pp"))
+                            ),
                             tags$h5(uiOutput("subtitle_vivienda_pp")),
                             br(),
                             withSpinner(plotOutput("plot_vivienda_pp", height = "500px"),
@@ -942,6 +1005,15 @@ ui <- fluidPage(
                                     right = TRUE,
                                     icon = icon("calculator", lib = "font-awesome"),
                                     uiOutput("calculo_vivienda_r"))
+                            ),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-exclamation-triangle"),
+                                  uiOutput("observacion_vivienda_r"))
                             ),
                             tags$h5(uiOutput("subtitle_vivienda_r")),
                             br(),
@@ -1040,6 +1112,15 @@ ui <- fluidPage(
                         icon = icon("calculator", lib = "font-awesome"),
                         uiOutput("calculo_trabajo_pp"))
                   ),
+                  div(style="display:inline-block;margin: 0px;", 
+                      dropdown(
+                        style = "minimal",
+                        status = "primary",
+                        width = "500px",
+                        right = TRUE,
+                        icon = icon("fas fa-exclamation-triangle"),
+                        uiOutput("observacion_trabajo_pp"))
+                  ),
                   tags$h5(uiOutput("subtitle_trabajo_pp")),
                   br(),
                   withSpinner(plotOutput("plot_trabajo_pp", height = "500px"),
@@ -1129,6 +1210,15 @@ ui <- fluidPage(
                         right = TRUE,
                         icon = icon("calculator", lib = "font-awesome"),
                         uiOutput("calculo_trabajo_r"))
+                  ),
+                  div(style="display:inline-block;margin: 0px;", 
+                      dropdown(
+                        style = "minimal",
+                        status = "primary",
+                        width = "500px",
+                        right = TRUE,
+                        icon = icon("fas fa-exclamation-triangle"),
+                        uiOutput("observacion_trabajo_r"))
                   ),
                   tags$h5(uiOutput("subtitle_trabajo_r")),
                   br(),
@@ -1227,6 +1317,15 @@ ui <- fluidPage(
                         icon = icon("calculator", lib = "font-awesome"),
                         uiOutput("calculo_ambiente_pp"))
                   ),
+                  div(style="display:inline-block;margin: 0px;", 
+                      dropdown(
+                        style = "minimal",
+                        status = "primary",
+                        width = "500px",
+                        right = TRUE,
+                        icon = icon("fas fa-exclamation-triangle"),
+                        uiOutput("observacion_ambiente_pp"))
+                  ),
                   tags$h5(uiOutput("subtitle_ambiente_pp")),
                   br(),
                   withSpinner(plotOutput("plot_ambiente_pp", height = "500px"),
@@ -1316,6 +1415,15 @@ ui <- fluidPage(
                         right = TRUE,
                         icon = icon("calculator", lib = "font-awesome"),
                         uiOutput("calculo_ambiente_r"))
+                  ),
+                  div(style="display:inline-block;margin: 0px;", 
+                      dropdown(
+                        style = "minimal",
+                        status = "primary",
+                        width = "500px",
+                        right = TRUE,
+                        icon = icon("fas fa-exclamation-triangle"),
+                        uiOutput("observacion_ambiente_r"))
                   ),
                   tags$h5(uiOutput("subtitle_ambiente_r")),
                   br(),
@@ -1522,6 +1630,11 @@ server <- function(input, output) {
   # Calculo
   output$calculo_edu_pp <- renderUI({ 
     helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_edu_pp()$calculo))))
+  })
+  
+  # Observaciones
+  output$observacion_edu_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_edu_pp()$observaciones))))
   })
   
   
@@ -1886,7 +1999,7 @@ server <- function(input, output) {
   edu_pp_meta <- reactive({
     
     dat_edu_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = "", value = " ")
@@ -2101,6 +2214,12 @@ server <- function(input, output) {
   output$calculo_edu_r <- renderUI({ 
     helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_edu_r()$calculo))))
   })
+  
+  # Observaciones
+  output$observacion_edu_r <- renderUI({ 
+    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_edu_r()$observaciones))))
+  })
+  
   
   
   # 3.2.3. Gráficos   ======================================================
@@ -2466,7 +2585,7 @@ server <- function(input, output) {
   edu_r_meta <- reactive({
     
     dat_edu_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = "", value = " ")
@@ -2683,6 +2802,12 @@ server <- function(input, output) {
   output$calculo_salud_pp <- renderUI({ 
     helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_salud_pp()$calculo))))
   })
+  
+  # Observaciones
+  output$observacion_salud_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_salud_pp()$observaciones))))
+  })
+  
   
   
   # 4.1.3. Gráficos   ======================================================
@@ -3048,7 +3173,7 @@ server <- function(input, output) {
   salud_pp_meta <- reactive({
     
     dat_salud_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = "", value = " ")
@@ -3264,6 +3389,10 @@ server <- function(input, output) {
         helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_salud_r()$calculo))))
     })
     
+    # Observaciones
+    output$observacion_salud_r <- renderUI({ 
+      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_salud_r()$observaciones))))
+    })
     
     # 4.2.3. Gráficos   ======================================================
     
@@ -3662,7 +3791,7 @@ server <- function(input, output) {
     salud_r_meta <- reactive({
         
         dat_salud_r() %>%
-          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+          select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
           mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
           distinct() %>% 
           gather(key = "", value = " ")
@@ -3877,6 +4006,11 @@ server <- function(input, output) {
     # Calculo
     output$calculo_ssocial_pp <- renderUI({ 
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_pp()$calculo))))
+    })
+    
+    # Observaciones
+    output$observacion_ssocial_pp <- renderUI({ 
+      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ssocial_pp()$observaciones))))
     })
     
     
@@ -4243,7 +4377,7 @@ server <- function(input, output) {
     ssocial_pp_meta <- reactive({
       
       dat_ssocial_pp() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -4458,6 +4592,10 @@ server <- function(input, output) {
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_r()$calculo))))
     })
     
+    # Observaciones
+    output$observacion_ssocial_r <- renderUI({ 
+      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ssocial_r()$observaciones))))
+    })
     
     # 5.2.3. Gráficos   ======================================================
     
@@ -4824,7 +4962,7 @@ server <- function(input, output) {
     ssocial_r_meta <- reactive({
       
       dat_ssocial_r() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -5044,6 +5182,11 @@ server <- function(input, output) {
     # Calculo
     output$calculo_vivienda_pp <- renderUI({ 
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_vivienda_pp()$calculo))))
+    })
+    
+    # Observaciones
+    output$observacion_vivienda_pp <- renderUI({ 
+      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_vivienda_pp()$observaciones))))
     })
     
     
@@ -5410,7 +5553,7 @@ server <- function(input, output) {
     vivienda_pp_meta <- reactive({
       
       dat_vivienda_pp() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -5625,6 +5768,11 @@ server <- function(input, output) {
     # Calculo
     output$calculo_vivienda_r <- renderUI({ 
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_vivienda_r()$calculo))))
+    })
+    
+    # Observaciones
+    output$observacion_vivienda_r <- renderUI({ 
+      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_vivienda_r()$observaciones))))
     })
     
     
@@ -5991,7 +6139,7 @@ server <- function(input, output) {
     vivienda_r_meta <- reactive({
       
       dat_vivienda_r() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -6204,6 +6352,11 @@ server <- function(input, output) {
     # Calculo
     output$calculo_trabajo_pp <- renderUI({ 
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_trabajo_pp()$calculo))))
+    })
+    
+    # Observaciones
+    output$observacion_trabajo_pp <- renderUI({ 
+      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_trabajo_pp()$observaciones))))
     })
     
     
@@ -6570,7 +6723,7 @@ server <- function(input, output) {
     trabajo_pp_meta <- reactive({
       
       dat_trabajo_pp() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -6787,6 +6940,10 @@ server <- function(input, output) {
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_trabajo_r()$calculo))))
     })
     
+    # Observaciones
+    output$observacion_trabajo_r <- renderUI({ 
+      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_trabajo_r()$observaciones))))
+    })
     
     # 7.2.3. Gráficos   ======================================================
     
@@ -7197,7 +7354,7 @@ server <- function(input, output) {
     trabajo_r_meta <- reactive({
       
       dat_trabajo_r() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -7412,6 +7569,10 @@ server <- function(input, output) {
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ambiente_pp()$calculo))))
     })
     
+    # Observaciones
+    output$observacion_ambiente_pp <- renderUI({ 
+      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ambiente_pp()$observaciones))))
+    })
     
     # 8.1.3. Gráficos   ======================================================
     
@@ -7776,7 +7937,7 @@ server <- function(input, output) {
     ambiente_pp_meta <- reactive({
       
       dat_ambiente_pp() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
@@ -7992,6 +8153,11 @@ server <- function(input, output) {
     # Calculo
     output$calculo_ambiente_r <- renderUI({ 
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ambiente_r()$calculo))))
+    })
+    
+    # Observaciones
+    output$observacion_ambiente_r <- renderUI({ 
+      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ambiente_r()$observaciones))))
     })
     
     
@@ -8358,7 +8524,7 @@ server <- function(input, output) {
     ambiente_r_meta <- reactive({
       
       dat_ambiente_r() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, nota_indicador, cita) %>% 
+        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
         mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
         distinct() %>% 
         gather(key = "", value = " ")
