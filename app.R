@@ -188,8 +188,9 @@ paleta_expandida <- c(brewer.pal(8, "Dark2"), "#B76A16", "#75A61A", "#D9318E",
 ui <- fluidPage(
     
     tags$style(".fa-calculator {color:#21618C}"),
+    tags$style(".fa-circle-info {color:#21618C}"),
     tags$style(".fa-exclamation-triangle {color:#21618C}"),
-    tags$head(HTML("<title>Mirador DESCA</title>")),
+        tags$head(HTML("<title>Mirador DESCA</title>")),
     tags$style(type="text/css",
                ".shiny-output-error { visibility: hidden; }",
                ".shiny-output-error:before { visibility: hidden; }"), # Quita mensajes de error (ojo)
@@ -278,6 +279,15 @@ ui <- fluidPage(
                             
                             tags$h3(style="display:inline-block;margin: 0px;",
                                     uiOutput("title_edu_pp")),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-circle-info"),
+                                  uiOutput("conindicador_edu_pp"))
+                            ),
                             div(style="display:inline-block;margin: 0px;", 
                                 dropdown(
                                     style = "minimal",
@@ -379,6 +389,15 @@ ui <- fluidPage(
                             
                             tags$h3(style="display:inline-block",
                                     uiOutput("title_edu_r")),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-circle-info"),
+                                  uiOutput("conindicador_edu_r"))
+                            ),
                             div(style="display:inline-block", 
                                 dropdown(
                                     style = "minimal",
@@ -1628,6 +1647,11 @@ server <- function(input, output) {
     helpText(HTML(unique(dat_edu_pp()$definicion)))
   })
   
+  # Nombre conceptual
+  output$conindicador_edu_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_edu_pp()$conindicador))))
+  })
+  
   # Calculo
   output$calculo_edu_pp <- renderUI({ 
     helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_edu_pp()$calculo))))
@@ -1638,7 +1662,7 @@ server <- function(input, output) {
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_edu_pp()$observaciones))))
   })
   
-  
+
   # 3.1.3. Gráficos   ======================================================
   
   output$plot_edu_pp <- renderPlot({
@@ -2209,6 +2233,11 @@ server <- function(input, output) {
   # Subtitle
   output$subtitle_edu_r <- renderUI({ 
     helpText(HTML(unique(dat_edu_r()$definicion)))
+  })
+  
+  # Nombre conceptual
+  output$conindicador_edu_r <- renderUI({ 
+    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_edu_r()$conindicador))))
   })
   
   # Calculo
