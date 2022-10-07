@@ -506,6 +506,15 @@ ui <- fluidPage(
                             
                             tags$h3(style="display:inline-block",
                                     uiOutput("title_salud_pp")),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-circle-info"),
+                                  uiOutput("conindicador_salud_pp"))
+                            ),
                             div(style="display:inline-block", 
                                 dropdown(
                                     style = "minimal",
@@ -606,6 +615,15 @@ ui <- fluidPage(
                             
                             tags$h3(style="display:inline-block",
                                     uiOutput("title_salud_r")),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-circle-info"),
+                                  uiOutput("conindicador_salud_r"))
+                            ),
                             div(style="display:inline-block", 
                                 dropdown(
                                     style = "minimal",
@@ -714,6 +732,15 @@ ui <- fluidPage(
                             
                             tags$h3(style="display:inline-block",
                                     uiOutput("title_ssocial_pp")),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-circle-info"),
+                                  uiOutput("conindicador_ssocial_pp"))
+                            ),
                             div(style="display:inline-block", 
                                 dropdown(
                                     style = "minimal",
@@ -812,6 +839,15 @@ ui <- fluidPage(
                             
                             tags$h3(style="display:inline-block",
                                     uiOutput("title_ssocial_r")),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-circle-info"),
+                                  uiOutput("conindicador_ssocial_r"))
+                            ),
                             div(style="display:inline-block", 
                                 dropdown(
                                     style = "minimal",
@@ -2828,6 +2864,11 @@ server <- function(input, output) {
     helpText(HTML(unique(dat_salud_pp()$definicion)))
   })
   
+  # Nombre conceptual
+  output$conindicador_salud_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_salud_pp()$conindicador))))
+  })
+  
   # Calculo
   output$calculo_salud_pp <- renderUI({ 
     helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_salud_pp()$calculo))))
@@ -3412,6 +3453,11 @@ server <- function(input, output) {
     # Subtitle
     output$subtitle_salud_r <- renderUI({ 
         helpText(HTML(unique(dat_salud_r()$definicion)))
+    })
+    
+    # Nombre conceptual
+    output$conindicador_salud_r <- renderUI({ 
+      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_salud_r()$conindicador))))
     })
     
     # Calculo
@@ -4033,6 +4079,11 @@ server <- function(input, output) {
       helpText(HTML(unique(dat_ssocial_pp()$definicion)))
     })
     
+    # Nombre conceptual
+    output$conindicador_ssocial_pp <- renderUI({ 
+      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ssocial_pp()$conindicador))))
+    })
+    
     # Calculo
     output$calculo_ssocial_pp <- renderUI({ 
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_pp()$calculo))))
@@ -4615,6 +4666,11 @@ server <- function(input, output) {
     # Subtitle
     output$subtitle_ssocial_r <- renderUI({ 
       helpText(HTML(unique(dat_ssocial_r()$definicion)))
+    })
+    
+    # Nombre conceptual
+    output$conindicador_ssocial_r <- renderUI({ 
+      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ssocial_r()$conindicador))))
     })
     
     # Calculo
