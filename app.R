@@ -954,6 +954,15 @@ ui <- fluidPage(
                             
                             tags$h3(style="display:inline-block",
                                     uiOutput("title_vivienda_pp")),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-circle-info"),
+                                  uiOutput("conindicador_vivienda_pp"))
+                            ),
                             div(style="display:inline-block", 
                                 dropdown(
                                     style = "minimal",
@@ -1053,6 +1062,15 @@ ui <- fluidPage(
                             
                             tags$h3(style="display:inline-block",
                                     uiOutput("title_vivienda_r")),
+                            div(style="display:inline-block;margin: 0px;", 
+                                dropdown(
+                                  style = "minimal",
+                                  status = "primary",
+                                  width = "500px",
+                                  right = TRUE,
+                                  icon = icon("fas fa-circle-info"),
+                                  uiOutput("conindicador_vivienda_r"))
+                            ),
                             div(style="display:inline-block", 
                                 dropdown(
                                     style = "minimal",
@@ -5265,6 +5283,11 @@ server <- function(input, output) {
       helpText(HTML(unique(dat_vivienda_pp()$definicion)))
     })
     
+    # Nombre conceptual
+    output$conindicador_vivienda_pp <- renderUI({ 
+      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_vivienda_pp()$conindicador))))
+    })
+    
     # Calculo
     output$calculo_vivienda_pp <- renderUI({ 
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_vivienda_pp()$calculo))))
@@ -5849,6 +5872,11 @@ server <- function(input, output) {
     # Subtitle
     output$subtitle_vivienda_r <- renderUI({ 
       helpText(HTML(unique(dat_vivienda_r()$definicion)))
+    })
+    
+    # Nombre conceptual
+    output$conindicador_vivienda_r <- renderUI({ 
+      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_vivienda_r()$conindicador))))
     })
     
     # Calculo
