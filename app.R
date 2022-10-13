@@ -1400,6 +1400,15 @@ ui <- fluidPage(
                   
                   tags$h3(style="display:inline-block",
                           uiOutput("title_ambiente_pp")),
+                  div(style="display:inline-block;margin: 0px;", 
+                      dropdown(
+                        style = "minimal",
+                        status = "primary",
+                        width = "500px",
+                        right = TRUE,
+                        icon = icon("fas fa-circle-info"),
+                        uiOutput("conindicador_ambiente_pp"))
+                  ),
                   div(style="display:inline-block", 
                       dropdown(
                         style = "minimal",
@@ -1499,6 +1508,15 @@ ui <- fluidPage(
                   
                   tags$h3(style="display:inline-block",
                           uiOutput("title_ambiente_r")),
+                  div(style="display:inline-block;margin: 0px;", 
+                      dropdown(
+                        style = "minimal",
+                        status = "primary",
+                        width = "500px",
+                        right = TRUE,
+                        icon = icon("fas fa-circle-info"),
+                        uiOutput("conindicador_ambiente_r"))
+                  ),
                   div(style="display:inline-block", 
                       dropdown(
                         style = "minimal",
@@ -7706,6 +7724,11 @@ server <- function(input, output) {
       helpText(HTML(unique(dat_ambiente_pp()$definicion)))
     })
     
+    # Nombre conceptual
+    output$conindicador_ambiente_pp <- renderUI({ 
+      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ambiente_pp()$conindicador))))
+    })
+    
     # Calculo
     output$calculo_ambiente_pp <- renderUI({ 
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ambiente_pp()$calculo))))
@@ -8290,6 +8313,11 @@ server <- function(input, output) {
     # Subtitle
     output$subtitle_ambiente_r <- renderUI({ 
       helpText(HTML(unique(dat_ambiente_r()$definicion)))
+    })
+    
+    # Nombre conceptual
+    output$conindicador_ambiente_r <- renderUI({ 
+      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ambiente_r()$conindicador))))
     })
     
     # Calculo
