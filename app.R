@@ -1177,6 +1177,15 @@ ui <- fluidPage(
                   
                   tags$h3(style="display:inline-block",
                           uiOutput("title_trabajo_pp")),
+                  div(style="display:inline-block;margin: 0px;", 
+                      dropdown(
+                        style = "minimal",
+                        status = "primary",
+                        width = "500px",
+                        right = TRUE,
+                        icon = icon("fas fa-circle-info"),
+                        uiOutput("conindicador_trabajo_pp"))
+                  ),
                   div(style="display:inline-block", 
                       dropdown(
                         style = "minimal",
@@ -1276,6 +1285,15 @@ ui <- fluidPage(
                   
                   tags$h3(style="display:inline-block",
                           uiOutput("title_trabajo_r")),
+                  div(style="display:inline-block;margin: 0px;", 
+                      dropdown(
+                        style = "minimal",
+                        status = "primary",
+                        width = "500px",
+                        right = TRUE,
+                        icon = icon("fas fa-circle-info"),
+                        uiOutput("conindicador_trabajo_r"))
+                  ),
                   div(style="display:inline-block", 
                       dropdown(
                         style = "minimal",
@@ -6463,6 +6481,11 @@ server <- function(input, output) {
       helpText(HTML(unique(dat_trabajo_pp()$definicion)))
     })
     
+    # Nombre conceptual
+    output$conindicador_trabajo_pp <- renderUI({ 
+      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_trabajo_pp()$conindicador))))
+    })
+    
     # Calculo
     output$calculo_trabajo_pp <- renderUI({ 
       helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_trabajo_pp()$calculo))))
@@ -7047,6 +7070,11 @@ server <- function(input, output) {
     # Subtitle
     output$subtitle_trabajo_r <- renderUI({ 
       helpText(HTML(unique(dat_trabajo_r()$definicion)))
+    })
+    
+    # Nombre conceptual
+    output$conindicador_trabajo_r <- renderUI({ 
+      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_trabajo_r()$conindicador))))
     })
     
     # Calculo
