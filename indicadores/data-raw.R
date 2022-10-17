@@ -28,7 +28,7 @@ dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                                         "text", "text", "text", "text", "text",
                                         "text", "text", "text", "text", "text",
                                         "text", "text", "text", "text", "text",
-                                        "text", "text", "text", "text", "text", "text")) %>%
+                                        "text", "text", "text", "text", "text")) %>%
   mutate(FECHA = as.Date(ISOdate(AÑO, 1, 1))) %>% 
   mutate(fecha_cat = case_when(
     is.na(fecha_cat) ~ as.character(AÑO),
@@ -37,7 +37,7 @@ dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
   mutate(VALOR = ifelse(VALOR  > 0.00001 & VALOR < 0.1, round(VALOR, digits = 3),
                         ifelse(VALOR >= 0.1 & VALOR  < 1, round(VALOR, digits = 2),
                                ifelse(VALOR >= 1 & VALOR < 100, round(VALOR, digits = 1),
-                                      ifelse(VALOR >= 100  & VALOR < 1000, round(VALOR, digits = 0),
+                                      ifelse(VALOR >= 100  & VALOR < 1000, round(VALOR, digits = 1),
                                              ifelse(VALOR >= 1000, round(VALOR, digits = 0),
                                                     VALOR))))))
 glimpse(dat)

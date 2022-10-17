@@ -2022,8 +2022,9 @@ server <- function(input, output) {
       
       dat_edu_pp() %>%
         filter(corte == "Total") %>% 
-        select(Fecha, Valor) %>%
-        arrange(desc(Fecha))
+        select(fecha_cat, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat)
       
     } else if(input$indicador_edu_pp %in% lista_vunico & input$edu_pp_corte != "Total") {
       
@@ -2036,8 +2037,9 @@ server <- function(input, output) {
         janitor::remove_empty("cols") 
       
       dat_cut %>%     
-        select(Fecha, edu_pp_corte_var, Valor) %>%
-        arrange(desc(Fecha)) %>% 
+        select(fecha_cat, edu_pp_corte_var, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat) %>%
         pivot_wider(values_from = "Valor",
                     names_from = edu_pp_corte_var)
       
@@ -2613,8 +2615,9 @@ server <- function(input, output) {
       
       dat_edu_r() %>%
         filter(corte == "Total") %>% 
-        select(Fecha, Valor) %>%
-        arrange(desc(Fecha))
+        select(fecha_cat, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat)
     
     } else if(input$indicador_edu_r %in% lista_vunico & input$edu_r_corte != "Total") {
 
@@ -2627,8 +2630,9 @@ server <- function(input, output) {
         janitor::remove_empty("cols") 
       
       dat_cut %>%     
-        select(Fecha, edu_r_corte_var, Valor) %>%
-        arrange(desc(Fecha)) %>% 
+        select(fecha_cat, edu_r_corte_var, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat) %>%
         pivot_wider(values_from = "Valor",
                     names_from = edu_r_corte_var)
       
@@ -3206,8 +3210,9 @@ server <- function(input, output) {
       
       dat_salud_pp() %>%
         filter(corte == "Total") %>% 
-        select(Fecha, Valor) %>%
-        arrange(desc(Fecha))
+        select(fecha_cat, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat)
       
     } else if(input$indicador_salud_pp %in% lista_vunico & input$salud_pp_corte != "Total") {
       
@@ -3220,8 +3225,9 @@ server <- function(input, output) {
         janitor::remove_empty("cols") 
       
       dat_cut %>%     
-        select(Fecha, salud_pp_corte_var, Valor) %>%
-        arrange(desc(Fecha)) %>% 
+        select(fecha_cat, salud_pp_corte_var, Valor) %>%
+        arrange(desc(fecha_cat)) %>% 
+        rename(Fecha = fecha_cat) %>%
         pivot_wider(values_from = "Valor",
                     names_from = salud_pp_corte_var)
       
@@ -3829,8 +3835,9 @@ server <- function(input, output) {
         
         dat_salud_r() %>%
           filter(corte == "Total") %>% 
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
+          select(fecha_cat, Valor) %>%
+          arrange(desc(fecha_cat)) %>%
+          rename(Fecha = fecha_cat)
         
       } else if(input$indicador_salud_r %in% lista_vunico & input$salud_r_corte != "Total") {
         
@@ -3843,8 +3850,9 @@ server <- function(input, output) {
           janitor::remove_empty("cols") 
         
         dat_cut %>%     
-          select(Fecha, salud_r_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
+          select(fecha_cat, salud_r_corte_var, Valor) %>%
+          arrange(desc(fecha_cat)) %>% 
+          rename(Fecha = fecha_cat) %>%
           pivot_wider(values_from = "Valor",
                       names_from = salud_r_corte_var)
         
@@ -4420,8 +4428,9 @@ server <- function(input, output) {
         
         dat_ssocial_pp() %>%
           filter(corte == "Total") %>% 
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
+          select(fecha_cat, Valor) %>%
+          arrange(desc(fecha_cat)) %>%
+          rename(Fecha = fecha_cat)
         
       } else if(input$indicador_ssocial_pp %in% lista_vunico & input$ssocial_pp_corte != "Total") {
         
@@ -4434,8 +4443,9 @@ server <- function(input, output) {
           janitor::remove_empty("cols") 
         
         dat_cut %>%     
-          select(Fecha, ssocial_pp_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
+          select(fecha_cat, ssocial_pp_corte_var, Valor) %>%
+          arrange(desc(fecha_cat)) %>% 
+          rename(Fecha = fecha_cat) %>%
           pivot_wider(values_from = "Valor",
                       names_from = ssocial_pp_corte_var)
         
@@ -4901,6 +4911,51 @@ server <- function(input, output) {
         req(input$indicador_ssocial_r, input$fecha_ssocial_r)
         
         dat_plot <- dat_ssocial_r() %>% 
+          filter(corte == "Total")
+        
+        if(input$indicador_ssocial_r %in% lista_serie_cat){
+          
+          dat_plot <- dat_plot %>% 
+            mutate(fecha = fecha_cat)
+          
+          plot_ssocial <- ggplot(dat_plot,
+                                 aes(x = fecha, y = Valor, group = 1)) +
+            geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+            geom_point(size = 3, colour = color_defecto) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(input$indicador_ssocial_r),
+                 caption = wrapit(unique(dat_plot$cita))) 
+          
+        } else{
+          
+          dat_plot <- dat_plot %>% 
+            filter(ano >= input$fecha_ssocial_r[1] &
+                     ano <= input$fecha_ssocial_r[2]) 
+          
+          plot_ssocial <- ggplot(dat_plot,
+                                 aes(x = fecha, y = Valor)) +
+            geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+            geom_point(size = 3, colour = color_defecto) +
+            theme_bdd(base_size = 12) +
+            theme(axis.text.x = element_text(angle = 0),
+                  legend.position = "bottom") +
+            labs(x = "",  y = "",
+                 title = wrapit(input$indicador_ssocial_r),
+                 caption = wrapit(unique(dat_plot$cita)))
+        }
+        
+        print(plot_ssocial)
+        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else if(input$ssocial_r_corte == "Total") {
+        
+        req(input$indicador_ssocial_r, input$fecha_ssocial_r)
+        
+        dat_plot <- dat_ssocial_r() %>% 
           filter(ano >= input$fecha_ssocial_r[1] &
                    ano <= input$fecha_ssocial_r[2]) %>% 
           filter(corte == "Total")
@@ -5004,14 +5059,15 @@ server <- function(input, output) {
     # Data
     ssocial_r_tab <- reactive({
       
-      if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte == "Total"){
+      if(input$indicador_ssocial_r %in% lista_vunico | input$indicador_ssocial_r %in% lista_serie_cat & input$ssocial_r_corte == "Total"){
         
         req(input$ssocial_r_corte, input$indicador_ssocial_r)
         
         dat_ssocial_r() %>%
           filter(corte == "Total") %>% 
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
+          select(fecha_cat, Valor) %>%
+          arrange(desc(fecha_cat)) %>%
+          rename(Fecha = fecha_cat)
         
       } else if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte != "Total") {
         
@@ -5024,8 +5080,9 @@ server <- function(input, output) {
           janitor::remove_empty("cols") 
         
         dat_cut %>%     
-          select(Fecha, ssocial_r_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
+          select(fecha_cat, ssocial_r_corte_var, Valor) %>%
+          arrange(desc(fecha_cat)) %>% 
+          rename(Fecha = fecha_cat) %>%
           pivot_wider(values_from = "Valor",
                       names_from = ssocial_r_corte_var)
         
@@ -5606,8 +5663,9 @@ server <- function(input, output) {
         
         dat_vivienda_pp() %>%
           filter(corte == "Total") %>% 
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
+          select(fecha_cat, Valor) %>%
+          arrange(desc(fecha_cat)) %>%
+          rename(Fecha = fecha_cat)
         
       } else if(input$indicador_vivienda_pp %in% lista_vunico & input$vivienda_pp_corte != "Total") {
         
@@ -5620,8 +5678,9 @@ server <- function(input, output) {
           janitor::remove_empty("cols") 
         
         dat_cut %>%     
-          select(Fecha, vivienda_pp_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
+          select(fecha_cat, vivienda_pp_corte_var, Valor) %>%
+          arrange(desc(fecha_cat)) %>% 
+          rename(Fecha = fecha_cat) %>%
           pivot_wider(values_from = "Valor",
                       names_from = vivienda_pp_corte_var)
         
@@ -6197,8 +6256,9 @@ server <- function(input, output) {
         
         dat_vivienda_r() %>%
           filter(corte == "Total") %>% 
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
+          select(fecha_cat, Valor) %>%
+          arrange(desc(fecha_cat)) %>%
+          rename(Fecha = fecha_cat)
         
       } else if(input$indicador_vivienda_r %in% lista_vunico & input$vivienda_r_corte != "Total") {
         
@@ -6211,8 +6271,9 @@ server <- function(input, output) {
           janitor::remove_empty("cols") 
         
         dat_cut %>%     
-          select(Fecha, vivienda_r_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
+          select(fecha_cat, vivienda_r_corte_var, Valor) %>%
+          arrange(desc(fecha_cat)) %>% 
+          rename(Fecha = fecha_cat) %>%
           pivot_wider(values_from = "Valor",
                       names_from = vivienda_r_corte_var)
         
@@ -6786,8 +6847,9 @@ server <- function(input, output) {
         
         dat_trabajo_pp() %>%
           filter(corte == "Total") %>% 
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
+          select(fecha_cat, Valor) %>%
+          arrange(desc(fecha_cat)) %>%
+          rename(Fecha = fecha_cat)
         
       } else if(input$indicador_trabajo_pp %in% lista_vunico & input$trabajo_pp_corte != "Total") {
         
@@ -6800,8 +6862,9 @@ server <- function(input, output) {
           janitor::remove_empty("cols") 
         
         dat_cut %>%     
-          select(Fecha, trabajo_pp_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
+          select(fecha_cat, trabajo_pp_corte_var, Valor) %>%
+          arrange(desc(fecha_cat)) %>% 
+          rename(Fecha = fecha_cat) %>%
           pivot_wider(values_from = "Valor",
                       names_from = trabajo_pp_corte_var)
         
@@ -7416,16 +7479,17 @@ server <- function(input, output) {
     # Data
     trabajo_r_tab <- reactive({
       
-        if(input$indicador_trabajo_r %in% lista_vunico & input$trabajo_r_corte == "Total"){
+        if(input$indicador_trabajo_r %in% lista_vunico | input$indicador_trabajo_r %in% lista_serie_cat & input$trabajo_r_corte == "Total"){
           
           req(input$trabajo_r_corte, input$indicador_trabajo_r)
           
           dat_trabajo_r() %>%
             filter(corte == "Total") %>% 
-            select(Fecha, Valor) %>%
-            arrange(desc(Fecha))
+            select(fecha_cat, Valor) %>%
+            arrange(desc(fecha_cat)) %>%
+            rename(Fecha = fecha_cat)
           
-        } else if(input$indicador_trabajo_r %in% lista_vunico & input$trabajo_r_corte != "Total") {
+        } else if(input$indicador_trabajo_r %in% lista_vunico | input$indicador_trabajo_r %in% lista_serie_cat & input$trabajo_r_corte != "Total") {
           
           req(input$trabajo_r_corte, input$indicador_trabajo_r)
           
@@ -7436,8 +7500,9 @@ server <- function(input, output) {
             janitor::remove_empty("cols") 
           
           dat_cut %>%     
-            select(Fecha, trabajo_r_corte_var, Valor) %>%
-            arrange(desc(Fecha)) %>% 
+            select(fecha_cat, trabajo_r_corte_var, Valor) %>%
+            arrange(desc(fecha_cat)) %>% 
+            rename(Fecha = fecha_cat) %>%
             pivot_wider(values_from = "Valor",
                         names_from = trabajo_r_corte_var)
           
@@ -8010,8 +8075,9 @@ server <- function(input, output) {
         
         dat_ambiente_pp() %>%
           filter(corte == "Total") %>% 
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
+          select(fecha_cat, Valor) %>%
+          arrange(desc(fecha_cat)) %>%
+          rename(Fecha = fecha_cat)
         
       } else if(input$indicador_ambiente_pp %in% lista_vunico & input$ambiente_pp_corte != "Total") {
         
@@ -8024,8 +8090,9 @@ server <- function(input, output) {
           janitor::remove_empty("cols") 
         
         dat_cut %>%     
-          select(Fecha, ambiente_pp_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
+          select(fecha_cat, ambiente_pp_corte_var, Valor) %>%
+          arrange(desc(fecha_cat)) %>% 
+          rename(Fecha = fecha_cat) %>%
           pivot_wider(values_from = "Valor",
                       names_from = ambiente_pp_corte_var)
         
@@ -8602,8 +8669,9 @@ server <- function(input, output) {
         
         dat_ambiente_r() %>%
           filter(corte == "Total") %>% 
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
+          select(fecha_cat, Valor) %>%
+          arrange(desc(fecha_cat)) %>%
+          rename(Fecha = fecha_cat)
         
       } else if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte != "Total") {
         
@@ -8616,8 +8684,9 @@ server <- function(input, output) {
           janitor::remove_empty("cols") 
         
         dat_cut %>%     
-          select(Fecha, ambiente_r_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
+          select(fecha_cat, ambiente_r_corte_var, Valor) %>%
+          arrange(desc(fecha_cat)) %>% 
+          rename(Fecha = fecha_cat) %>%
           pivot_wider(values_from = "Valor",
                       names_from = ambiente_r_corte_var)
         
