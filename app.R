@@ -3570,7 +3570,41 @@ server <- function(input, output) {
         print(plot_salud_corte)
         ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
         
-      }  else if(input$indicador_salud_r %in% lista_vunico & input$salud_r_corte != "Departamento") {
+      } else if(input$indicador_salud_r %in% lista_vunico & input$indicador_salud_r %in% lista_ind_2){
+
+        req(input$salud_r_corte, input$indicador_salud_r)
+        
+        salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+        salud_r_corte_var_2 <- rlang::sym(to_varname(input$salud_r_corte_2))
+        
+        dat_plot <- dat_salud_r() %>%
+          filter(ano >= input$fecha_salud_r[1] &
+                 ano <= input$fecha_salud_r[2]) %>%
+          filter(corte == input$salud_r_corte) %>%
+          filter(!!salud_r_corte_var %in% input$checkbox_salud_r) %>% 
+          filter(corte_2 == input$salud_r_corte_2)  
+        
+        plot_salud_corte <- ggplot(dat_plot,
+                                   aes_string(x = "fecha_cat", y = "Valor",
+                                              fill = salud_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_salud_r,
+                                    "según",
+                                    tolower(input$salud_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") +
+          facet_wrap(as.formula(paste("~", salud_r_corte_var_2)))
+        
+        print(plot_salud_corte)
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+
+    } else if(input$indicador_salud_r %in% lista_vunico & input$salud_r_corte != "Departamento") {
       
       req(input$salud_r_corte, input$indicador_salud_r)
       
