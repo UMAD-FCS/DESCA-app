@@ -1837,7 +1837,9 @@ server <- function(input, output) {
         plot_edu_corte <- ggplot(dat_plot,
                                aes_string(x = "fecha_cat", y = "Valor",
                                           fill = edu_pp_corte_var)) +
-        geom_col(position = "dodge", width = .7, alpha = .8) +
+          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+          geom_text(aes_string(group = edu_pp_corte_var, label = "Valor"),
+                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
         theme_bdd(base_size = 12) +
         theme(axis.text.x=element_blank(),
               legend.position = "bottom") +
@@ -2432,7 +2434,9 @@ server <- function(input, output) {
         plot_edu_corte <- ggplot(dat_plot,
                                  aes_string(x = "fecha_cat", y = "Valor",
                                             fill = edu_r_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
+          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+          geom_text(aes_string(group = edu_r_corte_var, label = "Valor"),
+                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
@@ -3031,7 +3035,9 @@ server <- function(input, output) {
         plot_salud_corte <- ggplot(dat_plot,
                                  aes_string(x = "fecha_cat", y = "Valor",
                                             fill = salud_pp_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
+          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+          geom_text(aes_string(group = salud_pp_corte, label = "Valor"),
+                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
@@ -3627,7 +3633,9 @@ server <- function(input, output) {
           plot_salud_corte <- ggplot(dat_plot,
                                    aes_string(x = "fecha_cat", y = "Valor",
                                               fill = salud_r_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
+            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+            geom_text(aes_string(group = salud_r_corte_var, label = "Valor"),
+                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
@@ -4224,7 +4232,9 @@ server <- function(input, output) {
           plot_salud_corte <- ggplot(dat_plot,
                                      aes_string(x = "fecha_cat", y = "Valor",
                                                 fill = ssocial_pp_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
+            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+            geom_text(aes_string(group = ssocial_pp_corte_var, label = "Valor"),
+                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
@@ -4820,7 +4830,9 @@ server <- function(input, output) {
           plot_ssocial_corte <- ggplot(dat_plot,
                                        aes_string(x = "fecha_cat", y = "Valor",
                                                   fill = ssocial_r_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
+            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+            geom_text(aes_string(group = ssocial_r_corte_var, label = "Valor"),
+                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
@@ -5469,7 +5481,9 @@ server <- function(input, output) {
           plot_vivienda_corte <- ggplot(dat_plot,
                                        aes_string(x = "fecha_cat", y = "Valor",
                                                   fill = vivienda_pp_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
+            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+            geom_text(aes_string(group = vivienda_pp_corte_var, label = "Valor"),
+                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
@@ -6066,7 +6080,9 @@ server <- function(input, output) {
           plot_vivienda_corte <- ggplot(dat_plot,
                                         aes_string(x = "fecha_cat", y = "Valor",
                                                    fill = vivienda_r_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
+            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+            geom_text(aes_string(group = vivienda_r_corte_var, label = "Valor"),
+                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
@@ -6661,7 +6677,9 @@ server <- function(input, output) {
           plot_trabajo_corte <- ggplot(dat_plot,
                                         aes_string(x = "fecha_cat", y = "Valor",
                                                    fill = trabajo_pp_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
+            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+            geom_text(aes_string(group = trabajo_pp_corte_var, label = "Valor"),
+                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
@@ -7257,7 +7275,9 @@ server <- function(input, output) {
           plot_trabajo_corte <- ggplot(dat_plot,
                                        aes_string(x = "fecha_cat", y = "Valor",
                                                   fill = trabajo_r_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
+            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+            geom_text(aes_string(group = trabajo_r_corte_var, label = "Valor"),
+                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
@@ -7901,7 +7921,9 @@ server <- function(input, output) {
           plot_ambiente_corte <- ggplot(dat_plot,
                                        aes_string(x = "fecha_cat", y = "Valor",
                                                   fill = ambiente_pp_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
+            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+            geom_text(aes_string(group = ambiente_pp_corte_var, label = "Valor"),
+                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
@@ -8503,7 +8525,9 @@ server <- function(input, output) {
           plot_ambiente_corte <- ggplot(dat_plot,
                                         aes_string(x = "fecha_cat", y = "Valor",
                                                    fill = ambiente_r_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
+            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+            geom_text(aes_string(group = ambiente_r_corte_var, label = "Valor"),
+                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
