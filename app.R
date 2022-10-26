@@ -63,7 +63,15 @@ dat <- tibble::as_tibble(x) %>%
     mutate(tipoind = case_when(
         tipoind == "Políticas públicas y esfuerzo económico" ~ "Políticas Públicas y Esfuerzo Económico",
         TRUE ~ tipoind 
-    ))
+    )) %>% 
+  mutate(fecha = ano)
+
+# test <- dat %>% 
+#   filter(nomindicador == "Instrumentos de Ordenamiento Territorial aprobados (anual)")
+
+dat_r <- dat %>%
+  filter(nomindicador == "(Migrantes) Distribución porcentual de personas según institución prestadora en la cual tienen derecho vigente") %>%
+  janitor::remove_empty("cols")
 
 dat$departamento <- chartr("ÁÉÍÓÚ", "AEIOU", dat$departamento)
 
@@ -1873,6 +1881,7 @@ server <- function(input, output) {
           theme_bdd(base_size = 12) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_edu_pp,
                                     "según",
@@ -1892,6 +1901,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5) +
           geom_point(size = 3) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -1921,6 +1931,7 @@ server <- function(input, output) {
                          aes(x = fecha, y = Valor)) +
         geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
         geom_point(size = 3, colour = color_defecto) +
+        scale_x_continuous(breaks = int_breaks) +
         theme_bdd(base_size = 12) +
         theme(axis.text.x = element_text(angle = 0),
               legend.position = "bottom") +
@@ -1983,6 +1994,7 @@ server <- function(input, output) {
         theme_bdd(base_size = 12) +
         theme(axis.text.x = element_text(angle = 0),
               legend.position = "bottom") +
+        scale_x_continuous(breaks = int_breaks) +
         labs(x = "",  y = "",
              title = wrapit(paste(input$indicador_edu_pp,
                                   "según",
@@ -2466,6 +2478,7 @@ server <- function(input, output) {
           theme_bdd(base_size = 12) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_edu_r,
                                     "según",
@@ -2487,6 +2500,7 @@ server <- function(input, output) {
           theme_bdd(base_size = 12) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_edu_r,
                                     "según",
@@ -2515,6 +2529,7 @@ server <- function(input, output) {
         geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
         geom_point(size = 3, colour = color_defecto) +
         theme_bdd(base_size = 12) +
+        scale_x_continuous(breaks = int_breaks) +
         theme(axis.text.x = element_text(angle = 0),
               legend.position = "bottom") +
         labs(x = "",  y = "",
@@ -2574,6 +2589,7 @@ server <- function(input, output) {
         geom_line(size = 1, alpha = 0.5) +
         geom_point(size = 3) +
         theme_bdd(base_size = 12) +
+        scale_x_continuous(breaks = int_breaks) +
         theme(axis.text.x = element_text(angle = 0),
               legend.position = "bottom") +
         labs(x = "",  y = "",
@@ -3059,6 +3075,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5) +
           geom_point(size = 3) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -3080,6 +3097,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5) +
           geom_point(size = 3) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -3110,6 +3128,7 @@ server <- function(input, output) {
         geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
         geom_point(size = 3, colour = color_defecto) +
         theme_bdd(base_size = 12) +
+        scale_x_continuous(breaks = int_breaks) +
         theme(axis.text.x = element_text(angle = 0),
               legend.position = "bottom") +
         labs(x = "",  y = "",
@@ -3168,6 +3187,7 @@ server <- function(input, output) {
                                aes_string(x = "fecha", y = "Valor", colour = salud_pp_corte_var)) +
         geom_line(size = 1, alpha = 0.5) +
         geom_point(size = 3) +
+        scale_x_continuous(breaks = int_breaks) +
         theme_bdd(base_size = 12) +
         theme(axis.text.x = element_text(angle = 0),
               legend.position = "bottom") +
@@ -3570,40 +3590,7 @@ server <- function(input, output) {
         print(plot_salud_corte)
         ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
         
-      } else if(input$indicador_salud_r %in% lista_vunico & input$indicador_salud_r %in% lista_ind_2){
-
-        req(input$salud_r_corte, input$indicador_salud_r)
-        
-        salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
-        salud_r_corte_var_2 <- rlang::sym(to_varname(input$salud_r_corte_2))
-        
-        dat_plot <- dat_salud_r() %>%
-          filter(ano >= input$fecha_salud_r[1] &
-                 ano <= input$fecha_salud_r[2]) %>%
-          filter(corte == input$salud_r_corte) %>%
-          filter(!!salud_r_corte_var %in% input$checkbox_salud_r) %>% 
-          filter(corte_2 == input$salud_r_corte_2)  
-        
-        plot_salud_corte <- ggplot(dat_plot,
-                                   aes_string(x = "fecha_cat", y = "Valor",
-                                              fill = salud_r_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_salud_r,
-                                    "según",
-                                    tolower(input$salud_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") +
-          facet_wrap(as.formula(paste("~", salud_r_corte_var_2)))
-        
-        print(plot_salud_corte)
-        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
-
+ 
     } else if(input$indicador_salud_r %in% lista_vunico & input$salud_r_corte != "Departamento") {
       
       req(input$salud_r_corte, input$indicador_salud_r)
@@ -3684,6 +3671,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -3705,6 +3693,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -3735,6 +3724,7 @@ server <- function(input, output) {
                 geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
                 geom_point(size = 3, colour = color_defecto) +
                 theme_bdd(base_size = 12) +
+                scale_x_continuous(breaks = int_breaks) +
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
@@ -3794,6 +3784,7 @@ server <- function(input, output) {
                 geom_line(size = 1, alpha = 0.5) +
                 geom_point(size = 3) +
                 theme_bdd(base_size = 12) +
+                scale_x_continuous(breaks = int_breaks) +
                 theme(axis.text.x = element_text(angle = 0),
                       legend.position = "bottom") +
                 labs(x = "",  y = "",
@@ -4277,6 +4268,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -4298,6 +4290,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -4328,6 +4321,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
           geom_point(size = 3, colour = color_defecto) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -4387,6 +4381,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5) +
           geom_point(size = 3) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -4869,6 +4864,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -4890,6 +4886,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -4922,6 +4919,7 @@ server <- function(input, output) {
                                  aes(x = fecha, y = Valor, group = 1)) +
             geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
             geom_point(size = 3, colour = color_defecto) +
+            scale_x_continuous(breaks = int_breaks) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
@@ -4940,6 +4938,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
             geom_point(size = 3, colour = color_defecto) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -4965,6 +4964,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
           geom_point(size = 3, colour = color_defecto) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -5024,6 +5024,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5) +
           geom_point(size = 3) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -5511,6 +5512,7 @@ server <- function(input, output) {
                                    aes_string(x = "fecha", y = "Valor", colour = vivienda_pp_corte_var)) +
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
+            scale_x_continuous(breaks = int_breaks) +
             theme_bdd(base_size = 12) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
@@ -5533,6 +5535,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -5563,6 +5566,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
           geom_point(size = 3, colour = color_defecto) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -5622,6 +5626,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5) +
           geom_point(size = 3) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -6105,6 +6110,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -6128,6 +6134,7 @@ server <- function(input, output) {
             theme_bdd(base_size = 12) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
+            scale_x_continuous(breaks = int_breaks) +
             labs(x = "",  y = "",
                  title = wrapit(paste(input$indicador_vivienda_r,
                                       "según",
@@ -6156,6 +6163,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
           geom_point(size = 3, colour = color_defecto) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -6215,6 +6223,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5) +
           geom_point(size = 3) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -6696,6 +6705,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -6717,6 +6727,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -6747,6 +6758,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
           geom_point(size = 3, colour = color_defecto) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -6806,6 +6818,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5) +
           geom_point(size = 3) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -7288,6 +7301,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -7309,6 +7323,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -7342,6 +7357,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
           geom_point(size = 3, colour = color_defecto) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
@@ -7359,6 +7375,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
             geom_point(size = 3, colour = color_defecto) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -7422,6 +7439,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -7442,6 +7460,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -7839,6 +7858,7 @@ server <- function(input, output) {
                                     unique(dat_plot$fecha_cat))),
                caption = wrapit(unique(dat_plot$cita))) +
           scale_fill_brewer(name = "", palette = "Paired") +
+          # scale_x_continuous(labels = number_format(accuracy = 1, big.mark = "")) +
           facet_wrap(as.formula(paste("~", ambiente_pp_corte_var_2)))
         
         print(plot_ambiente_corte)
@@ -7858,7 +7878,8 @@ server <- function(input, output) {
                                        aes_string(x = "fecha_cat", y = "Valor")) +
             geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
             geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
-            theme_bdd(base_size = 12) +
+            theme_bdd(base_size = 12)  +
+            # scale_x_continuous(labels = number_format(accuracy = 1, big.mark = "")) +
             theme(axis.text.x=element_blank(),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -7891,6 +7912,7 @@ server <- function(input, output) {
                                       "en",
                                       unique(dat_plot$fecha_cat))),
                  caption = wrapit(unique(dat_plot$cita))) +
+            # scale_x_continuous(labels = number_format(accuracy = 1, big.mark = "")) +
             scale_fill_brewer(name = "", palette = "Paired") 
           
           print(plot_ambiente_corte)
@@ -7931,6 +7953,7 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$ambiente_pp_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
+            scale_x_continuous(breaks = int_breaks) +
             scale_colour_manual(name = "", values = paleta_expandida) 
           
         } else if(input$ambiente_pp_corte_2 != "Total") {
@@ -7952,6 +7975,7 @@ server <- function(input, output) {
                                       "según",
                                       tolower(input$ambiente_pp_corte))),
                  caption = wrapit(unique(dat_plot$cita))) +
+            scale_x_continuous(breaks = int_breaks) +
             scale_colour_manual(name = "", values = paleta_expandida) + 
           facet_wrap(as.formula(paste("~", ambiente_pp_corte_var_2)))
           
@@ -7977,6 +8001,7 @@ server <- function(input, output) {
           theme_bdd(base_size = 12) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
           labs(x = "",  y = "",
                title = wrapit(input$indicador_ambiente_pp),
                caption = wrapit(unique(dat_plot$cita))) 
@@ -8007,6 +8032,7 @@ server <- function(input, output) {
                                     "en",
                                     input$fecha_dpto_ambiente_pp), w = 80),
                caption = wrapit(unique(dat_plot$cita), w = 80)) +
+          scale_x_continuous(breaks = int_breaks) +
           theme_bdd(base_size = 14)
         
         print(plot_ambiente_dpto)
@@ -8041,6 +8067,9 @@ server <- function(input, output) {
                                     "según",
                                     tolower(input$ambiente_pp_corte))),
                caption = wrapit(unique(dat_plot$cita))) +
+          scale_x_continuous(breaks = int_breaks) +
+          # scale_y_continuous(breaks = function(x) unique(floor(pretty(seq(0, (max(x) + 1) * 1.1))))) +
+          # scale_y_continuous(breaks = function(x) max()) +
           scale_colour_manual(name = "", values = paleta_expandida) 
         
         print(plot_ambiente_corte)
@@ -8518,6 +8547,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -8539,6 +8569,7 @@ server <- function(input, output) {
             geom_line(size = 1, alpha = 0.5) +
             geom_point(size = 3) +
             theme_bdd(base_size = 12) +
+            scale_x_continuous(breaks = int_breaks) +
             theme(axis.text.x = element_text(angle = 0),
                   legend.position = "bottom") +
             labs(x = "",  y = "",
@@ -8571,6 +8602,7 @@ server <- function(input, output) {
           theme_bdd(base_size = 12) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
           labs(x = "",  y = "",
                title = wrapit(input$indicador_ambiente_r),
                caption = wrapit(unique(dat_plot$cita))) 
@@ -8628,6 +8660,7 @@ server <- function(input, output) {
           geom_line(size = 1, alpha = 0.5) +
           geom_point(size = 3) +
           theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
           theme(axis.text.x = element_text(angle = 0),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
