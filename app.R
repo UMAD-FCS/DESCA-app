@@ -64,10 +64,15 @@ dat <- tibble::as_tibble(x) %>%
         tipoind == "Políticas públicas y esfuerzo económico" ~ "Políticas Públicas y Esfuerzo Económico",
         TRUE ~ tipoind 
     )) %>% 
-  mutate(fecha = ano)
+  mutate(fecha = ano) %>% 
+  mutate(jerarquia_cat_2 = case_when(
+    cuenca_o_embalse == "Cuenca Río de la Plata (Cuenca del Río Santa Lucía)" ~ 1,
+    cuenca_o_embalse == "Cuenca del Río de la Plata (Cuenca del Río Santa Lucía)" ~ 1,
+    TRUE ~ 0
+  ))
 
-# test <- dat %>% 
-#   filter(nomindicador == "Instrumentos de Ordenamiento Territorial aprobados (anual)")
+# test <- dat %>%
+#   filter(nomindicador == "Demanda Bioquímica de Oxígeno (DBO5) en agua superficial (mgO2/L)")
 
 dat_r <- dat %>%
   filter(nomindicador == "(Migrantes) Distribución porcentual de personas según institución prestadora en la cual tienen derecho vigente") %>%
@@ -190,7 +195,7 @@ lista_especial <- intersect(lista_vunico, lista_ind_2)
 library(RColorBrewer)
 paleta_expandida <- c(brewer.pal(8, "Dark2"), "#B76A16", "#75A61A", "#D9318E",
                       "#986A74", "#C14D6A", "#C1632B", "#698446", "#7B6BB0",
-                      "#A9A80F", "#DEAA03")
+                      "#A9A80F", "#DEAA03", "#922B21", "#273746", "#ABB2B9")
 
 
 ##  2.  USER INTERFACE  =====================================================
@@ -1482,11 +1487,13 @@ ui <- fluidPage(
                   
                   uiOutput("selector_ambiente_r_corte_2"),
                   
+                  uiOutput("chbox_ambiente_r_2"),
+                  
                   uiOutput("selector_ambiente_r_corte"),
                   
-                  uiOutput("s_ambiente_r_fecha"),
-                  
                   uiOutput("chbox_ambiente_r"),
+                  
+                  uiOutput("s_ambiente_r_fecha"),
                   
                   HTML("<b> Instituciones:</b>"),
                   br(),
@@ -7767,23 +7774,6 @@ server <- function(input, output) {
       
     })
     
-    output$selector_ambiente_pp_corte <- renderUI({
-      
-      selectInput(
-        inputId = "ambiente_pp_corte",
-        label = "Seleccione corte:",
-        choices = dat_ambiente_pp() %>% 
-          select(corte) %>%
-          arrange(corte) %>% 
-          unique() %>% 
-          pull(),
-        selected = dat_ambiente_pp() %>% 
-          filter(jerarquia == "1") %>%  
-          distinct(corte) %>% 
-          pull()
-      )
-      
-    })
     
     output$selector_ambiente_pp_corte_2 <- renderUI({
       
@@ -7806,6 +7796,53 @@ server <- function(input, output) {
       } else {
         
         NULL
+      }
+      
+    })
+    
+    
+    output$selector_ambiente_pp_corte <- renderUI({
+      
+      selectInput(
+        inputId = "ambiente_pp_corte",
+        label = "Seleccione corte:",
+        choices = dat_ambiente_pp() %>% 
+          select(corte) %>%
+          arrange(corte) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_ambiente_pp() %>% 
+          filter(jerarquia == "1") %>%  
+          distinct(corte) %>% 
+          pull()
+      )
+      
+    })
+    
+    
+    output$chbox_ambiente_pp <- renderUI({
+      
+      if(input$ambiente_pp_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_pp %notin% lista_vunico) {
+        
+        ambiente_pp_corte_var <- rlang::sym(to_varname(input$ambiente_pp_corte))
+        
+        checkboxGroupInput(inputId = "checkbox_ambiente_pp",
+                           label = "Seleccione categorías",
+                           inline = TRUE,
+                           choices =  dat_ambiente_pp() %>%
+                             filter(corte == input$ambiente_pp_corte) %>% 
+                             distinct(!!ambiente_pp_corte_var) %>%
+                             pull(),
+                           selected = dat_ambiente_pp() %>%
+                             filter(corte == input$ambiente_pp_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
+                             distinct(!!ambiente_pp_corte_var) %>%
+                             pull()
+        )
+        
+      } else {
+        
+        return(NULL)
       }
       
     })
@@ -7864,33 +7901,7 @@ server <- function(input, output) {
       }
     })
     
-    
-    output$chbox_ambiente_pp <- renderUI({
-      
-      if(input$ambiente_pp_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_pp %notin% lista_vunico) {
-        
-        ambiente_pp_corte_var <- rlang::sym(to_varname(input$ambiente_pp_corte))
-        
-        checkboxGroupInput(inputId = "checkbox_ambiente_pp",
-                           label = "Seleccione categorías",
-                           inline = TRUE,
-                           choices =  dat_ambiente_pp() %>%
-                             filter(corte == input$ambiente_pp_corte) %>% 
-                             distinct(!!ambiente_pp_corte_var) %>%
-                             pull(),
-                           selected = dat_ambiente_pp() %>%
-                             filter(corte == input$ambiente_pp_corte) %>% 
-                             filter(jerarquia_cat == "1") %>%
-                             distinct(!!ambiente_pp_corte_var) %>%
-                             pull()
-        )
-        
-      } else {
-        
-        return(NULL)
-      }
-      
-    })
+
     
     # # Selector de corte según categoría y data temporal
     # dat_ambiente_pp <- reactive({
@@ -8371,24 +8382,6 @@ server <- function(input, output) {
       
     })
     
-    output$selector_ambiente_r_corte <- renderUI({
-      
-      selectInput(
-        inputId = "ambiente_r_corte",
-        label = "Seleccione corte:",
-        choices = dat_ambiente_r() %>% 
-          select(corte) %>%
-          arrange(corte) %>% 
-          unique() %>% 
-          pull(),
-        selected = dat_ambiente_r() %>% 
-          filter(jerarquia == "1") %>%  
-          distinct(corte) %>% 
-          pull()
-      )
-      
-    })
-    
     output$selector_ambiente_r_corte_2 <- renderUI({
       
       if(input$indicador_ambiente_r %in% lista_ind_2){
@@ -8410,6 +8403,108 @@ server <- function(input, output) {
       } else {
         
         NULL
+      }
+      
+    })
+    
+    output$chbox_ambiente_r_2 <- renderUI({
+      
+      if(input$indicador_ambiente_r %in% lista_ind_2){
+        
+        # if(input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
+          
+          ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+        
+          checkboxGroupInput(inputId = "checkbox_ambiente_r_2",
+                             label = "Seleccione categorías",
+                             inline = TRUE,
+                             choices =  dat_ambiente_r() %>%
+                               filter(corte_2 == input$ambiente_r_corte_2) %>% 
+                               distinct(!!ambiente_r_corte_var_2) %>%
+                               pull(),
+                             selected = dat_ambiente_r() %>%
+                               filter(corte_2 == input$ambiente_r_corte_2) %>% 
+                               filter(jerarquia_cat_2 == "1") %>%
+                               distinct(!!ambiente_r_corte_var_2) %>%
+                               pull()
+                             )
+          
+          # } else {
+          #   
+          #   return(NULL)
+          #   
+          #   }
+        
+      } else {
+          
+        return(NULL)
+        
+        }      
+    })
+    
+    
+    output$selector_ambiente_r_corte <- renderUI({
+      
+      selectInput(
+        inputId = "ambiente_r_corte",
+        label = "Seleccione corte:",
+        choices = dat_ambiente_r() %>% 
+          select(corte) %>%
+          arrange(corte) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_ambiente_r() %>% 
+          filter(jerarquia == "1") %>%  
+          distinct(corte) %>% 
+          pull()
+      )
+      
+    })
+    
+    output$chbox_ambiente_r <- renderUI({
+      
+      if(input$ambiente_r_corte %in% lista_ind_2 & input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
+        
+        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+        ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+        
+        checkboxGroupInput(inputId = "checkbox_ambiente_r",
+                           label = "Seleccione categorías",
+                           inline = TRUE,
+                           choices =  dat_ambiente_r() %>%
+                             filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
+                             filter(corte == input$ambiente_r_corte) %>% 
+                             distinct(!!ambiente_r_corte_var) %>%
+                             pull(),
+                           selected = dat_ambiente_r() %>%
+                             filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
+                             filter(corte == input$ambiente_r_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
+                             distinct(!!ambiente_r_corte_var) %>%
+                             pull()
+        )
+        
+      } else if(input$ambiente_r_corte %notin% lista_ind_2 & input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
+        
+        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+
+        checkboxGroupInput(inputId = "checkbox_ambiente_r",
+                           label = "Seleccione categorías",
+                           inline = TRUE,
+                           choices =  dat_ambiente_r() %>%
+                             filter(corte == input$ambiente_r_corte) %>% 
+                             distinct(!!ambiente_r_corte_var) %>%
+                             pull(),
+                           selected = dat_ambiente_r() %>%
+                             filter(corte == input$ambiente_r_corte) %>% 
+                             filter(jerarquia_cat == "1") %>%
+                             distinct(!!ambiente_r_corte_var) %>%
+                             pull()
+        )
+        
+      } else {
+        
+        return(NULL)
       }
       
     })
@@ -8468,35 +8563,7 @@ server <- function(input, output) {
         
       }
     })
-    
-    
-    output$chbox_ambiente_r <- renderUI({
-      
-      if(input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
-        
-        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-        
-        checkboxGroupInput(inputId = "checkbox_ambiente_r",
-                           label = "Seleccione categorías",
-                           inline = TRUE,
-                           choices =  dat_ambiente_r() %>%
-                             filter(corte == input$ambiente_r_corte) %>% 
-                             distinct(!!ambiente_r_corte_var) %>%
-                             pull(),
-                           selected = dat_ambiente_r() %>%
-                             filter(corte == input$ambiente_r_corte) %>% 
-                             filter(jerarquia_cat == "1") %>%
-                             distinct(!!ambiente_r_corte_var) %>%
-                             pull()
-        )
-        
-      } else {
-        
-        return(NULL)
-      }
-      
-    })
-    
+  
     # # Selector de corte según categoría y data temporal
     # dat_ambiente_r <- reactive({
     #   
@@ -8563,6 +8630,7 @@ server <- function(input, output) {
           filter(ano >= input$fecha_ambiente_r[1] &
                    ano <= input$fecha_ambiente_r[2]) %>%
           filter(corte == input$ambiente_r_corte) %>%
+          filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>% 
           filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r) %>% 
           filter(corte_2 == input$ambiente_r_corte_2)  
         
@@ -8651,11 +8719,13 @@ server <- function(input, output) {
             input$fecha_ambiente_r, input$checkbox_ambiente_r)
         
         ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+        ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
         
         dat_plot <- dat_ambiente_r() %>%
           filter(ano >= input$fecha_ambiente_r[1] &
                    ano <= input$fecha_ambiente_r[2]) %>%
           filter(corte == input$ambiente_r_corte) %>%
+          filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
           filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
         
         if(input$ambiente_r_corte_2 == "Total"){
