@@ -55,14 +55,16 @@ dat <- load("Data/data_motor.rda")
 
 # Pasar luego estas transformaciones a data-raw
 dat <- tibble::as_tibble(x) %>%
-    mutate(Fecha = format(fecha, format = "%Y")) %>%
-    rename(Valor = valor) %>%
-    relocate(Fecha) %>%
-    mutate(departamento = case_when(
-        departamento != "Total" ~ toupper(departamento))) %>% 
-    mutate(tipoind = case_when(
-        tipoind == "Políticas públicas y esfuerzo económico" ~ "Políticas Públicas y Esfuerzo Económico",
-        TRUE ~ tipoind 
+  mutate(Fecha = format(fecha, format = "%Y")) %>%
+  rename(Valor = valor) %>%
+  relocate(Fecha) %>%
+  mutate(departamento = case_when(
+    departamento != "Total" ~ toupper(departamento)
+    )) %>%
+  mutate(departamento = chartr("ÁÉÍÓÚ", "AEIOU", departamento)) %>%
+  mutate(tipoind = case_when(
+    tipoind == "Políticas públicas y esfuerzo económico" ~ "Políticas Públicas y Esfuerzo Económico",
+    TRUE ~ tipoind 
     )) %>% 
   mutate(fecha = ano) %>% 
   mutate(jerarquia_cat_2 = case_when(
@@ -71,17 +73,11 @@ dat <- tibble::as_tibble(x) %>%
     TRUE ~ 0
   ))
 
-# test <- dat %>%
-#   filter(nomindicador == "Demanda Bioquímica de Oxígeno (DBO5) en agua superficial (mgO2/L)")
-
-dat_r <- dat %>%
-  filter(nomindicador == "(Migrantes) Distribución porcentual de personas según institución prestadora en la cual tienen derecho vigente") %>%
-  janitor::remove_empty("cols")
-
-dat$departamento <- chartr("ÁÉÍÓÚ", "AEIOU", dat$departamento)
+# Cargar data departamento (a nivel local)
+dep <- readRDS("Data/depto.rds")
 
 # Cargar geometría para mapas
-dep <- geouy::load_geouy("Departamentos")
+# dep <- geouy::load_geouy("Departamentos")
 
 # Lista de indicadores
 ind_edu_pp <- dat %>% 
@@ -1968,16 +1964,29 @@ server <- function(input, output) {
       dep_j <- dep %>%
         left_join(dat_plot, by = c("nombre" = "departamento"))
       
-      plot_edu_dpto <- geouy::plot_geouy(dep_j,
-                                         "Valor",
-                                         viri_opt = "plasma",
-                                         l = "n") +
+      plot_edu_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+        geom_sf() +
+        geom_sf_text(aes(label = Valor), colour = "black",
+                     size = 4, fontface = "bold")+
+        viridis::scale_fill_viridis(name = "", direction = -1)+
+        # facet_wrap(~lugarnac,ncol=2)+
+        labs(x = "",
+             y = "",
+        )+
+        theme_bdd(base_size = 14) +
+        theme(axis.line = element_blank(),
+              axis.text.x = element_blank(),
+              axis.text.y = element_blank(),
+              axis.ticks = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              panel.grid.major = element_line(colour = "transparent"),
+        ) +
         labs(x = "",  y = "",
              title = wrapit(paste(input$indicador_edu_pp, 
                                   "en",
                                   input$fecha_dpto_edu_pp), w = 80),
-             caption = wrapit(unique(dat_plot$cita), w = 80)) +
-        theme_bdd(base_size = 14)
+             caption = wrapit(unique(dat_plot$cita), w = 80)) 
       
       print(plot_edu_dpto)
       ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
@@ -2567,17 +2576,30 @@ server <- function(input, output) {
       dep_j <- dep %>%
         left_join(dat_plot, by = c("nombre" = "departamento"))
       
-      plot_edu_dpto <- geouy::plot_geouy(dep_j,
-                                         "Valor",
-                                         viri_opt = "plasma",
-                                         l = "n") +
+      plot_edu_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+        geom_sf() +
+        geom_sf_text(aes(label = Valor), colour = "black",
+                     size = 4, fontface = "bold")+
+        viridis::scale_fill_viridis(name = "", direction = -1)+
+        # facet_wrap(~lugarnac,ncol=2)+
+        labs(x = "",
+             y = "",
+        )+
+        theme_bdd(base_size = 14) +
+        theme(axis.line = element_blank(),
+              axis.text.x = element_blank(),
+              axis.text.y = element_blank(),
+              axis.ticks = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              panel.grid.major = element_line(colour = "transparent"),
+        ) +
         labs(x = "",  y = "",
              title = wrapit(paste(input$indicador_edu_r, 
                                   "en",
                                   input$fecha_dpto_edu_r), w = 80),
-             caption = wrapit(unique(dat_plot$cita), w = 80)) +
-        theme_bdd(base_size = 14)
-      
+             caption = wrapit(unique(dat_plot$cita), w = 80)) 
+
       print(plot_edu_dpto)
       ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
       
@@ -3168,16 +3190,29 @@ server <- function(input, output) {
       dep_j <- dep %>%
         left_join(dat_plot, by = c("nombre" = "departamento"))
       
-      plot_salud_dpto <- geouy::plot_geouy(dep_j,
-                                         "Valor",
-                                         viri_opt = "plasma",
-                                         l = "n") +
+      plot_salud_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+        geom_sf() +
+        geom_sf_text(aes(label = Valor), colour = "black",
+                     size = 4, fontface = "bold")+
+        viridis::scale_fill_viridis(name = "", direction = -1)+
+        # facet_wrap(~lugarnac,ncol=2)+
+        labs(x = "",
+             y = "",
+        )+
+        theme_bdd(base_size = 14) +
+        theme(axis.line = element_blank(),
+              axis.text.x = element_blank(),
+              axis.text.y = element_blank(),
+              axis.ticks = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              panel.grid.major = element_line(colour = "transparent"),
+        ) +
         labs(x = "",  y = "",
              title = wrapit(paste(input$indicador_salud_pp, 
                                   "en",
                                   input$fecha_dpto_salud_pp), w = 80),
-             caption = wrapit(unique(dat_plot$cita), w = 80)) +
-        theme_bdd(base_size = 14)
+             caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot_salud_dpto)
       ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
@@ -3802,17 +3837,30 @@ server <- function(input, output) {
             dep_j <- dep %>%
                 left_join(dat_plot, by = c("nombre" = "departamento"))
             
-            plot_salud_dpto <- geouy::plot_geouy(dep_j,
-                                               "Valor",
-                                               viri_opt = "plasma",
-                                               l = "n") +
-                labs(x = "",  y = "",
-                     title = wrapit(paste(input$indicador_salud_r, 
-                                   "en",
-                                   input$fecha_dpto_salud_r), w = 80),
-                     caption = wrapit(unique(dat_plot$cita), w = 80)) +
-                theme_bdd(base_size = 14)
-            
+            plot_salud_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+              geom_sf() +
+              geom_sf_text(aes(label = Valor), colour = "black",
+                           size = 4, fontface = "bold")+
+              viridis::scale_fill_viridis(name = "", direction = -1)+
+              # facet_wrap(~lugarnac,ncol=2)+
+              labs(x = "",
+                   y = "",
+              )+
+              theme_bdd(base_size = 14) +
+              theme(axis.line = element_blank(),
+                    axis.text.x = element_blank(),
+                    axis.text.y = element_blank(),
+                    axis.ticks = element_blank(),
+                    axis.title.x = element_blank(),
+                    axis.title.y = element_blank(),
+                    panel.grid.major = element_line(colour = "transparent"),
+              ) +
+              labs(x = "",  y = "",
+                   title = wrapit(paste(input$indicador_salud_r, 
+                                        "en",
+                                        input$fecha_dpto_salud_r), w = 80),
+                   caption = wrapit(unique(dat_plot$cita), w = 80)) 
+              
             print(plot_salud_dpto)
             ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
             
@@ -4413,16 +4461,29 @@ server <- function(input, output) {
         dep_j <- dep %>%
           left_join(dat_plot, by = c("nombre" = "departamento"))
         
-        plot_ssocial_dpto <- geouy::plot_geouy(dep_j,
-                                           "Valor",
-                                           viri_opt = "plasma",
-                                           l = "n") +
+        plot_ssocial_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+          geom_sf() +
+          geom_sf_text(aes(label = Valor), colour = "black",
+                       size = 4, fontface = "bold")+
+          viridis::scale_fill_viridis(name = "", direction = -1)+
+          # facet_wrap(~lugarnac,ncol=2)+
+          labs(x = "",
+               y = "",
+          )+
+          theme_bdd(base_size = 14) +
+          theme(axis.line = element_blank(),
+                axis.text.x = element_blank(),
+                axis.text.y = element_blank(),
+                axis.ticks = element_blank(),
+                axis.title.x = element_blank(),
+                axis.title.y = element_blank(),
+                panel.grid.major = element_line(colour = "transparent"),
+          ) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_ssocial_pp, 
                                     "en",
                                     input$fecha_dpto_ssocial_pp), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80)) +
-          theme_bdd(base_size = 14)
+               caption = wrapit(unique(dat_plot$cita), w = 80))
         
         print(plot_ssocial_dpto)
         ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
@@ -5058,16 +5119,29 @@ server <- function(input, output) {
         dep_j <- dep %>%
           left_join(dat_plot, by = c("nombre" = "departamento"))
         
-        plot_ssocial_dpto <- geouy::plot_geouy(dep_j,
-                                           "Valor",
-                                           viri_opt = "plasma",
-                                           l = "n") +
+        plot_ssocial_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+          geom_sf() +
+          geom_sf_text(aes(label = Valor), colour = "black",
+                       size = 4, fontface = "bold")+
+          viridis::scale_fill_viridis(name = "", direction = -1)+
+          # facet_wrap(~lugarnac,ncol=2)+
+          labs(x = "",
+               y = "",
+          )+
+          theme_bdd(base_size = 14) +
+          theme(axis.line = element_blank(),
+                axis.text.x = element_blank(),
+                axis.text.y = element_blank(),
+                axis.ticks = element_blank(),
+                axis.title.x = element_blank(),
+                axis.title.y = element_blank(),
+                panel.grid.major = element_line(colour = "transparent"),
+          ) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_ssocial_r, 
                                     "en",
                                     input$fecha_dpto_ssocial_r), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80)) +
-          theme_bdd(base_size = 14)
+               caption = wrapit(unique(dat_plot$cita), w = 80))
         
         print(plot_ssocial_dpto)
         ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
@@ -5662,16 +5736,29 @@ server <- function(input, output) {
         dep_j <- dep %>%
           left_join(dat_plot, by = c("nombre" = "departamento"))
         
-        plot_vivienda_dpto <- geouy::plot_geouy(dep_j,
-                                           "Valor",
-                                           viri_opt = "plasma",
-                                           l = "n") +
+        plot_vivienda_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+          geom_sf() +
+          geom_sf_text(aes(label = Valor), colour = "black",
+                       size = 4, fontface = "bold")+
+          viridis::scale_fill_viridis(name = "", direction = -1)+
+          # facet_wrap(~lugarnac,ncol=2)+
+          labs(x = "",
+               y = "",
+          )+
+          theme_bdd(base_size = 14) +
+          theme(axis.line = element_blank(),
+                axis.text.x = element_blank(),
+                axis.text.y = element_blank(),
+                axis.ticks = element_blank(),
+                axis.title.x = element_blank(),
+                axis.title.y = element_blank(),
+                panel.grid.major = element_line(colour = "transparent"),
+          ) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_vivienda_pp, 
                                     "en",
                                     input$fecha_dpto_vivienda_pp), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80)) +
-          theme_bdd(base_size = 14)
+               caption = wrapit(unique(dat_plot$cita), w = 80))
         
         print(plot_vivienda_dpto)
         ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
@@ -6261,16 +6348,29 @@ server <- function(input, output) {
         dep_j <- dep %>%
           left_join(dat_plot, by = c("nombre" = "departamento"))
         
-        plot_vivienda_dpto <- geouy::plot_geouy(dep_j,
-                                           "Valor",
-                                           viri_opt = "plasma",
-                                           l = "n") +
+        plot_vivienda_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+          geom_sf() +
+          geom_sf_text(aes(label = Valor), colour = "black",
+                       size = 4, fontface = "bold")+
+          viridis::scale_fill_viridis(name = "", direction = -1)+
+          # facet_wrap(~lugarnac,ncol=2)+
+          labs(x = "",
+               y = "",
+          )+
+          theme_bdd(base_size = 14) +
+          theme(axis.line = element_blank(),
+                axis.text.x = element_blank(),
+                axis.text.y = element_blank(),
+                axis.ticks = element_blank(),
+                axis.title.x = element_blank(),
+                axis.title.y = element_blank(),
+                panel.grid.major = element_line(colour = "transparent"),
+          ) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_vivienda_r, 
                                     "en",
                                     input$fecha_dpto_vivienda_r), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80)) +
-          theme_bdd(base_size = 14)
+               caption = wrapit(unique(dat_plot$cita), w = 80))
         
         print(plot_vivienda_dpto)
         ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
@@ -6858,16 +6958,29 @@ server <- function(input, output) {
         dep_j <- dep %>%
           left_join(dat_plot, by = c("nombre" = "departamento"))
         
-        plot_trabajo_dpto <- geouy::plot_geouy(dep_j,
-                                           "Valor",
-                                           viri_opt = "plasma",
-                                           l = "n") +
+        plot_trabajo_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+          geom_sf() +
+          geom_sf_text(aes(label = Valor), colour = "black",
+                       size = 4, fontface = "bold")+
+          viridis::scale_fill_viridis(name = "", direction = -1)+
+          # facet_wrap(~lugarnac,ncol=2)+
+          labs(x = "",
+               y = "",
+          )+
+          theme_bdd(base_size = 14) +
+          theme(axis.line = element_blank(),
+                axis.text.x = element_blank(),
+                axis.text.y = element_blank(),
+                axis.ticks = element_blank(),
+                axis.title.x = element_blank(),
+                axis.title.y = element_blank(),
+                panel.grid.major = element_line(colour = "transparent"),
+          ) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_trabajo_pp, 
                                     "en",
                                     input$fecha_dpto_trabajo_pp), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80)) +
-          theme_bdd(base_size = 14)
+               caption = wrapit(unique(dat_plot$cita), w = 80)) 
         
         print(plot_trabajo_dpto)
         ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
@@ -7512,16 +7625,28 @@ server <- function(input, output) {
         dep_j <- dep %>%
           left_join(dat_plot, by = c("nombre" = "departamento"))
         
-        plot_trabajo_dpto <- geouy::plot_geouy(dep_j,
-                                           "Valor",
-                                           viri_opt = "plasma",
-                                           l = "n") +
+        plot_trabajo_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+          geom_sf() +
+          geom_sf_text(aes(label = Valor), colour = "black",
+                       size = 4, fontface = "bold")+
+          viridis::scale_fill_viridis(name = "", direction = -1)+
+          labs(x = "",
+               y = "",
+          )+
+          theme_bdd(base_size = 14) +
+          theme(axis.line = element_blank(),
+                axis.text.x = element_blank(),
+                axis.text.y = element_blank(),
+                axis.ticks = element_blank(),
+                axis.title.x = element_blank(),
+                axis.title.y = element_blank(),
+                panel.grid.major = element_line(colour = "transparent"),
+          ) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_trabajo_r, 
                                     "en",
                                     input$fecha_dpto_trabajo_r), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80)) +
-          theme_bdd(base_size = 14)
+               caption = wrapit(unique(dat_plot$cita), w = 80))
         
         print(plot_trabajo_dpto)
         ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
@@ -8153,17 +8278,28 @@ server <- function(input, output) {
         dep_j <- dep %>%
           left_join(dat_plot, by = c("nombre" = "departamento"))
         
-        plot_ambiente_dpto <- geouy::plot_geouy(dep_j,
-                                           "Valor",
-                                           viri_opt = "plasma",
-                                           l = "n") +
+        plot_ambiente_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+          geom_sf() +
+          geom_sf_text(aes(label = Valor), colour = "black",
+                       size = 4, fontface = "bold")+
+          viridis::scale_fill_viridis(name = "", direction = -1)+
+          labs(x = "",
+               y = "",
+          )+
+          theme_bdd(base_size = 14) +
+          theme(axis.line = element_blank(),
+                axis.text.x = element_blank(),
+                axis.text.y = element_blank(),
+                axis.ticks = element_blank(),
+                axis.title.x = element_blank(),
+                axis.title.y = element_blank(),
+                panel.grid.major = element_line(colour = "transparent"),
+          ) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_ambiente_pp, 
                                     "en",
                                     input$fecha_dpto_ambiente_pp), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80)) +
-          scale_x_continuous(breaks = int_breaks) +
-          theme_bdd(base_size = 14)
+               caption = wrapit(unique(dat_plot$cita), w = 80))
         
         print(plot_ambiente_dpto)
         ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
@@ -8815,16 +8951,28 @@ server <- function(input, output) {
         dep_j <- dep %>%
           left_join(dat_plot, by = c("nombre" = "departamento"))
         
-        plot_ambiente_dpto <- geouy::plot_geouy(dep_j,
-                                           "Valor",
-                                           viri_opt = "plasma",
-                                           l = "n") +
+        plot_ambiente_dpto <-  ggplot(dep_j, aes(fill = Valor)) + 
+          geom_sf() +
+          geom_sf_text(aes(label = Valor), colour = "black",
+                       size = 4, fontface = "bold")+
+          viridis::scale_fill_viridis(name = "", direction = -1)+
+          labs(x = "",
+               y = "",
+          )+
+          theme_bdd(base_size = 14) +
+          theme(axis.line = element_blank(),
+                axis.text.x = element_blank(),
+                axis.text.y = element_blank(),
+                axis.ticks = element_blank(),
+                axis.title.x = element_blank(),
+                axis.title.y = element_blank(),
+                panel.grid.major = element_line(colour = "transparent"),
+          ) +
           labs(x = "",  y = "",
                title = wrapit(paste(input$indicador_ambiente_r, 
                                     "en",
                                     input$fecha_dpto_ambiente_r), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80)) +
-          theme_bdd(base_size = 14)
+               caption = wrapit(unique(dat_plot$cita), w = 80))
         
         print(plot_ambiente_dpto)
         ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
