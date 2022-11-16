@@ -205,7 +205,7 @@ paleta_expandida <- c(brewer.pal(8, "Dark2"), "#B76A16", "#75A61A", "#D9318E",
 ui <- fluidPage(
     
     tags$style(".fa-calculator {color:#21618C}"),
-    tags$style(".fa-circle-info {color:#21618C}"),
+    tags$style(".fa-exclamation {color:#21618C}"),
     tags$style(".fa-exclamation-triangle {color:#21618C}"),
         tags$head(HTML("<title>Mirador DESCA</title>")),
     tags$style(type="text/css",
@@ -302,7 +302,7 @@ ui <- fluidPage(
                                   status = "primary",
                                   width = "500px",
                                   right = TRUE,
-                                  icon = icon("fas fa-circle-info"),
+                                  icon = icon("exclamation", lib = "font-awesome"),
                                   uiOutput("conindicador_edu_pp"))
                             ),
                             div(style="display:inline-block;margin: 0px;", 
@@ -412,7 +412,7 @@ ui <- fluidPage(
                                   status = "primary",
                                   width = "500px",
                                   right = TRUE,
-                                  icon = icon("fas fa-circle-info"),
+                                  icon = icon("exclamation", lib = "font-awesome"),
                                   uiOutput("conindicador_edu_r"))
                             ),
                             div(style="display:inline-block", 
@@ -529,7 +529,7 @@ ui <- fluidPage(
                                   status = "primary",
                                   width = "500px",
                                   right = TRUE,
-                                  icon = icon("fas fa-circle-info"),
+                                  icon = icon("exclamation", lib = "font-awesome"),
                                   uiOutput("conindicador_salud_pp"))
                             ),
                             div(style="display:inline-block", 
@@ -638,7 +638,7 @@ ui <- fluidPage(
                                   status = "primary",
                                   width = "500px",
                                   right = TRUE,
-                                  icon = icon("fas fa-circle-info"),
+                                  icon = icon("exclamation", lib = "font-awesome"),
                                   uiOutput("conindicador_salud_r"))
                             ),
                             div(style="display:inline-block", 
@@ -755,7 +755,7 @@ ui <- fluidPage(
                                   status = "primary",
                                   width = "500px",
                                   right = TRUE,
-                                  icon = icon("fas fa-circle-info"),
+                                  icon = icon("exclamation", lib = "font-awesome"),
                                   uiOutput("conindicador_ssocial_pp"))
                             ),
                             div(style="display:inline-block", 
@@ -862,7 +862,7 @@ ui <- fluidPage(
                                   status = "primary",
                                   width = "500px",
                                   right = TRUE,
-                                  icon = icon("fas fa-circle-info"),
+                                  icon = icon("exclamation", lib = "font-awesome"),
                                   uiOutput("conindicador_ssocial_r"))
                             ),
                             div(style="display:inline-block", 
@@ -977,7 +977,7 @@ ui <- fluidPage(
                                   status = "primary",
                                   width = "500px",
                                   right = TRUE,
-                                  icon = icon("fas fa-circle-info"),
+                                  icon = icon("exclamation", lib = "font-awesome"),
                                   uiOutput("conindicador_vivienda_pp"))
                             ),
                             div(style="display:inline-block", 
@@ -1085,7 +1085,7 @@ ui <- fluidPage(
                                   status = "primary",
                                   width = "500px",
                                   right = TRUE,
-                                  icon = icon("fas fa-circle-info"),
+                                  icon = icon("exclamation", lib = "font-awesome"),
                                   uiOutput("conindicador_vivienda_r"))
                             ),
                             div(style="display:inline-block", 
@@ -1200,7 +1200,7 @@ ui <- fluidPage(
                         status = "primary",
                         width = "500px",
                         right = TRUE,
-                        icon = icon("fas fa-circle-info"),
+                        icon = icon("exclamation", lib = "font-awesome"),
                         uiOutput("conindicador_trabajo_pp"))
                   ),
                   div(style="display:inline-block", 
@@ -1308,7 +1308,7 @@ ui <- fluidPage(
                         status = "primary",
                         width = "500px",
                         right = TRUE,
-                        icon = icon("fas fa-circle-info"),
+                        icon = icon("exclamation", lib = "font-awesome"),
                         uiOutput("conindicador_trabajo_r"))
                   ),
                   div(style="display:inline-block", 
@@ -1423,7 +1423,7 @@ ui <- fluidPage(
                         status = "primary",
                         width = "500px",
                         right = TRUE,
-                        icon = icon("fas fa-circle-info"),
+                        icon = icon("exclamation", lib = "font-awesome"),
                         uiOutput("conindicador_ambiente_pp"))
                   ),
                   div(style="display:inline-block", 
@@ -1533,7 +1533,7 @@ ui <- fluidPage(
                         status = "primary",
                         width = "500px",
                         right = TRUE,
-                        icon = icon("fas fa-circle-info"),
+                        icon = icon("exclamation", lib = "font-awesome"),
                         uiOutput("conindicador_ambiente_r"))
                   ),
                   div(style="display:inline-block", 
