@@ -18,6 +18,7 @@ library(viridis)
 library(tidyverse)
 library(bslib)
 library(shinycssloaders)
+library(sf)
 
 source("utils.R") 
 
@@ -51,7 +52,7 @@ system('fc-cache -f ~/.fonts')
 
 ##  1.  PREPARAR DATA  ======================================================
 
-dat <- load("Data/data_motor.rda")
+load("Data/data_motor.rda")
 
 # Pasar luego estas transformaciones a data-raw
 dat <- tibble::as_tibble(x) %>%
@@ -61,7 +62,6 @@ dat <- tibble::as_tibble(x) %>%
   mutate(departamento = case_when(
     departamento != "Total" ~ toupper(departamento)
     )) %>%
-  mutate(departamento = chartr("ÁÉÍÓÚ", "AEIOU", departamento)) %>%
   mutate(tipoind = case_when(
     tipoind == "Políticas públicas y esfuerzo económico" ~ "Políticas Públicas y Esfuerzo Económico",
     TRUE ~ tipoind 
@@ -74,7 +74,12 @@ dat <- tibble::as_tibble(x) %>%
   ))
 
 # Cargar data departamento (a nivel local)
-dep <- readRDS("Data/depto.rds")
+# dep <- readRDS("Data/depto.rds")
+load("Data/depto.RData")
+dep <- depto
+
+dat$departamento  <-  chartr("ÁÉÍÓÚ", "AEIOU", dat$departamento)
+  
 
 # Cargar geometría para mapas
 # dep <- geouy::load_geouy("Departamentos")
@@ -1969,7 +1974,6 @@ server <- function(input, output) {
         geom_sf_text(aes(label = Valor), colour = "black",
                      size = 4, fontface = "bold")+
         viridis::scale_fill_viridis(name = "", direction = -1)+
-        # facet_wrap(~lugarnac,ncol=2)+
         labs(x = "",
              y = "",
         )+
