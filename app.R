@@ -248,6 +248,12 @@ ind_asc_ambiente <- dat %>%
   distinct(nomindicador) %>% 
   pull()
 
+ind_asc_ssocial <- dat %>% 
+  filter(derecho == "Seguridad Social") %>% 
+  filter(poblacion == "Afrodescendientes") %>% 
+  distinct(nomindicador) %>% 
+  pull()
+
 # Indicadores migrantes
 ind_migrantes <- dat %>% 
   filter(poblacion == "Migrantes") %>% 
@@ -280,6 +286,12 @@ ind_migrantes_trabajo <- dat %>%
 
 ind_migrantes_ambiente <- dat %>% 
   filter(derecho == "Ambiente") %>% 
+  filter(poblacion == "Migrantes") %>% 
+  distinct(nomindicador) %>% 
+  pull()
+
+ind_migrantes_ssocial <- dat %>% 
+  filter(derecho == "Seguridad Social") %>% 
   filter(poblacion == "Migrantes") %>% 
   distinct(nomindicador) %>% 
   pull()
@@ -321,6 +333,11 @@ ind_nna_ambiente <- dat %>%
   distinct(nomindicador) %>% 
   pull()
 
+ind_nna_ssocial <- dat %>% 
+  filter(derecho == "Seguridad Social") %>% 
+  filter(poblacion == "Niños, niñas y adolescentes") %>% 
+  distinct(nomindicador) %>% 
+  pull()
 
 # Indicadores Personas con discapacidad
 ind_pd <- dat %>% 
@@ -358,40 +375,52 @@ ind_pd_ambiente <- dat %>%
   distinct(nomindicador) %>% 
   pull()
 
+#ind_pd_social <- dat %>% 
+#  filter(derecho == "Seguridad Social") %>% 
+# filter(poblacion == "Personas con discapacidad") %>% 
+#  distinct(nomindicador) %>% 
+#  pull()
 
-# Indicadores Personas  LGTBIQ+
+
+# Indicadores Personas  LGBTI
 ind_lgtb <- dat %>% 
-  filter(poblacion == "Personas LGTBIQ+") %>% 
+  filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 ind_lgtb_edu <- dat %>% 
   filter(derecho == "Educación") %>% 
-  filter(poblacion == "Personas LGTBIQ+") %>% 
+  filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 ind_lgtb_salud <- dat %>% 
   filter(derecho == "Salud") %>% 
-  filter(poblacion == "Personas LGTBIQ+") %>% 
+  filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 ind_lgtb_vivienda <- dat %>% 
   filter(derecho == "Vivienda") %>% 
-  filter(poblacion == "Personas LGTBIQ+") %>% 
+  filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 ind_lgtb_trabajo <- dat %>% 
   filter(derecho == "Trabajo") %>% 
-  filter(poblacion == "Personas LGTBIQ+") %>% 
+  filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 ind_lgtb_ambiente <- dat %>% 
   filter(derecho == "Ambiente") %>% 
-  filter(poblacion == "Personas LGTBIQ+") %>% 
+  filter(poblacion == "Personas LGBTI") %>% 
+  distinct(nomindicador) %>% 
+  pull()
+
+ind_lgtb_ssocial <- dat %>% 
+  filter(derecho == "Seguridad Social") %>% 
+  filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
@@ -431,6 +460,12 @@ ind_ppl_ambiente <- dat %>%
   distinct(nomindicador) %>% 
   pull()
 
+ind_ppl_ssocial <- dat %>% 
+  filter(derecho == "Seguridad Social") %>% 
+  filter(poblacion == "Personas privadas de libertad") %>% 
+  distinct(nomindicador) %>% 
+  pull()
+
 # Indicadores Personas  Mujeres
 ind_sexo <- dat %>% 
   filter(poblacion == "Mujeres") %>% 
@@ -463,6 +498,12 @@ ind_sexo_trabajo <- dat %>%
 
 ind_sexo_ambiente <- dat %>% 
   filter(derecho == "Ambiente") %>% 
+  filter(poblacion == "Mujeres") %>% 
+  distinct(nomindicador) %>% 
+  pull()
+
+ind_sexo_ssocial <- dat %>% 
+  filter(derecho == "Seguridad Social") %>% 
   filter(poblacion == "Mujeres") %>% 
   distinct(nomindicador) %>% 
   pull()
@@ -12363,6 +12404,7 @@ server <- function(input, output) {
                       "Salud" = ind_asc_salud, 
                       "Vivienda" = ind_asc_vivienda,
                       "Trabajo" = ind_asc_trabajo,
+                      "Seguridad Social" = ind_asc_ssocial,
                       "Ambiente" = ind_asc_ambiente))
         
       } else if (input$poblaciones == "Mujeres"){
@@ -12374,6 +12416,7 @@ server <- function(input, output) {
                       "Salud" = ind_sexo_salud, 
                       "Vivienda" = ind_sexo_vivienda,
                       "Trabajo" = ind_sexo_trabajo,
+                      "Seguridad Social" = ind_sexo_ssocial,
                       "Ambiente" = ind_sexo_ambiente))
         
       } else if (input$poblaciones == "Migrantes"){
@@ -12385,6 +12428,7 @@ server <- function(input, output) {
                       "Salud" = ind_migrantes_salud, 
                       "Vivienda" = ind_migrantes_vivienda,
                       "Trabajo" = ind_migrantes_trabajo,
+                      "Seguridad Social" = ind_migrantes_ssocial,
                       "Ambiente" = ind_migrantes_ambiente))
         
       } else if (input$poblaciones == "Niños, niñas y adolescentes"){
@@ -12396,6 +12440,7 @@ server <- function(input, output) {
                       "Salud" = ind_nna_salud, 
                       "Vivienda" = ind_nna_vivienda,
                       "Trabajo" = ind_nna_trabajo,
+                      "Seguridad Social" = ind_nna_ssocial,
                       "Ambiente" = ind_nna_ambiente))
         
       } else if (input$poblaciones == "Personas con discapacidad"){
@@ -12407,6 +12452,7 @@ server <- function(input, output) {
                       "Salud" = ind_pd_salud, 
                       "Vivienda" = ind_pd_vivienda,
                       "Trabajo" = ind_pd_trabajo,
+                      #"Seguridad Social" = ind_pd_ssocial,
                       "Ambiente" = ind_pd_ambiente))
         
       } else if (input$poblaciones == "Personas privadas de libertad"){
@@ -12418,9 +12464,10 @@ server <- function(input, output) {
                       "Salud" = ind_ppl_salud, 
                       "Vivienda" = ind_ppl_vivienda,
                       "Trabajo" = ind_ppl_trabajo,
+                      "Seguridad Social" = ind_ppl_ssocial,
                       "Ambiente" = ind_ppl_ambiente))
         
-      } else if (input$poblaciones == "Personas LGTBIQ+"){
+      } else if (input$poblaciones == "Personas LGBTI"){
         
         selectInput(inputId = "indicador_poblaciones",
                     label = "Seleccione indicador:",
@@ -12429,6 +12476,7 @@ server <- function(input, output) {
                       "Salud" = ind_lgtb_salud, 
                       "Vivienda" = ind_lgtb_vivienda,
                       "Trabajo" = ind_lgtb_trabajo,
+                      "Seguridad Social" = ind_lgtb_ssocial,
                       "Ambiente" = ind_lgtb_ambiente))
       }      
 
