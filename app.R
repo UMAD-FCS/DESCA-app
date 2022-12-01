@@ -12785,7 +12785,7 @@ server <- function(input, output) {
                  caption = wrapit(unique(dat_plot$cita)))
           
           print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
           
           # Según corte
         } else if(input$poblaciones_corte != "Total") {
@@ -12811,7 +12811,7 @@ server <- function(input, output) {
             scale_colour_manual(name = "", values = paleta_expandida)
           
           print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
           
         }
         
@@ -12846,7 +12846,7 @@ server <- function(input, output) {
             scale_fill_brewer(name = "", palette = "Paired")
           
           print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
           
         } else {
           
@@ -12879,7 +12879,7 @@ server <- function(input, output) {
             facet_wrap(as.formula(paste("~", poblaciones_corte_var_2)))
           
           print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
           
         }
         
@@ -12916,7 +12916,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", poblaciones_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
         
       } else if(input$indicador_poblaciones %in% lista_vunico & input$poblaciones_corte != "Departamento") {
         
@@ -12944,7 +12944,7 @@ server <- function(input, output) {
                  caption = wrapit(unique(dat_plot$cita)))
           
           print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
           
           
         } else {
@@ -12970,7 +12970,7 @@ server <- function(input, output) {
             scale_fill_brewer(name = "", palette = "Paired")
           
           print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
           
         }
         
@@ -13037,7 +13037,7 @@ server <- function(input, output) {
         }
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
         
         
       } else if(input$poblaciones_corte == "Total") {
@@ -13062,7 +13062,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
         
         
       } else if(input$poblaciones_corte == "Departamento" &
@@ -13102,7 +13102,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita), w = 80))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
         
         
       } else if(input$poblaciones_corte != "Total") {
@@ -13137,7 +13137,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -13148,13 +13148,13 @@ server <- function(input, output) {
     
     output$baja_p_poblaciones <- downloadHandler(
       filename <- function() {
-        paste("indicador ambiente r", "png", sep = ".")
+        paste("indicador pob", "png", sep = ".")
       },
       
       content <- function(file) {
-        file.copy("www/indicador ambiente r.png", file)
+        file.copy("www/indicador pob.png", file)
       },
-      contentType = "www/indicador ambiente r"
+      contentType = "www/indicador pob"
     )
     
     
@@ -13305,7 +13305,7 @@ server <- function(input, output) {
     output$dwl_tab_poblaciones <- downloadHandler(
       
       filename = function() {
-        paste("resultados-", input$indicador_poblaciones, ".xlsx", sep = "")
+        paste("poblaciones-", input$indicador_poblaciones, ".xlsx", sep = "")
       },
       content = function(file) {
         
