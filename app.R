@@ -23,13 +23,13 @@ library(sf)
 source("utils.R") 
 
 theme_desca <- bs_theme(
-    version = 4,
-    bg = "#FFFFFF", fg = "#21618C", 
-    primary = "#21618C",
-    base_font = font_google("Poppins"),
-    code_font = font_google("Poppins"),
-    heading_font = font_google("Poppins"),
-    font_scale = 0.9
+  version = 4,
+  bg = "#FFFFFF", fg = "#21618C", 
+  primary = "#21618C",
+  base_font = font_google("Poppins"),
+  code_font = font_google("Poppins"),
+  heading_font = font_google("Poppins"),
+  font_scale = 0.9
 )
 
 color_defecto <- "#21618C"
@@ -61,11 +61,11 @@ dat <- tibble::as_tibble(x) %>%
   relocate(Fecha) %>%
   mutate(departamento = case_when(
     departamento != "Total" ~ toupper(departamento)
-    )) %>%
+  )) %>%
   mutate(tipoind = case_when(
     tipoind == "Políticas públicas y esfuerzo económico" ~ "Políticas Públicas y Esfuerzo Económico",
     TRUE ~ tipoind 
-    )) %>% 
+  )) %>% 
   mutate(fecha = ano) %>% 
   mutate(jerarquia_cat_2 = case_when(
     cuenca_o_embalse == "Cuenca Río de la Plata (Cuenca del Río Santa Lucía)" ~ 1,
@@ -80,7 +80,7 @@ dat <- tibble::as_tibble(x) %>%
     nomindicador == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente" ~ 1,
     nomindicador == "Indice del Estado Trófico – Embalses y Lagunas" ~ 1,
     TRUE ~ jerarquia_cat_2
-    ))
+  ))
 
 # Cargar data departamento (a nivel local)
 # dep <- readRDS("Data/depto.rds")
@@ -88,67 +88,67 @@ load("Data/depto.RData")
 dep <- depto
 
 dat$departamento  <-  chartr("ÁÉÍÓÚ", "AEIOU", dat$departamento)
-  
+
 
 # Cargar geometría para mapas
 # dep <- geouy::load_geouy("Departamentos")
 
 # Lista de indicadores
 ind_edu_pp <- dat %>% 
-    filter(derecho == "Educación",
-           tipoind == "Políticas Públicas y Esfuerzo Económico") %>% 
-    arrange() %>% 
-    distinct(nomindicador) %>% 
-    pull()
+  filter(derecho == "Educación",
+         tipoind == "Políticas Públicas y Esfuerzo Económico") %>% 
+  arrange() %>% 
+  distinct(nomindicador) %>% 
+  pull()
 
 ind_edu_r <- dat %>% 
-    filter(derecho == "Educación",
-           tipoind == "Resultados") %>% 
-    arrange() %>% 
-    distinct(nomindicador) %>% 
-    pull()
+  filter(derecho == "Educación",
+         tipoind == "Resultados") %>% 
+  arrange() %>% 
+  distinct(nomindicador) %>% 
+  pull()
 
 ind_salud_pp <- dat %>% 
-    filter(derecho == "Salud",
-           tipoind == "Políticas Públicas y Esfuerzo Económico") %>% 
-    arrange() %>% 
-    distinct(nomindicador) %>% 
-    pull()
+  filter(derecho == "Salud",
+         tipoind == "Políticas Públicas y Esfuerzo Económico") %>% 
+  arrange() %>% 
+  distinct(nomindicador) %>% 
+  pull()
 
 ind_salud_r <- dat %>% 
-    filter(derecho == "Salud",
-           tipoind == "Resultados") %>% 
-    arrange() %>% 
-    distinct(nomindicador) %>% 
-    pull()
+  filter(derecho == "Salud",
+         tipoind == "Resultados") %>% 
+  arrange() %>% 
+  distinct(nomindicador) %>% 
+  pull()
 
 ind_ssocial_pp <- dat %>% 
-    filter(derecho == "Seguridad Social",
-           tipoind == "Políticas Públicas y Esfuerzo Económico") %>% 
-    arrange() %>% 
-    distinct(nomindicador) %>% 
-    pull()
+  filter(derecho == "Seguridad Social",
+         tipoind == "Políticas Públicas y Esfuerzo Económico") %>% 
+  arrange() %>% 
+  distinct(nomindicador) %>% 
+  pull()
 
 ind_ssocial_r <- dat %>% 
-    filter(derecho == "Seguridad Social",
-           tipoind == "Resultados") %>% 
-    arrange() %>% 
-    distinct(nomindicador) %>% 
-    pull()
+  filter(derecho == "Seguridad Social",
+         tipoind == "Resultados") %>% 
+  arrange() %>% 
+  distinct(nomindicador) %>% 
+  pull()
 
 ind_vivienda_pp <- dat %>% 
-    filter(derecho == "Vivienda",
-           tipoind == "Políticas Públicas y Esfuerzo Económico") %>% 
-    arrange() %>% 
-    distinct(nomindicador) %>% 
-    pull()
+  filter(derecho == "Vivienda",
+         tipoind == "Políticas Públicas y Esfuerzo Económico") %>% 
+  arrange() %>% 
+  distinct(nomindicador) %>% 
+  pull()
 
 ind_vivienda_r <- dat %>% 
-    filter(derecho == "Vivienda",
-           tipoind == "Resultados") %>% 
-    arrange() %>% 
-    distinct(nomindicador) %>% 
-    pull()
+  filter(derecho == "Vivienda",
+         tipoind == "Resultados") %>% 
+  arrange() %>% 
+  distinct(nomindicador) %>% 
+  pull()
 
 ind_trabajo_pp <- dat %>% 
   filter(derecho == "Trabajo",
@@ -197,6 +197,7 @@ lista_serie_cat <- dat %>%
   pull()
 
 # Lista indicadore con valores únicos
+
 lista_vunico <- dat %>% 
   group_by(nomindicador) %>% 
   distinct(fecha_cat) %>% 
@@ -204,8 +205,16 @@ lista_vunico <- dat %>%
   filter(n == 1) %>% 
   pull(nomindicador)
 
+
+# data poblaciones sacando el preambulo del nombre del indicador con la poblacion entre ()
+datpob <- dat %>% 
+  mutate(nomindicador = str_replace_all(nomindicador, "\\(Migrantes\\)", ""),
+         nomindicador = str_replace_all(nomindicador, "\\(Personas LGBTI\\)", ""),
+         nomindicador = str_replace_all(nomindicador, "\\(Personas privadas de libertad\\)", ""),
+         nomindicador = str_replace_all(nomindicador, "\\(Personas con discapacidad\\)", ""))
+
 # Lista indicadores de población
-ind_poblaciones <- dat %>% 
+ind_poblaciones <- datpob %>% 
   filter(!is.na(poblacion)) %>% 
   distinct(nomindicador) %>% 
   pull()
@@ -213,84 +222,84 @@ ind_poblaciones <- dat %>%
 ## Listas poblaciones espcificas
 
 # Indicadores ascendencia
-ind_asc <- dat %>% 
+ind_asc <- datpob %>% 
   filter(poblacion == "Afrodescendientes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_asc_edu <- dat %>% 
+ind_asc_edu <- datpob %>% 
   filter(derecho == "Educación") %>% 
   filter(poblacion == "Afrodescendientes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_asc_salud <- dat %>% 
+ind_asc_salud <- datpob %>% 
   filter(derecho == "Salud") %>% 
   filter(poblacion == "Afrodescendientes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_asc_vivienda <- dat %>% 
+ind_asc_vivienda <- datpob %>% 
   filter(derecho == "Vivienda") %>% 
   filter(poblacion == "Afrodescendientes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_asc_trabajo <- dat %>% 
+ind_asc_trabajo <- datpob %>% 
   filter(derecho == "Trabajo") %>% 
   filter(poblacion == "Afrodescendientes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_asc_ambiente <- dat %>% 
+ind_asc_ambiente <- datpob %>% 
   filter(derecho == "Ambiente") %>% 
   filter(poblacion == "Afrodescendientes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_asc_ssocial <- dat %>% 
+ind_asc_ssocial <- datpob %>% 
   filter(derecho == "Seguridad Social") %>% 
   filter(poblacion == "Afrodescendientes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 # Indicadores migrantes
-ind_migrantes <- dat %>% 
-  filter(poblacion == "Migrantes") %>% 
+ind_migrantes <- datpob %>%
+  filter(poblacion == "Migrantes") %>%
   distinct(nomindicador) %>% 
   pull()
 
-ind_migrantes_edu <- dat %>% 
+ind_migrantes_edu <- datpob %>% 
   filter(derecho == "Educación") %>% 
   filter(poblacion == "Migrantes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_migrantes_salud <- dat %>% 
+ind_migrantes_salud <- datpob %>% 
   filter(derecho == "Salud") %>% 
   filter(poblacion == "Migrantes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_migrantes_vivienda <- dat %>% 
+ind_migrantes_vivienda <- datpob %>% 
   filter(derecho == "Vivienda") %>% 
   filter(poblacion == "Migrantes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_migrantes_trabajo <- dat %>% 
+ind_migrantes_trabajo <- datpob %>% 
   filter(derecho == "Trabajo") %>% 
   filter(poblacion == "Migrantes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_migrantes_ambiente <- dat %>% 
+ind_migrantes_ambiente <- datpob %>% 
   filter(derecho == "Ambiente") %>% 
   filter(poblacion == "Migrantes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_migrantes_ssocial <- dat %>% 
+ind_migrantes_ssocial <- datpob %>% 
   filter(derecho == "Seguridad Social") %>% 
   filter(poblacion == "Migrantes") %>% 
   distinct(nomindicador) %>% 
@@ -298,84 +307,84 @@ ind_migrantes_ssocial <- dat %>%
 
 
 # Indicadores NNA
-ind_nna <- dat %>% 
+ind_nna <- datpob %>% 
   filter(poblacion == "Niños, niñas y adolescentes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_nna_edu <- dat %>% 
+ind_nna_edu <- datpob %>% 
   filter(derecho == "Educación") %>% 
   filter(poblacion == "Niños, niñas y adolescentes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_nna_salud <- dat %>% 
+ind_nna_salud <- datpob %>% 
   filter(derecho == "Salud") %>% 
   filter(poblacion == "Niños, niñas y adolescentes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_nna_vivienda <- dat %>% 
+ind_nna_vivienda <- datpob %>% 
   filter(derecho == "Vivienda") %>% 
   filter(poblacion == "Niños, niñas y adolescentes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_nna_trabajo <- dat %>% 
+ind_nna_trabajo <- datpob %>% 
   filter(derecho == "Trabajo") %>% 
   filter(poblacion == "Niños, niñas y adolescentes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_nna_ambiente <- dat %>% 
+ind_nna_ambiente <- datpob %>% 
   filter(derecho == "Ambiente") %>% 
   filter(poblacion == "Niños, niñas y adolescentes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_nna_ssocial <- dat %>% 
+ind_nna_ssocial <- datpob %>% 
   filter(derecho == "Seguridad Social") %>% 
   filter(poblacion == "Niños, niñas y adolescentes") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 # Indicadores Personas con discapacidad
-ind_pd <- dat %>% 
+ind_pd <- datpob %>% 
   filter(poblacion == "Personas con discapacidad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_pd_edu <- dat %>% 
+ind_pd_edu <- datpob %>% 
   filter(derecho == "Educación") %>% 
   filter(poblacion == "Personas con discapacidad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_pd_salud <- dat %>% 
+ind_pd_salud <- datpob %>% 
   filter(derecho == "Salud") %>% 
   filter(poblacion == "Personas con discapacidad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_pd_vivienda <- dat %>% 
+ind_pd_vivienda <- datpob %>% 
   filter(derecho == "Vivienda") %>% 
   filter(poblacion == "Personas con discapacidad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_pd_trabajo <- dat %>% 
+ind_pd_trabajo <- datpob %>% 
   filter(derecho == "Trabajo") %>% 
   filter(poblacion == "Personas con discapacidad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_pd_ambiente <- dat %>% 
+ind_pd_ambiente <- datpob %>% 
   filter(derecho == "Ambiente") %>% 
   filter(poblacion == "Personas con discapacidad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-#ind_pd_social <- dat %>% 
+#ind_pd_social <- datpob %>% 
 #  filter(derecho == "Seguridad Social") %>% 
 # filter(poblacion == "Personas con discapacidad") %>% 
 #  distinct(nomindicador) %>% 
@@ -383,140 +392,173 @@ ind_pd_ambiente <- dat %>%
 
 
 # Indicadores Personas  LGBTI
-ind_lgtb <- dat %>% 
+ind_lgtb <- datpob %>% 
   filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_lgtb_edu <- dat %>% 
+ind_lgtb_edu <- datpob %>% 
   filter(derecho == "Educación") %>% 
   filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_lgtb_salud <- dat %>% 
+ind_lgtb_salud <- datpob %>% 
   filter(derecho == "Salud") %>% 
   filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_lgtb_vivienda <- dat %>% 
+ind_lgtb_vivienda <- datpob %>% 
   filter(derecho == "Vivienda") %>% 
   filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_lgtb_trabajo <- dat %>% 
+ind_lgtb_trabajo <- datpob %>% 
   filter(derecho == "Trabajo") %>% 
   filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_lgtb_ambiente <- dat %>% 
+ind_lgtb_ambiente <- datpob %>% 
   filter(derecho == "Ambiente") %>% 
   filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_lgtb_ssocial <- dat %>% 
+ind_lgtb_ssocial <- datpob %>% 
   filter(derecho == "Seguridad Social") %>% 
   filter(poblacion == "Personas LGBTI") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 # Indicadores Personas  Personas privadas de libertad
-ind_ppl <- dat %>% 
+ind_ppl <- datpob %>% 
   filter(poblacion == "Personas privadas de libertad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_ppl_edu <- dat %>% 
+ind_ppl_edu <- datpob %>% 
   filter(derecho == "Educación") %>% 
   filter(poblacion == "Personas privadas de libertad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_ppl_salud <- dat %>% 
+ind_ppl_salud <- datpob %>% 
   filter(derecho == "Salud") %>% 
   filter(poblacion == "Personas privadas de libertad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_ppl_vivienda <- dat %>% 
+ind_ppl_vivienda <- datpob %>% 
   filter(derecho == "Vivienda") %>% 
   filter(poblacion == "Personas privadas de libertad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_ppl_trabajo <- dat %>% 
+ind_ppl_trabajo <- datpob %>% 
   filter(derecho == "Trabajo") %>% 
   filter(poblacion == "Personas privadas de libertad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_ppl_ambiente <- dat %>% 
+ind_ppl_ambiente <- datpob %>% 
   filter(derecho == "Ambiente") %>% 
   filter(poblacion == "Personas privadas de libertad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_ppl_ssocial <- dat %>% 
+ind_ppl_ssocial <- datpob %>% 
   filter(derecho == "Seguridad Social") %>% 
   filter(poblacion == "Personas privadas de libertad") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 # Indicadores Personas  Mujeres
-ind_sexo <- dat %>% 
+ind_sexo <- datpob %>% 
   filter(poblacion == "Mujeres") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_sexo_edu <- dat %>% 
+ind_sexo_edu <- datpob %>% 
   filter(derecho == "Educación") %>% 
   filter(poblacion == "Mujeres") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_sexo_salud <- dat %>% 
+ind_sexo_salud <- datpob %>% 
   filter(derecho == "Salud") %>% 
   filter(poblacion == "Mujeres") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_sexo_vivienda <- dat %>% 
+ind_sexo_vivienda <- datpob %>% 
   filter(derecho == "Vivienda") %>% 
   filter(poblacion == "Mujeres") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_sexo_trabajo <- dat %>% 
+ind_sexo_trabajo <- datpob %>% 
   filter(derecho == "Trabajo") %>% 
   filter(poblacion == "Mujeres") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_sexo_ambiente <- dat %>% 
+ind_sexo_ambiente <- datpob %>% 
   filter(derecho == "Ambiente") %>% 
   filter(poblacion == "Mujeres") %>% 
   distinct(nomindicador) %>% 
   pull()
 
-ind_sexo_ssocial <- dat %>% 
+ind_sexo_ssocial <- datpob %>% 
   filter(derecho == "Seguridad Social") %>% 
   filter(poblacion == "Mujeres") %>% 
   distinct(nomindicador) %>% 
   pull()
 
 
+# Lista indicadores fecha_cat
+lista_fecha_cat_pob <- datpob %>% 
+  filter(!is.na(fecha_cat)) %>% 
+  distinct(nomindicador) %>% 
+  pull()
+
+# Lista indicadores con 2 cortes  
+lista_ind_2_pob <- datpob %>% 
+  filter(!is.na(corte_2)) %>% 
+  distinct(nomindicador) %>% 
+  pull()
+
+# Lista indicadores serie_cat
+lista_serie_cat_pob <- datpob %>% 
+  filter(serie_cat == 1) %>% 
+  distinct(nomindicador)  %>% 
+  pull()
+
+# Lista indicadore con valores únicos
+
+lista_vunico_pob <- datpob %>% 
+  group_by(nomindicador) %>% 
+  distinct(fecha_cat) %>% 
+  summarise(n = n()) %>% 
+  filter(n == 1) %>% 
+  pull(nomindicador)
+
+
 # Lista poblaciones
-lista_poblaciones <- dat %>% 
+lista_poblaciones <- datpob %>% 
   filter(!is.na(poblacion)) %>% 
   distinct(poblacion) %>% 
   pull()
 
 # Lista especial eliminar más adelante
 lista_especial <- intersect(lista_vunico, lista_ind_2)
+
+# Lista especial eliminar más adelante
+lista_especial_pob <- intersect(lista_vunico_pob, lista_ind_2_pob)
+
+
 
 # Paleta de colores expandida
 library(RColorBrewer)
@@ -529,1518 +571,1518 @@ paleta_expandida <- c(brewer.pal(8, "Dark2"), "#B76A16", "#75A61A", "#D9318E",
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
+  
+  tags$style(".fa-calculator {color:#21618C}"),
+  tags$style(".fa-exclamation {color:#21618C}"),
+  tags$style(".fa-exclamation-triangle {color:#21618C}"),
+  tags$head(HTML("<title>Mirador DESCA</title>")),
+  tags$style(type="text/css",
+             ".shiny-output-error { visibility: hidden; }",
+             ".shiny-output-error:before { visibility: hidden; }"), # Quita mensajes de error (ojo)
+  
+  navbarPage(
+    title = tags$a(
+      href="http://miradordesca.uy/", 
+      tags$img(src="logodesca.png", 
+               style="margin-top: -2px;", height = 30, width = 100,
+               height=30,
+               width = 100)
+    ),
     
-    tags$style(".fa-calculator {color:#21618C}"),
-    tags$style(".fa-exclamation {color:#21618C}"),
-    tags$style(".fa-exclamation-triangle {color:#21618C}"),
-        tags$head(HTML("<title>Mirador DESCA</title>")),
-    tags$style(type="text/css",
-               ".shiny-output-error { visibility: hidden; }",
-               ".shiny-output-error:before { visibility: hidden; }"), # Quita mensajes de error (ojo)
+    # div(img(src='logodesca.png', style="margin-top: -2px;", height = 30, width = 100)),
+    # titlePanel(title=div(img(src="logo_umad.png", height="5%", width="5%"), "Mirador DESCA")),
+    # title = div("Mirador DESCA", img(src="logo_umad.png", height="90%", width = "90%")),
+    collapsible = TRUE,
+    fluid = TRUE,
+    # theme = shinytheme("cerulean"),
+    theme = theme_desca,
+    # theme = bs_theme(version = 3, bootswatch = "united"),
     
-    navbarPage(
-        title = tags$a(
-          href="http://miradordesca.uy/", 
-          tags$img(src="logodesca.png", 
-                   style="margin-top: -2px;", height = 30, width = 100,
-                   height=30,
-                   width = 100)
-        ),
-        
-        # div(img(src='logodesca.png', style="margin-top: -2px;", height = 30, width = 100)),
-        # titlePanel(title=div(img(src="logo_umad.png", height="5%", width="5%"), "Mirador DESCA")),
-        # title = div("Mirador DESCA", img(src="logo_umad.png", height="90%", width = "90%")),
-        collapsible = TRUE,
-        fluid = TRUE,
-        # theme = shinytheme("cerulean"),
-        theme = theme_desca,
-        # theme = bs_theme(version = 3, bootswatch = "united"),
-        
-        ## Educación    =====================================================
-        
-        tabPanel(
-            title = "Educación", icon = icon("fas fa-user-graduate"),
-            
-            tabsetPanel(
-                type = "pills",
-                id   = "CP",
-                
-                tabPanel(
-                    "Políticas Públicas y esfuerzo económico",
-                    icon = icon("fas fa-chart-bar"),
-
-                    br(),
-                    
-                    fluidRow(
-                        
-                        sidebarPanel(
-                            
-                            width = 3,
+    ## Educación    =====================================================
     
-                             selectInput(
-                                 inputId = "indicador_edu_pp",
-                                 label = "Seleccione indicador:",
-                                 choices = ind_edu_pp
-                                 ),
-                            
-                            uiOutput("selector_edu_pp_corte_2"),
-                            
-                            uiOutput("chbox_edu_pp_2"),
-                            
-                            uiOutput("selector_edu_pp_corte"),
-                            
-                            uiOutput("s_edu_pp_fecha"),
-                            
-                            uiOutput("chbox_edu_pp"),
-                            
-                            HTML("<b> Instituciones:</b>"),
-                            br(),
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   tags$img(src="INDDHH-Logo.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="75%",
-                                            width = "65%")),
-                            br(),
-                            br(),
-                            tags$a( href="https://umad.cienciassociales.edu.uy/",
-                                    tags$img(src="logo_umad.png",
-                                             style=";vertical-align:top;",
-                                             height="75%",
-                                             width = "65%")),
-                            br(),
-                            br(),
-                            HTML("<b> Con el apoyo de:</b>"),    
-                            br(),
-                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                                   tags$img(src="ohchr.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="60%",
-                                            width = "45%")),
-                        ),
-                        
-                        mainPanel(
-                            
-                            tags$h3(style="display:inline-block;margin: 0px;",
-                                    uiOutput("title_edu_pp")),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("exclamation", lib = "font-awesome"),
-                                  uiOutput("conindicador_edu_pp"))
-                            ),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                    style = "minimal",
-                                    status = "primary",
-                                    width = "500px",
-                                    right = TRUE,
-                                    icon = icon("calculator", lib = "font-awesome"),
-                                    uiOutput("calculo_edu_pp"))
-                            ),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("fas fa-exclamation-triangle"),
-                                  uiOutput("observacion_edu_pp"))
-                            ),
-                            tags$h5(uiOutput("subtitle_edu_pp")),
-                            br(),
-                            withSpinner(plotOutput("plot_edu_pp", height = "500px"),
-                                        type = 2),
-                            br(),
-                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_edu_pp",
-                                                                   label = "Descarga el gráfico"),
-                                                    style = "float: right"))),
-                            br(),
-                            br(),
-                            DTOutput("table_edu_pp"),
-                            br(),
-                            br(),
-                            fluidRow(column(12, div(downloadButton("dwl_tab_edu_pp",
-                                                                   "Descarga la tabla"),
-                                                    style = "float: right"))),
-                            br(),
-                            br()
-                            
-                            )
-                    )
-                    
-                    ),
-                
-                # * Resultados ----
-                
-                tabPanel(
-                    "Resultados",
-                    icon = icon("fas fa-chart-bar"),
-                    
-                    br(),
-                
-                    fluidRow(
-                        
-                        sidebarPanel(
-                            
-                            width = 3,
-                            
-                            selectInput(
-                                inputId = "indicador_edu_r",
-                                label = "Seleccione indicador:",
-                                choices = ind_edu_r
-                            ),
-                            
-                            uiOutput("selector_edu_r_corte_2"),
-                            
-                            uiOutput("chbox_edu_r_2"),
-                            
-                            uiOutput("selector_edu_r_corte"),
-                            
-                            uiOutput("s_edu_r_fecha"),
-                            
-                            uiOutput("chbox_edu_r"),
-                            
-                            HTML("<b> Instituciones:</b>"),
-                            br(),
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   tags$img(src="INDDHH-Logo.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="75%",
-                                            width = "65%")),
-                            br(),
-                            br(),
-                            tags$a( href="https://umad.cienciassociales.edu.uy/",
-                                    tags$img(src="logo_umad.png",
-                                             style=";vertical-align:top;",
-                                             height="75%",
-                                             width = "65%")),
-                            br(),
-                            br(),
-                            HTML("<b> Con el apoyo de:</b>"),    
-                            br(),
-                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                                   tags$img(src="ohchr.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="60%",
-                                            width = "45%")),
-                        ),
-                        
-                        mainPanel(
-                            
-                            tags$h3(style="display:inline-block",
-                                    uiOutput("title_edu_r")),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("exclamation", lib = "font-awesome"),
-                                  uiOutput("conindicador_edu_r"))
-                            ),
-                            div(style="display:inline-block", 
-                                dropdown(
-                                    style = "minimal",
-                                    status = "primary",
-                                    width = "500px",
-                                    right = TRUE,
-                                    icon = icon("calculator", lib = "font-awesome"),
-                                    uiOutput("calculo_edu_r"))
-                            ),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("fas fa-exclamation-triangle"),
-                                  uiOutput("observacion_edu_r"))
-                            ),
-                            tags$h5(uiOutput("subtitle_edu_r")),
-                            br(),
-                            withSpinner(plotOutput("plot_edu_r", height = "500px" ),
-                                        type = 2),
-                            br(),
-                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_edu_r",
-                                                                   label = "Descarga el gráfico"),
-                                                    style = "float: right"))),
-                            br(),
-                            br(),
-                            DTOutput("table_edu_r"),
-                            br(),
-                            br(),
-                            fluidRow(column(12, div(downloadButton("dwl_tab_edu_r", 
-                                                                   "Descarga la tabla"),
-                                                    style = "float: right"))),
-                            br(),
-                            br()
-                            )
-                            
-                        )
-                )
-            )
-        ),
-        
-        ## Salud    =========================================================
+    tabPanel(
+      title = "Educación", icon = icon("fas fa-user-graduate"),
+      
+      tabsetPanel(
+        type = "pills",
+        id   = "CP",
         
         tabPanel(
-            title = "Salud", icon = icon("fas fa-plus-square"),
-            
-            tabsetPanel(
-                type = "pills",
-                id   = "CP",
-                
-                tabPanel(
-                    "Políticas Públicas y esfuerzo económico", 
-                    icon = icon("fas fa-chart-bar"),
-                    br(),
-                    
-                    fluidRow(
-                        
-                        sidebarPanel(
-                        
-                            width = 3,
-                            
-                            selectInput(
-                                inputId = "indicador_salud_pp",
-                                label = "Seleccione indicador:",
-                                choices = ind_salud_pp
-                            ),
-                            
-                            uiOutput("selector_salud_pp_corte_2"),
-                            
-                            uiOutput("chbox_salud_pp_2"),
-                            
-                            uiOutput("selector_salud_pp_corte"),
-                            
-                            uiOutput("s_salud_pp_fecha"),
-                            
-                            uiOutput("chbox_salud_pp"),
-                            
-                            HTML("<b> Instituciones:</b>"),
-                            br(),
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   tags$img(src="INDDHH-Logo.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="75%",
-                                            width = "65%")),
-                            br(),
-                            br(),
-                            tags$a( href="https://umad.cienciassociales.edu.uy/",
-                                    tags$img(src="logo_umad.png",
-                                             style=";vertical-align:top;",
-                                             height="75%",
-                                             width = "65%")),
-                            br(),
-                            br(),
-                            HTML("<b> Con el apoyo de:</b>"),    
-                            br(),
-                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                                   tags$img(src="ohchr.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="60%",
-                                            width = "45%")),
-                        ),
-                        
-                        mainPanel(
-                            
-                            tags$h3(style="display:inline-block",
-                                    uiOutput("title_salud_pp")),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("exclamation", lib = "font-awesome"),
-                                  uiOutput("conindicador_salud_pp"))
-                            ),
-                            div(style="display:inline-block", 
-                                dropdown(
-                                    style = "minimal",
-                                    status = "primary",
-                                    width = "500px",
-                                    right = TRUE,
-                                    icon = icon("calculator", lib = "font-awesome"),
-                                    uiOutput("calculo_salud_pp"))
-                            ),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("fas fa-exclamation-triangle"),
-                                  uiOutput("observacion_salud_pp"))
-                            ),
-                            tags$h5(uiOutput("subtitle_salud_pp")),
-                            br(),
-                            withSpinner(plotOutput("plot_salud_pp", height = "500px" ),
-                                        type = 2),
-                            br(),
-                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_salud_pp",
-                                                                   label = "Descarga el gráfico"),
-                                                    style = "float: right"))),
-                            br(),
-                            br(),
-                            DTOutput("table_salud_pp"),
-                            br(),
-                            br(),
-                            fluidRow(column(12, div(downloadButton("dwl_tab_salud_pp", "Descarga la tabla"),
-                                                    style = "float: right"))),
-                            br(),
-                            br()
-                        )
-                    )
-                    
-                ),
-                
-                # * Resultados ----
-                
-                tabPanel(
-                    "Resultados", 
-                    icon = icon("fas fa-chart-bar"),
-
-                    br(),
-                    
-                    fluidRow(
-                        
-                        sidebarPanel(
-                            
-                            width = 3,
-                            
-                            selectInput(
-                                inputId = "indicador_salud_r",
-                                label = "Seleccione indicador:",
-                                choices = ind_salud_r,
-                                selected = "Esperanza de vida al nacer"
-                            ),
-                            
-                            uiOutput("selector_salud_r_corte_2"),
-                            
-                            uiOutput("chbox_salud_r_2"),
-                            
-                            uiOutput("selector_salud_r_corte"),
-                            
-                            uiOutput("s_salud_r_fecha"),
-                            
-                            uiOutput("chbox_salud_r"),
-                            
-                            HTML("<b> Instituciones:</b>"),
-                            br(),
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   tags$img(src="INDDHH-Logo.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="75%",
-                                            width = "65%")),
-                            br(),
-                            br(),
-                            tags$a( href="https://umad.cienciassociales.edu.uy/",
-                                    tags$img(src="logo_umad.png",
-                                             style=";vertical-align:top;",
-                                             height="75%",
-                                             width = "65%")),
-                            br(),
-                            br(),
-                            HTML("<b> Con el apoyo de:</b>"),    
-                            br(),
-                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                                   tags$img(src="ohchr.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="60%",
-                                            width = "45%")),
-                        ),
-                        
-                        mainPanel(
-                            
-                            tags$h3(style="display:inline-block",
-                                    uiOutput("title_salud_r")),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("exclamation", lib = "font-awesome"),
-                                  uiOutput("conindicador_salud_r"))
-                            ),
-                            div(style="display:inline-block", 
-                                dropdown(
-                                    style = "minimal",
-                                    status = "primary",
-                                    width = "500px",
-                                    right = TRUE,
-                                    icon = icon("calculator", lib = "font-awesome"),
-                                    uiOutput("calculo_salud_r"))
-                            ),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("fas fa-exclamation-triangle"),
-                                  uiOutput("observacion_salud_r"))
-                            ),
-                            tags$h5(uiOutput("subtitle_salud_r")),
-                            br(),
-                            withSpinner(plotOutput("plot_salud_r", height = "500px" ),
-                                        type = 2),
-                            br(),
-                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_salud_r", 
-                                           label = "Descarga el gráfico"),
-                                           style = "float: right"))),
-                            br(),
-                            br(),
-                            DTOutput("table_salud_r"),
-                            br(),
-                            br(),
-                            fluidRow(column(12, div(downloadButton("dwl_tab_salud_r", "Descarga la tabla"),
-                                                    style = "float: right"))),
-                            br(),
-                            br()
-                            )
-                        )
-                )
-            )
-        ),
-        
-        ## Seguridad Social    ==============================================
-        
-        tabPanel(
-            title = "Seguridad Social", icon = icon("briefcase"),
-            
-            tabsetPanel(
-                type = "pills",
-                id   = "CP",
-                
-                tabPanel(
-                    "Políticas Públicas y esfuerzo económico", 
-                    icon = icon("fas fa-chart-bar"),
-                    
-                    br(),
-                    
-                    fluidRow(
-                        
-                    
-                        sidebarPanel(
-                            
-                            width = 3,
-                            
-                            selectInput(
-                                inputId = "indicador_ssocial_pp",
-                                label = "Seleccione indicador:",
-                                choices = ind_ssocial_pp
-                            ),
-                            
-                            uiOutput("selector_ssocial_pp_corte_2"),
-                            
-                            uiOutput("chbox_ssocial_pp_2"),
-                            
-                            uiOutput("selector_ssocial_pp_corte"),
-                            
-                            uiOutput("s_ssocial_pp_fecha"),
-                            
-                            uiOutput("chbox_ssocial_pp"),
-                            
-                            HTML("<b> Instituciones:</b>"),
-                            br(),
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   tags$img(src="INDDHH-Logo.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="75%",
-                                            width = "65%")),
-                            br(),
-                            br(),
-                            tags$a( href="https://umad.cienciassociales.edu.uy/",
-                                    tags$img(src="logo_umad.png",
-                                             style=";vertical-align:top;",
-                                             height="75%",
-                                             width = "65%")),
-                            br(),
-                            br(),
-                            HTML("<b> Con el apoyo de:</b>"),    
-                            br(),
-                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                                   tags$img(src="ohchr.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="60%",
-                                            width = "45%")),
-                        ),
-                        
-                        mainPanel(
-                            
-                            tags$h3(style="display:inline-block",
-                                    uiOutput("title_ssocial_pp")),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("exclamation", lib = "font-awesome"),
-                                  uiOutput("conindicador_ssocial_pp"))
-                            ),
-                            div(style="display:inline-block", 
-                                dropdown(
-                                    style = "minimal",
-                                    status = "primary",
-                                    width = "500px",
-                                    right = TRUE,
-                                    icon = icon("calculator", lib = "font-awesome"),
-                                    uiOutput("calculo_ssocial_pp"))
-                            ),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("fas fa-exclamation-triangle"),
-                                  uiOutput("observacion_ssocial_pp"))
-                            ),
-                            tags$h5(uiOutput("subtitle_ssocial_pp")),
-                            br(),
-                            withSpinner(plotOutput("plot_ssocial_pp", height = "500px" ),
-                                        type = 2),
-                            br(),
-                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_ssocial_pp", 
-                                           label = "Descarga el gráfico"),
-                                           style = "float: right"))),
-                            br(),
-                            br(),
-                            DTOutput("table_ssocial_pp"),
-                            br(),
-                            br(),
-                            fluidRow(column(12, div(downloadButton("dwl_tab_ssocial_pp", "Descarga la tabla"),
-                                                    style = "float: right"))),
-                            br(),
-                            br()
-                        )
-                    )
-                ),
-                
-                # * Resultados ----
-                
-                tabPanel(
-                    "Resultados", 
-                    icon = icon("fas fa-chart-bar"),
-                    
-                    br(),
-                    
-                    fluidRow(
-                        
-                        sidebarPanel(
-                            
-                            width = 3,
-                            
-                            selectInput(
-                                inputId = "indicador_ssocial_r",
-                                label = "Seleccione indicador:",
-                                choices = ind_ssocial_r
-                            ),
-                            
-                            uiOutput("selector_ssocial_r_corte_2"),
-                            
-                            uiOutput("chbox_ssocial_r_2"),
-                            
-                            uiOutput("selector_ssocial_r_corte"),
-                            
-                            uiOutput("s_ssocial_r_fecha"),
-                            
-                            uiOutput("chbox_ssocial_r"),
-                            
-                            HTML("<b> Instituciones:</b>"),
-                            br(),
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   tags$img(src="INDDHH-Logo.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="75%",
-                                            width = "65%")),
-                            br(),
-                            br(),
-                            tags$a( href="https://umad.cienciassociales.edu.uy/",
-                                    tags$img(src="logo_umad.png",
-                                             style=";vertical-align:top;",
-                                             height="75%",
-                                             width = "65%")),
-                            br(),
-                            br(),
-                            HTML("<b> Con el apoyo de:</b>"),    
-                            br(),
-                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                                   tags$img(src="ohchr.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="60%",
-                                            width = "45%")),
-                        ),
-                        
-                        mainPanel(
-                            
-                            tags$h3(style="display:inline-block",
-                                    uiOutput("title_ssocial_r")),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("exclamation", lib = "font-awesome"),
-                                  uiOutput("conindicador_ssocial_r"))
-                            ),
-                            div(style="display:inline-block", 
-                                dropdown(
-                                    style = "minimal",
-                                    status = "primary",
-                                    width = "500px",
-                                    right = TRUE,
-                                    icon = icon("calculator", lib = "font-awesome"),
-                                    uiOutput("calculo_ssocial_r"))
-                            ),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("fas fa-exclamation-triangle"),
-                                  uiOutput("observacion_ssocial_r"))
-                            ),
-                            tags$h5(uiOutput("subtitle_ssocial_r")),
-                            br(),
-                            withSpinner(plotOutput("plot_ssocial_r", height = "500px"),
-                                        type = 2),
-                            br(),
-                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_ssocial_r", 
-                                           label = "Descarga el gráfico"),
-                                           style = "float: right"))),
-                            br(),
-                            br(),
-                            DTOutput("table_ssocial_r"),
-                            br(),
-                            br(),
-                            fluidRow(column(12, div(downloadButton("dwl_tab_ssocial_r", "Descarga la tabla"),
-                                                    style = "float: right"))),
-                            br(),
-                            br()
-                        )
-                    )
-                )
-            )
-        ),
-        
-        ## Vivienda    =====================================================
-
-        tabPanel(
-            title = "Vivienda", icon = icon("home"),
-            
-            tabsetPanel(
-                type = "pills",
-                id   = "CP",
-                
-                tabPanel(
-                    "Políticas Públicas y esfuerzo económico", 
-                    icon = icon("fas fa-chart-bar"),
-                    br(),
-                    
-                    fluidRow(
-                        
-                        sidebarPanel(
-                            
-                            width = 3,
-                            
-                            selectInput(
-                                inputId = "indicador_vivienda_pp",
-                                label = "Seleccione indicador:",
-                                choices = ind_vivienda_pp
-                            ),
-                            
-                            uiOutput("selector_vivienda_pp_corte_2"),
-                            
-                            uiOutput("chbox_vivienda_pp_2"),
-                            
-                            uiOutput("selector_vivienda_pp_corte"),
-                            
-                            uiOutput("s_vivienda_pp_fecha"),
-                            
-                            uiOutput("chbox_vivienda_pp"),
-                            
-                            HTML("<b> Instituciones:</b>"),
-                            br(),
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   tags$img(src="INDDHH-Logo.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="75%",
-                                            width = "65%")),
-                            br(),
-                            br(),
-                            tags$a( href="https://umad.cienciassociales.edu.uy/",
-                                    tags$img(src="logo_umad.png",
-                                             style=";vertical-align:top;",
-                                             height="75%",
-                                             width = "65%")),
-                            br(),
-                            br(),
-                            HTML("<b> Con el apoyo de:</b>"),    
-                            br(),
-                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                                   tags$img(src="ohchr.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="60%",
-                                            width = "45%")),
-                        ),
-                        
-                        mainPanel(
-                            
-                            tags$h3(style="display:inline-block",
-                                    uiOutput("title_vivienda_pp")),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("exclamation", lib = "font-awesome"),
-                                  uiOutput("conindicador_vivienda_pp"))
-                            ),
-                            div(style="display:inline-block", 
-                                dropdown(
-                                    style = "minimal",
-                                    status = "primary",
-                                    width = "500px",
-                                    right = TRUE,
-                                    icon = icon("calculator", lib = "font-awesome"),
-                                    uiOutput("calculo_vivienda_pp"))
-                            ),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("fas fa-exclamation-triangle"),
-                                  uiOutput("observacion_vivienda_pp"))
-                            ),
-                            tags$h5(uiOutput("subtitle_vivienda_pp")),
-                            br(),
-                            withSpinner(plotOutput("plot_vivienda_pp", height = "500px"),
-                                        type = 2),
-                            br(),
-                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_vivienda_pp", 
-                                           label = "Descarga el gráfico"),
-                                           style = "float: right"))),
-                            br(),
-                            br(),
-                            DTOutput("table_vivienda_pp"),
-                            br(),
-                            br(),
-                            fluidRow(column(12, div(downloadButton("dwl_tab_vivienda_pp", "Descarga la tabla"),
-                                                    style = "float: right"))),
-                            br(),
-                            br()
-                        )
-                    )
-                ),
-                
-                # * Resultados ----
-                
-                
-                tabPanel(
-                    "Resultados", 
-                    icon = icon("fas fa-chart-bar"),
-                    
-                    br(),
-                    
-                    fluidRow(
-                        
-                        sidebarPanel(
-                            
-                            width = 3,
-                            
-                            selectInput(
-                                inputId = "indicador_vivienda_r",
-                                label = "Seleccione indicador:",
-                                choices = ind_vivienda_r
-                            ),
-                            
-                            uiOutput("selector_vivienda_r_corte_2"),
-                            
-                            uiOutput("chbox_vivienda_r_2"),
-                            
-                            uiOutput("selector_vivienda_r_corte"),
-                            
-                            uiOutput("s_vivienda_r_fecha"),
-                            
-                            uiOutput("chbox_vivienda_r"),
-                            
-                            HTML("<b> Instituciones:</b>"),
-                            br(),
-                            tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                                   tags$img(src="INDDHH-Logo.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="75%",
-                                            width = "65%")),
-                            br(),
-                            br(),
-                            tags$a( href="https://umad.cienciassociales.edu.uy/",
-                                    tags$img(src="logo_umad.png",
-                                             style=";vertical-align:top;",
-                                             height="75%",
-                                             width = "65%")),
-                            br(),
-                            br(),
-                            HTML("<b> Con el apoyo de:</b>"),    
-                            br(),
-                            tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                                   tags$img(src="ohchr.png",
-                                            style=";vertical-align:top;",
-                                            # title="Example Image Link", 
-                                            height="60%",
-                                            width = "45%")),
-                        ),
-                        
-                        mainPanel(
-                            
-                            tags$h3(style="display:inline-block",
-                                    uiOutput("title_vivienda_r")),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("exclamation", lib = "font-awesome"),
-                                  uiOutput("conindicador_vivienda_r"))
-                            ),
-                            div(style="display:inline-block", 
-                                dropdown(
-                                    style = "minimal",
-                                    status = "primary",
-                                    width = "500px",
-                                    right = TRUE,
-                                    icon = icon("calculator", lib = "font-awesome"),
-                                    uiOutput("calculo_vivienda_r"))
-                            ),
-                            div(style="display:inline-block;margin: 0px;", 
-                                dropdown(
-                                  style = "minimal",
-                                  status = "primary",
-                                  width = "500px",
-                                  right = TRUE,
-                                  icon = icon("fas fa-exclamation-triangle"),
-                                  uiOutput("observacion_vivienda_r"))
-                            ),
-                            tags$h5(uiOutput("subtitle_vivienda_r")),
-                            br(),
-                            withSpinner(plotOutput("plot_vivienda_r", height = "500px"),
-                                        type = 2),
-                            br(),
-                            fluidRow(column(12, div(downloadButton(outputId = "baja_p_vivienda_r", 
-                                           label = "Descarga el gráfico"),
-                                           style = "float: right"))),
-                            br(),
-                            br(),
-                            DTOutput("table_vivienda_r"),
-                            br(),
-                            br(),
-                            fluidRow(column(12, div(downloadButton("dwl_tab_vivienda_r", "Descarga la tabla"),
-                                                    style = "float: right"))),
-                            br(),
-                            br()
-                        )
-                    )
-                )
-            )
-        ),
-        
-        ## Trabajo    =====================================================
-        
-        tabPanel(
-          title = "Trabajo", icon = icon("fas fa-users-cog"),
+          "Políticas Públicas y esfuerzo económico",
+          icon = icon("fas fa-chart-bar"),
           
-          tabsetPanel(
-            type = "pills",
-            id   = "CP",
+          br(),
+          
+          fluidRow(
             
-            tabPanel(
-              "Políticas Públicas y esfuerzo económico", 
-              icon = icon("fas fa-chart-bar"),
-              br(),
+            sidebarPanel(
               
-              fluidRow(
-                
-                sidebarPanel(
-                  
-                  width = 3,
-                  
-                  selectInput(
-                    inputId = "indicador_trabajo_pp",
-                    label = "Seleccione indicador:",
-                    choices = ind_trabajo_pp
-                  ),
-                  
-                  uiOutput("selector_trabajo_pp_corte_2"),
-                  
-                  uiOutput("chbox_trabajo_pp_2"),
-                  
-                  uiOutput("selector_trabajo_pp_corte"),
-                  
-                  uiOutput("s_trabajo_pp_fecha"),
-                  
-                  uiOutput("chbox_trabajo_pp"),
-                  
-                  HTML("<b> Instituciones:</b>"),
-                  br(),
-                  tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                         tags$img(src="INDDHH-Logo.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link", 
-                                  height="75%",
-                                  width = "65%")),
-                  br(),
-                  br(),
-                  tags$a( href="https://umad.cienciassociales.edu.uy/",
-                          tags$img(src="logo_umad.png",
-                                   style=";vertical-align:top;",
-                                   height="75%",
-                                   width = "65%")),
-                  br(),
-                  br(),
-                  HTML("<b> Con el apoyo de:</b>"),    
-                  br(),
-                  tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                         tags$img(src="ohchr.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link", 
-                                  height="60%",
-                                  width = "45%")),
-                ),
-                
-                mainPanel(
-                  
-                  tags$h3(style="display:inline-block",
-                          uiOutput("title_trabajo_pp")),
-                  div(style="display:inline-block;margin: 0px;", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("exclamation", lib = "font-awesome"),
-                        uiOutput("conindicador_trabajo_pp"))
-                  ),
-                  div(style="display:inline-block", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("calculator", lib = "font-awesome"),
-                        uiOutput("calculo_trabajo_pp"))
-                  ),
-                  div(style="display:inline-block;margin: 0px;", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("fas fa-exclamation-triangle"),
-                        uiOutput("observacion_trabajo_pp"))
-                  ),
-                  tags$h5(uiOutput("subtitle_trabajo_pp")),
-                  br(),
-                  withSpinner(plotOutput("plot_trabajo_pp", height = "500px"),
-                              type = 2),
-                  br(),
-                  fluidRow(column(12, div(downloadButton(outputId = "baja_p_trabajo_pp", 
-                                                         label = "Descarga el gráfico"),
-                                          style = "float: right"))),
-                  br(),
-                  br(),
-                  DTOutput("table_trabajo_pp"),
-                  br(),
-                  br(),
-                  fluidRow(column(12, div(downloadButton("dwl_tab_trabajo_pp", "Descarga la tabla"),
-                                          style = "float: right"))),
-                  br(),
-                  br()
-                )
-              )
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_edu_pp",
+                label = "Seleccione indicador:",
+                choices = ind_edu_pp
+              ),
+              
+              uiOutput("selector_edu_pp_corte_2"),
+              
+              uiOutput("chbox_edu_pp_2"),
+              
+              uiOutput("selector_edu_pp_corte"),
+              
+              uiOutput("s_edu_pp_fecha"),
+              
+              uiOutput("chbox_edu_pp"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
             ),
             
-            # * Resultados ----
-            
-            
-            tabPanel(
-              "Resultados", 
-              icon = icon("fas fa-chart-bar"),
+            mainPanel(
               
+              tags$h3(style="display:inline-block;margin: 0px;",
+                      uiOutput("title_edu_pp")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_edu_pp"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_edu_pp"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_edu_pp"))
+              ),
+              tags$h5(uiOutput("subtitle_edu_pp")),
               br(),
+              withSpinner(plotOutput("plot_edu_pp", height = "500px"),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_edu_pp",
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_edu_pp"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_edu_pp",
+                                                     "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
               
-              fluidRow(
-                
-                sidebarPanel(
-                  
-                  width = 3,
-                  
-                  selectInput(
-                    inputId = "indicador_trabajo_r",
-                    label = "Seleccione indicador:",
-                    choices = ind_trabajo_r
-                  ),
-                  
-                  uiOutput("selector_trabajo_r_corte_2"),
-                  
-                  uiOutput("chbox_trabajo_r_2"),
-                  
-                  uiOutput("selector_trabajo_r_corte"),
-                  
-                  uiOutput("s_trabajo_r_fecha"),
-                  
-                  uiOutput("chbox_trabajo_r"),
-                  
-                  HTML("<b> Instituciones:</b>"),
-                  br(),
-                  tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                         tags$img(src="INDDHH-Logo.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link", 
-                                  height="75%",
-                                  width = "65%")),
-                  br(),
-                  br(),
-                  tags$a( href="https://umad.cienciassociales.edu.uy/",
-                          tags$img(src="logo_umad.png",
-                                   style=";vertical-align:top;",
-                                   height="75%",
-                                   width = "65%")),
-                  br(),
-                  br(),
-                  HTML("<b> Con el apoyo de:</b>"),    
-                  br(),
-                  tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                         tags$img(src="ohchr.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link", 
-                                  height="60%",
-                                  width = "45%")),
-                ),
-                
-                mainPanel(
-                  
-                  tags$h3(style="display:inline-block",
-                          uiOutput("title_trabajo_r")),
-                  div(style="display:inline-block;margin: 0px;", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("exclamation", lib = "font-awesome"),
-                        uiOutput("conindicador_trabajo_r"))
-                  ),
-                  div(style="display:inline-block", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("calculator", lib = "font-awesome"),
-                        uiOutput("calculo_trabajo_r"))
-                  ),
-                  div(style="display:inline-block;margin: 0px;", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("fas fa-exclamation-triangle"),
-                        uiOutput("observacion_trabajo_r"))
-                  ),
-                  tags$h5(uiOutput("subtitle_trabajo_r")),
-                  br(),
-                  withSpinner(plotOutput("plot_trabajo_r", height = "500px"),
-                              type = 2),
-                  br(),
-                  fluidRow(column(12, div(downloadButton(outputId = "baja_p_trabajo_r", 
-                                                         label = "Descarga el gráfico"),
-                                          style = "float: right"))),
-                  br(),
-                  br(),
-                  DTOutput("table_trabajo_r"),
-                  br(),
-                  br(),
-                  fluidRow(column(12, div(downloadButton("dwl_tab_trabajo_r", "Descarga la tabla"),
-                                          style = "float: right"))),
-                  br(),
-                  br()
-                )
-              )
             )
           )
+          
         ),
         
-        ## Ambiente    =====================================================
+        # * Resultados ----
         
         tabPanel(
-          title = "Ambiente", icon = icon("fas fa-leaf"),
+          "Resultados",
+          icon = icon("fas fa-chart-bar"),
           
-          tabsetPanel(
-            type = "pills",
-            id   = "CP",
+          br(),
+          
+          fluidRow(
             
-            tabPanel(
-              "Políticas Públicas y esfuerzo económico", 
-              icon = icon("fas fa-chart-bar"),
-              br(),
+            sidebarPanel(
               
-              fluidRow(
-                
-                sidebarPanel(
-                  
-                  width = 3,
-                  
-                  selectInput(
-                    inputId = "indicador_ambiente_pp",
-                    label = "Seleccione indicador:",
-                    choices = ind_ambiente_pp
-                  ),
-                  
-                  uiOutput("selector_ambiente_pp_corte_2"),
-                  
-                  uiOutput("chbox_ambiente_pp_2"),
-                  
-                  uiOutput("selector_ambiente_pp_corte"),
-                  
-                  uiOutput("s_ambiente_pp_fecha"),
-                  
-                  uiOutput("chbox_ambiente_pp"),
-                  
-                  HTML("<b> Instituciones:</b>"),
-                  br(),
-                  tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                         tags$img(src="INDDHH-Logo.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link", 
-                                  height="75%",
-                                  width = "65%")),
-                  br(),
-                  br(),
-                  tags$a( href="https://umad.cienciassociales.edu.uy/",
-                          tags$img(src="logo_umad.png",
-                                   style=";vertical-align:top;",
-                                   height="75%",
-                                   width = "65%")),
-                  br(),
-                  br(),
-                  HTML("<b> Con el apoyo de:</b>"),    
-                  br(),
-                  tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                         tags$img(src="ohchr.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link", 
-                                  height="60%",
-                                  width = "45%")),
-                ),
-                
-                mainPanel(
-                  
-                  tags$h3(style="display:inline-block",
-                          uiOutput("title_ambiente_pp")),
-                  div(style="display:inline-block;margin: 0px;", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("exclamation", lib = "font-awesome"),
-                        uiOutput("conindicador_ambiente_pp"))
-                  ),
-                  div(style="display:inline-block", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("calculator", lib = "font-awesome"),
-                        uiOutput("calculo_ambiente_pp"))
-                  ),
-                  div(style="display:inline-block;margin: 0px;", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("fas fa-exclamation-triangle"),
-                        uiOutput("observacion_ambiente_pp"))
-                  ),
-                  tags$h5(uiOutput("subtitle_ambiente_pp")),
-                  br(),
-                  withSpinner(plotOutput("plot_ambiente_pp", height = "500px"),
-                              type = 2),
-                  br(),
-                  fluidRow(column(12, div(downloadButton(outputId = "baja_p_ambiente_pp", 
-                                                         label = "Descarga el gráfico"),
-                                          style = "float: right"))),
-                  br(),
-                  br(),
-                  DTOutput("table_ambiente_pp"),
-                  br(),
-                  br(),
-                  fluidRow(column(12, div(downloadButton("dwl_tab_ambiente_pp", "Descarga la tabla"),
-                                          style = "float: right"))),
-                  br(),
-                  br()
-                )
-              )
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_edu_r",
+                label = "Seleccione indicador:",
+                choices = ind_edu_r
+              ),
+              
+              uiOutput("selector_edu_r_corte_2"),
+              
+              uiOutput("chbox_edu_r_2"),
+              
+              uiOutput("selector_edu_r_corte"),
+              
+              uiOutput("s_edu_r_fecha"),
+              
+              uiOutput("chbox_edu_r"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
             ),
             
-            # * Resultados ----
-            
-            
-            tabPanel(
-              "Resultados", 
-              icon = icon("fas fa-chart-bar"),
+            mainPanel(
               
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_edu_r")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_edu_r"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_edu_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_edu_r"))
+              ),
+              tags$h5(uiOutput("subtitle_edu_r")),
               br(),
-              
-              fluidRow(
-                
-                sidebarPanel(
-                  
-                  width = 3,
-                  
-                  selectInput(
-                    inputId = "indicador_ambiente_r",
-                    label = "Seleccione indicador:",
-                    choices = ind_ambiente_r
-                  ),
-                  
-                  uiOutput("selector_ambiente_r_corte_2"),
-                  
-                  uiOutput("chbox_ambiente_r_2"),
-                  
-                  uiOutput("selector_ambiente_r_corte"),
-                  
-                  uiOutput("chbox_ambiente_r"),
-                  
-                  uiOutput("s_ambiente_r_fecha"),
-                  
-                  HTML("<b> Instituciones:</b>"),
-                  br(),
-                  tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                         tags$img(src="INDDHH-Logo.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link", 
-                                  height="75%",
-                                  width = "65%")),
-                  br(),
-                  br(),
-                  tags$a( href="https://umad.cienciassociales.edu.uy/",
-                          tags$img(src="logo_umad.png",
-                                   style=";vertical-align:top;",
-                                   height="75%",
-                                   width = "65%")),
-                  br(),
-                  br(),
-                  HTML("<b> Con el apoyo de:</b>"),    
-                  br(),
-                  tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                         tags$img(src="ohchr.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link", 
-                                  height="60%",
-                                  width = "45%")),
-                ),
-                
-                mainPanel(
-                  
-                  tags$h3(style="display:inline-block",
-                          uiOutput("title_ambiente_r")),
-                  div(style="display:inline-block;margin: 0px;", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("exclamation", lib = "font-awesome"),
-                        uiOutput("conindicador_ambiente_r"))
-                  ),
-                  div(style="display:inline-block", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("calculator", lib = "font-awesome"),
-                        uiOutput("calculo_ambiente_r"))
-                  ),
-                  div(style="display:inline-block;margin: 0px;", 
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("fas fa-exclamation-triangle"),
-                        uiOutput("observacion_ambiente_r"))
-                  ),
-                  tags$h5(uiOutput("subtitle_ambiente_r")),
-                  br(),
-                  withSpinner(plotOutput("plot_ambiente_r", height = "500px"),
-                              type = 2),
-                  br(),
-                  fluidRow(column(12, div(downloadButton(outputId = "baja_p_ambiente_r", 
-                                                         label = "Descarga el gráfico"),
-                                          style = "float: right"))),
-                  br(),
-                  br(),
-                  DTOutput("table_ambiente_r"),
-                  br(),
-                  br(),
-                  fluidRow(column(12, div(downloadButton("dwl_tab_ambiente_r", "Descarga la tabla"),
-                                          style = "float: right"))),
-                  br(),
-                  br()
-                )
-              )
+              withSpinner(plotOutput("plot_edu_r", height = "500px" ),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_edu_r",
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_edu_r"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_edu_r", 
+                                                     "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
             )
+            
           )
-        ),
-        
-        # Poblaciones -----
+        )
+      )
+    ),
+    
+    ## Salud    =========================================================
+    
+    tabPanel(
+      title = "Salud", icon = icon("fas fa-plus-square"),
+      
+      tabsetPanel(
+        type = "pills",
+        id   = "CP",
         
         tabPanel(
-          title = "Poblaciones", icon = icon("fas fa-user"),
+          "Políticas Públicas y esfuerzo económico", 
+          icon = icon("fas fa-chart-bar"),
+          br(),
           
-              fluidRow(
-                
-                sidebarPanel(
-                  
-                  width = 3,
-                  
-                  selectInput(
-                    inputId = "poblaciones",
-                    label = "Seleccione población:",
-                    choices = sort(lista_poblaciones),
-                    selected = "Ascendencia étnico-racial"
-                  ),
-
-                  uiOutput("selector_poblaciones_indicadores"),
-                  
-                  uiOutput("selector_poblaciones_corte_2"),
-                  
-                  uiOutput("chbox_poblaciones_2"),
-
-                  uiOutput("selector_poblaciones_corte"),
-
-                  uiOutput("s_poblaciones_fecha"),
-
-                  uiOutput("chbox_poblaciones"),
-
-                  HTML("<b> Instituciones:</b>"),
-                  br(),
-                  tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                         tags$img(src="INDDHH-Logo.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link",
-                                  height="75%",
-                                  width = "65%")),
-                  br(),
-                  br(),
-                  tags$a( href="https://umad.cienciassociales.edu.uy/",
-                          tags$img(src="logo_umad.png",
-                                   style=";vertical-align:top;",
-                                   height="75%",
-                                   width = "65%")),
-                  br(),
-                  br(),
-                  HTML("<b> Con el apoyo de:</b>"),
-                  br(),
-                  tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                         tags$img(src="ohchr.png",
-                                  style=";vertical-align:top;",
-                                  # title="Example Image Link",
-                                  height="60%",
-                                  width = "45%")),
-                ),
-                
-                mainPanel(
-                  
-                  tags$h3(style="display:inline-block",
-                          uiOutput("title_poblaciones")),
-                  div(style="display:inline-block;margin: 0px;",
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("exclamation", lib = "font-awesome"),
-                        uiOutput("conindicador_poblaciones"))
-                  ),
-                  div(style="display:inline-block",
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("calculator", lib = "font-awesome"),
-                        uiOutput("calculo_poblaciones"))
-                  ),
-                  div(style="display:inline-block;margin: 0px;",
-                      dropdown(
-                        style = "minimal",
-                        status = "primary",
-                        width = "500px",
-                        right = TRUE,
-                        icon = icon("fas fa-exclamation-triangle"),
-                        uiOutput("observacion_poblaciones"))
-                  ),
-                  tags$h5(uiOutput("subtitle_poblaciones")),
-                  br(),
-                  withSpinner(plotOutput("plot_poblaciones", height = "500px"),
-                              type = 2),
-                  br(),
-                  fluidRow(column(12, div(downloadButton(outputId = "baja_p_poblaciones",
-                                                         label = "Descarga el gráfico"),
-                                          style = "float: right"))),
-                  br(),
-                  br(),
-                  DTOutput("table_poblaciones"),
-                  br(),
-                  br(),
-                  fluidRow(column(12, div(downloadButton("dwl_tab_poblaciones", "Descarga la tabla"),
-                                          style = "float: right"))),
-                  br(),
-                  br()
+          fluidRow(
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_salud_pp",
+                label = "Seleccione indicador:",
+                choices = ind_salud_pp
+              ),
+              
+              uiOutput("selector_salud_pp_corte_2"),
+              
+              uiOutput("chbox_salud_pp_2"),
+              
+              uiOutput("selector_salud_pp_corte"),
+              
+              uiOutput("s_salud_pp_fecha"),
+              
+              uiOutput("chbox_salud_pp"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_salud_pp")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_salud_pp"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_salud_pp"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_salud_pp"))
+              ),
+              tags$h5(uiOutput("subtitle_salud_pp")),
+              br(),
+              withSpinner(plotOutput("plot_salud_pp", height = "500px" ),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_salud_pp",
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_salud_pp"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_salud_pp", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+          
+        ),
+        
+        # * Resultados ----
+        
+        tabPanel(
+          "Resultados", 
+          icon = icon("fas fa-chart-bar"),
+          
+          br(),
+          
+          fluidRow(
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_salud_r",
+                label = "Seleccione indicador:",
+                choices = ind_salud_r,
+                selected = "Esperanza de vida al nacer"
+              ),
+              
+              uiOutput("selector_salud_r_corte_2"),
+              
+              uiOutput("chbox_salud_r_2"),
+              
+              uiOutput("selector_salud_r_corte"),
+              
+              uiOutput("s_salud_r_fecha"),
+              
+              uiOutput("chbox_salud_r"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_salud_r")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_salud_r"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_salud_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_salud_r"))
+              ),
+              tags$h5(uiOutput("subtitle_salud_r")),
+              br(),
+              withSpinner(plotOutput("plot_salud_r", height = "500px" ),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_salud_r", 
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_salud_r"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_salud_r", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+        )
+      )
+    ),
+    
+    ## Seguridad Social    ==============================================
+    
+    tabPanel(
+      title = "Seguridad Social", icon = icon("briefcase"),
+      
+      tabsetPanel(
+        type = "pills",
+        id   = "CP",
+        
+        tabPanel(
+          "Políticas Públicas y esfuerzo económico", 
+          icon = icon("fas fa-chart-bar"),
+          
+          br(),
+          
+          fluidRow(
+            
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_ssocial_pp",
+                label = "Seleccione indicador:",
+                choices = ind_ssocial_pp
+              ),
+              
+              uiOutput("selector_ssocial_pp_corte_2"),
+              
+              uiOutput("chbox_ssocial_pp_2"),
+              
+              uiOutput("selector_ssocial_pp_corte"),
+              
+              uiOutput("s_ssocial_pp_fecha"),
+              
+              uiOutput("chbox_ssocial_pp"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_ssocial_pp")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_ssocial_pp"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_ssocial_pp"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_ssocial_pp"))
+              ),
+              tags$h5(uiOutput("subtitle_ssocial_pp")),
+              br(),
+              withSpinner(plotOutput("plot_ssocial_pp", height = "500px" ),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_ssocial_pp", 
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_ssocial_pp"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_ssocial_pp", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
             )
           )
         ),
-    )
+        
+        # * Resultados ----
+        
+        tabPanel(
+          "Resultados", 
+          icon = icon("fas fa-chart-bar"),
+          
+          br(),
+          
+          fluidRow(
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_ssocial_r",
+                label = "Seleccione indicador:",
+                choices = ind_ssocial_r
+              ),
+              
+              uiOutput("selector_ssocial_r_corte_2"),
+              
+              uiOutput("chbox_ssocial_r_2"),
+              
+              uiOutput("selector_ssocial_r_corte"),
+              
+              uiOutput("s_ssocial_r_fecha"),
+              
+              uiOutput("chbox_ssocial_r"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_ssocial_r")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_ssocial_r"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_ssocial_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_ssocial_r"))
+              ),
+              tags$h5(uiOutput("subtitle_ssocial_r")),
+              br(),
+              withSpinner(plotOutput("plot_ssocial_r", height = "500px"),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_ssocial_r", 
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_ssocial_r"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_ssocial_r", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+        )
+      )
+    ),
+    
+    ## Vivienda    =====================================================
+    
+    tabPanel(
+      title = "Vivienda", icon = icon("home"),
+      
+      tabsetPanel(
+        type = "pills",
+        id   = "CP",
+        
+        tabPanel(
+          "Políticas Públicas y esfuerzo económico", 
+          icon = icon("fas fa-chart-bar"),
+          br(),
+          
+          fluidRow(
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_vivienda_pp",
+                label = "Seleccione indicador:",
+                choices = ind_vivienda_pp
+              ),
+              
+              uiOutput("selector_vivienda_pp_corte_2"),
+              
+              uiOutput("chbox_vivienda_pp_2"),
+              
+              uiOutput("selector_vivienda_pp_corte"),
+              
+              uiOutput("s_vivienda_pp_fecha"),
+              
+              uiOutput("chbox_vivienda_pp"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_vivienda_pp")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_vivienda_pp"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_vivienda_pp"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_vivienda_pp"))
+              ),
+              tags$h5(uiOutput("subtitle_vivienda_pp")),
+              br(),
+              withSpinner(plotOutput("plot_vivienda_pp", height = "500px"),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_vivienda_pp", 
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_vivienda_pp"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_vivienda_pp", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+        ),
+        
+        # * Resultados ----
+        
+        
+        tabPanel(
+          "Resultados", 
+          icon = icon("fas fa-chart-bar"),
+          
+          br(),
+          
+          fluidRow(
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_vivienda_r",
+                label = "Seleccione indicador:",
+                choices = ind_vivienda_r
+              ),
+              
+              uiOutput("selector_vivienda_r_corte_2"),
+              
+              uiOutput("chbox_vivienda_r_2"),
+              
+              uiOutput("selector_vivienda_r_corte"),
+              
+              uiOutput("s_vivienda_r_fecha"),
+              
+              uiOutput("chbox_vivienda_r"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_vivienda_r")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_vivienda_r"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_vivienda_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_vivienda_r"))
+              ),
+              tags$h5(uiOutput("subtitle_vivienda_r")),
+              br(),
+              withSpinner(plotOutput("plot_vivienda_r", height = "500px"),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_vivienda_r", 
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_vivienda_r"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_vivienda_r", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+        )
+      )
+    ),
+    
+    ## Trabajo    =====================================================
+    
+    tabPanel(
+      title = "Trabajo", icon = icon("fas fa-users-cog"),
+      
+      tabsetPanel(
+        type = "pills",
+        id   = "CP",
+        
+        tabPanel(
+          "Políticas Públicas y esfuerzo económico", 
+          icon = icon("fas fa-chart-bar"),
+          br(),
+          
+          fluidRow(
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_trabajo_pp",
+                label = "Seleccione indicador:",
+                choices = ind_trabajo_pp
+              ),
+              
+              uiOutput("selector_trabajo_pp_corte_2"),
+              
+              uiOutput("chbox_trabajo_pp_2"),
+              
+              uiOutput("selector_trabajo_pp_corte"),
+              
+              uiOutput("s_trabajo_pp_fecha"),
+              
+              uiOutput("chbox_trabajo_pp"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_trabajo_pp")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_trabajo_pp"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_trabajo_pp"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_trabajo_pp"))
+              ),
+              tags$h5(uiOutput("subtitle_trabajo_pp")),
+              br(),
+              withSpinner(plotOutput("plot_trabajo_pp", height = "500px"),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_trabajo_pp", 
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_trabajo_pp"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_trabajo_pp", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+        ),
+        
+        # * Resultados ----
+        
+        
+        tabPanel(
+          "Resultados", 
+          icon = icon("fas fa-chart-bar"),
+          
+          br(),
+          
+          fluidRow(
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_trabajo_r",
+                label = "Seleccione indicador:",
+                choices = ind_trabajo_r
+              ),
+              
+              uiOutput("selector_trabajo_r_corte_2"),
+              
+              uiOutput("chbox_trabajo_r_2"),
+              
+              uiOutput("selector_trabajo_r_corte"),
+              
+              uiOutput("s_trabajo_r_fecha"),
+              
+              uiOutput("chbox_trabajo_r"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_trabajo_r")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_trabajo_r"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_trabajo_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_trabajo_r"))
+              ),
+              tags$h5(uiOutput("subtitle_trabajo_r")),
+              br(),
+              withSpinner(plotOutput("plot_trabajo_r", height = "500px"),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_trabajo_r", 
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_trabajo_r"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_trabajo_r", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+        )
+      )
+    ),
+    
+    ## Ambiente    =====================================================
+    
+    tabPanel(
+      title = "Ambiente", icon = icon("fas fa-leaf"),
+      
+      tabsetPanel(
+        type = "pills",
+        id   = "CP",
+        
+        tabPanel(
+          "Políticas Públicas y esfuerzo económico", 
+          icon = icon("fas fa-chart-bar"),
+          br(),
+          
+          fluidRow(
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_ambiente_pp",
+                label = "Seleccione indicador:",
+                choices = ind_ambiente_pp
+              ),
+              
+              uiOutput("selector_ambiente_pp_corte_2"),
+              
+              uiOutput("chbox_ambiente_pp_2"),
+              
+              uiOutput("selector_ambiente_pp_corte"),
+              
+              uiOutput("s_ambiente_pp_fecha"),
+              
+              uiOutput("chbox_ambiente_pp"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_ambiente_pp")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_ambiente_pp"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_ambiente_pp"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_ambiente_pp"))
+              ),
+              tags$h5(uiOutput("subtitle_ambiente_pp")),
+              br(),
+              withSpinner(plotOutput("plot_ambiente_pp", height = "500px"),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_ambiente_pp", 
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_ambiente_pp"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_ambiente_pp", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+        ),
+        
+        # * Resultados ----
+        
+        
+        tabPanel(
+          "Resultados", 
+          icon = icon("fas fa-chart-bar"),
+          
+          br(),
+          
+          fluidRow(
+            
+            sidebarPanel(
+              
+              width = 3,
+              
+              selectInput(
+                inputId = "indicador_ambiente_r",
+                label = "Seleccione indicador:",
+                choices = ind_ambiente_r
+              ),
+              
+              uiOutput("selector_ambiente_r_corte_2"),
+              
+              uiOutput("chbox_ambiente_r_2"),
+              
+              uiOutput("selector_ambiente_r_corte"),
+              
+              uiOutput("chbox_ambiente_r"),
+              
+              uiOutput("s_ambiente_r_fecha"),
+              
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),    
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link", 
+                              height="60%",
+                              width = "45%")),
+            ),
+            
+            mainPanel(
+              
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_ambiente_r")),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_ambiente_r"))
+              ),
+              div(style="display:inline-block", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_ambiente_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_ambiente_r"))
+              ),
+              tags$h5(uiOutput("subtitle_ambiente_r")),
+              br(),
+              withSpinner(plotOutput("plot_ambiente_r", height = "500px"),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_ambiente_r", 
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_ambiente_r"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_ambiente_r", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+        )
+      )
+    ),
+    
+    # Poblaciones -----
+    
+    tabPanel(
+      title = "Poblaciones", icon = icon("fas fa-user"),
+      
+      fluidRow(
+        
+        sidebarPanel(
+          
+          width = 3,
+          
+          selectInput(
+            inputId = "poblaciones",
+            label = "Seleccione población:",
+            choices = sort(lista_poblaciones),
+            selected = "Ascendencia étnico-racial"
+          ),
+          
+          uiOutput("selector_poblaciones_indicadores"),
+          
+          uiOutput("selector_poblaciones_corte_2"),
+          
+          uiOutput("chbox_poblaciones_2"),
+          
+          uiOutput("selector_poblaciones_corte"),
+          
+          uiOutput("s_poblaciones_fecha"),
+          
+          uiOutput("chbox_poblaciones"),
+          
+          HTML("<b> Instituciones:</b>"),
+          br(),
+          tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                 tags$img(src="INDDHH-Logo.png",
+                          style=";vertical-align:top;",
+                          # title="Example Image Link",
+                          height="75%",
+                          width = "65%")),
+          br(),
+          br(),
+          tags$a( href="https://umad.cienciassociales.edu.uy/",
+                  tags$img(src="logo_umad.png",
+                           style=";vertical-align:top;",
+                           height="75%",
+                           width = "65%")),
+          br(),
+          br(),
+          HTML("<b> Con el apoyo de:</b>"),
+          br(),
+          tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                 tags$img(src="ohchr.png",
+                          style=";vertical-align:top;",
+                          # title="Example Image Link",
+                          height="60%",
+                          width = "45%")),
+        ),
+        
+        mainPanel(
+          
+          tags$h3(style="display:inline-block",
+                  uiOutput("title_poblaciones")),
+          div(style="display:inline-block;margin: 0px;",
+              dropdown(
+                style = "minimal",
+                status = "primary",
+                width = "500px",
+                right = TRUE,
+                icon = icon("exclamation", lib = "font-awesome"),
+                uiOutput("conindicador_poblaciones"))
+          ),
+          div(style="display:inline-block",
+              dropdown(
+                style = "minimal",
+                status = "primary",
+                width = "500px",
+                right = TRUE,
+                icon = icon("calculator", lib = "font-awesome"),
+                uiOutput("calculo_poblaciones"))
+          ),
+          div(style="display:inline-block;margin: 0px;",
+              dropdown(
+                style = "minimal",
+                status = "primary",
+                width = "500px",
+                right = TRUE,
+                icon = icon("fas fa-exclamation-triangle"),
+                uiOutput("observacion_poblaciones"))
+          ),
+          tags$h5(uiOutput("subtitle_poblaciones")),
+          br(),
+          withSpinner(plotOutput("plot_poblaciones", height = "500px"),
+                      type = 2),
+          br(),
+          fluidRow(column(12, div(downloadButton(outputId = "baja_p_poblaciones",
+                                                 label = "Descarga el gráfico"),
+                                  style = "float: right"))),
+          br(),
+          br(),
+          DTOutput("table_poblaciones"),
+          br(),
+          br(),
+          fluidRow(column(12, div(downloadButton("dwl_tab_poblaciones", "Descarga la tabla"),
+                                  style = "float: right"))),
+          br(),
+          br()
+        )
+      )
+    ),
+  )
 )
 
 
 ##  3.  SERVER  =============================================================
 
 server <- function(input, output) {
-    
+  
   
   
   
@@ -2677,13 +2719,13 @@ server <- function(input, output) {
   
   output$baja_p_edu_pp <- downloadHandler(
     filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
+      paste("indicador edu pp", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
+      file.copy("www/indicador edu pp.png", file)
     },
-    contentType = "www/indicador ambiente r"
+    contentType = "www/indicador edu pp"
   )
   
   
@@ -3115,7 +3157,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
         
         # Según corte
       } else if(input$edu_r_corte != "Total") {
@@ -3141,7 +3183,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -3176,7 +3218,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
         
       } else {
         
@@ -3209,7 +3251,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", edu_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -3246,7 +3288,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", edu_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
       
     } else if(input$indicador_edu_r %in% lista_vunico & input$edu_r_corte != "Departamento") {
       
@@ -3274,7 +3316,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
         
         
       } else {
@@ -3300,7 +3342,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -3367,7 +3409,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$edu_r_corte == "Total") {
@@ -3392,7 +3434,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$edu_r_corte == "Departamento" &
@@ -3432,7 +3474,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$edu_r_corte != "Total") {
@@ -3467,7 +3509,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
       
     }
     
@@ -3478,13 +3520,13 @@ server <- function(input, output) {
   
   output$baja_p_edu_r <- downloadHandler(
     filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
+      paste("indicador edu r", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
+      file.copy("www/indicador edu r.png", file)
     },
-    contentType = "www/indicador ambiente r"
+    contentType = "www/indicador edu r"
   )
   
   
@@ -3916,7 +3958,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
         
         # Según corte
       } else if(input$salud_pp_corte != "Total") {
@@ -3942,7 +3984,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -3977,7 +4019,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
         
       } else {
         
@@ -4010,7 +4052,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", salud_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -4047,7 +4089,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", salud_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
       
     } else if(input$indicador_salud_pp %in% lista_vunico & input$salud_pp_corte != "Departamento") {
       
@@ -4075,7 +4117,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
         
         
       } else {
@@ -4101,7 +4143,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -4168,7 +4210,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$salud_pp_corte == "Total") {
@@ -4193,7 +4235,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$salud_pp_corte == "Departamento" &
@@ -4233,7 +4275,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$salud_pp_corte != "Total") {
@@ -4268,7 +4310,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
       
     }
     
@@ -4279,13 +4321,13 @@ server <- function(input, output) {
   
   output$baja_p_salud_pp <- downloadHandler(
     filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
+      paste("indicador salud pp", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
+      file.copy("www/indicador salud pp.png", file)
     },
-    contentType = "www/indicador ambiente r"
+    contentType = "www/indicador salud pp"
   )
   
   
@@ -4717,7 +4759,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
         
         # Según corte
       } else if(input$salud_r_corte != "Total") {
@@ -4743,7 +4785,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -4778,7 +4820,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
         
       } else {
         
@@ -4811,7 +4853,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", salud_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -4848,7 +4890,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", salud_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
       
     } else if(input$indicador_salud_r %in% lista_vunico & input$salud_r_corte != "Departamento") {
       
@@ -4876,7 +4918,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
         
         
       } else {
@@ -4902,7 +4944,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -4970,7 +5012,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$salud_r_corte == "Total") {
@@ -4995,7 +5037,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$salud_r_corte == "Departamento" &
@@ -5035,7 +5077,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$salud_r_corte != "Total") {
@@ -5070,7 +5112,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
       
     }
     
@@ -5081,13 +5123,13 @@ server <- function(input, output) {
   
   output$baja_p_salud_r <- downloadHandler(
     filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
+      paste("indicador salud r", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
+      file.copy("www/indicador salud r.png", file)
     },
-    contentType = "www/indicador ambiente r"
+    contentType = "www/indicador salud r"
   )
   
   
@@ -5243,6 +5285,1610 @@ server <- function(input, output) {
     content = function(file) {
       
       openxlsx::write.xlsx(list_salud_r(), file)
+      
+    }
+  )
+  
+  
+  
+  
+  
+  ### 5.1. Seguridad Social Politicas ========================================== 
+  
+  # * Data reactiva   =================================================    
+  dat_ssocial_pp <- reactive({
+    
+    req(input$indicador_ssocial_pp)
+    
+    dat %>%
+      filter(nomindicador == input$indicador_ssocial_pp) 
+    
+  })
+  
+  output$selector_ssocial_pp_corte_2 <- renderUI({
+    
+    if(input$indicador_ssocial_pp %in% lista_ind_2){
+      
+      selectInput(
+        inputId = "ssocial_pp_corte_2",
+        label = "Seleccione primer corte:",
+        choices = dat_ssocial_pp() %>% 
+          select(corte_2) %>%
+          arrange(corte_2) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_ssocial_pp() %>% 
+          filter(jerarquia == "1") %>%  
+          distinct(corte_2) %>% 
+          pull()
+      )
+      
+    } else {
+      
+      NULL
+    }
+    
+  })
+  
+  output$chbox_ssocial_pp_2 <- renderUI({
+    
+    if(input$indicador_ssocial_pp %in% lista_ind_2 & input$indicador_ssocial_pp %notin% lista_especial){
+      
+      # if(input$ssocial_pp_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_pp %notin% lista_vunico) {
+      
+      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+      
+      checkboxGroupInput(inputId = "checkbox_ssocial_pp_2",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_ssocial_pp() %>%
+                           filter(corte_2 == input$ssocial_pp_corte_2) %>% 
+                           distinct(!!ssocial_pp_corte_var_2) %>%
+                           pull(),
+                         selected = dat_ssocial_pp() %>%
+                           filter(corte_2 == input$ssocial_pp_corte_2) %>% 
+                           filter(jerarquia_cat_2 == "1") %>%
+                           distinct(!!ssocial_pp_corte_var_2) %>%
+                           pull()
+      )
+      
+      # } else {
+      #   
+      #   return(NULL)
+      #   
+      #   }
+      
+    } else {
+      
+      return(NULL)
+      
+    }      
+  })
+  
+  
+  output$selector_ssocial_pp_corte <- renderUI({
+    
+    selectInput(
+      inputId = "ssocial_pp_corte",
+      label = "Seleccione corte:",
+      choices = dat_ssocial_pp() %>% 
+        select(corte) %>%
+        arrange(corte) %>% 
+        unique() %>% 
+        pull(),
+      selected = dat_ssocial_pp() %>% 
+        filter(jerarquia == "1") %>%  
+        distinct(corte) %>% 
+        pull()
+    )
+    
+  })
+  
+  output$chbox_ssocial_pp <- renderUI({
+    
+    if(input$ssocial_pp_corte %in% lista_ind_2 & input$ssocial_pp_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_pp %notin% lista_vunico) {
+      
+      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+      
+      checkboxGroupInput(inputId = "checkbox_ssocial_pp",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_ssocial_pp() %>%
+                           filter(!!ssocial_pp_corte_var_2 %in% input$checkbox_ssocial_pp_2) %>%
+                           filter(corte == input$ssocial_pp_corte) %>% 
+                           distinct(!!ssocial_pp_corte_var) %>%
+                           pull(),
+                         selected = dat_ssocial_pp() %>%
+                           filter(!!ssocial_pp_corte_var_2 %in% input$checkbox_ssocial_pp_2) %>%
+                           filter(corte == input$ssocial_pp_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!ssocial_pp_corte_var) %>%
+                           pull()
+      )
+      
+    } else if(input$ssocial_pp_corte %notin% lista_ind_2 & input$ssocial_pp_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_pp %notin% lista_vunico) {
+      
+      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+      
+      checkboxGroupInput(inputId = "checkbox_ssocial_pp",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_ssocial_pp() %>%
+                           filter(corte == input$ssocial_pp_corte) %>% 
+                           distinct(!!ssocial_pp_corte_var) %>%
+                           pull(),
+                         selected = dat_ssocial_pp() %>%
+                           filter(corte == input$ssocial_pp_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!ssocial_pp_corte_var) %>%
+                           pull()
+      )
+      
+    } else {
+      
+      return(NULL)
+    }
+    
+  })
+  
+  # Selector de fecha
+  output$s_ssocial_pp_fecha <- renderUI({
+    
+    if(input$ssocial_pp_corte == "Departamento" & input$indicador_ssocial_pp %notin% lista_ind_2) {
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+      
+      req(nrow(dat_ssocial_pp()) > 0)
+      
+      selectInput(
+        inputId = "fecha_dpto_ssocial_pp",
+        label = "Seleccione año:",
+        choices = dat_ssocial_pp() %>% 
+          filter(nomindicador == input$indicador_ssocial_pp) %>%
+          drop_na(Valor) %>%
+          select(ano) %>%
+          arrange(desc(ano)) %>% 
+          unique() %>% 
+          pull(),
+        selected = max(input$ano)
+      )
+      
+    } else if (input$indicador_ssocial_pp %in% lista_serie_cat){
+      
+      return(NULL)
+      
+      
+    } else if (input$indicador_ssocial_pp %in% lista_vunico){
+      
+      return(NULL)
+      
+    } else  {
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+      req(nrow(dat_ssocial_pp()) > 0)
+      
+      tagList(
+        # tags$style(type = 'text/css', 
+        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+        # div(id = 'big_slider',
+        
+        sliderInput("fecha_ssocial_pp", 
+                    label = "Rango de tiempo", 
+                    sep = "",
+                    dragRange = T,
+                    min = min(dat_ssocial_pp()$ano), 
+                    max = max(dat_ssocial_pp()$ano), 
+                    value = c(min(dat_ssocial_pp()$ano), 
+                              max(dat_ssocial_pp()$ano))
+        )
+      )
+      
+    }
+  })
+  
+  # # Selector de corte según categoría y data temporal
+  # dat_ssocial_pp <- reactive({
+  #   
+  #   req(input$ssocial_pp_corte)
+  #   
+  #   if(input$indicador_ssocial_pp %in% lista_ind_2){
+  #     
+  #     dat_salarios <- dat_ssocial_pp() %>%
+  #       filter(corte_2 == input$ssocial_pp_corte_2) %>% 
+  #       filter(corte == input$ssocial_pp_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   } else {
+  #     
+  #     dat_ssocial_pp() %>%
+  #       filter(corte == input$ssocial_pp_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   }
+  # })
+  
+  # * Metadata   ======================================================
+  
+  # Title
+  output$title_ssocial_pp <- renderUI({ 
+    helpText(HTML(unique(dat_ssocial_pp()$nomindicador)))
+  })
+  
+  # Subtitle
+  output$subtitle_ssocial_pp <- renderUI({ 
+    helpText(HTML(unique(dat_ssocial_pp()$definicion)))
+  })
+  
+  # Nombre conceptual
+  output$conindicador_ssocial_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ssocial_pp()$conindicador))))
+  })
+  
+  # Calculo
+  output$calculo_ssocial_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_pp()$calculo))))
+  })
+  
+  # Observaciones
+  output$observacion_ssocial_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ssocial_pp()$observaciones))))
+  })
+  
+  
+  # * Gráficos   ======================================================
+  
+  output$plot_ssocial_pp <- renderPlot({
+    
+    req(input$indicador_ssocial_pp, input$ssocial_pp_corte)
+    
+    if(input$indicador_ssocial_pp %in% lista_serie_cat){
+      
+      req(input$indicador_ssocial_pp)
+      
+      # Total
+      if(input$ssocial_pp_corte == "Total"){
+        
+        dat_plot <- dat_ssocial_pp() %>%
+          filter(corte == "Total")
+        
+        plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_ssocial_pp),
+               caption = wrapit(unique(dat_plot$cita)))
+        
+        print(plot)
+        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        
+        # Según corte
+      } else if(input$ssocial_pp_corte != "Total") {
+        
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        
+        dat_plot <- dat_ssocial_pp() %>%
+          filter(corte == input$ssocial_pp_corte) %>%
+          filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp)
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = ssocial_pp_corte_var, group = ssocial_pp_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp,
+                                    "según",
+                                    tolower(input$ssocial_pp_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
+    } else if(input$indicador_ssocial_pp %in% lista_especial ){
+      
+      if (input$ssocial_pp_corte_2 == "Total"){        
+        
+        req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+        
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        
+        dat_plot <- dat_ssocial_pp() %>%
+          filter(ano >= input$fecha_ssocial_pp[1] &
+                   ano <= input$fecha_ssocial_pp[2]) %>%
+          filter(corte == input$ssocial_pp_corte) %>%
+          # filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp) %>% 
+          filter(corte_2 == input$ssocial_pp_corte_2)  
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = ssocial_pp_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp,
+                                    "según",
+                                    tolower(input$ssocial_pp_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+        
+        print(plot)
+        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        
+      } else {
+        
+        req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+        
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+        
+        dat_plot <- dat_ssocial_pp() %>%
+          filter(ano >= input$fecha_ssocial_pp[1] &
+                   ano <= input$fecha_ssocial_pp[2]) %>%
+          filter(corte == input$ssocial_pp_corte) %>%
+          # filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp) %>% 
+          filter(corte_2 == input$ssocial_pp_corte_2)  
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = ssocial_pp_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp,
+                                    "según",
+                                    tolower(input$ssocial_pp_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") +
+          facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
+        
+        print(plot)
+        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
+    } else if(input$indicador_ssocial_pp %in% lista_vunico & input$indicador_ssocial_pp %in% lista_ind_2){
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+      
+      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+      
+      dat_plot <- dat_ssocial_pp() %>%
+        filter(ano >= input$fecha_ssocial_pp[1] &
+                 ano <= input$fecha_ssocial_pp[2]) %>%
+        filter(corte == input$ssocial_pp_corte) %>%
+        filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp) %>%
+        filter(!!ssocial_pp_corte_var_2 %in% input$checkbox_ssocial_pp_2) %>%
+        filter(corte_2 == input$ssocial_pp_corte_2)
+      
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha_cat", y = "Valor",
+                                fill = ssocial_pp_corte_var)) +
+        geom_col(position = "dodge", width = .7, alpha = .8) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x=element_blank(),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ssocial_pp,
+                                  "según",
+                                  tolower(input$ssocial_pp_corte),
+                                  "en",
+                                  unique(dat_plot$fecha_cat))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_fill_brewer(name = "", palette = "Paired") +
+        facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
+      
+      print(plot)
+      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      
+    } else if(input$indicador_ssocial_pp %in% lista_vunico & input$ssocial_pp_corte != "Departamento") {
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+      
+      dat_plot <- dat_ssocial_pp() %>%
+        filter(corte == input$ssocial_pp_corte) %>%
+        janitor::remove_empty("cols")
+      
+      if(input$ssocial_pp_corte == "Total"){
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha_cat", y = "Valor")) +
+          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp,
+                                    "según",
+                                    tolower(input$ssocial_pp_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita)))
+        
+        print(plot)
+        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else {
+        
+        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha_cat", y = "Valor",
+                                  fill = ssocial_pp_corte_var)) +
+          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+          geom_text(aes_string(group = ssocial_pp_corte_var, label = "Valor"),
+                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp,
+                                    "según",
+                                    tolower(input$ssocial_pp_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+        
+        print(plot)
+        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
+      
+    } else if(input$indicador_ssocial_pp %in% lista_ind_2) {
+      
+      req(input$ssocial_pp_corte, input$ssocial_pp_corte_2,
+          input$fecha_ssocial_pp, input$checkbox_ssocial_pp)
+      
+      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+      
+      dat_plot <- dat_ssocial_pp() %>%
+        filter(ano >= input$fecha_ssocial_pp[1] &
+                 ano <= input$fecha_ssocial_pp[2]) %>%
+        filter(corte == input$ssocial_pp_corte) %>%
+        filter(!!ssocial_pp_corte_var_2 %in% input$checkbox_ssocial_pp_2) %>%
+        filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp) %>% 
+        filter(corte_2 == input$ssocial_pp_corte_2)
+      
+      if(input$ssocial_pp_corte_2 == "Total"){
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == "Total")
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = ssocial_pp_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp,
+                                    "según",
+                                    tolower(input$ssocial_pp_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+      } else if(input$ssocial_pp_corte_2 != "Total") {
+        
+        ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == input$ssocial_pp_corte_2)
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = ssocial_pp_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_pp,
+                                    "según",
+                                    tolower(input$ssocial_pp_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) +
+          facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
+        
+      }
+      
+      print(plot)
+      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$ssocial_pp_corte == "Total") {
+      
+      req(input$indicador_ssocial_pp, input$fecha_ssocial_pp)
+      
+      dat_plot <- dat_ssocial_pp() %>%
+        filter(ano >= input$fecha_ssocial_pp[1] &
+                 ano <= input$fecha_ssocial_pp[2]) %>%
+        filter(corte == "Total")
+      
+      plot <- ggplot(dat_plot,
+                     aes(x = fecha, y = Valor)) +
+        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+        geom_point(size = 3, colour = color_defecto) +
+        scale_x_continuous(breaks = int_breaks) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(input$indicador_ssocial_pp),
+             caption = wrapit(unique(dat_plot$cita)))
+      
+      print(plot)
+      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$ssocial_pp_corte == "Departamento" &
+              input$indicador_ssocial_pp %notin% lista_ind_2 ) {
+      
+      req(input$indicador_ssocial_pp, input$fecha_dpto_ssocial_pp)
+      
+      dat_plot <- dat_ssocial_pp() %>%
+        filter(corte == "Departamento") %>%
+        filter(ano == input$fecha_dpto_ssocial_pp) %>%
+        select(departamento, Valor, fuente, cita)
+      
+      dep_j <- dep %>%
+        left_join(dat_plot, by = c("nombre" = "departamento"))
+      
+      plot <-  ggplot(dep_j, aes(fill = Valor)) +
+        geom_sf() +
+        geom_sf_text(aes(label = Valor), colour = "black",
+                     size = 4, fontface = "bold")+
+        viridis::scale_fill_viridis(name = "", direction = -1)+
+        labs(x = "",
+             y = "",
+        )+
+        theme_bdd(base_size = 14) +
+        theme(axis.line = element_blank(),
+              axis.text.x = element_blank(),
+              axis.text.y = element_blank(),
+              axis.ticks = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              panel.grid.major = element_line(colour = "transparent"),
+        ) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ssocial_pp,
+                                  "en",
+                                  input$fecha_dpto_ssocial_pp), w = 80),
+             caption = wrapit(unique(dat_plot$cita), w = 80))
+      
+      print(plot)
+      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$ssocial_pp_corte != "Total") {
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp,
+          input$fecha_ssocial_pp, input$checkbox_ssocial_pp)
+      
+      dat_plot <- dat_ssocial_pp() %>%
+        filter(ano >= input$fecha_ssocial_pp[1] &
+                 ano <= input$fecha_ssocial_pp[2]) %>%
+        filter(corte == input$ssocial_pp_corte) %>%
+        janitor::remove_empty("cols")
+      
+      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+      
+      dat_plot <- filter(dat_plot,
+                         !!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp)
+      
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha", y = "Valor", colour = ssocial_pp_corte_var)) +
+        geom_line(size = 1, alpha = 0.5) +
+        geom_point(size = 3) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        scale_x_continuous(breaks = int_breaks) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ssocial_pp,
+                                  "según",
+                                  tolower(input$ssocial_pp_corte))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_colour_manual(name = "", values = paleta_expandida)
+      
+      print(plot)
+      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      
+    }
+    
+  })
+  
+  
+  # * Descarga gráficos   =============================================
+  
+  output$baja_p_ssocial_pp <- downloadHandler(
+    filename <- function() {
+      paste("indicador ssocial pp", "png", sep = ".")
+    },
+    
+    content <- function(file) {
+      file.copy("www/indicador ssocial pp.png", file)
+    },
+    contentType = "www/indicador ssocial pp"
+  )
+  
+  
+  # * Tablas   ========================================================
+  
+  # Data
+  ssocial_pp_tab <- reactive({
+    
+    if(input$indicador_ssocial_pp %in%  lista_especial){
+      
+      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+      
+      dat_ssocial_pp() %>%
+        filter(corte_2 == input$ssocial_pp_corte_2) %>% 
+        select(Fecha, ssocial_pp_corte_var, ssocial_pp_corte_var_2, Valor) %>%
+        arrange(desc(Fecha)) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = ssocial_pp_corte_var) 
+      
+    } else if(input$indicador_ssocial_pp %in% lista_vunico & input$ssocial_pp_corte == "Total"){
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+      
+      dat_ssocial_pp() %>%
+        filter(corte == "Total") %>% 
+        select(fecha_cat, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat)
+      
+    } else if(input$indicador_ssocial_pp %in% lista_vunico & input$ssocial_pp_corte != "Total") {
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
+      
+      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+      
+      dat_cut <- dat_ssocial_pp() %>%
+        filter(corte == input$ssocial_pp_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        select(fecha_cat, ssocial_pp_corte_var, Valor) %>%
+        arrange(desc(fecha_cat)) %>% 
+        rename(Fecha = fecha_cat) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = ssocial_pp_corte_var)
+      
+      
+    } else if(input$indicador_ssocial_pp %in% lista_ind_2) {
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
+      
+      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+      
+      dat_cut <- dat_ssocial_pp() %>%
+        filter(corte == input$ssocial_pp_corte) %>%
+        filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp)
+      
+      if(input$ssocial_pp_corte_2 == "Total"){
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_ssocial_pp[1] &
+                   ano <= input$fecha_ssocial_pp[2]) %>%
+          filter(corte_2 == "Total") %>% 
+          select(Fecha, ssocial_pp_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = ssocial_pp_corte_var)
+        
+      } else if(input$ssocial_pp_corte_2 != "Total") {
+        
+        ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_ssocial_pp[1] &
+                   ano <= input$fecha_ssocial_pp[2]) %>%
+          filter(corte_2 == input$ssocial_pp_corte_2) %>% 
+          select(Fecha, ssocial_pp_corte_var, ssocial_pp_corte_var_2, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = ssocial_pp_corte_var) 
+        
+      }
+      
+    } else if(input$ssocial_pp_corte == "Total") {
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
+      
+      dat_ssocial_pp() %>%
+        filter(corte == "Total") %>% 
+        filter(ano >= input$fecha_ssocial_pp[1] &
+                 ano <= input$fecha_ssocial_pp[2]) %>%
+        select(Fecha, Valor) %>%
+        arrange(desc(Fecha))
+      
+    } else if(input$ssocial_pp_corte != "Total") {
+      
+      req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
+      
+      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
+      
+      dat_cut <- dat_ssocial_pp() %>%
+        filter(corte == input$ssocial_pp_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        filter(ano >= input$fecha_ssocial_pp[1] &
+                 ano <= input$fecha_ssocial_pp[2]) %>% 
+        select(Fecha, ssocial_pp_corte_var, Valor) %>%
+        arrange(desc(Fecha)) %>% 
+        pivot_wider(values_from = "Valor",
+                    names_from = ssocial_pp_corte_var)
+      
+    }
+  })
+  
+  # Metadata 
+  ssocial_pp_meta <- reactive({
+    
+    dat_ssocial_pp() %>%
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+      distinct() %>% 
+      gather(key = "", value = " ")
+    
+  })
+  
+  # Excel
+  list_ssocial_pp <- reactive({
+    list_ssocial_pp <- list("Data" = ssocial_pp_tab(),
+                            "Metadata" = ssocial_pp_meta())
+  })
+  
+  # Render
+  output$table_ssocial_pp <- renderDT({
+    
+    DT::datatable(ssocial_pp_tab(),
+                  rownames = FALSE,
+                  caption = htmltools::tags$caption(
+                    input$indicador_ssocial_pp,
+                    style = "color:black; font-size:110%;")
+    ) 
+    
+  })
+  
+  # * Descarga tablas   ================================================
+  
+  output$dwl_tab_ssocial_pp <- downloadHandler(
+    
+    filename = function() {
+      paste("resultados-", input$indicador_ssocial_pp, ".xlsx", sep = "")
+    },
+    content = function(file) {
+      
+      openxlsx::write.xlsx(list_ssocial_pp(), file)
+      
+    }
+  )
+  
+  
+  
+  ### 5.2. Seguridad Social Resultados ========================================== 
+  
+  # * Data reactiva   =================================================    
+  dat_ssocial_r <- reactive({
+    
+    req(input$indicador_ssocial_r)
+    
+    dat %>%
+      filter(nomindicador == input$indicador_ssocial_r) 
+    
+  })
+  
+  output$selector_ssocial_r_corte_2 <- renderUI({
+    
+    if(input$indicador_ssocial_r %in% lista_ind_2){
+      
+      selectInput(
+        inputId = "ssocial_r_corte_2",
+        label = "Seleccione primer corte:",
+        choices = dat_ssocial_r() %>% 
+          select(corte_2) %>%
+          arrange(corte_2) %>% 
+          unique() %>% 
+          pull(),
+        selected = dat_ssocial_r() %>% 
+          filter(jerarquia == "1") %>%  
+          distinct(corte_2) %>% 
+          pull()
+      )
+      
+    } else {
+      
+      NULL
+    }
+    
+  })
+  
+  output$chbox_ssocial_r_2 <- renderUI({
+    
+    if(input$indicador_ssocial_r %in% lista_ind_2 & input$indicador_ssocial_r %notin% lista_especial){
+      
+      # if(input$ssocial_r_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_r %notin% lista_vunico) {
+      
+      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+      
+      checkboxGroupInput(inputId = "checkbox_ssocial_r_2",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_ssocial_r() %>%
+                           filter(corte_2 == input$ssocial_r_corte_2) %>% 
+                           distinct(!!ssocial_r_corte_var_2) %>%
+                           pull(),
+                         selected = dat_ssocial_r() %>%
+                           filter(corte_2 == input$ssocial_r_corte_2) %>% 
+                           filter(jerarquia_cat_2 == "1") %>%
+                           distinct(!!ssocial_r_corte_var_2) %>%
+                           pull()
+      )
+      
+      # } else {
+      #   
+      #   return(NULL)
+      #   
+      #   }
+      
+    } else {
+      
+      return(NULL)
+      
+    }      
+  })
+  
+  
+  output$selector_ssocial_r_corte <- renderUI({
+    
+    selectInput(
+      inputId = "ssocial_r_corte",
+      label = "Seleccione corte:",
+      choices = dat_ssocial_r() %>% 
+        select(corte) %>%
+        arrange(corte) %>% 
+        unique() %>% 
+        pull(),
+      selected = dat_ssocial_r() %>% 
+        filter(jerarquia == "1") %>%  
+        distinct(corte) %>% 
+        pull()
+    )
+    
+  })
+  
+  output$chbox_ssocial_r <- renderUI({
+    
+    if(input$ssocial_r_corte %in% lista_ind_2 & input$ssocial_r_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_r %notin% lista_vunico) {
+      
+      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+      
+      checkboxGroupInput(inputId = "checkbox_ssocial_r",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_ssocial_r() %>%
+                           filter(!!ssocial_r_corte_var_2 %in% input$checkbox_ssocial_r_2) %>%
+                           filter(corte == input$ssocial_r_corte) %>% 
+                           distinct(!!ssocial_r_corte_var) %>%
+                           pull(),
+                         selected = dat_ssocial_r() %>%
+                           filter(!!ssocial_r_corte_var_2 %in% input$checkbox_ssocial_r_2) %>%
+                           filter(corte == input$ssocial_r_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!ssocial_r_corte_var) %>%
+                           pull()
+      )
+      
+    } else if(input$ssocial_r_corte %notin% lista_ind_2 & input$ssocial_r_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_r %notin% lista_vunico) {
+      
+      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+      
+      checkboxGroupInput(inputId = "checkbox_ssocial_r",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_ssocial_r() %>%
+                           filter(corte == input$ssocial_r_corte) %>% 
+                           distinct(!!ssocial_r_corte_var) %>%
+                           pull(),
+                         selected = dat_ssocial_r() %>%
+                           filter(corte == input$ssocial_r_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!ssocial_r_corte_var) %>%
+                           pull()
+      )
+      
+    } else {
+      
+      return(NULL)
+    }
+    
+  })
+  
+  # Selector de fecha
+  output$s_ssocial_r_fecha <- renderUI({
+    
+    if(input$ssocial_r_corte == "Departamento" & input$indicador_ssocial_r %notin% lista_ind_2) {
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r)
+      
+      req(nrow(dat_ssocial_r()) > 0)
+      
+      selectInput(
+        inputId = "fecha_dpto_ssocial_r",
+        label = "Seleccione año:",
+        choices = dat_ssocial_r() %>% 
+          filter(nomindicador == input$indicador_ssocial_r) %>%
+          drop_na(Valor) %>%
+          select(ano) %>%
+          arrange(desc(ano)) %>% 
+          unique() %>% 
+          pull(),
+        selected = max(input$ano)
+      )
+      
+    } else if (input$indicador_ssocial_r %in% lista_serie_cat){
+      
+      return(NULL)
+      
+      
+    } else if (input$indicador_ssocial_r %in% lista_vunico){
+      
+      return(NULL)
+      
+    } else  {
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r)
+      req(nrow(dat_ssocial_r()) > 0)
+      
+      tagList(
+        # tags$style(type = 'text/css', 
+        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+        # div(id = 'big_slider',
+        
+        sliderInput("fecha_ssocial_r", 
+                    label = "Rango de tiempo", 
+                    sep = "",
+                    dragRange = T,
+                    min = min(dat_ssocial_r()$ano), 
+                    max = max(dat_ssocial_r()$ano), 
+                    value = c(min(dat_ssocial_r()$ano), 
+                              max(dat_ssocial_r()$ano))
+        )
+      )
+      
+    }
+  })
+  
+  # # Selector de corte según categoría y data temporal
+  # dat_ssocial_r <- reactive({
+  #   
+  #   req(input$ssocial_r_corte)
+  #   
+  #   if(input$indicador_ssocial_r %in% lista_ind_2){
+  #     
+  #     dat_salarios <- dat_ssocial_r() %>%
+  #       filter(corte_2 == input$ssocial_r_corte_2) %>% 
+  #       filter(corte == input$ssocial_r_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   } else {
+  #     
+  #     dat_ssocial_r() %>%
+  #       filter(corte == input$ssocial_r_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   }
+  # })
+  
+  # * Metadata   ======================================================
+  
+  # Title
+  output$title_ssocial_r <- renderUI({ 
+    helpText(HTML(unique(dat_ssocial_r()$nomindicador)))
+  })
+  
+  # Subtitle
+  output$subtitle_ssocial_r <- renderUI({ 
+    helpText(HTML(unique(dat_ssocial_r()$definicion)))
+  })
+  
+  # Nombre conceptual
+  output$conindicador_ssocial_r <- renderUI({ 
+    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ssocial_r()$conindicador))))
+  })
+  
+  # Calculo
+  output$calculo_ssocial_r <- renderUI({ 
+    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_r()$calculo))))
+  })
+  
+  # Observaciones
+  output$observacion_ssocial_r <- renderUI({ 
+    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ssocial_r()$observaciones))))
+  })
+  
+  
+  # * Gráficos   ======================================================
+  
+  output$plot_ssocial_r <- renderPlot({
+    
+    req(input$indicador_ssocial_r, input$ssocial_r_corte)
+    
+    if(input$indicador_ssocial_r %in% lista_serie_cat){
+      
+      req(input$indicador_ssocial_r)
+      
+      # Total
+      if(input$ssocial_r_corte == "Total"){
+        
+        dat_plot <- dat_ssocial_r() %>%
+          filter(corte == "Total")
+        
+        plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_ssocial_r),
+               caption = wrapit(unique(dat_plot$cita)))
+        
+        print(plot)
+        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        
+        # Según corte
+      } else if(input$ssocial_r_corte != "Total") {
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
+        dat_plot <- dat_ssocial_r() %>%
+          filter(corte == input$ssocial_r_corte) %>%
+          filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r)
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = ssocial_r_corte_var, group = ssocial_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
+    } else if(input$indicador_ssocial_r %in% lista_especial ){
+      
+      if (input$ssocial_r_corte_2 == "Total"){        
+        
+        req(input$ssocial_r_corte, input$indicador_ssocial_r)
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
+        dat_plot <- dat_ssocial_r() %>%
+          filter(ano >= input$fecha_ssocial_r[1] &
+                   ano <= input$fecha_ssocial_r[2]) %>%
+          filter(corte == input$ssocial_r_corte) %>%
+          # filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r) %>% 
+          filter(corte_2 == input$ssocial_r_corte_2)  
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = ssocial_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+        
+        print(plot)
+        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        
+      } else {
+        
+        req(input$ssocial_r_corte, input$indicador_ssocial_r)
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+        
+        dat_plot <- dat_ssocial_r() %>%
+          filter(ano >= input$fecha_ssocial_r[1] &
+                   ano <= input$fecha_ssocial_r[2]) %>%
+          filter(corte == input$ssocial_r_corte) %>%
+          # filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r) %>% 
+          filter(corte_2 == input$ssocial_r_corte_2)  
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = ssocial_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") +
+          facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
+        
+        print(plot)
+        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
+    } else if(input$indicador_ssocial_r %in% lista_vunico & input$indicador_ssocial_r %in% lista_ind_2){
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r)
+      
+      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+      
+      dat_plot <- dat_ssocial_r() %>%
+        filter(ano >= input$fecha_ssocial_r[1] &
+                 ano <= input$fecha_ssocial_r[2]) %>%
+        filter(corte == input$ssocial_r_corte) %>%
+        filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r) %>%
+        filter(!!ssocial_r_corte_var_2 %in% input$checkbox_ssocial_r_2) %>%
+        filter(corte_2 == input$ssocial_r_corte_2)
+      
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha_cat", y = "Valor",
+                                fill = ssocial_r_corte_var)) +
+        geom_col(position = "dodge", width = .7, alpha = .8) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x=element_blank(),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ssocial_r,
+                                  "según",
+                                  tolower(input$ssocial_r_corte),
+                                  "en",
+                                  unique(dat_plot$fecha_cat))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_fill_brewer(name = "", palette = "Paired") +
+        facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
+      
+      print(plot)
+      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      
+    } else if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte != "Departamento") {
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r)
+      
+      dat_plot <- dat_ssocial_r() %>%
+        filter(corte == input$ssocial_r_corte) %>%
+        janitor::remove_empty("cols")
+      
+      if(input$ssocial_r_corte == "Total"){
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha_cat", y = "Valor")) +
+          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita)))
+        
+        print(plot)
+        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        
+        
+      } else {
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha_cat", y = "Valor",
+                                  fill = ssocial_r_corte_var)) +
+          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+          geom_text(aes_string(group = ssocial_r_corte_var, label = "Valor"),
+                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+        
+        print(plot)
+        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
+      
+    } else if(input$indicador_ssocial_r %in% lista_ind_2) {
+      
+      req(input$ssocial_r_corte, input$ssocial_r_corte_2,
+          input$fecha_ssocial_r, input$checkbox_ssocial_r)
+      
+      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+      
+      dat_plot <- dat_ssocial_r() %>%
+        filter(ano >= input$fecha_ssocial_r[1] &
+                 ano <= input$fecha_ssocial_r[2]) %>%
+        filter(corte == input$ssocial_r_corte) %>%
+        filter(!!ssocial_r_corte_var_2 %in% input$checkbox_ssocial_r_2) %>%
+        filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r) %>% 
+        filter(corte_2 == input$ssocial_r_corte_2)
+      
+      if(input$ssocial_r_corte_2 == "Total"){
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == "Total")
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = ssocial_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+      } else if(input$ssocial_r_corte_2 != "Total") {
+        
+        ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == input$ssocial_r_corte_2)
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = ssocial_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) +
+          facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
+        
+      }
+      
+      print(plot)
+      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$ssocial_r_corte == "Total") {
+      
+      req(input$indicador_ssocial_r, input$fecha_ssocial_r)
+      
+      dat_plot <- dat_ssocial_r() %>%
+        filter(ano >= input$fecha_ssocial_r[1] &
+                 ano <= input$fecha_ssocial_r[2]) %>%
+        filter(corte == "Total")
+      
+      plot <- ggplot(dat_plot,
+                     aes(x = fecha, y = Valor)) +
+        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+        geom_point(size = 3, colour = color_defecto) +
+        scale_x_continuous(breaks = int_breaks) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(input$indicador_ssocial_r),
+             caption = wrapit(unique(dat_plot$cita)))
+      
+      print(plot)
+      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$ssocial_r_corte == "Departamento" &
+              input$indicador_ssocial_r %notin% lista_ind_2 ) {
+      
+      req(input$indicador_ssocial_r, input$fecha_dpto_ssocial_r)
+      
+      dat_plot <- dat_ssocial_r() %>%
+        filter(corte == "Departamento") %>%
+        filter(ano == input$fecha_dpto_ssocial_r) %>%
+        select(departamento, Valor, fuente, cita)
+      
+      dep_j <- dep %>%
+        left_join(dat_plot, by = c("nombre" = "departamento"))
+      
+      plot <-  ggplot(dep_j, aes(fill = Valor)) +
+        geom_sf() +
+        geom_sf_text(aes(label = Valor), colour = "black",
+                     size = 4, fontface = "bold")+
+        viridis::scale_fill_viridis(name = "", direction = -1)+
+        labs(x = "",
+             y = "",
+        )+
+        theme_bdd(base_size = 14) +
+        theme(axis.line = element_blank(),
+              axis.text.x = element_blank(),
+              axis.text.y = element_blank(),
+              axis.ticks = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              panel.grid.major = element_line(colour = "transparent"),
+        ) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ssocial_r,
+                                  "en",
+                                  input$fecha_dpto_ssocial_r), w = 80),
+             caption = wrapit(unique(dat_plot$cita), w = 80))
+      
+      print(plot)
+      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$ssocial_r_corte != "Total") {
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r,
+          input$fecha_ssocial_r, input$checkbox_ssocial_r)
+      
+      dat_plot <- dat_ssocial_r() %>%
+        filter(ano >= input$fecha_ssocial_r[1] &
+                 ano <= input$fecha_ssocial_r[2]) %>%
+        filter(corte == input$ssocial_r_corte) %>%
+        janitor::remove_empty("cols")
+      
+      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+      
+      dat_plot <- filter(dat_plot,
+                         !!ssocial_r_corte_var %in% input$checkbox_ssocial_r)
+      
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha", y = "Valor", colour = ssocial_r_corte_var)) +
+        geom_line(size = 1, alpha = 0.5) +
+        geom_point(size = 3) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        scale_x_continuous(breaks = int_breaks) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ssocial_r,
+                                  "según",
+                                  tolower(input$ssocial_r_corte))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_colour_manual(name = "", values = paleta_expandida)
+      
+      print(plot)
+      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      
+    }
+    
+  })
+  
+  
+  # * Descarga gráficos   =============================================
+  
+  output$baja_p_ssocial_r <- downloadHandler(
+    filename <- function() {
+      paste("indicador ssocial r", "png", sep = ".")
+    },
+    
+    content <- function(file) {
+      file.copy("www/indicador ssocial r.png", file)
+    },
+    contentType = "www/indicador ssocial r"
+  )
+  
+  
+  # * Tablas   ========================================================
+  
+  # Data
+  ssocial_r_tab <- reactive({
+    
+    if(input$indicador_ssocial_r %in%  lista_especial){
+      
+      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+      
+      dat_ssocial_r() %>%
+        filter(corte_2 == input$ssocial_r_corte_2) %>% 
+        select(Fecha, ssocial_r_corte_var, ssocial_r_corte_var_2, Valor) %>%
+        arrange(desc(Fecha)) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = ssocial_r_corte_var) 
+      
+    } else if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte == "Total"){
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r)
+      
+      dat_ssocial_r() %>%
+        filter(corte == "Total") %>% 
+        select(fecha_cat, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat)
+      
+    } else if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte != "Total") {
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r)
+      
+      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+      
+      dat_cut <- dat_ssocial_r() %>%
+        filter(corte == input$ssocial_r_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        select(fecha_cat, ssocial_r_corte_var, Valor) %>%
+        arrange(desc(fecha_cat)) %>% 
+        rename(Fecha = fecha_cat) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = ssocial_r_corte_var)
+      
+      
+    } else if(input$indicador_ssocial_r %in% lista_ind_2) {
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
+      
+      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+      
+      dat_cut <- dat_ssocial_r() %>%
+        filter(corte == input$ssocial_r_corte) %>%
+        filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r)
+      
+      if(input$ssocial_r_corte_2 == "Total"){
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_ssocial_r[1] &
+                   ano <= input$fecha_ssocial_r[2]) %>%
+          filter(corte_2 == "Total") %>% 
+          select(Fecha, ssocial_r_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = ssocial_r_corte_var)
+        
+      } else if(input$ssocial_r_corte_2 != "Total") {
+        
+        ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_ssocial_r[1] &
+                   ano <= input$fecha_ssocial_r[2]) %>%
+          filter(corte_2 == input$ssocial_r_corte_2) %>% 
+          select(Fecha, ssocial_r_corte_var, ssocial_r_corte_var_2, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = ssocial_r_corte_var) 
+        
+      }
+      
+    } else if(input$ssocial_r_corte == "Total") {
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
+      
+      dat_ssocial_r() %>%
+        filter(corte == "Total") %>% 
+        filter(ano >= input$fecha_ssocial_r[1] &
+                 ano <= input$fecha_ssocial_r[2]) %>%
+        select(Fecha, Valor) %>%
+        arrange(desc(Fecha))
+      
+    } else if(input$ssocial_r_corte != "Total") {
+      
+      req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
+      
+      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+      
+      dat_cut <- dat_ssocial_r() %>%
+        filter(corte == input$ssocial_r_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        filter(ano >= input$fecha_ssocial_r[1] &
+                 ano <= input$fecha_ssocial_r[2]) %>% 
+        select(Fecha, ssocial_r_corte_var, Valor) %>%
+        arrange(desc(Fecha)) %>% 
+        pivot_wider(values_from = "Valor",
+                    names_from = ssocial_r_corte_var)
+      
+    }
+  })
+  
+  # Metadata 
+  ssocial_r_meta <- reactive({
+    
+    dat_ssocial_r() %>%
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+      distinct() %>% 
+      gather(key = "", value = " ")
+    
+  })
+  
+  # Excel
+  list_ssocial_r <- reactive({
+    list_ssocial_r <- list("Data" = ssocial_r_tab(),
+                           "Metadata" = ssocial_r_meta())
+  })
+  
+  # Render
+  output$table_ssocial_r <- renderDT({
+    
+    DT::datatable(ssocial_r_tab(),
+                  rownames = FALSE,
+                  caption = htmltools::tags$caption(
+                    input$indicador_ssocial_r,
+                    style = "color:black; font-size:110%;")
+    ) 
+    
+  })
+  
+  # * Descarga tablas   ================================================
+  
+  output$dwl_tab_ssocial_r <- downloadHandler(
+    
+    filename = function() {
+      paste("resultados-", input$indicador_ssocial_r, ".xlsx", sep = "")
+    },
+    content = function(file) {
+      
+      openxlsx::write.xlsx(list_ssocial_r(), file)
       
     }
   )
@@ -5519,7 +7165,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
         
         # Según corte
       } else if(input$vivienda_pp_corte != "Total") {
@@ -5545,7 +7191,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -5580,7 +7226,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
         
       } else {
         
@@ -5613,7 +7259,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", vivienda_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -5650,7 +7296,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", vivienda_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
       
     } else if(input$indicador_vivienda_pp %in% lista_vunico & input$vivienda_pp_corte != "Departamento") {
       
@@ -5678,7 +7324,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
         
         
       } else {
@@ -5704,7 +7350,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -5771,7 +7417,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$vivienda_pp_corte == "Total") {
@@ -5796,7 +7442,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$vivienda_pp_corte == "Departamento" &
@@ -5836,7 +7482,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$vivienda_pp_corte != "Total") {
@@ -5871,7 +7517,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
       
     }
     
@@ -5882,13 +7528,13 @@ server <- function(input, output) {
   
   output$baja_p_vivienda_pp <- downloadHandler(
     filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
+      paste("indicador vivienda pp.png", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
+      file.copy("www/indicador vivienda pp.png", file)
     },
-    contentType = "www/indicador ambiente r"
+    contentType = "www/indicador vivienda pp"
   )
   
   
@@ -6047,1610 +7693,6 @@ server <- function(input, output) {
       
     }
   )
-  
-  
-  ### 5.1. Seguridad Social Politicas ========================================== 
-  
-  # * Data reactiva   =================================================    
-  dat_ssocial_pp <- reactive({
-    
-    req(input$indicador_ssocial_pp)
-    
-    dat %>%
-      filter(nomindicador == input$indicador_ssocial_pp) 
-    
-  })
-  
-  output$selector_ssocial_pp_corte_2 <- renderUI({
-    
-    if(input$indicador_ssocial_pp %in% lista_ind_2){
-      
-      selectInput(
-        inputId = "ssocial_pp_corte_2",
-        label = "Seleccione primer corte:",
-        choices = dat_ssocial_pp() %>% 
-          select(corte_2) %>%
-          arrange(corte_2) %>% 
-          unique() %>% 
-          pull(),
-        selected = dat_ssocial_pp() %>% 
-          filter(jerarquia == "1") %>%  
-          distinct(corte_2) %>% 
-          pull()
-      )
-      
-    } else {
-      
-      NULL
-    }
-    
-  })
-  
-  output$chbox_ssocial_pp_2 <- renderUI({
-    
-    if(input$indicador_ssocial_pp %in% lista_ind_2 & input$indicador_ssocial_pp %notin% lista_especial){
-      
-      # if(input$ssocial_pp_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_pp %notin% lista_vunico) {
-      
-      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
-      
-      checkboxGroupInput(inputId = "checkbox_ssocial_pp_2",
-                         label = "Seleccione categorías",
-                         inline = TRUE,
-                         choices =  dat_ssocial_pp() %>%
-                           filter(corte_2 == input$ssocial_pp_corte_2) %>% 
-                           distinct(!!ssocial_pp_corte_var_2) %>%
-                           pull(),
-                         selected = dat_ssocial_pp() %>%
-                           filter(corte_2 == input$ssocial_pp_corte_2) %>% 
-                           filter(jerarquia_cat_2 == "1") %>%
-                           distinct(!!ssocial_pp_corte_var_2) %>%
-                           pull()
-      )
-      
-      # } else {
-      #   
-      #   return(NULL)
-      #   
-      #   }
-      
-    } else {
-      
-      return(NULL)
-      
-    }      
-  })
-  
-  
-  output$selector_ssocial_pp_corte <- renderUI({
-    
-    selectInput(
-      inputId = "ssocial_pp_corte",
-      label = "Seleccione corte:",
-      choices = dat_ssocial_pp() %>% 
-        select(corte) %>%
-        arrange(corte) %>% 
-        unique() %>% 
-        pull(),
-      selected = dat_ssocial_pp() %>% 
-        filter(jerarquia == "1") %>%  
-        distinct(corte) %>% 
-        pull()
-    )
-    
-  })
-  
-  output$chbox_ssocial_pp <- renderUI({
-    
-    if(input$ssocial_pp_corte %in% lista_ind_2 & input$ssocial_pp_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_pp %notin% lista_vunico) {
-      
-      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
-      
-      checkboxGroupInput(inputId = "checkbox_ssocial_pp",
-                         label = "Seleccione categorías",
-                         inline = TRUE,
-                         choices =  dat_ssocial_pp() %>%
-                           filter(!!ssocial_pp_corte_var_2 %in% input$checkbox_ssocial_pp_2) %>%
-                           filter(corte == input$ssocial_pp_corte) %>% 
-                           distinct(!!ssocial_pp_corte_var) %>%
-                           pull(),
-                         selected = dat_ssocial_pp() %>%
-                           filter(!!ssocial_pp_corte_var_2 %in% input$checkbox_ssocial_pp_2) %>%
-                           filter(corte == input$ssocial_pp_corte) %>% 
-                           filter(jerarquia_cat == "1") %>%
-                           distinct(!!ssocial_pp_corte_var) %>%
-                           pull()
-      )
-      
-    } else if(input$ssocial_pp_corte %notin% lista_ind_2 & input$ssocial_pp_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_pp %notin% lista_vunico) {
-      
-      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-      
-      checkboxGroupInput(inputId = "checkbox_ssocial_pp",
-                         label = "Seleccione categorías",
-                         inline = TRUE,
-                         choices =  dat_ssocial_pp() %>%
-                           filter(corte == input$ssocial_pp_corte) %>% 
-                           distinct(!!ssocial_pp_corte_var) %>%
-                           pull(),
-                         selected = dat_ssocial_pp() %>%
-                           filter(corte == input$ssocial_pp_corte) %>% 
-                           filter(jerarquia_cat == "1") %>%
-                           distinct(!!ssocial_pp_corte_var) %>%
-                           pull()
-      )
-      
-    } else {
-      
-      return(NULL)
-    }
-    
-  })
-  
-  # Selector de fecha
-  output$s_ssocial_pp_fecha <- renderUI({
-    
-    if(input$ssocial_pp_corte == "Departamento" & input$indicador_ssocial_pp %notin% lista_ind_2) {
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-      
-      req(nrow(dat_ssocial_pp()) > 0)
-      
-      selectInput(
-        inputId = "fecha_dpto_ssocial_pp",
-        label = "Seleccione año:",
-        choices = dat_ssocial_pp() %>% 
-          filter(nomindicador == input$indicador_ssocial_pp) %>%
-          drop_na(Valor) %>%
-          select(ano) %>%
-          arrange(desc(ano)) %>% 
-          unique() %>% 
-          pull(),
-        selected = max(input$ano)
-      )
-      
-    } else if (input$indicador_ssocial_pp %in% lista_serie_cat){
-      
-      return(NULL)
-      
-      
-    } else if (input$indicador_ssocial_pp %in% lista_vunico){
-      
-      return(NULL)
-      
-    } else  {
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-      req(nrow(dat_ssocial_pp()) > 0)
-      
-      tagList(
-        # tags$style(type = 'text/css', 
-        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-        # div(id = 'big_slider',
-        
-        sliderInput("fecha_ssocial_pp", 
-                    label = "Rango de tiempo", 
-                    sep = "",
-                    dragRange = T,
-                    min = min(dat_ssocial_pp()$ano), 
-                    max = max(dat_ssocial_pp()$ano), 
-                    value = c(min(dat_ssocial_pp()$ano), 
-                              max(dat_ssocial_pp()$ano))
-        )
-      )
-      
-    }
-  })
-  
-  # # Selector de corte según categoría y data temporal
-  # dat_ssocial_pp <- reactive({
-  #   
-  #   req(input$ssocial_pp_corte)
-  #   
-  #   if(input$indicador_ssocial_pp %in% lista_ind_2){
-  #     
-  #     dat_salarios <- dat_ssocial_pp() %>%
-  #       filter(corte_2 == input$ssocial_pp_corte_2) %>% 
-  #       filter(corte == input$ssocial_pp_corte) %>%
-  #       janitor::remove_empty("cols")
-  #     
-  #   } else {
-  #     
-  #     dat_ssocial_pp() %>%
-  #       filter(corte == input$ssocial_pp_corte) %>%
-  #       janitor::remove_empty("cols")
-  #     
-  #   }
-  # })
-  
-  # * Metadata   ======================================================
-  
-  # Title
-  output$title_ssocial_pp <- renderUI({ 
-    helpText(HTML(unique(dat_ssocial_pp()$nomindicador)))
-  })
-  
-  # Subtitle
-  output$subtitle_ssocial_pp <- renderUI({ 
-    helpText(HTML(unique(dat_ssocial_pp()$definicion)))
-  })
-  
-  # Nombre conceptual
-  output$conindicador_ssocial_pp <- renderUI({ 
-    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ssocial_pp()$conindicador))))
-  })
-  
-  # Calculo
-  output$calculo_ssocial_pp <- renderUI({ 
-    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_pp()$calculo))))
-  })
-  
-  # Observaciones
-  output$observacion_ssocial_pp <- renderUI({ 
-    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ssocial_pp()$observaciones))))
-  })
-  
-  
-  # * Gráficos   ======================================================
-  
-  output$plot_ssocial_pp <- renderPlot({
-    
-    req(input$indicador_ssocial_pp, input$ssocial_pp_corte)
-    
-    if(input$indicador_ssocial_pp %in% lista_serie_cat){
-      
-      req(input$indicador_ssocial_pp)
-      
-      # Total
-      if(input$ssocial_pp_corte == "Total"){
-        
-        dat_plot <- dat_ssocial_pp() %>%
-          filter(corte == "Total")
-        
-        plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
-          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-          geom_point(size = 3, colour = color_defecto) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(input$indicador_ssocial_pp),
-               caption = wrapit(unique(dat_plot$cita)))
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-        # Según corte
-      } else if(input$ssocial_pp_corte != "Total") {
-        
-        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-        
-        dat_plot <- dat_ssocial_pp() %>%
-          filter(corte == input$ssocial_pp_corte) %>%
-          filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp)
-        
-        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                            colour = ssocial_pp_corte_var, group = ssocial_pp_corte_var)) +
-          geom_line(size = 1, alpha = 0.5) +
-          geom_point(size = 3) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_pp,
-                                    "según",
-                                    tolower(input$ssocial_pp_corte))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_manual(name = "", values = paleta_expandida)
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-      }
-      
-    } else if(input$indicador_ssocial_pp %in% lista_especial ){
-      
-      if (input$ssocial_pp_corte_2 == "Total"){        
-        
-        req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-        
-        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-        
-        dat_plot <- dat_ssocial_pp() %>%
-          filter(ano >= input$fecha_ssocial_pp[1] &
-                   ano <= input$fecha_ssocial_pp[2]) %>%
-          filter(corte == input$ssocial_pp_corte) %>%
-          # filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp) %>% 
-          filter(corte_2 == input$ssocial_pp_corte_2)  
-        
-        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = ssocial_pp_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_pp,
-                                    "según",
-                                    tolower(input$ssocial_pp_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired")
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-      } else {
-        
-        req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-        
-        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-        ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
-        
-        dat_plot <- dat_ssocial_pp() %>%
-          filter(ano >= input$fecha_ssocial_pp[1] &
-                   ano <= input$fecha_ssocial_pp[2]) %>%
-          filter(corte == input$ssocial_pp_corte) %>%
-          # filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp) %>% 
-          filter(corte_2 == input$ssocial_pp_corte_2)  
-        
-        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = ssocial_pp_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_pp,
-                                    "según",
-                                    tolower(input$ssocial_pp_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") +
-          facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-      }
-      
-    } else if(input$indicador_ssocial_pp %in% lista_vunico & input$indicador_ssocial_pp %in% lista_ind_2){
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-      
-      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
-      
-      dat_plot <- dat_ssocial_pp() %>%
-        filter(ano >= input$fecha_ssocial_pp[1] &
-                 ano <= input$fecha_ssocial_pp[2]) %>%
-        filter(corte == input$ssocial_pp_corte) %>%
-        filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp) %>%
-        filter(!!ssocial_pp_corte_var_2 %in% input$checkbox_ssocial_pp_2) %>%
-        filter(corte_2 == input$ssocial_pp_corte_2)
-      
-      plot <- ggplot(dat_plot,
-                     aes_string(x = "fecha_cat", y = "Valor",
-                                fill = ssocial_pp_corte_var)) +
-        geom_col(position = "dodge", width = .7, alpha = .8) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x=element_blank(),
-              legend.position = "bottom") +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_ssocial_pp,
-                                  "según",
-                                  tolower(input$ssocial_pp_corte),
-                                  "en",
-                                  unique(dat_plot$fecha_cat))),
-             caption = wrapit(unique(dat_plot$cita))) +
-        scale_fill_brewer(name = "", palette = "Paired") +
-        facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-    } else if(input$indicador_ssocial_pp %in% lista_vunico & input$ssocial_pp_corte != "Departamento") {
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-      
-      dat_plot <- dat_ssocial_pp() %>%
-        filter(corte == input$ssocial_pp_corte) %>%
-        janitor::remove_empty("cols")
-      
-      if(input$ssocial_pp_corte == "Total"){
-        
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha_cat", y = "Valor")) +
-          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
-          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_pp,
-                                    "según",
-                                    tolower(input$ssocial_pp_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita)))
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-        
-      } else {
-        
-        ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-        
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha_cat", y = "Valor",
-                                  fill = ssocial_pp_corte_var)) +
-          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
-          geom_text(aes_string(group = ssocial_pp_corte_var, label = "Valor"),
-                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_pp,
-                                    "según",
-                                    tolower(input$ssocial_pp_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired")
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-      }
-      
-      
-    } else if(input$indicador_ssocial_pp %in% lista_ind_2) {
-      
-      req(input$ssocial_pp_corte, input$ssocial_pp_corte_2,
-          input$fecha_ssocial_pp, input$checkbox_ssocial_pp)
-      
-      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
-      
-      dat_plot <- dat_ssocial_pp() %>%
-        filter(ano >= input$fecha_ssocial_pp[1] &
-                 ano <= input$fecha_ssocial_pp[2]) %>%
-        filter(corte == input$ssocial_pp_corte) %>%
-        filter(!!ssocial_pp_corte_var_2 %in% input$checkbox_ssocial_pp_2) %>%
-        filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp) %>% 
-        filter(corte_2 == input$ssocial_pp_corte_2)
-      
-      if(input$ssocial_pp_corte_2 == "Total"){
-        
-        dat_plot <- dat_plot %>%
-          filter(corte_2 == "Total")
-        
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha", y = "Valor", colour = ssocial_pp_corte_var)) +
-          geom_line(size = 1, alpha = 0.5) +
-          geom_point(size = 3) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          scale_x_continuous(breaks = int_breaks) +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_pp,
-                                    "según",
-                                    tolower(input$ssocial_pp_corte))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_manual(name = "", values = paleta_expandida)
-        
-      } else if(input$ssocial_pp_corte_2 != "Total") {
-        
-        ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
-        
-        dat_plot <- dat_plot %>%
-          filter(corte_2 == input$ssocial_pp_corte_2)
-        
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha", y = "Valor", colour = ssocial_pp_corte_var)) +
-          geom_line(size = 1, alpha = 0.5) +
-          geom_point(size = 3) +
-          theme_bdd(base_size = 12) +
-          scale_x_continuous(breaks = int_breaks) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_pp,
-                                    "según",
-                                    tolower(input$ssocial_pp_corte))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_manual(name = "", values = paleta_expandida) +
-          facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
-        
-      }
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-      
-    } else if(input$ssocial_pp_corte == "Total") {
-      
-      req(input$indicador_ssocial_pp, input$fecha_ssocial_pp)
-      
-      dat_plot <- dat_ssocial_pp() %>%
-        filter(ano >= input$fecha_ssocial_pp[1] &
-                 ano <= input$fecha_ssocial_pp[2]) %>%
-        filter(corte == "Total")
-      
-      plot <- ggplot(dat_plot,
-                     aes(x = fecha, y = Valor)) +
-        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-        geom_point(size = 3, colour = color_defecto) +
-        scale_x_continuous(breaks = int_breaks) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x = element_text(angle = 0),
-              legend.position = "bottom") +
-        labs(x = "",  y = "",
-             title = wrapit(input$indicador_ssocial_pp),
-             caption = wrapit(unique(dat_plot$cita)))
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-      
-    } else if(input$ssocial_pp_corte == "Departamento" &
-              input$indicador_ssocial_pp %notin% lista_ind_2 ) {
-      
-      req(input$indicador_ssocial_pp, input$fecha_dpto_ssocial_pp)
-      
-      dat_plot <- dat_ssocial_pp() %>%
-        filter(corte == "Departamento") %>%
-        filter(ano == input$fecha_dpto_ssocial_pp) %>%
-        select(departamento, Valor, fuente, cita)
-      
-      dep_j <- dep %>%
-        left_join(dat_plot, by = c("nombre" = "departamento"))
-      
-      plot <-  ggplot(dep_j, aes(fill = Valor)) +
-        geom_sf() +
-        geom_sf_text(aes(label = Valor), colour = "black",
-                     size = 4, fontface = "bold")+
-        viridis::scale_fill_viridis(name = "", direction = -1)+
-        labs(x = "",
-             y = "",
-        )+
-        theme_bdd(base_size = 14) +
-        theme(axis.line = element_blank(),
-              axis.text.x = element_blank(),
-              axis.text.y = element_blank(),
-              axis.ticks = element_blank(),
-              axis.title.x = element_blank(),
-              axis.title.y = element_blank(),
-              panel.grid.major = element_line(colour = "transparent"),
-        ) +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_ssocial_pp,
-                                  "en",
-                                  input$fecha_dpto_ssocial_pp), w = 80),
-             caption = wrapit(unique(dat_plot$cita), w = 80))
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-      
-    } else if(input$ssocial_pp_corte != "Total") {
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp,
-          input$fecha_ssocial_pp, input$checkbox_ssocial_pp)
-      
-      dat_plot <- dat_ssocial_pp() %>%
-        filter(ano >= input$fecha_ssocial_pp[1] &
-                 ano <= input$fecha_ssocial_pp[2]) %>%
-        filter(corte == input$ssocial_pp_corte) %>%
-        janitor::remove_empty("cols")
-      
-      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-      
-      dat_plot <- filter(dat_plot,
-                         !!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp)
-      
-      plot <- ggplot(dat_plot,
-                     aes_string(x = "fecha", y = "Valor", colour = ssocial_pp_corte_var)) +
-        geom_line(size = 1, alpha = 0.5) +
-        geom_point(size = 3) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x = element_text(angle = 0),
-              legend.position = "bottom") +
-        scale_x_continuous(breaks = int_breaks) +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_ssocial_pp,
-                                  "según",
-                                  tolower(input$ssocial_pp_corte))),
-             caption = wrapit(unique(dat_plot$cita))) +
-        scale_colour_manual(name = "", values = paleta_expandida)
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-    }
-    
-  })
-  
-  
-  # * Descarga gráficos   =============================================
-  
-  output$baja_p_ssocial_pp <- downloadHandler(
-    filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
-    },
-    
-    content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
-    },
-    contentType = "www/indicador ambiente r"
-  )
-  
-  
-  # * Tablas   ========================================================
-  
-  # Data
-  ssocial_pp_tab <- reactive({
-    
-    if(input$indicador_ssocial_pp %in%  lista_especial){
-      
-      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-      ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
-      
-      dat_ssocial_pp() %>%
-        filter(corte_2 == input$ssocial_pp_corte_2) %>% 
-        select(Fecha, ssocial_pp_corte_var, ssocial_pp_corte_var_2, Valor) %>%
-        arrange(desc(Fecha)) %>%
-        pivot_wider(values_from = "Valor",
-                    names_from = ssocial_pp_corte_var) 
-      
-    } else if(input$indicador_ssocial_pp %in% lista_vunico & input$ssocial_pp_corte == "Total"){
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-      
-      dat_ssocial_pp() %>%
-        filter(corte == "Total") %>% 
-        select(fecha_cat, Valor) %>%
-        arrange(desc(fecha_cat)) %>%
-        rename(Fecha = fecha_cat)
-      
-    } else if(input$indicador_ssocial_pp %in% lista_vunico & input$ssocial_pp_corte != "Total") {
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp)
-      
-      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-      
-      dat_cut <- dat_ssocial_pp() %>%
-        filter(corte == input$ssocial_pp_corte) %>%
-        janitor::remove_empty("cols") 
-      
-      dat_cut %>%     
-        select(fecha_cat, ssocial_pp_corte_var, Valor) %>%
-        arrange(desc(fecha_cat)) %>% 
-        rename(Fecha = fecha_cat) %>%
-        pivot_wider(values_from = "Valor",
-                    names_from = ssocial_pp_corte_var)
-      
-      
-    } else if(input$indicador_ssocial_pp %in% lista_ind_2) {
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
-      
-      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-      
-      dat_cut <- dat_ssocial_pp() %>%
-        filter(corte == input$ssocial_pp_corte) %>%
-        filter(!!ssocial_pp_corte_var %in% input$checkbox_ssocial_pp)
-      
-      if(input$ssocial_pp_corte_2 == "Total"){
-        
-        dat_cut %>%
-          filter(ano >= input$fecha_ssocial_pp[1] &
-                   ano <= input$fecha_ssocial_pp[2]) %>%
-          filter(corte_2 == "Total") %>% 
-          select(Fecha, ssocial_pp_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>%
-          pivot_wider(values_from = "Valor",
-                      names_from = ssocial_pp_corte_var)
-        
-      } else if(input$ssocial_pp_corte_2 != "Total") {
-        
-        ssocial_pp_corte_var_2 <- rlang::sym(to_varname(input$ssocial_pp_corte_2))
-        
-        dat_cut %>%
-          filter(ano >= input$fecha_ssocial_pp[1] &
-                   ano <= input$fecha_ssocial_pp[2]) %>%
-          filter(corte_2 == input$ssocial_pp_corte_2) %>% 
-          select(Fecha, ssocial_pp_corte_var, ssocial_pp_corte_var_2, Valor) %>%
-          arrange(desc(Fecha)) %>%
-          pivot_wider(values_from = "Valor",
-                      names_from = ssocial_pp_corte_var) 
-        
-      }
-      
-    } else if(input$ssocial_pp_corte == "Total") {
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
-      
-      dat_ssocial_pp() %>%
-        filter(corte == "Total") %>% 
-        filter(ano >= input$fecha_ssocial_pp[1] &
-                 ano <= input$fecha_ssocial_pp[2]) %>%
-        select(Fecha, Valor) %>%
-        arrange(desc(Fecha))
-      
-    } else if(input$ssocial_pp_corte != "Total") {
-      
-      req(input$ssocial_pp_corte, input$indicador_ssocial_pp, input$fecha_ssocial_pp)
-      
-      ssocial_pp_corte_var <- rlang::sym(to_varname(input$ssocial_pp_corte))
-      
-      dat_cut <- dat_ssocial_pp() %>%
-        filter(corte == input$ssocial_pp_corte) %>%
-        janitor::remove_empty("cols") 
-      
-      dat_cut %>%     
-        filter(ano >= input$fecha_ssocial_pp[1] &
-                 ano <= input$fecha_ssocial_pp[2]) %>% 
-        select(Fecha, ssocial_pp_corte_var, Valor) %>%
-        arrange(desc(Fecha)) %>% 
-        pivot_wider(values_from = "Valor",
-                    names_from = ssocial_pp_corte_var)
-      
-    }
-  })
-  
-  # Metadata 
-  ssocial_pp_meta <- reactive({
-    
-    dat_ssocial_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
-      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-      distinct() %>% 
-      gather(key = "", value = " ")
-    
-  })
-  
-  # Excel
-  list_ssocial_pp <- reactive({
-    list_ssocial_pp <- list("Data" = ssocial_pp_tab(),
-                            "Metadata" = ssocial_pp_meta())
-  })
-  
-  # Render
-  output$table_ssocial_pp <- renderDT({
-    
-    DT::datatable(ssocial_pp_tab(),
-                  rownames = FALSE,
-                  caption = htmltools::tags$caption(
-                    input$indicador_ssocial_pp,
-                    style = "color:black; font-size:110%;")
-    ) 
-    
-  })
-  
-  # * Descarga tablas   ================================================
-  
-  output$dwl_tab_ssocial_pp <- downloadHandler(
-    
-    filename = function() {
-      paste("resultados-", input$indicador_ssocial_pp, ".xlsx", sep = "")
-    },
-    content = function(file) {
-      
-      openxlsx::write.xlsx(list_ssocial_pp(), file)
-      
-    }
-  )
-  
-  
-  
-  ### 6.1. Seguridad Social Resultados ========================================== 
-  
-  # * Data reactiva   =================================================    
-  dat_ssocial_r <- reactive({
-    
-    req(input$indicador_ssocial_r)
-    
-    dat %>%
-      filter(nomindicador == input$indicador_ssocial_r) 
-    
-  })
-  
-  output$selector_ssocial_r_corte_2 <- renderUI({
-    
-    if(input$indicador_ssocial_r %in% lista_ind_2){
-      
-      selectInput(
-        inputId = "ssocial_r_corte_2",
-        label = "Seleccione primer corte:",
-        choices = dat_ssocial_r() %>% 
-          select(corte_2) %>%
-          arrange(corte_2) %>% 
-          unique() %>% 
-          pull(),
-        selected = dat_ssocial_r() %>% 
-          filter(jerarquia == "1") %>%  
-          distinct(corte_2) %>% 
-          pull()
-      )
-      
-    } else {
-      
-      NULL
-    }
-    
-  })
-  
-  output$chbox_ssocial_r_2 <- renderUI({
-    
-    if(input$indicador_ssocial_r %in% lista_ind_2 & input$indicador_ssocial_r %notin% lista_especial){
-      
-      # if(input$ssocial_r_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_r %notin% lista_vunico) {
-      
-      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
-      
-      checkboxGroupInput(inputId = "checkbox_ssocial_r_2",
-                         label = "Seleccione categorías",
-                         inline = TRUE,
-                         choices =  dat_ssocial_r() %>%
-                           filter(corte_2 == input$ssocial_r_corte_2) %>% 
-                           distinct(!!ssocial_r_corte_var_2) %>%
-                           pull(),
-                         selected = dat_ssocial_r() %>%
-                           filter(corte_2 == input$ssocial_r_corte_2) %>% 
-                           filter(jerarquia_cat_2 == "1") %>%
-                           distinct(!!ssocial_r_corte_var_2) %>%
-                           pull()
-      )
-      
-      # } else {
-      #   
-      #   return(NULL)
-      #   
-      #   }
-      
-    } else {
-      
-      return(NULL)
-      
-    }      
-  })
-  
-  
-  output$selector_ssocial_r_corte <- renderUI({
-    
-    selectInput(
-      inputId = "ssocial_r_corte",
-      label = "Seleccione corte:",
-      choices = dat_ssocial_r() %>% 
-        select(corte) %>%
-        arrange(corte) %>% 
-        unique() %>% 
-        pull(),
-      selected = dat_ssocial_r() %>% 
-        filter(jerarquia == "1") %>%  
-        distinct(corte) %>% 
-        pull()
-    )
-    
-  })
-  
-  output$chbox_ssocial_r <- renderUI({
-    
-    if(input$ssocial_r_corte %in% lista_ind_2 & input$ssocial_r_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_r %notin% lista_vunico) {
-      
-      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
-      
-      checkboxGroupInput(inputId = "checkbox_ssocial_r",
-                         label = "Seleccione categorías",
-                         inline = TRUE,
-                         choices =  dat_ssocial_r() %>%
-                           filter(!!ssocial_r_corte_var_2 %in% input$checkbox_ssocial_r_2) %>%
-                           filter(corte == input$ssocial_r_corte) %>% 
-                           distinct(!!ssocial_r_corte_var) %>%
-                           pull(),
-                         selected = dat_ssocial_r() %>%
-                           filter(!!ssocial_r_corte_var_2 %in% input$checkbox_ssocial_r_2) %>%
-                           filter(corte == input$ssocial_r_corte) %>% 
-                           filter(jerarquia_cat == "1") %>%
-                           distinct(!!ssocial_r_corte_var) %>%
-                           pull()
-      )
-      
-    } else if(input$ssocial_r_corte %notin% lista_ind_2 & input$ssocial_r_corte %notin% c("Total", "Departamento") & input$indicador_ssocial_r %notin% lista_vunico) {
-      
-      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-      
-      checkboxGroupInput(inputId = "checkbox_ssocial_r",
-                         label = "Seleccione categorías",
-                         inline = TRUE,
-                         choices =  dat_ssocial_r() %>%
-                           filter(corte == input$ssocial_r_corte) %>% 
-                           distinct(!!ssocial_r_corte_var) %>%
-                           pull(),
-                         selected = dat_ssocial_r() %>%
-                           filter(corte == input$ssocial_r_corte) %>% 
-                           filter(jerarquia_cat == "1") %>%
-                           distinct(!!ssocial_r_corte_var) %>%
-                           pull()
-      )
-      
-    } else {
-      
-      return(NULL)
-    }
-    
-  })
-  
-  # Selector de fecha
-  output$s_ssocial_r_fecha <- renderUI({
-    
-    if(input$ssocial_r_corte == "Departamento" & input$indicador_ssocial_r %notin% lista_ind_2) {
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r)
-      
-      req(nrow(dat_ssocial_r()) > 0)
-      
-      selectInput(
-        inputId = "fecha_dpto_ssocial_r",
-        label = "Seleccione año:",
-        choices = dat_ssocial_r() %>% 
-          filter(nomindicador == input$indicador_ssocial_r) %>%
-          drop_na(Valor) %>%
-          select(ano) %>%
-          arrange(desc(ano)) %>% 
-          unique() %>% 
-          pull(),
-        selected = max(input$ano)
-      )
-      
-    } else if (input$indicador_ssocial_r %in% lista_serie_cat){
-      
-      return(NULL)
-      
-      
-    } else if (input$indicador_ssocial_r %in% lista_vunico){
-      
-      return(NULL)
-      
-    } else  {
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r)
-      req(nrow(dat_ssocial_r()) > 0)
-      
-      tagList(
-        # tags$style(type = 'text/css', 
-        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-        # div(id = 'big_slider',
-        
-        sliderInput("fecha_ssocial_r", 
-                    label = "Rango de tiempo", 
-                    sep = "",
-                    dragRange = T,
-                    min = min(dat_ssocial_r()$ano), 
-                    max = max(dat_ssocial_r()$ano), 
-                    value = c(min(dat_ssocial_r()$ano), 
-                              max(dat_ssocial_r()$ano))
-        )
-      )
-      
-    }
-  })
-  
-  # # Selector de corte según categoría y data temporal
-  # dat_ssocial_r <- reactive({
-  #   
-  #   req(input$ssocial_r_corte)
-  #   
-  #   if(input$indicador_ssocial_r %in% lista_ind_2){
-  #     
-  #     dat_salarios <- dat_ssocial_r() %>%
-  #       filter(corte_2 == input$ssocial_r_corte_2) %>% 
-  #       filter(corte == input$ssocial_r_corte) %>%
-  #       janitor::remove_empty("cols")
-  #     
-  #   } else {
-  #     
-  #     dat_ssocial_r() %>%
-  #       filter(corte == input$ssocial_r_corte) %>%
-  #       janitor::remove_empty("cols")
-  #     
-  #   }
-  # })
-  
-  # * Metadata   ======================================================
-  
-  # Title
-  output$title_ssocial_r <- renderUI({ 
-    helpText(HTML(unique(dat_ssocial_r()$nomindicador)))
-  })
-  
-  # Subtitle
-  output$subtitle_ssocial_r <- renderUI({ 
-    helpText(HTML(unique(dat_ssocial_r()$definicion)))
-  })
-  
-  # Nombre conceptual
-  output$conindicador_ssocial_r <- renderUI({ 
-    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ssocial_r()$conindicador))))
-  })
-  
-  # Calculo
-  output$calculo_ssocial_r <- renderUI({ 
-    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ssocial_r()$calculo))))
-  })
-  
-  # Observaciones
-  output$observacion_ssocial_r <- renderUI({ 
-    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ssocial_r()$observaciones))))
-  })
-  
-  
-  # * Gráficos   ======================================================
-  
-  output$plot_ssocial_r <- renderPlot({
-    
-    req(input$indicador_ssocial_r, input$ssocial_r_corte)
-    
-    if(input$indicador_ssocial_r %in% lista_serie_cat){
-      
-      req(input$indicador_ssocial_r)
-      
-      # Total
-      if(input$ssocial_r_corte == "Total"){
-        
-        dat_plot <- dat_ssocial_r() %>%
-          filter(corte == "Total")
-        
-        plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
-          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-          geom_point(size = 3, colour = color_defecto) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(input$indicador_ssocial_r),
-               caption = wrapit(unique(dat_plot$cita)))
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-        # Según corte
-      } else if(input$ssocial_r_corte != "Total") {
-        
-        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-        
-        dat_plot <- dat_ssocial_r() %>%
-          filter(corte == input$ssocial_r_corte) %>%
-          filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r)
-        
-        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                            colour = ssocial_r_corte_var, group = ssocial_r_corte_var)) +
-          geom_line(size = 1, alpha = 0.5) +
-          geom_point(size = 3) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_r,
-                                    "según",
-                                    tolower(input$ssocial_r_corte))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_manual(name = "", values = paleta_expandida)
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-      }
-      
-    } else if(input$indicador_ssocial_r %in% lista_especial ){
-      
-      if (input$ssocial_r_corte_2 == "Total"){        
-        
-        req(input$ssocial_r_corte, input$indicador_ssocial_r)
-        
-        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-        
-        dat_plot <- dat_ssocial_r() %>%
-          filter(ano >= input$fecha_ssocial_r[1] &
-                   ano <= input$fecha_ssocial_r[2]) %>%
-          filter(corte == input$ssocial_r_corte) %>%
-          # filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r) %>% 
-          filter(corte_2 == input$ssocial_r_corte_2)  
-        
-        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = ssocial_r_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_r,
-                                    "según",
-                                    tolower(input$ssocial_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired")
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-      } else {
-        
-        req(input$ssocial_r_corte, input$indicador_ssocial_r)
-        
-        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-        ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
-        
-        dat_plot <- dat_ssocial_r() %>%
-          filter(ano >= input$fecha_ssocial_r[1] &
-                   ano <= input$fecha_ssocial_r[2]) %>%
-          filter(corte == input$ssocial_r_corte) %>%
-          # filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r) %>% 
-          filter(corte_2 == input$ssocial_r_corte_2)  
-        
-        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                            fill = ssocial_r_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_r,
-                                    "según",
-                                    tolower(input$ssocial_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired") +
-          facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-      }
-      
-    } else if(input$indicador_ssocial_r %in% lista_vunico & input$indicador_ssocial_r %in% lista_ind_2){
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r)
-      
-      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
-      
-      dat_plot <- dat_ssocial_r() %>%
-        filter(ano >= input$fecha_ssocial_r[1] &
-                 ano <= input$fecha_ssocial_r[2]) %>%
-        filter(corte == input$ssocial_r_corte) %>%
-        filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r) %>%
-        filter(!!ssocial_r_corte_var_2 %in% input$checkbox_ssocial_r_2) %>%
-        filter(corte_2 == input$ssocial_r_corte_2)
-      
-      plot <- ggplot(dat_plot,
-                     aes_string(x = "fecha_cat", y = "Valor",
-                                fill = ssocial_r_corte_var)) +
-        geom_col(position = "dodge", width = .7, alpha = .8) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x=element_blank(),
-              legend.position = "bottom") +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_ssocial_r,
-                                  "según",
-                                  tolower(input$ssocial_r_corte),
-                                  "en",
-                                  unique(dat_plot$fecha_cat))),
-             caption = wrapit(unique(dat_plot$cita))) +
-        scale_fill_brewer(name = "", palette = "Paired") +
-        facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-    } else if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte != "Departamento") {
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r)
-      
-      dat_plot <- dat_ssocial_r() %>%
-        filter(corte == input$ssocial_r_corte) %>%
-        janitor::remove_empty("cols")
-      
-      if(input$ssocial_r_corte == "Total"){
-        
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha_cat", y = "Valor")) +
-          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
-          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_r,
-                                    "según",
-                                    tolower(input$ssocial_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita)))
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-        
-      } else {
-        
-        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-        
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha_cat", y = "Valor",
-                                  fill = ssocial_r_corte_var)) +
-          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
-          geom_text(aes_string(group = ssocial_r_corte_var, label = "Valor"),
-                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x=element_blank(),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_r,
-                                    "según",
-                                    tolower(input$ssocial_r_corte),
-                                    "en",
-                                    unique(dat_plot$fecha_cat))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_fill_brewer(name = "", palette = "Paired")
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-      }
-      
-      
-    } else if(input$indicador_ssocial_r %in% lista_ind_2) {
-      
-      req(input$ssocial_r_corte, input$ssocial_r_corte_2,
-          input$fecha_ssocial_r, input$checkbox_ssocial_r)
-      
-      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
-      
-      dat_plot <- dat_ssocial_r() %>%
-        filter(ano >= input$fecha_ssocial_r[1] &
-                 ano <= input$fecha_ssocial_r[2]) %>%
-        filter(corte == input$ssocial_r_corte) %>%
-        filter(!!ssocial_r_corte_var_2 %in% input$checkbox_ssocial_r_2) %>%
-        filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r) %>% 
-        filter(corte_2 == input$ssocial_r_corte_2)
-      
-      if(input$ssocial_r_corte_2 == "Total"){
-        
-        dat_plot <- dat_plot %>%
-          filter(corte_2 == "Total")
-        
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha", y = "Valor", colour = ssocial_r_corte_var)) +
-          geom_line(size = 1, alpha = 0.5) +
-          geom_point(size = 3) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          scale_x_continuous(breaks = int_breaks) +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_r,
-                                    "según",
-                                    tolower(input$ssocial_r_corte))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_manual(name = "", values = paleta_expandida)
-        
-      } else if(input$ssocial_r_corte_2 != "Total") {
-        
-        ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
-        
-        dat_plot <- dat_plot %>%
-          filter(corte_2 == input$ssocial_r_corte_2)
-        
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha", y = "Valor", colour = ssocial_r_corte_var)) +
-          geom_line(size = 1, alpha = 0.5) +
-          geom_point(size = 3) +
-          theme_bdd(base_size = 12) +
-          scale_x_continuous(breaks = int_breaks) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ssocial_r,
-                                    "según",
-                                    tolower(input$ssocial_r_corte))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_manual(name = "", values = paleta_expandida) +
-          facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
-        
-      }
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-      
-    } else if(input$ssocial_r_corte == "Total") {
-      
-      req(input$indicador_ssocial_r, input$fecha_ssocial_r)
-      
-      dat_plot <- dat_ssocial_r() %>%
-        filter(ano >= input$fecha_ssocial_r[1] &
-                 ano <= input$fecha_ssocial_r[2]) %>%
-        filter(corte == "Total")
-      
-      plot <- ggplot(dat_plot,
-                     aes(x = fecha, y = Valor)) +
-        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-        geom_point(size = 3, colour = color_defecto) +
-        scale_x_continuous(breaks = int_breaks) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x = element_text(angle = 0),
-              legend.position = "bottom") +
-        labs(x = "",  y = "",
-             title = wrapit(input$indicador_ssocial_r),
-             caption = wrapit(unique(dat_plot$cita)))
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-      
-    } else if(input$ssocial_r_corte == "Departamento" &
-              input$indicador_ssocial_r %notin% lista_ind_2 ) {
-      
-      req(input$indicador_ssocial_r, input$fecha_dpto_ssocial_r)
-      
-      dat_plot <- dat_ssocial_r() %>%
-        filter(corte == "Departamento") %>%
-        filter(ano == input$fecha_dpto_ssocial_r) %>%
-        select(departamento, Valor, fuente, cita)
-      
-      dep_j <- dep %>%
-        left_join(dat_plot, by = c("nombre" = "departamento"))
-      
-      plot <-  ggplot(dep_j, aes(fill = Valor)) +
-        geom_sf() +
-        geom_sf_text(aes(label = Valor), colour = "black",
-                     size = 4, fontface = "bold")+
-        viridis::scale_fill_viridis(name = "", direction = -1)+
-        labs(x = "",
-             y = "",
-        )+
-        theme_bdd(base_size = 14) +
-        theme(axis.line = element_blank(),
-              axis.text.x = element_blank(),
-              axis.text.y = element_blank(),
-              axis.ticks = element_blank(),
-              axis.title.x = element_blank(),
-              axis.title.y = element_blank(),
-              panel.grid.major = element_line(colour = "transparent"),
-        ) +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_ssocial_r,
-                                  "en",
-                                  input$fecha_dpto_ssocial_r), w = 80),
-             caption = wrapit(unique(dat_plot$cita), w = 80))
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-      
-    } else if(input$ssocial_r_corte != "Total") {
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r,
-          input$fecha_ssocial_r, input$checkbox_ssocial_r)
-      
-      dat_plot <- dat_ssocial_r() %>%
-        filter(ano >= input$fecha_ssocial_r[1] &
-                 ano <= input$fecha_ssocial_r[2]) %>%
-        filter(corte == input$ssocial_r_corte) %>%
-        janitor::remove_empty("cols")
-      
-      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-      
-      dat_plot <- filter(dat_plot,
-                         !!ssocial_r_corte_var %in% input$checkbox_ssocial_r)
-      
-      plot <- ggplot(dat_plot,
-                     aes_string(x = "fecha", y = "Valor", colour = ssocial_r_corte_var)) +
-        geom_line(size = 1, alpha = 0.5) +
-        geom_point(size = 3) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x = element_text(angle = 0),
-              legend.position = "bottom") +
-        scale_x_continuous(breaks = int_breaks) +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_ssocial_r,
-                                  "según",
-                                  tolower(input$ssocial_r_corte))),
-             caption = wrapit(unique(dat_plot$cita))) +
-        scale_colour_manual(name = "", values = paleta_expandida)
-      
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-      
-    }
-    
-  })
-  
-  
-  # * Descarga gráficos   =============================================
-  
-  output$baja_p_ssocial_r <- downloadHandler(
-    filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
-    },
-    
-    content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
-    },
-    contentType = "www/indicador ambiente r"
-  )
-  
-  
-  # * Tablas   ========================================================
-  
-  # Data
-  ssocial_r_tab <- reactive({
-    
-    if(input$indicador_ssocial_r %in%  lista_especial){
-      
-      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-      ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
-      
-      dat_ssocial_r() %>%
-        filter(corte_2 == input$ssocial_r_corte_2) %>% 
-        select(Fecha, ssocial_r_corte_var, ssocial_r_corte_var_2, Valor) %>%
-        arrange(desc(Fecha)) %>%
-        pivot_wider(values_from = "Valor",
-                    names_from = ssocial_r_corte_var) 
-      
-    } else if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte == "Total"){
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r)
-      
-      dat_ssocial_r() %>%
-        filter(corte == "Total") %>% 
-        select(fecha_cat, Valor) %>%
-        arrange(desc(fecha_cat)) %>%
-        rename(Fecha = fecha_cat)
-      
-    } else if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte != "Total") {
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r)
-      
-      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-      
-      dat_cut <- dat_ssocial_r() %>%
-        filter(corte == input$ssocial_r_corte) %>%
-        janitor::remove_empty("cols") 
-      
-      dat_cut %>%     
-        select(fecha_cat, ssocial_r_corte_var, Valor) %>%
-        arrange(desc(fecha_cat)) %>% 
-        rename(Fecha = fecha_cat) %>%
-        pivot_wider(values_from = "Valor",
-                    names_from = ssocial_r_corte_var)
-      
-      
-    } else if(input$indicador_ssocial_r %in% lista_ind_2) {
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
-      
-      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-      
-      dat_cut <- dat_ssocial_r() %>%
-        filter(corte == input$ssocial_r_corte) %>%
-        filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r)
-      
-      if(input$ssocial_r_corte_2 == "Total"){
-        
-        dat_cut %>%
-          filter(ano >= input$fecha_ssocial_r[1] &
-                   ano <= input$fecha_ssocial_r[2]) %>%
-          filter(corte_2 == "Total") %>% 
-          select(Fecha, ssocial_r_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>%
-          pivot_wider(values_from = "Valor",
-                      names_from = ssocial_r_corte_var)
-        
-      } else if(input$ssocial_r_corte_2 != "Total") {
-        
-        ssocial_r_corte_var_2 <- rlang::sym(to_varname(input$ssocial_r_corte_2))
-        
-        dat_cut %>%
-          filter(ano >= input$fecha_ssocial_r[1] &
-                   ano <= input$fecha_ssocial_r[2]) %>%
-          filter(corte_2 == input$ssocial_r_corte_2) %>% 
-          select(Fecha, ssocial_r_corte_var, ssocial_r_corte_var_2, Valor) %>%
-          arrange(desc(Fecha)) %>%
-          pivot_wider(values_from = "Valor",
-                      names_from = ssocial_r_corte_var) 
-        
-      }
-      
-    } else if(input$ssocial_r_corte == "Total") {
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
-      
-      dat_ssocial_r() %>%
-        filter(corte == "Total") %>% 
-        filter(ano >= input$fecha_ssocial_r[1] &
-                 ano <= input$fecha_ssocial_r[2]) %>%
-        select(Fecha, Valor) %>%
-        arrange(desc(Fecha))
-      
-    } else if(input$ssocial_r_corte != "Total") {
-      
-      req(input$ssocial_r_corte, input$indicador_ssocial_r, input$fecha_ssocial_r)
-      
-      ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
-      
-      dat_cut <- dat_ssocial_r() %>%
-        filter(corte == input$ssocial_r_corte) %>%
-        janitor::remove_empty("cols") 
-      
-      dat_cut %>%     
-        filter(ano >= input$fecha_ssocial_r[1] &
-                 ano <= input$fecha_ssocial_r[2]) %>% 
-        select(Fecha, ssocial_r_corte_var, Valor) %>%
-        arrange(desc(Fecha)) %>% 
-        pivot_wider(values_from = "Valor",
-                    names_from = ssocial_r_corte_var)
-      
-    }
-  })
-  
-  # Metadata 
-  ssocial_r_meta <- reactive({
-    
-    dat_ssocial_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
-      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-      distinct() %>% 
-      gather(key = "", value = " ")
-    
-  })
-  
-  # Excel
-  list_ssocial_r <- reactive({
-    list_ssocial_r <- list("Data" = ssocial_r_tab(),
-                           "Metadata" = ssocial_r_meta())
-  })
-  
-  # Render
-  output$table_ssocial_r <- renderDT({
-    
-    DT::datatable(ssocial_r_tab(),
-                  rownames = FALSE,
-                  caption = htmltools::tags$caption(
-                    input$indicador_ssocial_r,
-                    style = "color:black; font-size:110%;")
-    ) 
-    
-  })
-  
-  # * Descarga tablas   ================================================
-  
-  output$dwl_tab_ssocial_r <- downloadHandler(
-    
-    filename = function() {
-      paste("resultados-", input$indicador_ssocial_r, ".xlsx", sep = "")
-    },
-    content = function(file) {
-      
-      openxlsx::write.xlsx(list_ssocial_r(), file)
-      
-    }
-  )
-  
-  
-  
   
   
   ### 6.2. Vivienda Resultados ==============================================
@@ -7923,7 +7965,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
         
         # Según corte
       } else if(input$vivienda_r_corte != "Total") {
@@ -7949,7 +7991,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -7984,7 +8026,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
         
       } else {
         
@@ -8017,7 +8059,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", vivienda_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -8054,7 +8096,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", vivienda_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
       
     } else if(input$indicador_vivienda_r %in% lista_vunico & input$vivienda_r_corte != "Departamento") {
       
@@ -8082,7 +8124,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
         
         
       } else {
@@ -8108,7 +8150,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -8175,7 +8217,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$vivienda_r_corte == "Total") {
@@ -8200,7 +8242,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$vivienda_r_corte == "Departamento" &
@@ -8240,7 +8282,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$vivienda_r_corte != "Total") {
@@ -8275,7 +8317,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
       
     }
     
@@ -8286,13 +8328,13 @@ server <- function(input, output) {
   
   output$baja_p_vivienda_r <- downloadHandler(
     filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
+      paste("indicador vivienda r", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
+      file.copy("www/indicador vivienda r.png", file)
     },
-    contentType = "www/indicador ambiente r"
+    contentType = "www/indicador vivienda r"
   )
   
   
@@ -8724,7 +8766,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
         
         # Según corte
       } else if(input$trabajo_pp_corte != "Total") {
@@ -8750,7 +8792,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -8785,7 +8827,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
         
       } else {
         
@@ -8818,7 +8860,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", trabajo_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -8855,7 +8897,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", trabajo_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
       
     } else if(input$indicador_trabajo_pp %in% lista_vunico & input$trabajo_pp_corte != "Departamento") {
       
@@ -8883,7 +8925,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
         
         
       } else {
@@ -8909,7 +8951,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -8976,7 +9018,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$trabajo_pp_corte == "Total") {
@@ -9001,7 +9043,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$trabajo_pp_corte == "Departamento" &
@@ -9041,7 +9083,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$trabajo_pp_corte != "Total") {
@@ -9076,7 +9118,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
       
     }
     
@@ -9087,13 +9129,13 @@ server <- function(input, output) {
   
   output$baja_p_trabajo_pp <- downloadHandler(
     filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
+      paste("indicador trabajo pp", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
+      file.copy("www/indicador trabajo pp.png", file)
     },
-    contentType = "www/indicador ambiente r"
+    contentType = "www/indicador trabajo pp"
   )
   
   
@@ -9525,7 +9567,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
         
         # Según corte
       } else if(input$trabajo_r_corte != "Total") {
@@ -9551,7 +9593,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -9586,7 +9628,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
         
       } else {
         
@@ -9619,7 +9661,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", trabajo_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -9656,7 +9698,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", trabajo_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
       
     } else if(input$indicador_trabajo_r %in% lista_vunico & input$trabajo_r_corte != "Departamento") {
       
@@ -9684,7 +9726,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
         
         
       } else {
@@ -9710,7 +9752,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -9777,7 +9819,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$trabajo_r_corte == "Total") {
@@ -9802,7 +9844,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$trabajo_r_corte == "Departamento" &
@@ -9842,7 +9884,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$trabajo_r_corte != "Total") {
@@ -9877,7 +9919,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
       
     }
     
@@ -9888,13 +9930,13 @@ server <- function(input, output) {
   
   output$baja_p_trabajo_r <- downloadHandler(
     filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
+      paste("indicador trabajo r", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
+      file.copy("www/indicador trabajo r.png", file)
     },
-    contentType = "www/indicador ambiente r"
+    contentType = "www/indicador trabajo r"
   )
   
   
@@ -10326,7 +10368,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
         
         # Según corte
       } else if(input$ambiente_pp_corte != "Total") {
@@ -10352,7 +10394,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -10387,7 +10429,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
         
       } else {
         
@@ -10420,7 +10462,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", ambiente_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -10457,7 +10499,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", ambiente_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
       
     } else if(input$indicador_ambiente_pp %in% lista_vunico & input$ambiente_pp_corte != "Departamento") {
       
@@ -10485,7 +10527,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
         
         
       } else {
@@ -10511,7 +10553,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -10578,7 +10620,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$ambiente_pp_corte == "Total") {
@@ -10603,7 +10645,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$ambiente_pp_corte == "Departamento" &
@@ -10643,7 +10685,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$ambiente_pp_corte != "Total") {
@@ -10678,7 +10720,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
       
     }
     
@@ -10689,13 +10731,13 @@ server <- function(input, output) {
   
   output$baja_p_ambiente_pp <- downloadHandler(
     filename <- function() {
-      paste("indicador ambiente r", "png", sep = ".")
+      paste("indicador ambiente pp", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador ambiente r.png", file)
+      file.copy("www/indicador ambiente pp.png", file)
     },
-    contentType = "www/indicador ambiente r"
+    contentType = "www/indicador ambiente pp"
   )
   
   
@@ -10854,9 +10896,9 @@ server <- function(input, output) {
       
     }
   )
-
   
- 
+  
+  
   ### 8.2. Ambiente Resultados   =============================================
   
   # * Data reactiva   =================================================
@@ -11071,7 +11113,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
         
         # Según corte
       } else if(input$ambiente_r_corte != "Total") {
@@ -11097,7 +11139,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -11132,7 +11174,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
         
       } else {
         
@@ -11165,7 +11207,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -11201,7 +11243,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
       
     } else if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte != "Departamento") {
       
@@ -11229,7 +11271,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
         
         
       } else {
@@ -11255,7 +11297,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
         
       }
       
@@ -11319,7 +11361,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$ambiente_r_corte == "Total") {
@@ -11344,7 +11386,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$ambiente_r_corte == "Departamento" &
@@ -11384,7 +11426,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
       
       
     } else if(input$ambiente_r_corte != "Total") {
@@ -11419,7 +11461,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
       
     }
     
@@ -11431,13 +11473,13 @@ server <- function(input, output) {
   
   output$baja_p_ambiente_r <- downloadHandler(
     filename <- function() {
-      paste("indicador edu pp", "png", sep = ".")
+      paste("indicador ambiente r", "png", sep = ".")
     },
     
     content <- function(file) {
-      file.copy("www/indicador edu pp.png", file)
+      file.copy("www/indicador ambiente r.png", file)
     },
-    contentType = "www/indicador edu pp"
+    contentType = "www/indicador ambiente r"
   )
   
   
@@ -11587,375 +11629,340 @@ server <- function(input, output) {
   
   
   ### 8.2. Ambiente Resultados   =============================================
+  
+  # * Data reactiva   =================================================
+  
+  dat_ambiente_r <- reactive({
     
-    # * Data reactiva   =================================================
+    req(input$indicador_ambiente_r)
     
-    dat_ambiente_r <- reactive({
-      
-      req(input$indicador_ambiente_r)
-      
-      dat %>%
-        filter(nomindicador == input$indicador_ambiente_r) 
-      
-    })
+    dat %>%
+      filter(nomindicador == input$indicador_ambiente_r) 
     
-    output$selector_ambiente_r_corte_2 <- renderUI({
-      
-      if(input$indicador_ambiente_r %in% lista_ind_2){
-        
-        selectInput(
-          inputId = "ambiente_r_corte_2",
-          label = "Seleccione primer corte:",
-          choices = dat_ambiente_r() %>% 
-            select(corte_2) %>%
-            arrange(corte_2) %>% 
-            unique() %>% 
-            pull(),
-          selected = dat_ambiente_r() %>% 
-            filter(jerarquia == "1") %>%  
-            distinct(corte_2) %>% 
-            pull()
-        )
-        
-      } else {
-        
-        NULL
-      }
-      
-    })
+  })
+  
+  output$selector_ambiente_r_corte_2 <- renderUI({
     
-    output$chbox_ambiente_r_2 <- renderUI({
-      
-      if(input$indicador_ambiente_r %in% lista_ind_2 & input$indicador_ambiente_r %notin% lista_especial){
-        
-        # if(input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
-          
-          ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
-        
-          checkboxGroupInput(inputId = "checkbox_ambiente_r_2",
-                             label = "Seleccione categorías",
-                             inline = TRUE,
-                             choices =  dat_ambiente_r() %>%
-                               filter(corte_2 == input$ambiente_r_corte_2) %>% 
-                               distinct(!!ambiente_r_corte_var_2) %>%
-                               pull(),
-                             selected = dat_ambiente_r() %>%
-                               filter(corte_2 == input$ambiente_r_corte_2) %>% 
-                               filter(jerarquia_cat_2 == "1") %>%
-                               distinct(!!ambiente_r_corte_var_2) %>%
-                               pull()
-                             )
-          
-          # } else {
-          #   
-          #   return(NULL)
-          #   
-          #   }
-        
-      } else {
-          
-        return(NULL)
-        
-        }      
-    })
-    
-    
-    output$selector_ambiente_r_corte <- renderUI({
+    if(input$indicador_ambiente_r %in% lista_ind_2){
       
       selectInput(
-        inputId = "ambiente_r_corte",
-        label = "Seleccione corte:",
+        inputId = "ambiente_r_corte_2",
+        label = "Seleccione primer corte:",
         choices = dat_ambiente_r() %>% 
-          select(corte) %>%
-          arrange(corte) %>% 
+          select(corte_2) %>%
+          arrange(corte_2) %>% 
           unique() %>% 
           pull(),
         selected = dat_ambiente_r() %>% 
           filter(jerarquia == "1") %>%  
-          distinct(corte) %>% 
+          distinct(corte_2) %>% 
           pull()
       )
       
-    })
-    
-    output$chbox_ambiente_r <- renderUI({
+    } else {
       
-      if(input$ambiente_r_corte %in% lista_ind_2 & input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
+      NULL
+    }
+    
+  })
+  
+  output$chbox_ambiente_r_2 <- renderUI({
+    
+    if(input$indicador_ambiente_r %in% lista_ind_2 & input$indicador_ambiente_r %notin% lista_especial){
+      
+      # if(input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
+      
+      ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+      
+      checkboxGroupInput(inputId = "checkbox_ambiente_r_2",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_ambiente_r() %>%
+                           filter(corte_2 == input$ambiente_r_corte_2) %>% 
+                           distinct(!!ambiente_r_corte_var_2) %>%
+                           pull(),
+                         selected = dat_ambiente_r() %>%
+                           filter(corte_2 == input$ambiente_r_corte_2) %>% 
+                           filter(jerarquia_cat_2 == "1") %>%
+                           distinct(!!ambiente_r_corte_var_2) %>%
+                           pull()
+      )
+      
+      # } else {
+      #   
+      #   return(NULL)
+      #   
+      #   }
+      
+    } else {
+      
+      return(NULL)
+      
+    }      
+  })
+  
+  
+  output$selector_ambiente_r_corte <- renderUI({
+    
+    selectInput(
+      inputId = "ambiente_r_corte",
+      label = "Seleccione corte:",
+      choices = dat_ambiente_r() %>% 
+        select(corte) %>%
+        arrange(corte) %>% 
+        unique() %>% 
+        pull(),
+      selected = dat_ambiente_r() %>% 
+        filter(jerarquia == "1") %>%  
+        distinct(corte) %>% 
+        pull()
+    )
+    
+  })
+  
+  output$chbox_ambiente_r <- renderUI({
+    
+    if(input$ambiente_r_corte %in% lista_ind_2 & input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
+      
+      ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+      ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+      
+      checkboxGroupInput(inputId = "checkbox_ambiente_r",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_ambiente_r() %>%
+                           filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
+                           filter(corte == input$ambiente_r_corte) %>% 
+                           distinct(!!ambiente_r_corte_var) %>%
+                           pull(),
+                         selected = dat_ambiente_r() %>%
+                           filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
+                           filter(corte == input$ambiente_r_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!ambiente_r_corte_var) %>%
+                           pull()
+      )
+      
+    } else if(input$ambiente_r_corte %notin% lista_ind_2 & input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
+      
+      ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+      
+      checkboxGroupInput(inputId = "checkbox_ambiente_r",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_ambiente_r() %>%
+                           filter(corte == input$ambiente_r_corte) %>% 
+                           distinct(!!ambiente_r_corte_var) %>%
+                           pull(),
+                         selected = dat_ambiente_r() %>%
+                           filter(corte == input$ambiente_r_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!ambiente_r_corte_var) %>%
+                           pull()
+      )
+      
+    } else {
+      
+      return(NULL)
+    }
+    
+  })
+  
+  # Selector de fecha
+  output$s_ambiente_r_fecha <- renderUI({
+    
+    if(input$ambiente_r_corte == "Departamento" & input$indicador_ambiente_r %notin% lista_ind_2) {
+      
+      req(input$ambiente_r_corte, input$indicador_ambiente_r)
+      
+      req(nrow(dat_ambiente_r()) > 0)
+      
+      selectInput(
+        inputId = "fecha_dpto_ambiente_r",
+        label = "Seleccione año:",
+        choices = dat_ambiente_r() %>% 
+          filter(nomindicador == input$indicador_ambiente_r) %>%
+          drop_na(Valor) %>%
+          select(ano) %>%
+          arrange(desc(ano)) %>% 
+          unique() %>% 
+          pull(),
+        selected = max(input$ano)
+      )
+      
+    } else if (input$indicador_ambiente_r %in% lista_serie_cat){
+      
+      return(NULL)
+      
+      
+    } else if (input$indicador_ambiente_r %in% lista_vunico){
+      
+      return(NULL)
+      
+    } else  {
+      
+      req(input$ambiente_r_corte, input$indicador_ambiente_r)
+      req(nrow(dat_ambiente_r()) > 0)
+      
+      tagList(
+        # tags$style(type = 'text/css', 
+        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+        # div(id = 'big_slider',
+        
+        sliderInput("fecha_ambiente_r", 
+                    label = "Rango de tiempo", 
+                    sep = "",
+                    dragRange = T,
+                    min = min(dat_ambiente_r()$ano), 
+                    max = max(dat_ambiente_r()$ano), 
+                    value = c(min(dat_ambiente_r()$ano), 
+                              max(dat_ambiente_r()$ano))
+        )
+      )
+      
+    }
+  })
+  
+  # # Selector de corte según categoría y data temporal
+  # dat_ambiente_r <- reactive({
+  #   
+  #   req(input$ambiente_r_corte)
+  #   
+  #   if(input$indicador_ambiente_r %in% lista_ind_2){
+  #     
+  #     dat_salarios <- dat_ambiente_r() %>%
+  #       filter(corte_2 == input$ambiente_r_corte_2) %>% 
+  #       filter(corte == input$ambiente_r_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   } else {
+  #     
+  #     dat_ambiente_r() %>%
+  #       filter(corte == input$ambiente_r_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   }
+  # })
+  
+  # * Metadata   ======================================================
+  
+  # Title
+  output$title_ambiente_r <- renderUI({ 
+    helpText(HTML(unique(dat_ambiente_r()$nomindicador)))
+  })
+  
+  # Subtitle
+  output$subtitle_ambiente_r <- renderUI({ 
+    helpText(HTML(unique(dat_ambiente_r()$definicion)))
+  })
+  
+  # Nombre conceptual
+  output$conindicador_ambiente_r <- renderUI({ 
+    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ambiente_r()$conindicador))))
+  })
+  
+  # Calculo
+  output$calculo_ambiente_r <- renderUI({ 
+    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ambiente_r()$calculo))))
+  })
+  
+  # Observaciones
+  output$observacion_ambiente_r <- renderUI({ 
+    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ambiente_r()$observaciones))))
+  })
+  
+  
+  # * Gráficos   ======================================================
+  
+  output$plot_ambiente_r <- renderPlot({
+    
+    req(input$indicador_ambiente_r, input$ambiente_r_corte)
+    
+    if(input$indicador_ambiente_r %in% lista_serie_cat){
+      
+      req(input$indicador_ambiente_r)
+      
+      # Total
+      if(input$ambiente_r_corte == "Total"){
+        
+        dat_plot <- dat_ambiente_r() %>%
+          filter(corte == "Total")
+        
+        plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_ambiente_r),
+               caption = wrapit(unique(dat_plot$cita)))
+        
+        print(plot)
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+        
+        # Según corte
+      } else if(input$ambiente_r_corte != "Total") {
         
         ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-        ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
         
-        checkboxGroupInput(inputId = "checkbox_ambiente_r",
-                           label = "Seleccione categorías",
-                           inline = TRUE,
-                           choices =  dat_ambiente_r() %>%
-                             filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
-                             filter(corte == input$ambiente_r_corte) %>% 
-                             distinct(!!ambiente_r_corte_var) %>%
-                             pull(),
-                           selected = dat_ambiente_r() %>%
-                             filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
-                             filter(corte == input$ambiente_r_corte) %>% 
-                             filter(jerarquia_cat == "1") %>%
-                             distinct(!!ambiente_r_corte_var) %>%
-                             pull()
-        )
+        dat_plot <- dat_ambiente_r() %>%
+          filter(corte == input$ambiente_r_corte) %>%
+          filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
         
-      } else if(input$ambiente_r_corte %notin% lista_ind_2 & input$ambiente_r_corte %notin% c("Total", "Departamento") & input$indicador_ambiente_r %notin% lista_vunico) {
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = ambiente_r_corte_var, group = ambiente_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ambiente_r,
+                                    "según",
+                                    tolower(input$ambiente_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
+    } else if(input$indicador_ambiente_r %in% lista_especial ){
+      
+      if (input$ambiente_r_corte_2 == "Total"){        
+        
+        req(input$ambiente_r_corte, input$indicador_ambiente_r)
         
         ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-
-        checkboxGroupInput(inputId = "checkbox_ambiente_r",
-                           label = "Seleccione categorías",
-                           inline = TRUE,
-                           choices =  dat_ambiente_r() %>%
-                             filter(corte == input$ambiente_r_corte) %>% 
-                             distinct(!!ambiente_r_corte_var) %>%
-                             pull(),
-                           selected = dat_ambiente_r() %>%
-                             filter(corte == input$ambiente_r_corte) %>% 
-                             filter(jerarquia_cat == "1") %>%
-                             distinct(!!ambiente_r_corte_var) %>%
-                             pull()
-        )
+        
+        dat_plot <- dat_ambiente_r() %>%
+          filter(ano >= input$fecha_ambiente_r[1] &
+                   ano <= input$fecha_ambiente_r[2]) %>%
+          filter(corte == input$ambiente_r_corte) %>%
+          # filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r) %>% 
+          filter(corte_2 == input$ambiente_r_corte_2)  
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = ambiente_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ambiente_r,
+                                    "según",
+                                    tolower(input$ambiente_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+        
+        print(plot)
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
         
       } else {
-        
-        return(NULL)
-      }
-      
-    })
-    
-    # Selector de fecha
-    output$s_ambiente_r_fecha <- renderUI({
-      
-      if(input$ambiente_r_corte == "Departamento" & input$indicador_ambiente_r %notin% lista_ind_2) {
-        
-        req(input$ambiente_r_corte, input$indicador_ambiente_r)
-        
-        req(nrow(dat_ambiente_r()) > 0)
-        
-        selectInput(
-          inputId = "fecha_dpto_ambiente_r",
-          label = "Seleccione año:",
-          choices = dat_ambiente_r() %>% 
-            filter(nomindicador == input$indicador_ambiente_r) %>%
-            drop_na(Valor) %>%
-            select(ano) %>%
-            arrange(desc(ano)) %>% 
-            unique() %>% 
-            pull(),
-          selected = max(input$ano)
-        )
-        
-      } else if (input$indicador_ambiente_r %in% lista_serie_cat){
-        
-        return(NULL)
-        
-      
-      } else if (input$indicador_ambiente_r %in% lista_vunico){
-        
-        return(NULL)
-        
-      } else  {
-        
-        req(input$ambiente_r_corte, input$indicador_ambiente_r)
-        req(nrow(dat_ambiente_r()) > 0)
-        
-        tagList(
-          # tags$style(type = 'text/css', 
-          #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-          # div(id = 'big_slider',
-          
-          sliderInput("fecha_ambiente_r", 
-                      label = "Rango de tiempo", 
-                      sep = "",
-                      dragRange = T,
-                      min = min(dat_ambiente_r()$ano), 
-                      max = max(dat_ambiente_r()$ano), 
-                      value = c(min(dat_ambiente_r()$ano), 
-                                max(dat_ambiente_r()$ano))
-          )
-        )
-        
-      }
-    })
-  
-    # # Selector de corte según categoría y data temporal
-    # dat_ambiente_r <- reactive({
-    #   
-    #   req(input$ambiente_r_corte)
-    #   
-    #   if(input$indicador_ambiente_r %in% lista_ind_2){
-    #     
-    #     dat_salarios <- dat_ambiente_r() %>%
-    #       filter(corte_2 == input$ambiente_r_corte_2) %>% 
-    #       filter(corte == input$ambiente_r_corte) %>%
-    #       janitor::remove_empty("cols")
-    #     
-    #   } else {
-    #     
-    #     dat_ambiente_r() %>%
-    #       filter(corte == input$ambiente_r_corte) %>%
-    #       janitor::remove_empty("cols")
-    #     
-    #   }
-    # })
-    
-    # * Metadata   ======================================================
-    
-    # Title
-    output$title_ambiente_r <- renderUI({ 
-      helpText(HTML(unique(dat_ambiente_r()$nomindicador)))
-    })
-    
-    # Subtitle
-    output$subtitle_ambiente_r <- renderUI({ 
-      helpText(HTML(unique(dat_ambiente_r()$definicion)))
-    })
-    
-    # Nombre conceptual
-    output$conindicador_ambiente_r <- renderUI({ 
-      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ambiente_r()$conindicador))))
-    })
-    
-    # Calculo
-    output$calculo_ambiente_r <- renderUI({ 
-      helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_ambiente_r()$calculo))))
-    })
-    
-    # Observaciones
-    output$observacion_ambiente_r <- renderUI({ 
-      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ambiente_r()$observaciones))))
-    })
-    
-    
-    # * Gráficos   ======================================================
-    
-    output$plot_ambiente_r <- renderPlot({
-      
-      req(input$indicador_ambiente_r, input$ambiente_r_corte)
-      
-      if(input$indicador_ambiente_r %in% lista_serie_cat){
-        
-        req(input$indicador_ambiente_r)
-        
-        # Total
-        if(input$ambiente_r_corte == "Total"){
-          
-          dat_plot <- dat_ambiente_r() %>%
-            filter(corte == "Total")
-          
-          plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
-            geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-            geom_point(size = 3, colour = color_defecto) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x = element_text(angle = 0),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(input$indicador_ambiente_r),
-                 caption = wrapit(unique(dat_plot$cita)))
-          
-          print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-          
-          # Según corte
-        } else if(input$ambiente_r_corte != "Total") {
-          
-          ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-          
-          dat_plot <- dat_ambiente_r() %>%
-            filter(corte == input$ambiente_r_corte) %>%
-            filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
-          
-          plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                              colour = ambiente_r_corte_var, group = ambiente_r_corte_var)) +
-            geom_line(size = 1, alpha = 0.5) +
-            geom_point(size = 3) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x = element_text(angle = 0),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_ambiente_r,
-                                      "según",
-                                      tolower(input$ambiente_r_corte))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_manual(name = "", values = paleta_expandida)
-          
-          print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-          
-        }
-        
-      } else if(input$indicador_ambiente_r %in% lista_especial ){
-        
-        if (input$ambiente_r_corte_2 == "Total"){        
-          
-          req(input$ambiente_r_corte, input$indicador_ambiente_r)
-          
-          ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-          
-          dat_plot <- dat_ambiente_r() %>%
-            filter(ano >= input$fecha_ambiente_r[1] &
-                     ano <= input$fecha_ambiente_r[2]) %>%
-            filter(corte == input$ambiente_r_corte) %>%
-            # filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r) %>% 
-            filter(corte_2 == input$ambiente_r_corte_2)  
-          
-          plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                              fill = ambiente_r_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_ambiente_r,
-                                      "según",
-                                      tolower(input$ambiente_r_corte),
-                                      "en",
-                                      unique(dat_plot$fecha_cat))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_fill_brewer(name = "", palette = "Paired")
-          
-          print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-          
-        } else {
-          
-          req(input$ambiente_r_corte, input$indicador_ambiente_r)
-          
-          ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-          ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
-          
-          dat_plot <- dat_ambiente_r() %>%
-            filter(ano >= input$fecha_ambiente_r[1] &
-                     ano <= input$fecha_ambiente_r[2]) %>%
-            filter(corte == input$ambiente_r_corte) %>%
-            # filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r) %>% 
-            filter(corte_2 == input$ambiente_r_corte_2)  
-          
-          plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                              fill = ambiente_r_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_ambiente_r,
-                                      "según",
-                                      tolower(input$ambiente_r_corte),
-                                      "en",
-                                      unique(dat_plot$fecha_cat))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_fill_brewer(name = "", palette = "Paired") +
-            facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
-          
-          print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-          
-        }
-        
-      } else if(input$indicador_ambiente_r %in% lista_vunico & input$indicador_ambiente_r %in% lista_ind_2){
         
         req(input$ambiente_r_corte, input$indicador_ambiente_r)
         
@@ -11966,13 +11973,11 @@ server <- function(input, output) {
           filter(ano >= input$fecha_ambiente_r[1] &
                    ano <= input$fecha_ambiente_r[2]) %>%
           filter(corte == input$ambiente_r_corte) %>%
-          filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r) %>%
-          filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
-          filter(corte_2 == input$ambiente_r_corte_2)
+          # filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r) %>% 
+          filter(corte_2 == input$ambiente_r_corte_2)  
         
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha_cat", y = "Valor",
-                                  fill = ambiente_r_corte_var)) +
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = ambiente_r_corte_var)) +
           geom_col(position = "dodge", width = .7, alpha = .8) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
@@ -11988,210 +11993,122 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
         
-      } else if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte != "Departamento") {
-        
-        req(input$ambiente_r_corte, input$indicador_ambiente_r)
-        
-        dat_plot <- dat_ambiente_r() %>%
-          filter(corte == input$ambiente_r_corte) %>%
-          janitor::remove_empty("cols")
-        
-        if(input$ambiente_r_corte == "Total"){
-          
-          plot <- ggplot(dat_plot,
-                         aes_string(x = "fecha_cat", y = "Valor")) +
-            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
-            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_ambiente_r,
-                                      "según",
-                                      tolower(input$ambiente_r_corte),
-                                      "en",
-                                      unique(dat_plot$fecha_cat))),
-                 caption = wrapit(unique(dat_plot$cita)))
-          
-          print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-          
-          
-        } else {
-          
-          ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-          
-          plot <- ggplot(dat_plot,
-                         aes_string(x = "fecha_cat", y = "Valor",
-                                    fill = ambiente_r_corte_var)) +
-            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
-            geom_text(aes_string(group = ambiente_r_corte_var, label = "Valor"),
-                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_ambiente_r,
-                                      "según",
-                                      tolower(input$ambiente_r_corte),
-                                      "en",
-                                      unique(dat_plot$fecha_cat))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_fill_brewer(name = "", palette = "Paired")
-          
-          print(plot)
-          ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-          
-        }
-        
-        
-      } else if(input$indicador_ambiente_r %in% lista_ind_2) {
-        
-        req(input$ambiente_r_corte, input$ambiente_r_corte_2,
-            input$fecha_ambiente_r, input$checkbox_ambiente_r)
-        
-        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-        ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
-        
-        dat_plot <- dat_ambiente_r() %>%
-          filter(ano >= input$fecha_ambiente_r[1] &
-                   ano <= input$fecha_ambiente_r[2]) %>%
-          filter(corte == input$ambiente_r_corte) %>%
-          filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
-          filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r) %>% 
-          filter(corte_2 == input$ambiente_r_corte_2)
-        
-        if(input$ambiente_r_corte_2 == "Total"){
-          
-          dat_plot <- dat_plot %>%
-            filter(corte_2 == "Total")
-          
-          plot <- ggplot(dat_plot,
-                         aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var)) +
-            geom_line(size = 1, alpha = 0.5) +
-            geom_point(size = 3) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x = element_text(angle = 0),
-                  legend.position = "bottom") +
-            scale_x_continuous(breaks = int_breaks) +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_ambiente_r,
-                                      "según",
-                                      tolower(input$ambiente_r_corte))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_manual(name = "", values = paleta_expandida)
-          
-        } else if(input$ambiente_r_corte_2 != "Total") {
-          
-          ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
-          
-          dat_plot <- dat_plot %>%
-            filter(corte_2 == input$ambiente_r_corte_2)
-          
-          plot <- ggplot(dat_plot,
-                         aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var)) +
-            geom_line(size = 1, alpha = 0.5) +
-            geom_point(size = 3) +
-            theme_bdd(base_size = 12) +
-            scale_x_continuous(breaks = int_breaks) +
-            theme(axis.text.x = element_text(angle = 0),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_ambiente_r,
-                                      "según",
-                                      tolower(input$ambiente_r_corte))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_manual(name = "", values = paleta_expandida) +
-            facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
-          
-        }
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-        
-      } else if(input$ambiente_r_corte == "Total") {
-        
-        req(input$indicador_ambiente_r, input$fecha_ambiente_r)
-        
-        dat_plot <- dat_ambiente_r() %>%
-          filter(ano >= input$fecha_ambiente_r[1] &
-                   ano <= input$fecha_ambiente_r[2]) %>%
-          filter(corte == "Total")
+      }
+      
+    } else if(input$indicador_ambiente_r %in% lista_vunico & input$indicador_ambiente_r %in% lista_ind_2){
+      
+      req(input$ambiente_r_corte, input$indicador_ambiente_r)
+      
+      ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+      ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+      
+      dat_plot <- dat_ambiente_r() %>%
+        filter(ano >= input$fecha_ambiente_r[1] &
+                 ano <= input$fecha_ambiente_r[2]) %>%
+        filter(corte == input$ambiente_r_corte) %>%
+        filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r) %>%
+        filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
+        filter(corte_2 == input$ambiente_r_corte_2)
+      
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha_cat", y = "Valor",
+                                fill = ambiente_r_corte_var)) +
+        geom_col(position = "dodge", width = .7, alpha = .8) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x=element_blank(),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ambiente_r,
+                                  "según",
+                                  tolower(input$ambiente_r_corte),
+                                  "en",
+                                  unique(dat_plot$fecha_cat))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_fill_brewer(name = "", palette = "Paired") +
+        facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
+      
+      print(plot)
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+      
+    } else if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte != "Departamento") {
+      
+      req(input$ambiente_r_corte, input$indicador_ambiente_r)
+      
+      dat_plot <- dat_ambiente_r() %>%
+        filter(corte == input$ambiente_r_corte) %>%
+        janitor::remove_empty("cols")
+      
+      if(input$ambiente_r_corte == "Total"){
         
         plot <- ggplot(dat_plot,
-                       aes(x = fecha, y = Valor)) +
-          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-          geom_point(size = 3, colour = color_defecto) +
-          scale_x_continuous(breaks = int_breaks) +
+                       aes_string(x = "fecha_cat", y = "Valor")) +
+          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
           theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
+          theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
-               title = wrapit(input$indicador_ambiente_r),
+               title = wrapit(paste(input$indicador_ambiente_r,
+                                    "según",
+                                    tolower(input$ambiente_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
         
         
-      } else if(input$ambiente_r_corte == "Departamento" &
-                input$indicador_ambiente_r %notin% lista_ind_2 ) {
-        
-        req(input$indicador_ambiente_r, input$fecha_dpto_ambiente_r)
-        
-        dat_plot <- dat_ambiente_r() %>%
-          filter(corte == "Departamento") %>%
-          filter(ano == input$fecha_dpto_ambiente_r) %>%
-          select(departamento, Valor, fuente, cita)
-        
-        dep_j <- dep %>%
-          left_join(dat_plot, by = c("nombre" = "departamento"))
-        
-        plot <-  ggplot(dep_j, aes(fill = Valor)) +
-          geom_sf() +
-          geom_sf_text(aes(label = Valor), colour = "black",
-                       size = 4, fontface = "bold")+
-          viridis::scale_fill_viridis(name = "", direction = -1)+
-          labs(x = "",
-               y = "",
-          )+
-          theme_bdd(base_size = 14) +
-          theme(axis.line = element_blank(),
-                axis.text.x = element_blank(),
-                axis.text.y = element_blank(),
-                axis.ticks = element_blank(),
-                axis.title.x = element_blank(),
-                axis.title.y = element_blank(),
-                panel.grid.major = element_line(colour = "transparent"),
-          ) +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ambiente_r,
-                                    "en",
-                                    input$fecha_dpto_ambiente_r), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80))
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
-        
-        
-      } else if(input$ambiente_r_corte != "Total") {
-        
-        req(input$ambiente_r_corte, input$indicador_ambiente_r,
-            input$fecha_ambiente_r, input$checkbox_ambiente_r)
-        
-        dat_plot <- dat_ambiente_r() %>%
-          filter(ano >= input$fecha_ambiente_r[1] &
-                   ano <= input$fecha_ambiente_r[2]) %>%
-          filter(corte == input$ambiente_r_corte) %>%
-          janitor::remove_empty("cols")
+      } else {
         
         ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
         
-        dat_plot <- filter(dat_plot,
-                           !!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha_cat", y = "Valor",
+                                  fill = ambiente_r_corte_var)) +
+          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+          geom_text(aes_string(group = ambiente_r_corte_var, label = "Valor"),
+                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ambiente_r,
+                                    "según",
+                                    tolower(input$ambiente_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+        
+        print(plot)
+        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+        
+      }
+      
+      
+    } else if(input$indicador_ambiente_r %in% lista_ind_2) {
+      
+      req(input$ambiente_r_corte, input$ambiente_r_corte_2,
+          input$fecha_ambiente_r, input$checkbox_ambiente_r)
+      
+      ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+      ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+      
+      dat_plot <- dat_ambiente_r() %>%
+        filter(ano >= input$fecha_ambiente_r[1] &
+                 ano <= input$fecha_ambiente_r[2]) %>%
+        filter(corte == input$ambiente_r_corte) %>%
+        filter(!!ambiente_r_corte_var_2 %in% input$checkbox_ambiente_r_2) %>%
+        filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r) %>% 
+        filter(corte_2 == input$ambiente_r_corte_2)
+      
+      if(input$ambiente_r_corte_2 == "Total"){
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == "Total")
         
         plot <- ggplot(dat_plot,
                        aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var)) +
@@ -12208,682 +12125,772 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita))) +
           scale_colour_manual(name = "", values = paleta_expandida)
         
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      } else if(input$ambiente_r_corte_2 != "Total") {
+        
+        ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == input$ambiente_r_corte_2)
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ambiente_r,
+                                    "según",
+                                    tolower(input$ambiente_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) +
+          facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
         
       }
       
-    })
-    
-
-    # * Descarga gráficos   =============================================
-    
-    output$baja_p_ambiente_r <- downloadHandler(
-      filename <- function() {
-        paste("indicador ambiente r", "png", sep = ".")
-      },
+      print(plot)
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
       
-      content <- function(file) {
-        file.copy("www/indicador ambiente r.png", file)
-      },
-      contentType = "www/indicador ambiente r"
-    )
-    
-    
-    # * Tablas   ========================================================
-    
-    # Data
-    ambiente_r_tab <- reactive({
       
-      if(input$indicador_ambiente_r %in%  lista_especial){
-        
-        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-        ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+    } else if(input$ambiente_r_corte == "Total") {
       
-        dat_ambiente_r() %>%
+      req(input$indicador_ambiente_r, input$fecha_ambiente_r)
+      
+      dat_plot <- dat_ambiente_r() %>%
+        filter(ano >= input$fecha_ambiente_r[1] &
+                 ano <= input$fecha_ambiente_r[2]) %>%
+        filter(corte == "Total")
+      
+      plot <- ggplot(dat_plot,
+                     aes(x = fecha, y = Valor)) +
+        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+        geom_point(size = 3, colour = color_defecto) +
+        scale_x_continuous(breaks = int_breaks) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(input$indicador_ambiente_r),
+             caption = wrapit(unique(dat_plot$cita)))
+      
+      print(plot)
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$ambiente_r_corte == "Departamento" &
+              input$indicador_ambiente_r %notin% lista_ind_2 ) {
+      
+      req(input$indicador_ambiente_r, input$fecha_dpto_ambiente_r)
+      
+      dat_plot <- dat_ambiente_r() %>%
+        filter(corte == "Departamento") %>%
+        filter(ano == input$fecha_dpto_ambiente_r) %>%
+        select(departamento, Valor, fuente, cita)
+      
+      dep_j <- dep %>%
+        left_join(dat_plot, by = c("nombre" = "departamento"))
+      
+      plot <-  ggplot(dep_j, aes(fill = Valor)) +
+        geom_sf() +
+        geom_sf_text(aes(label = Valor), colour = "black",
+                     size = 4, fontface = "bold")+
+        viridis::scale_fill_viridis(name = "", direction = -1)+
+        labs(x = "",
+             y = "",
+        )+
+        theme_bdd(base_size = 14) +
+        theme(axis.line = element_blank(),
+              axis.text.x = element_blank(),
+              axis.text.y = element_blank(),
+              axis.ticks = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              panel.grid.major = element_line(colour = "transparent"),
+        ) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ambiente_r,
+                                  "en",
+                                  input$fecha_dpto_ambiente_r), w = 80),
+             caption = wrapit(unique(dat_plot$cita), w = 80))
+      
+      print(plot)
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+      
+      
+    } else if(input$ambiente_r_corte != "Total") {
+      
+      req(input$ambiente_r_corte, input$indicador_ambiente_r,
+          input$fecha_ambiente_r, input$checkbox_ambiente_r)
+      
+      dat_plot <- dat_ambiente_r() %>%
+        filter(ano >= input$fecha_ambiente_r[1] &
+                 ano <= input$fecha_ambiente_r[2]) %>%
+        filter(corte == input$ambiente_r_corte) %>%
+        janitor::remove_empty("cols")
+      
+      ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+      
+      dat_plot <- filter(dat_plot,
+                         !!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
+      
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var)) +
+        geom_line(size = 1, alpha = 0.5) +
+        geom_point(size = 3) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        scale_x_continuous(breaks = int_breaks) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ambiente_r,
+                                  "según",
+                                  tolower(input$ambiente_r_corte))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_colour_manual(name = "", values = paleta_expandida)
+      
+      print(plot)
+      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+      
+    }
+    
+  })
+  
+  
+  # * Descarga gráficos   =============================================
+  
+  output$baja_p_ambiente_r <- downloadHandler(
+    filename <- function() {
+      paste("indicador ambiente r", "png", sep = ".")
+    },
+    
+    content <- function(file) {
+      file.copy("www/indicador ambiente r.png", file)
+    },
+    contentType = "www/indicador ambiente r"
+  )
+  
+  
+  # * Tablas   ========================================================
+  
+  # Data
+  ambiente_r_tab <- reactive({
+    
+    if(input$indicador_ambiente_r %in%  lista_especial){
+      
+      ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+      ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+      
+      dat_ambiente_r() %>%
         filter(corte_2 == input$ambiente_r_corte_2) %>% 
         select(Fecha, ambiente_r_corte_var, ambiente_r_corte_var_2, Valor) %>%
         arrange(desc(Fecha)) %>%
         pivot_wider(values_from = "Valor",
                     names_from = ambiente_r_corte_var) 
       
-      } else if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte == "Total"){
-        
-        req(input$ambiente_r_corte, input$indicador_ambiente_r)
-        
-        dat_ambiente_r() %>%
-          filter(corte == "Total") %>% 
-          select(fecha_cat, Valor) %>%
-          arrange(desc(fecha_cat)) %>%
-          rename(Fecha = fecha_cat)
-        
-      } else if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte != "Total") {
-        
-        req(input$ambiente_r_corte, input$indicador_ambiente_r)
-        
-        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-        
-        dat_cut <- dat_ambiente_r() %>%
-          filter(corte == input$ambiente_r_corte) %>%
-          janitor::remove_empty("cols") 
-        
-        dat_cut %>%     
-          select(fecha_cat, ambiente_r_corte_var, Valor) %>%
-          arrange(desc(fecha_cat)) %>% 
-          rename(Fecha = fecha_cat) %>%
-          pivot_wider(values_from = "Valor",
-                      names_from = ambiente_r_corte_var)
-        
-        
-      } else if(input$indicador_ambiente_r %in% lista_ind_2) {
-        
-        req(input$ambiente_r_corte, input$indicador_ambiente_r, input$fecha_ambiente_r)
-        
-        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-        
-        dat_cut <- dat_ambiente_r() %>%
-          filter(corte == input$ambiente_r_corte) %>%
-          filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
-        
-        if(input$ambiente_r_corte_2 == "Total"){
-          
-          dat_cut %>%
-            filter(ano >= input$fecha_ambiente_r[1] &
-                     ano <= input$fecha_ambiente_r[2]) %>%
-            filter(corte_2 == "Total") %>% 
-            select(Fecha, ambiente_r_corte_var, Valor) %>%
-            arrange(desc(Fecha)) %>%
-            pivot_wider(values_from = "Valor",
-                        names_from = ambiente_r_corte_var)
-          
-        } else if(input$ambiente_r_corte_2 != "Total") {
-          
-          ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
-          
-          dat_cut %>%
-            filter(ano >= input$fecha_ambiente_r[1] &
-                     ano <= input$fecha_ambiente_r[2]) %>%
-            filter(corte_2 == input$ambiente_r_corte_2) %>% 
-            select(Fecha, ambiente_r_corte_var, ambiente_r_corte_var_2, Valor) %>%
-            arrange(desc(Fecha)) %>%
-            pivot_wider(values_from = "Valor",
-                        names_from = ambiente_r_corte_var) 
-          
-        }
-        
-      } else if(input$ambiente_r_corte == "Total") {
-        
-        req(input$ambiente_r_corte, input$indicador_ambiente_r, input$fecha_ambiente_r)
-        
-        dat_ambiente_r() %>%
-          filter(corte == "Total") %>% 
-          filter(ano >= input$fecha_ambiente_r[1] &
-                   ano <= input$fecha_ambiente_r[2]) %>%
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
-        
-      } else if(input$ambiente_r_corte != "Total") {
-        
-        req(input$ambiente_r_corte, input$indicador_ambiente_r, input$fecha_ambiente_r)
-        
-        ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
-        
-        dat_cut <- dat_ambiente_r() %>%
-          filter(corte == input$ambiente_r_corte) %>%
-          janitor::remove_empty("cols") 
-        
-        dat_cut %>%     
-          filter(ano >= input$fecha_ambiente_r[1] &
-                   ano <= input$fecha_ambiente_r[2]) %>% 
-          select(Fecha, ambiente_r_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
-          pivot_wider(values_from = "Valor",
-                      names_from = ambiente_r_corte_var)
-        
-      }
-    })
-    
-    # Metadata 
-    ambiente_r_meta <- reactive({
+    } else if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte == "Total"){
+      
+      req(input$ambiente_r_corte, input$indicador_ambiente_r)
       
       dat_ambiente_r() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
-        mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-        distinct() %>% 
-        gather(key = "", value = " ")
+        filter(corte == "Total") %>% 
+        select(fecha_cat, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat)
       
-    })
-    
-    # Excel
-    list_ambiente_r <- reactive({
-      list_ambiente_r <- list("Data" = ambiente_r_tab(),
-                              "Metadata" = ambiente_r_meta())
-    })
-    
-    # Render
-    output$table_ambiente_r <- renderDT({
+    } else if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte != "Total") {
       
-      DT::datatable(ambiente_r_tab(),
-                    rownames = FALSE,
-                    caption = htmltools::tags$caption(
-                      input$indicador_ambiente_r,
-                      style = "color:black; font-size:110%;")
-      ) 
+      req(input$ambiente_r_corte, input$indicador_ambiente_r)
       
-    })
-    
-    # * Descarga tablas   ================================================
-    
-    output$dwl_tab_ambiente_r <- downloadHandler(
+      ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
       
-      filename = function() {
-        paste("resultados-", input$indicador_ambiente_r, ".xlsx", sep = "")
-      },
-      content = function(file) {
+      dat_cut <- dat_ambiente_r() %>%
+        filter(corte == input$ambiente_r_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        select(fecha_cat, ambiente_r_corte_var, Valor) %>%
+        arrange(desc(fecha_cat)) %>% 
+        rename(Fecha = fecha_cat) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = ambiente_r_corte_var)
+      
+      
+    } else if(input$indicador_ambiente_r %in% lista_ind_2) {
+      
+      req(input$ambiente_r_corte, input$indicador_ambiente_r, input$fecha_ambiente_r)
+      
+      ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+      
+      dat_cut <- dat_ambiente_r() %>%
+        filter(corte == input$ambiente_r_corte) %>%
+        filter(!!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
+      
+      if(input$ambiente_r_corte_2 == "Total"){
         
-        openxlsx::write.xlsx(list_ambiente_r(), file)
+        dat_cut %>%
+          filter(ano >= input$fecha_ambiente_r[1] &
+                   ano <= input$fecha_ambiente_r[2]) %>%
+          filter(corte_2 == "Total") %>% 
+          select(Fecha, ambiente_r_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = ambiente_r_corte_var)
+        
+      } else if(input$ambiente_r_corte_2 != "Total") {
+        
+        ambiente_r_corte_var_2 <- rlang::sym(to_varname(input$ambiente_r_corte_2))
+        
+        dat_cut %>%
+          filter(ano >= input$fecha_ambiente_r[1] &
+                   ano <= input$fecha_ambiente_r[2]) %>%
+          filter(corte_2 == input$ambiente_r_corte_2) %>% 
+          select(Fecha, ambiente_r_corte_var, ambiente_r_corte_var_2, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = ambiente_r_corte_var) 
         
       }
-    )
-    
-    
-    
-    ### 9. Poblaciones   =============================================
-    
-    # * Data reactiva   =================================================
-    
-    output$selector_poblaciones_indicadores <- renderUI({
       
+    } else if(input$ambiente_r_corte == "Total") {
       
-      if(input$poblaciones == "Afrodescendientes"){
+      req(input$ambiente_r_corte, input$indicador_ambiente_r, input$fecha_ambiente_r)
       
-        selectInput(inputId = "indicador_poblaciones",
-                    label = "Seleccione indicador:",
-                    choices = list(
-                      "Educación" = ind_asc_edu,
-                      "Salud" = ind_asc_salud, 
-                      "Vivienda" = ind_asc_vivienda,
-                      "Trabajo" = ind_asc_trabajo,
-                      "Seguridad Social" = ind_asc_ssocial,
-                      "Ambiente" = ind_asc_ambiente))
-        
-      } else if (input$poblaciones == "Mujeres"){
-        
-        selectInput(inputId = "indicador_poblaciones",
-                    label = "Seleccione indicador:",
-                    choices = list(
-                      "Educación" = ind_sexo_edu,
-                      "Salud" = ind_sexo_salud, 
-                      "Vivienda" = ind_sexo_vivienda,
-                      "Trabajo" = ind_sexo_trabajo,
-                      "Seguridad Social" = ind_sexo_ssocial,
-                      "Ambiente" = ind_sexo_ambiente))
-        
-      } else if (input$poblaciones == "Migrantes"){
-        
-        selectInput(inputId = "indicador_poblaciones",
-                    label = "Seleccione indicador:",
-                    choices = list(
-                      "Educación" = ind_migrantes_edu,
-                      "Salud" = ind_migrantes_salud, 
-                      "Vivienda" = ind_migrantes_vivienda,
-                      "Trabajo" = ind_migrantes_trabajo,
-                      "Seguridad Social" = ind_migrantes_ssocial,
-                      "Ambiente" = ind_migrantes_ambiente))
-        
-      } else if (input$poblaciones == "Niños, niñas y adolescentes"){
-        
-        selectInput(inputId = "indicador_poblaciones",
-                    label = "Seleccione indicador:",
-                    choices = list(
-                      "Educación" = ind_nna_edu,
-                      "Salud" = ind_nna_salud, 
-                      "Vivienda" = ind_nna_vivienda,
-                      "Trabajo" = ind_nna_trabajo,
-                      "Seguridad Social" = ind_nna_ssocial,
-                      "Ambiente" = ind_nna_ambiente))
-        
-      } else if (input$poblaciones == "Personas con discapacidad"){
-        
-        selectInput(inputId = "indicador_poblaciones",
-                    label = "Seleccione indicador:",
-                    choices = list(
-                      "Educación" = ind_pd_edu,
-                      "Salud" = ind_pd_salud, 
-                      "Vivienda" = ind_pd_vivienda,
-                      "Trabajo" = ind_pd_trabajo,
-                      #"Seguridad Social" = ind_pd_ssocial,
-                      "Ambiente" = ind_pd_ambiente))
-        
-      } else if (input$poblaciones == "Personas privadas de libertad"){
-        
-        selectInput(inputId = "indicador_poblaciones",
-                    label = "Seleccione indicador:",
-                    choices = list(
-                      "Educación" = ind_ppl_edu,
-                      "Salud" = ind_ppl_salud, 
-                      "Vivienda" = ind_ppl_vivienda,
-                      "Trabajo" = ind_ppl_trabajo,
-                      "Seguridad Social" = ind_ppl_ssocial,
-                      "Ambiente" = ind_ppl_ambiente))
-        
-      } else if (input$poblaciones == "Personas LGBTI"){
-        
-        selectInput(inputId = "indicador_poblaciones",
-                    label = "Seleccione indicador:",
-                    choices = list(
-                      "Educación" = ind_lgtb_edu,
-                      "Salud" = ind_lgtb_salud, 
-                      "Vivienda" = ind_lgtb_vivienda,
-                      "Trabajo" = ind_lgtb_trabajo,
-                      "Seguridad Social" = ind_lgtb_ssocial,
-                      "Ambiente" = ind_lgtb_ambiente))
-      }      
-
-    })
+      dat_ambiente_r() %>%
+        filter(corte == "Total") %>% 
+        filter(ano >= input$fecha_ambiente_r[1] &
+                 ano <= input$fecha_ambiente_r[2]) %>%
+        select(Fecha, Valor) %>%
+        arrange(desc(Fecha))
+      
+    } else if(input$ambiente_r_corte != "Total") {
+      
+      req(input$ambiente_r_corte, input$indicador_ambiente_r, input$fecha_ambiente_r)
+      
+      ambiente_r_corte_var <- rlang::sym(to_varname(input$ambiente_r_corte))
+      
+      dat_cut <- dat_ambiente_r() %>%
+        filter(corte == input$ambiente_r_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        filter(ano >= input$fecha_ambiente_r[1] &
+                 ano <= input$fecha_ambiente_r[2]) %>% 
+        select(Fecha, ambiente_r_corte_var, Valor) %>%
+        arrange(desc(Fecha)) %>% 
+        pivot_wider(values_from = "Valor",
+                    names_from = ambiente_r_corte_var)
+      
+    }
+  })
+  
+  # Metadata 
+  ambiente_r_meta <- reactive({
     
-    dat_poblaciones <- reactive({
+    dat_ambiente_r() %>%
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+      distinct() %>% 
+      gather(key = "", value = " ")
+    
+  })
+  
+  # Excel
+  list_ambiente_r <- reactive({
+    list_ambiente_r <- list("Data" = ambiente_r_tab(),
+                            "Metadata" = ambiente_r_meta())
+  })
+  
+  # Render
+  output$table_ambiente_r <- renderDT({
+    
+    DT::datatable(ambiente_r_tab(),
+                  rownames = FALSE,
+                  caption = htmltools::tags$caption(
+                    input$indicador_ambiente_r,
+                    style = "color:black; font-size:110%;")
+    ) 
+    
+  })
+  
+  # * Descarga tablas   ================================================
+  
+  output$dwl_tab_ambiente_r <- downloadHandler(
+    
+    filename = function() {
+      paste("resultados-", input$indicador_ambiente_r, ".xlsx", sep = "")
+    },
+    content = function(file) {
       
-      req(input$indicador_poblaciones)
+      openxlsx::write.xlsx(list_ambiente_r(), file)
       
-      if(input$poblaciones == "Afrodescendientes"){
+    }
+  )
+  
+  
+  
+  ### 9. Poblaciones   =============================================
+  
+  # * Data reactiva   =================================================
+  
+  output$selector_poblaciones_indicadores <- renderUI({
+    
+    
+    if(input$poblaciones == "Afrodescendientes"){
+      
+      selectInput(inputId = "indicador_poblaciones",
+                  label = "Seleccione indicador:",
+                  choices = list(
+                    "Educación" = ind_asc_edu,
+                    "Salud" = c("Distribución porcentual de personas según institución prestadora en la cual tienen derecho vigente" = ind_asc_salud), 
+                    "Vivienda" = ind_asc_vivienda,
+                    "Trabajo" = ind_asc_trabajo,
+                    "Seguridad Social" = ind_asc_ssocial,
+                    "Ambiente" = ind_asc_ambiente))
+      
+    } else if (input$poblaciones == "Mujeres"){
+      
+      selectInput(inputId = "indicador_poblaciones",
+                  label = "Seleccione indicador:",
+                  choices = list(
+                    "Educación" = ind_sexo_edu,
+                    "Salud" = ind_sexo_salud, 
+                    "Vivienda" = ind_sexo_vivienda,
+                    "Trabajo" = ind_sexo_trabajo,
+                    "Seguridad Social" = ind_sexo_ssocial,
+                    "Ambiente" = ind_sexo_ambiente))
+      
+    } else if (input$poblaciones == "Migrantes"){
+      
+      selectInput(inputId = "indicador_poblaciones",
+                  label = "Seleccione indicador:",
+                  choices = list(
+                    "Educación" = ind_migrantes_edu,
+                    "Salud" = c("Distribución porcentual de personas según institución prestadora en la cual tienen derecho vigente" = ind_migrantes_salud), 
+                    "Vivienda" = ind_migrantes_vivienda,
+                    "Trabajo" = ind_migrantes_trabajo,
+                    "Seguridad Social" = ind_migrantes_ssocial,
+                    "Ambiente" = ind_migrantes_ambiente))
+      
+    } else if (input$poblaciones == "Niños, niñas y adolescentes"){
+      
+      selectInput(inputId = "indicador_poblaciones",
+                  label = "Seleccione indicador:",
+                  choices = list(
+                    "Educación" = ind_nna_edu,
+                    "Salud" = ind_nna_salud, 
+                    "Vivienda" = ind_nna_vivienda,
+                    "Trabajo" = ind_nna_trabajo,
+                    "Seguridad Social" = ind_nna_ssocial,
+                    "Ambiente" = c("Porcentaje de personas que residen en viviendas sin agua potable" = ind_nna_ambiente)))
+      
+    } else if (input$poblaciones == "Personas con discapacidad"){
+      
+      selectInput(inputId = "indicador_poblaciones",
+                  label = "Seleccione indicador:",
+                  choices = list(
+                    "Educación" = ind_pd_edu,
+                    "Salud" = ind_pd_salud, 
+                    "Vivienda" = ind_pd_vivienda,
+                    "Trabajo" = ind_pd_trabajo,
+                    #"Seguridad Social" = ind_pd_ssocial,
+                    "Ambiente" = ind_pd_ambiente))
+      
+    } else if (input$poblaciones == "Personas privadas de libertad"){
+      
+      selectInput(inputId = "indicador_poblaciones",
+                  label = "Seleccione indicador:",
+                  choices = list(
+                    "Educación" = ind_ppl_edu,
+                    "Salud" = ind_ppl_salud, 
+                    "Vivienda" = c("Densidad penitenciaria (Promedio anual)" = ind_ppl_vivienda),
+                    "Trabajo" = ind_ppl_trabajo,
+                    "Seguridad Social" = ind_ppl_ssocial,
+                    "Ambiente" = ind_ppl_ambiente))
+      
+    } else if (input$poblaciones == "Personas LGBTI"){
+      
+      selectInput(inputId = "indicador_poblaciones",
+                  label = "Seleccione indicador:",
+                  choices = list(
+                    "Educación" = ind_lgtb_edu,
+                    "Salud" = ind_lgtb_salud, 
+                    "Vivienda" = ind_lgtb_vivienda,
+                    "Trabajo" = ind_lgtb_trabajo,
+                    "Seguridad Social" = c("Porcentaje de personas trans con cobertura de TUS-Trans" = ind_lgtb_ssocial),
+                    "Ambiente" = ind_lgtb_ambiente))
+    }      
+    
+  })
+  
+  dat_poblaciones <- reactive({
+    
+    req(input$indicador_poblaciones)
+    
+    if(input$poblaciones == "Afrodescendientes"){
+      
+      datpob %>%
+        filter(nomindicador == input$indicador_poblaciones) %>% 
+        filter(corte %in% "Ascendencia étnico-racial")
+      
+    } else if (input$poblaciones == "Mujeres"){
+      
+      datpob %>%
+        filter(nomindicador == input$indicador_poblaciones) %>% 
+        filter(corte == "Sexo")
+      
+    } else if (input$poblaciones == "Niños, niñas y adolescentes"){
+      
+      datpob <- datpob %>%
+        filter(nomindicador == input$indicador_poblaciones) 
+      
+      n_cortes <- length(unique(datpob$corte))
+      
+      if(n_cortes == 1){
         
-        dat %>%
-          filter(nomindicador == input$indicador_poblaciones) %>% 
-          filter(corte %in% "Ascendencia étnico-racial")
-        
-      } else if (input$poblaciones == "Mujeres"){
-
-        dat %>%
-          filter(nomindicador == input$indicador_poblaciones) %>% 
-          filter(corte == "Sexo")
-        
-      } else if (input$poblaciones == "Niños, niñas y adolescentes"){
-        
-        dat <- dat %>%
+        datpob %>%
           filter(nomindicador == input$indicador_poblaciones) 
         
-        n_cortes <- length(unique(dat$corte))
+      } else if (n_cortes > 1){
         
-        if(n_cortes == 1){
-          
-          dat %>%
-            filter(nomindicador == input$indicador_poblaciones) 
-        
-          } else if (n_cortes > 1){
-          
-            dat %>%
-              filter(nomindicador == input$indicador_poblaciones) %>% 
-              filter(corte == "Edad")
-        }
-        
-        
-      } else {
-        
-          dat %>%
-            filter(nomindicador == input$indicador_poblaciones) 
-          
+        datpob %>%
+          filter(nomindicador == input$indicador_poblaciones) %>% 
+          filter(corte == "Edad")
       }
       
-    })
-    
-    output$selector_poblaciones_corte_2 <- renderUI({
       
-      if(input$indicador_poblaciones %in% lista_ind_2){
-        
-        selectInput(
-          inputId = "poblaciones_corte_2",
-          label = "Seleccione primer corte:",
-          choices = dat_poblaciones() %>% 
-            select(corte_2) %>%
-            arrange(corte_2) %>% 
-            unique() %>% 
-            pull(),
-          selected = dat_poblaciones() %>% 
-            filter(jerarquia == "1") %>%  
-            distinct(corte_2) %>% 
-            pull()
-        )
-        
-      } else {
-        
-        NULL
-      }
+    } else {
       
-    })
-    
-    output$chbox_poblaciones_2 <- renderUI({
+      datpob %>%
+        filter(nomindicador == input$indicador_poblaciones) 
       
-      if(input$indicador_poblaciones %in% lista_ind_2 & input$indicador_poblaciones %notin% lista_especial){
-        
-        # if(input$poblaciones_corte %notin% c("Total", "Departamento") & input$indicador_poblaciones %notin% lista_vunico) {
-        
-        poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
-        
-        checkboxGroupInput(inputId = "checkbox_poblaciones_2",
-                           label = "Seleccione categorías",
-                           inline = TRUE,
-                           choices =  dat_poblaciones() %>%
-                             filter(corte_2 == input$poblaciones_corte_2) %>% 
-                             distinct(!!poblaciones_corte_var_2) %>%
-                             pull(),
-                           selected = dat_poblaciones() %>%
-                             filter(corte_2 == input$poblaciones_corte_2) %>% 
-                             filter(jerarquia_cat_2 == "1") %>%
-                             distinct(!!poblaciones_corte_var_2) %>%
-                             pull()
-        )
-        
-        # } else {
-        #   
-        #   return(NULL)
-        #   
-        #   }
-        
-      } else {
-        
-        return(NULL)
-        
-      }      
-    })
+    }
     
+  })
+  
+  output$selector_poblaciones_corte_2 <- renderUI({
     
-    output$selector_poblaciones_corte <- renderUI({
+    if(input$indicador_poblaciones %in% lista_ind_2_pob){
       
       selectInput(
-        inputId = "poblaciones_corte",
-        label = "Seleccione corte:",
+        inputId = "poblaciones_corte_2",
+        label = "Seleccione primer corte:",
         choices = dat_poblaciones() %>% 
-          select(corte) %>%
-          arrange(corte) %>% 
+          select(corte_2) %>%
+          arrange(corte_2) %>% 
           unique() %>% 
           pull(),
         selected = dat_poblaciones() %>% 
           filter(jerarquia == "1") %>%  
-          distinct(corte) %>% 
+          distinct(corte_2) %>% 
           pull()
       )
       
-    })
-    
-    output$chbox_poblaciones <- renderUI({
+    } else {
       
-      if(input$poblaciones_corte %in% lista_ind_2 & input$poblaciones_corte %notin% c("Total", "Departamento") & input$indicador_poblaciones %notin% lista_vunico) {
+      NULL
+    }
+    
+  })
+  
+  output$chbox_poblaciones_2 <- renderUI({
+    
+    if(input$indicador_poblaciones %in% lista_ind_2_pob & input$indicador_poblaciones %notin% lista_especial_pob){
+      
+      # if(input$poblaciones_corte %notin% c("Total", "Departamento") & input$indicador_poblaciones %notin% lista_vunico_pob) {
+      
+      poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
+      
+      checkboxGroupInput(inputId = "checkbox_poblaciones_2",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_poblaciones() %>%
+                           filter(corte_2 == input$poblaciones_corte_2) %>% 
+                           distinct(!!poblaciones_corte_var_2) %>%
+                           pull(),
+                         selected = dat_poblaciones() %>%
+                           filter(corte_2 == input$poblaciones_corte_2) %>% 
+                           filter(jerarquia_cat_2 == "1") %>%
+                           distinct(!!poblaciones_corte_var_2) %>%
+                           pull()
+      )
+      
+      # } else {
+      #   
+      #   return(NULL)
+      #   
+      #   }
+      
+    } else {
+      
+      return(NULL)
+      
+    }      
+  })
+  
+  
+  output$selector_poblaciones_corte <- renderUI({
+    
+    selectInput(
+      inputId = "poblaciones_corte",
+      label = "Seleccione corte:",
+      choices = dat_poblaciones() %>% 
+        select(corte) %>%
+        arrange(corte) %>% 
+        unique() %>% 
+        pull(),
+      selected = dat_poblaciones() %>% 
+        filter(jerarquia == "1") %>%  
+        distinct(corte) %>% 
+        pull()
+    )
+    
+  })
+  
+  output$chbox_poblaciones <- renderUI({
+    
+    if(input$poblaciones_corte %in% lista_ind_2_pob & input$poblaciones_corte %notin% c("Total", "Departamento") & input$indicador_poblaciones %notin% lista_vunico_pob) {
+      
+      poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
+      poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
+      
+      checkboxGroupInput(inputId = "checkbox_poblaciones",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_poblaciones() %>%
+                           filter(!!poblaciones_corte_var_2 %in% input$checkbox_poblaciones_2) %>%
+                           filter(corte == input$poblaciones_corte) %>% 
+                           distinct(!!poblaciones_corte_var) %>%
+                           pull(),
+                         selected = dat_poblaciones() %>%
+                           filter(!!poblaciones_corte_var_2 %in% input$checkbox_poblaciones_2) %>%
+                           filter(corte == input$poblaciones_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!poblaciones_corte_var) %>%
+                           pull()
+      )
+      
+    } else if(input$poblaciones_corte %notin% lista_ind_2_pob & input$poblaciones_corte %notin% c("Total", "Departamento") & input$indicador_poblaciones %notin% lista_vunico_pob) {
+      
+      poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
+      
+      checkboxGroupInput(inputId = "checkbox_poblaciones",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_poblaciones() %>%
+                           filter(corte == input$poblaciones_corte) %>% 
+                           distinct(!!poblaciones_corte_var) %>%
+                           pull(),
+                         selected = dat_poblaciones() %>%
+                           filter(corte == input$poblaciones_corte) %>% 
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!poblaciones_corte_var) %>%
+                           pull()
+      )
+      
+    } else {
+      
+      return(NULL)
+    }
+    
+  })
+  
+  # Selector de fecha
+  output$s_poblaciones_fecha <- renderUI({
+    
+    if(input$poblaciones_corte == "Departamento" & input$indicador_poblaciones %notin% lista_ind_2_pob) {
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones)
+      
+      req(nrow(dat_poblaciones()) > 0)
+      
+      selectInput(
+        inputId = "fecha_dpto_poblaciones",
+        label = "Seleccione año:",
+        choices = dat_poblaciones() %>% 
+          filter(nomindicador == input$indicador_poblaciones) %>%
+          drop_na(Valor) %>%
+          select(ano) %>%
+          arrange(desc(ano)) %>% 
+          unique() %>% 
+          pull(),
+        selected = max(input$ano)
+      )
+      
+    } else if (input$indicador_poblaciones %in% lista_serie_cat_pob){
+      
+      return(NULL)
+      
+      
+    } else if (input$indicador_poblaciones %in% lista_vunico_pob){
+      
+      return(NULL)
+      
+    } else  {
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones)
+      req(nrow(dat_poblaciones()) > 0)
+      
+      tagList(
+        # tags$style(type = 'text/css', 
+        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+        # div(id = 'big_slider',
+        
+        sliderInput("fecha_poblaciones", 
+                    label = "Rango de tiempo", 
+                    sep = "",
+                    dragRange = T,
+                    min = min(dat_poblaciones()$ano), 
+                    max = max(dat_poblaciones()$ano), 
+                    value = c(min(dat_poblaciones()$ano), 
+                              max(dat_poblaciones()$ano))
+        )
+      )
+      
+    }
+  })
+  
+  # # Selector de corte según categoría y data temporal
+  # dat_poblaciones <- reactive({
+  #   
+  #   req(input$poblaciones_corte)
+  #   
+  #   if(input$indicador_poblaciones %in% lista_ind_2_pob){
+  #     
+  #     dat_salarios <- dat_poblaciones() %>%
+  #       filter(corte_2 == input$poblaciones_corte_2) %>% 
+  #       filter(corte == input$poblaciones_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   } else {
+  #     
+  #     dat_poblaciones() %>%
+  #       filter(corte == input$poblaciones_corte) %>%
+  #       janitor::remove_empty("cols")
+  #     
+  #   }
+  # })
+  
+  # * Metadata   ======================================================
+  
+  # Title
+  output$title_poblaciones <- renderUI({ 
+    helpText(HTML(unique(dat_poblaciones()$nomindicador)))
+  })
+  
+  # Subtitle
+  output$subtitle_poblaciones <- renderUI({ 
+    helpText(HTML(unique(dat_poblaciones()$definicion)))
+  })
+  
+  # Nombre conceptual
+  output$conindicador_poblaciones <- renderUI({ 
+    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_poblaciones()$conindicador))))
+  })
+  
+  # Calculo
+  output$calculo_poblaciones <- renderUI({ 
+    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_poblaciones()$calculo))))
+  })
+  
+  # Observaciones
+  output$observacion_poblaciones <- renderUI({ 
+    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_poblaciones()$observaciones))))
+  })
+  
+  
+  # * Gráficos   ======================================================
+  
+  output$plot_poblaciones <- renderPlot({
+    
+    req(input$indicador_poblaciones)
+    
+    if(input$indicador_poblaciones %in% lista_serie_cat_pob){
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones)
+      
+      # Total
+      if(input$poblaciones_corte == "Total"){
+        
+        dat_plot <- dat_poblaciones() %>%
+          filter(corte == "Total")
+        
+        plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_poblaciones),
+               caption = wrapit(unique(dat_plot$cita)))
+        
+        print(plot)
+        ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
+        
+        # Según corte
+      } else if(input$poblaciones_corte != "Total") {
         
         poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
-        poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
         
-        checkboxGroupInput(inputId = "checkbox_poblaciones",
-                           label = "Seleccione categorías",
-                           inline = TRUE,
-                           choices =  dat_poblaciones() %>%
-                             filter(!!poblaciones_corte_var_2 %in% input$checkbox_poblaciones_2) %>%
-                             filter(corte == input$poblaciones_corte) %>% 
-                             distinct(!!poblaciones_corte_var) %>%
-                             pull(),
-                           selected = dat_poblaciones() %>%
-                             filter(!!poblaciones_corte_var_2 %in% input$checkbox_poblaciones_2) %>%
-                             filter(corte == input$poblaciones_corte) %>% 
-                             filter(jerarquia_cat == "1") %>%
-                             distinct(!!poblaciones_corte_var) %>%
-                             pull()
-        )
+        dat_plot <- dat_poblaciones() %>%
+          filter(corte == input$poblaciones_corte) %>%
+          filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones)
         
-      } else if(input$poblaciones_corte %notin% lista_ind_2 & input$poblaciones_corte %notin% c("Total", "Departamento") & input$indicador_poblaciones %notin% lista_vunico) {
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = poblaciones_corte_var, group = poblaciones_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_poblaciones,
+                                    "según",
+                                    tolower(input$poblaciones_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
+        
+      }
+      
+    } else if(input$indicador_poblaciones %in% lista_especial_pob ){
+      
+      if (input$poblaciones_corte_2 == "Total"){        
+        
+        req(input$poblaciones_corte, input$indicador_poblaciones)
         
         poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
         
-        checkboxGroupInput(inputId = "checkbox_poblaciones",
-                           label = "Seleccione categorías",
-                           inline = TRUE,
-                           choices =  dat_poblaciones() %>%
-                             filter(corte == input$poblaciones_corte) %>% 
-                             distinct(!!poblaciones_corte_var) %>%
-                             pull(),
-                           selected = dat_poblaciones() %>%
-                             filter(corte == input$poblaciones_corte) %>% 
-                             filter(jerarquia_cat == "1") %>%
-                             distinct(!!poblaciones_corte_var) %>%
-                             pull()
-        )
+        dat_plot <- dat_poblaciones() %>%
+          filter(ano >= input$fecha_poblaciones[1] &
+                   ano <= input$fecha_poblaciones[2]) %>%
+          filter(corte == input$poblaciones_corte) %>%
+          # filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones) %>% 
+          filter(corte_2 == input$poblaciones_corte_2)  
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = poblaciones_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_poblaciones,
+                                    "según",
+                                    tolower(input$poblaciones_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+        
+        print(plot)
+        ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
         
       } else {
-        
-        return(NULL)
-      }
-      
-    })
-    
-    # Selector de fecha
-    output$s_poblaciones_fecha <- renderUI({
-      
-      if(input$poblaciones_corte == "Departamento" & input$indicador_poblaciones %notin% lista_ind_2) {
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones)
-        
-        req(nrow(dat_poblaciones()) > 0)
-        
-        selectInput(
-          inputId = "fecha_dpto_poblaciones",
-          label = "Seleccione año:",
-          choices = dat_poblaciones() %>% 
-            filter(nomindicador == input$indicador_poblaciones) %>%
-            drop_na(Valor) %>%
-            select(ano) %>%
-            arrange(desc(ano)) %>% 
-            unique() %>% 
-            pull(),
-          selected = max(input$ano)
-        )
-        
-      } else if (input$indicador_poblaciones %in% lista_serie_cat){
-        
-        return(NULL)
-        
-        
-      } else if (input$indicador_poblaciones %in% lista_vunico){
-        
-        return(NULL)
-        
-      } else  {
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones)
-        req(nrow(dat_poblaciones()) > 0)
-        
-        tagList(
-          # tags$style(type = 'text/css', 
-          #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-          # div(id = 'big_slider',
-          
-          sliderInput("fecha_poblaciones", 
-                      label = "Rango de tiempo", 
-                      sep = "",
-                      dragRange = T,
-                      min = min(dat_poblaciones()$ano), 
-                      max = max(dat_poblaciones()$ano), 
-                      value = c(min(dat_poblaciones()$ano), 
-                                max(dat_poblaciones()$ano))
-          )
-        )
-        
-      }
-    })
-    
-    # # Selector de corte según categoría y data temporal
-    # dat_poblaciones <- reactive({
-    #   
-    #   req(input$poblaciones_corte)
-    #   
-    #   if(input$indicador_poblaciones %in% lista_ind_2){
-    #     
-    #     dat_salarios <- dat_poblaciones() %>%
-    #       filter(corte_2 == input$poblaciones_corte_2) %>% 
-    #       filter(corte == input$poblaciones_corte) %>%
-    #       janitor::remove_empty("cols")
-    #     
-    #   } else {
-    #     
-    #     dat_poblaciones() %>%
-    #       filter(corte == input$poblaciones_corte) %>%
-    #       janitor::remove_empty("cols")
-    #     
-    #   }
-    # })
-    
-    # * Metadata   ======================================================
-    
-    # Title
-    output$title_poblaciones <- renderUI({ 
-      helpText(HTML(unique(dat_poblaciones()$nomindicador)))
-    })
-    
-    # Subtitle
-    output$subtitle_poblaciones <- renderUI({ 
-      helpText(HTML(unique(dat_poblaciones()$definicion)))
-    })
-    
-    # Nombre conceptual
-    output$conindicador_poblaciones <- renderUI({ 
-      helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_poblaciones()$conindicador))))
-    })
-    
-    # Calculo
-    output$calculo_poblaciones <- renderUI({ 
-      helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_poblaciones()$calculo))))
-    })
-    
-    # Observaciones
-    output$observacion_poblaciones <- renderUI({ 
-      helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_poblaciones()$observaciones))))
-    })
-    
-    
-    # * Gráficos   ======================================================
-    
-    output$plot_poblaciones <- renderPlot({
-      
-      req(input$indicador_poblaciones)
-      
-      if(input$indicador_poblaciones %in% lista_serie_cat){
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones)
-        
-        # Total
-        if(input$poblaciones_corte == "Total"){
-          
-          dat_plot <- dat_poblaciones() %>%
-            filter(corte == "Total")
-          
-          plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
-            geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-            geom_point(size = 3, colour = color_defecto) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x = element_text(angle = 0),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(input$indicador_poblaciones),
-                 caption = wrapit(unique(dat_plot$cita)))
-          
-          print(plot)
-          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
-          
-          # Según corte
-        } else if(input$poblaciones_corte != "Total") {
-          
-          poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
-          
-          dat_plot <- dat_poblaciones() %>%
-            filter(corte == input$poblaciones_corte) %>%
-            filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones)
-          
-          plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                              colour = poblaciones_corte_var, group = poblaciones_corte_var)) +
-            geom_line(size = 1, alpha = 0.5) +
-            geom_point(size = 3) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x = element_text(angle = 0),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_poblaciones,
-                                      "según",
-                                      tolower(input$poblaciones_corte))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_manual(name = "", values = paleta_expandida)
-          
-          print(plot)
-          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
-          
-        }
-        
-      } else if(input$indicador_poblaciones %in% lista_especial ){
-        
-        if (input$poblaciones_corte_2 == "Total"){        
-          
-          req(input$poblaciones_corte, input$indicador_poblaciones)
-          
-          poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
-          
-          dat_plot <- dat_poblaciones() %>%
-            filter(ano >= input$fecha_poblaciones[1] &
-                     ano <= input$fecha_poblaciones[2]) %>%
-            filter(corte == input$poblaciones_corte) %>%
-            # filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones) %>% 
-            filter(corte_2 == input$poblaciones_corte_2)  
-          
-          plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                              fill = poblaciones_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_poblaciones,
-                                      "según",
-                                      tolower(input$poblaciones_corte),
-                                      "en",
-                                      unique(dat_plot$fecha_cat))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_fill_brewer(name = "", palette = "Paired")
-          
-          print(plot)
-          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
-          
-        } else {
-          
-          req(input$poblaciones_corte, input$indicador_poblaciones)
-          
-          poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
-          poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
-          
-          dat_plot <- dat_poblaciones() %>%
-            filter(ano >= input$fecha_poblaciones[1] &
-                     ano <= input$fecha_poblaciones[2]) %>%
-            filter(corte == input$poblaciones_corte) %>%
-            # filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones) %>% 
-            filter(corte_2 == input$poblaciones_corte_2)  
-          
-          plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-                                              fill = poblaciones_corte_var)) +
-            geom_col(position = "dodge", width = .7, alpha = .8) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_poblaciones,
-                                      "según",
-                                      tolower(input$poblaciones_corte),
-                                      "en",
-                                      unique(dat_plot$fecha_cat))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_fill_brewer(name = "", palette = "Paired") +
-            facet_wrap(as.formula(paste("~", poblaciones_corte_var_2)))
-          
-          print(plot)
-          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
-          
-        }
-        
-      } else if(input$indicador_poblaciones %in% lista_vunico & input$indicador_poblaciones %in% lista_ind_2){
         
         req(input$poblaciones_corte, input$indicador_poblaciones)
         
@@ -12894,13 +12901,11 @@ server <- function(input, output) {
           filter(ano >= input$fecha_poblaciones[1] &
                    ano <= input$fecha_poblaciones[2]) %>%
           filter(corte == input$poblaciones_corte) %>%
-          filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones) %>%
-          filter(!!poblaciones_corte_var_2 %in% input$checkbox_poblaciones_2) %>%
-          filter(corte_2 == input$poblaciones_corte_2)
+          # filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones) %>% 
+          filter(corte_2 == input$poblaciones_corte_2)  
         
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha_cat", y = "Valor",
-                                  fill = poblaciones_corte_var)) +
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = poblaciones_corte_var)) +
           geom_col(position = "dodge", width = .7, alpha = .8) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
@@ -12916,210 +12921,122 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", poblaciones_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
         
-      } else if(input$indicador_poblaciones %in% lista_vunico & input$poblaciones_corte != "Departamento") {
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones)
-        
-        dat_plot <- dat_poblaciones() %>%
-          filter(corte == input$poblaciones_corte) %>%
-          janitor::remove_empty("cols")
-        
-        if(input$poblaciones_corte == "Total"){
-          
-          plot <- ggplot(dat_plot,
-                         aes_string(x = "fecha_cat", y = "Valor")) +
-            geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
-            geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_poblaciones,
-                                      "según",
-                                      tolower(input$poblaciones_corte),
-                                      "en",
-                                      unique(dat_plot$fecha_cat))),
-                 caption = wrapit(unique(dat_plot$cita)))
-          
-          print(plot)
-          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
-          
-          
-        } else {
-          
-          poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
-          
-          plot <- ggplot(dat_plot,
-                         aes_string(x = "fecha_cat", y = "Valor",
-                                    fill = poblaciones_corte_var)) +
-            geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
-            geom_text(aes_string(group = poblaciones_corte_var, label = "Valor"),
-                      position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x=element_blank(),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_poblaciones,
-                                      "según",
-                                      tolower(input$poblaciones_corte),
-                                      "en",
-                                      unique(dat_plot$fecha_cat))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_fill_brewer(name = "", palette = "Paired")
-          
-          print(plot)
-          ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
-          
-        }
-        
-        
-      } else if(input$indicador_poblaciones %in% lista_ind_2) {
-        
-        req(input$poblaciones_corte, input$poblaciones_corte_2,
-            input$fecha_poblaciones, input$checkbox_poblaciones)
-        
-        poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
-        poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
-        
-        dat_plot <- dat_poblaciones() %>%
-          filter(ano >= input$fecha_poblaciones[1] &
-                   ano <= input$fecha_poblaciones[2]) %>%
-          filter(corte == input$poblaciones_corte) %>%
-          filter(!!poblaciones_corte_var_2 %in% input$checkbox_poblaciones_2) %>%
-          filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones) %>% 
-          filter(corte_2 == input$poblaciones_corte_2)
-        
-        if(input$poblaciones_corte_2 == "Total"){
-          
-          dat_plot <- dat_plot %>%
-            filter(corte_2 == "Total")
-          
-          plot <- ggplot(dat_plot,
-                         aes_string(x = "fecha", y = "Valor", colour = poblaciones_corte_var)) +
-            geom_line(size = 1, alpha = 0.5) +
-            geom_point(size = 3) +
-            theme_bdd(base_size = 12) +
-            theme(axis.text.x = element_text(angle = 0),
-                  legend.position = "bottom") +
-            scale_x_continuous(breaks = int_breaks) +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_poblaciones,
-                                      "según",
-                                      tolower(input$poblaciones_corte))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_manual(name = "", values = paleta_expandida)
-          
-        } else if(input$poblaciones_corte_2 != "Total") {
-          
-          poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
-          
-          dat_plot <- dat_plot %>%
-            filter(corte_2 == input$poblaciones_corte_2)
-          
-          plot <- ggplot(dat_plot,
-                         aes_string(x = "fecha", y = "Valor", colour = poblaciones_corte_var)) +
-            geom_line(size = 1, alpha = 0.5) +
-            geom_point(size = 3) +
-            theme_bdd(base_size = 12) +
-            scale_x_continuous(breaks = int_breaks) +
-            theme(axis.text.x = element_text(angle = 0),
-                  legend.position = "bottom") +
-            labs(x = "",  y = "",
-                 title = wrapit(paste(input$indicador_poblaciones,
-                                      "según",
-                                      tolower(input$poblaciones_corte))),
-                 caption = wrapit(unique(dat_plot$cita))) +
-            scale_colour_manual(name = "", values = paleta_expandida) +
-            facet_wrap(as.formula(paste("~", poblaciones_corte_var_2)))
-          
-        }
-        
-        print(plot)
-        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
-        
-        
-      } else if(input$poblaciones_corte == "Total") {
-        
-        req(input$indicador_poblaciones, input$fecha_poblaciones)
-        
-        dat_plot <- dat_poblaciones() %>%
-          filter(ano >= input$fecha_poblaciones[1] &
-                   ano <= input$fecha_poblaciones[2]) %>%
-          filter(corte == "Total")
+      }
+      
+    } else if(input$indicador_poblaciones %in% lista_vunico_pob & input$indicador_poblaciones %in% lista_ind_2_pob){
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones)
+      
+      poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
+      poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
+      
+      dat_plot <- dat_poblaciones() %>%
+        filter(ano >= input$fecha_poblaciones[1] &
+                 ano <= input$fecha_poblaciones[2]) %>%
+        filter(corte == input$poblaciones_corte) %>%
+        filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones) %>%
+        filter(!!poblaciones_corte_var_2 %in% input$checkbox_poblaciones_2) %>%
+        filter(corte_2 == input$poblaciones_corte_2)
+      
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha_cat", y = "Valor",
+                                fill = poblaciones_corte_var)) +
+        geom_col(position = "dodge", width = .7, alpha = .8) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x=element_blank(),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_poblaciones,
+                                  "según",
+                                  tolower(input$poblaciones_corte),
+                                  "en",
+                                  unique(dat_plot$fecha_cat))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_fill_brewer(name = "", palette = "Paired") +
+        facet_wrap(as.formula(paste("~", poblaciones_corte_var_2)))
+      
+      print(plot)
+      ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
+      
+    } else if(input$indicador_poblaciones %in% lista_vunico_pob & input$poblaciones_corte != "Departamento") {
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones)
+      
+      dat_plot <- dat_poblaciones() %>%
+        filter(corte == input$poblaciones_corte) %>%
+        janitor::remove_empty("cols")
+      
+      if(input$poblaciones_corte == "Total"){
         
         plot <- ggplot(dat_plot,
-                       aes(x = fecha, y = Valor)) +
-          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-          geom_point(size = 3, colour = color_defecto) +
-          scale_x_continuous(breaks = int_breaks) +
+                       aes_string(x = "fecha_cat", y = "Valor")) +
+          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
           theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
+          theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
           labs(x = "",  y = "",
-               title = wrapit(input$indicador_poblaciones),
+               title = wrapit(paste(input$indicador_poblaciones,
+                                    "según",
+                                    tolower(input$poblaciones_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
         
         
-      } else if(input$poblaciones_corte == "Departamento" &
-                input$indicador_poblaciones %notin% lista_ind_2 ) {
-        
-        req(input$indicador_poblaciones, input$fecha_dpto_poblaciones)
-        
-        dat_plot <- dat_poblaciones() %>%
-          filter(corte == "Departamento") %>%
-          filter(ano == input$fecha_dpto_poblaciones) %>%
-          select(departamento, Valor, fuente, cita)
-        
-        dep_j <- dep %>%
-          left_join(dat_plot, by = c("nombre" = "departamento"))
-        
-        plot <-  ggplot(dep_j, aes(fill = Valor)) +
-          geom_sf() +
-          geom_sf_text(aes(label = Valor), colour = "black",
-                       size = 4, fontface = "bold")+
-          viridis::scale_fill_viridis(name = "", direction = -1)+
-          labs(x = "",
-               y = "",
-          )+
-          theme_bdd(base_size = 14) +
-          theme(axis.line = element_blank(),
-                axis.text.x = element_blank(),
-                axis.text.y = element_blank(),
-                axis.ticks = element_blank(),
-                axis.title.x = element_blank(),
-                axis.title.y = element_blank(),
-                panel.grid.major = element_line(colour = "transparent"),
-          ) +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_poblaciones,
-                                    "en",
-                                    input$fecha_dpto_poblaciones), w = 80),
-               caption = wrapit(unique(dat_plot$cita), w = 80))
-        
-        print(plot)
-        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
-        
-        
-      } else if(input$poblaciones_corte != "Total") {
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones,
-            input$fecha_poblaciones, input$checkbox_poblaciones)
-        
-        dat_plot <- dat_poblaciones() %>%
-          filter(ano >= input$fecha_poblaciones[1] &
-                   ano <= input$fecha_poblaciones[2]) %>%
-          filter(corte == input$poblaciones_corte) %>%
-          janitor::remove_empty("cols")
+      } else {
         
         poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
         
-        dat_plot <- filter(dat_plot,
-                           !!poblaciones_corte_var %in% input$checkbox_poblaciones)
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha_cat", y = "Valor",
+                                  fill = poblaciones_corte_var)) +
+          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+          geom_text(aes_string(group = poblaciones_corte_var, label = "Valor"),
+                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_poblaciones,
+                                    "según",
+                                    tolower(input$poblaciones_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+        
+        print(plot)
+        ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
+        
+      }
+      
+      
+    } else if(input$indicador_poblaciones %in% lista_ind_2_pob) {
+      
+      req(input$poblaciones_corte, input$poblaciones_corte_2,
+          input$fecha_poblaciones, input$checkbox_poblaciones)
+      
+      poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
+      poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
+      
+      dat_plot <- dat_poblaciones() %>%
+        filter(ano >= input$fecha_poblaciones[1] &
+                 ano <= input$fecha_poblaciones[2]) %>%
+        filter(corte == input$poblaciones_corte) %>%
+        filter(!!poblaciones_corte_var_2 %in% input$checkbox_poblaciones_2) %>%
+        filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones) %>% 
+        filter(corte_2 == input$poblaciones_corte_2)
+      
+      if(input$poblaciones_corte_2 == "Total"){
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == "Total")
         
         plot <- ggplot(dat_plot,
                        aes_string(x = "fecha", y = "Valor", colour = poblaciones_corte_var)) +
@@ -13136,183 +13053,308 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita))) +
           scale_colour_manual(name = "", values = paleta_expandida)
         
-        print(plot)
-        ggsave("www/indicador pob.png", width = 30, height = 20, units = "cm")
+      } else if(input$poblaciones_corte_2 != "Total") {
+        
+        poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
+        
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == input$poblaciones_corte_2)
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = poblaciones_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_poblaciones,
+                                    "según",
+                                    tolower(input$poblaciones_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) +
+          facet_wrap(as.formula(paste("~", poblaciones_corte_var_2)))
         
       }
       
-    })
-    
-    
-    # * Descarga gráficos   =============================================
-    
-    output$baja_p_poblaciones <- downloadHandler(
-      filename <- function() {
-        paste("indicador pob", "png", sep = ".")
-      },
+      print(plot)
+      ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
       
-      content <- function(file) {
-        file.copy("www/indicador pob.png", file)
-      },
-      contentType = "www/indicador pob"
-    )
-    
-    
-    # * Tablas   ========================================================
-    
-    # Data
-    poblaciones_tab <- reactive({
       
-      if(input$indicador_poblaciones %in%  lista_especial){
+    } else if(input$poblaciones_corte == "Total") {
+      
+      req(input$indicador_poblaciones, input$fecha_poblaciones)
+      
+      dat_plot <- dat_poblaciones() %>%
+        filter(ano >= input$fecha_poblaciones[1] &
+                 ano <= input$fecha_poblaciones[2]) %>%
+        filter(corte == "Total")
+      
+      plot <- ggplot(dat_plot,
+                     aes(x = fecha, y = Valor)) +
+        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+        geom_point(size = 3, colour = color_defecto) +
+        scale_x_continuous(breaks = int_breaks) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(input$indicador_poblaciones),
+             caption = wrapit(unique(dat_plot$cita)))
+      
+      print(plot)
+      ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
+      
+      
+    } else if(input$poblaciones_corte == "Departamento" &
+              input$indicador_poblaciones %notin% lista_ind_2_pob ) {
+      
+      req(input$indicador_poblaciones, input$fecha_dpto_poblaciones)
+      
+      dat_plot <- dat_poblaciones() %>%
+        filter(corte == "Departamento") %>%
+        filter(ano == input$fecha_dpto_poblaciones) %>%
+        select(departamento, Valor, fuente, cita)
+      
+      dep_j <- dep %>%
+        left_join(dat_plot, by = c("nombre" = "departamento"))
+      
+      plot <-  ggplot(dep_j, aes(fill = Valor)) +
+        geom_sf() +
+        geom_sf_text(aes(label = Valor), colour = "black",
+                     size = 4, fontface = "bold")+
+        viridis::scale_fill_viridis(name = "", direction = -1)+
+        labs(x = "",
+             y = "",
+        )+
+        theme_bdd(base_size = 14) +
+        theme(axis.line = element_blank(),
+              axis.text.x = element_blank(),
+              axis.text.y = element_blank(),
+              axis.ticks = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              panel.grid.major = element_line(colour = "transparent"),
+        ) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_poblaciones,
+                                  "en",
+                                  input$fecha_dpto_poblaciones), w = 80),
+             caption = wrapit(unique(dat_plot$cita), w = 80))
+      
+      print(plot)
+      ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
+      
+      
+    } else if(input$poblaciones_corte != "Total") {
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones,
+          input$fecha_poblaciones, input$checkbox_poblaciones)
+      
+      dat_plot <- dat_poblaciones() %>%
+        filter(ano >= input$fecha_poblaciones[1] &
+                 ano <= input$fecha_poblaciones[2]) %>%
+        filter(corte == input$poblaciones_corte) %>%
+        janitor::remove_empty("cols")
+      
+      poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
+      
+      dat_plot <- filter(dat_plot,
+                         !!poblaciones_corte_var %in% input$checkbox_poblaciones)
+      
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha", y = "Valor", colour = poblaciones_corte_var)) +
+        geom_line(size = 1, alpha = 0.5) +
+        geom_point(size = 3) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        scale_x_continuous(breaks = int_breaks) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_poblaciones,
+                                  "según",
+                                  tolower(input$poblaciones_corte))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_colour_manual(name = "", values = paleta_expandida)
+      
+      print(plot)
+      ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
+      
+    }
+    
+  })
+  
+  
+  # * Descarga gráficos   =============================================
+  
+  output$baja_p_poblaciones <- downloadHandler(
+    filename <- function() {
+      paste("indicador pob", "png", sep = ".")
+    },
+    
+    content <- function(file) {
+      file.copy("www/indicador pob.png", file)
+    },
+    contentType = "www/indicador pob"
+  )
+  
+  
+  # * Tablas   ========================================================
+  
+  # Data
+  poblaciones_tab <- reactive({
+    
+    if(input$indicador_poblaciones %in%  lista_especial_pob){
+      
+      poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
+      poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
+      
+      dat_poblaciones() %>%
+        filter(corte_2 == input$poblaciones_corte_2) %>% 
+        select(Fecha, poblaciones_corte_var, poblaciones_corte_var_2, Valor) %>%
+        arrange(desc(Fecha)) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = poblaciones_corte_var) 
+      
+    } else if(input$indicador_poblaciones %in% lista_vunico_pob & input$poblaciones_corte == "Total"){
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones)
+      
+      dat_poblaciones() %>%
+        filter(corte == "Total") %>% 
+        select(fecha_cat, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat)
+      
+    } else if(input$indicador_poblaciones %in% lista_vunico_pob & input$poblaciones_corte != "Total") {
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones)
+      
+      poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
+      
+      dat_cut <- dat_poblaciones() %>%
+        filter(corte == input$poblaciones_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        select(fecha_cat, poblaciones_corte_var, Valor) %>%
+        arrange(desc(fecha_cat)) %>% 
+        rename(Fecha = fecha_cat) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = poblaciones_corte_var)
+      
+      
+    } else if(input$indicador_poblaciones %in% lista_ind_2_pob) {
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones, input$fecha_poblaciones)
+      
+      poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
+      
+      dat_cut <- dat_poblaciones() %>%
+        filter(corte == input$poblaciones_corte) %>%
+        filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones)
+      
+      if(input$poblaciones_corte_2 == "Total"){
         
-        poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
+        dat_cut %>%
+          filter(ano >= input$fecha_poblaciones[1] &
+                   ano <= input$fecha_poblaciones[2]) %>%
+          filter(corte_2 == "Total") %>% 
+          select(Fecha, poblaciones_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = poblaciones_corte_var)
+        
+      } else if(input$poblaciones_corte_2 != "Total") {
+        
         poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
         
-        dat_poblaciones() %>%
+        dat_cut %>%
+          filter(ano >= input$fecha_poblaciones[1] &
+                   ano <= input$fecha_poblaciones[2]) %>%
           filter(corte_2 == input$poblaciones_corte_2) %>% 
           select(Fecha, poblaciones_corte_var, poblaciones_corte_var_2, Valor) %>%
           arrange(desc(Fecha)) %>%
           pivot_wider(values_from = "Valor",
                       names_from = poblaciones_corte_var) 
         
-      } else if(input$indicador_poblaciones %in% lista_vunico & input$poblaciones_corte == "Total"){
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones)
-        
-        dat_poblaciones() %>%
-          filter(corte == "Total") %>% 
-          select(fecha_cat, Valor) %>%
-          arrange(desc(fecha_cat)) %>%
-          rename(Fecha = fecha_cat)
-        
-      } else if(input$indicador_poblaciones %in% lista_vunico & input$poblaciones_corte != "Total") {
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones)
-        
-        poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
-        
-        dat_cut <- dat_poblaciones() %>%
-          filter(corte == input$poblaciones_corte) %>%
-          janitor::remove_empty("cols") 
-        
-        dat_cut %>%     
-          select(fecha_cat, poblaciones_corte_var, Valor) %>%
-          arrange(desc(fecha_cat)) %>% 
-          rename(Fecha = fecha_cat) %>%
-          pivot_wider(values_from = "Valor",
-                      names_from = poblaciones_corte_var)
-        
-        
-      } else if(input$indicador_poblaciones %in% lista_ind_2) {
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones, input$fecha_poblaciones)
-        
-        poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
-        
-        dat_cut <- dat_poblaciones() %>%
-          filter(corte == input$poblaciones_corte) %>%
-          filter(!!poblaciones_corte_var %in% input$checkbox_poblaciones)
-        
-        if(input$poblaciones_corte_2 == "Total"){
-          
-          dat_cut %>%
-            filter(ano >= input$fecha_poblaciones[1] &
-                     ano <= input$fecha_poblaciones[2]) %>%
-            filter(corte_2 == "Total") %>% 
-            select(Fecha, poblaciones_corte_var, Valor) %>%
-            arrange(desc(Fecha)) %>%
-            pivot_wider(values_from = "Valor",
-                        names_from = poblaciones_corte_var)
-          
-        } else if(input$poblaciones_corte_2 != "Total") {
-          
-          poblaciones_corte_var_2 <- rlang::sym(to_varname(input$poblaciones_corte_2))
-          
-          dat_cut %>%
-            filter(ano >= input$fecha_poblaciones[1] &
-                     ano <= input$fecha_poblaciones[2]) %>%
-            filter(corte_2 == input$poblaciones_corte_2) %>% 
-            select(Fecha, poblaciones_corte_var, poblaciones_corte_var_2, Valor) %>%
-            arrange(desc(Fecha)) %>%
-            pivot_wider(values_from = "Valor",
-                        names_from = poblaciones_corte_var) 
-          
-        }
-        
-      } else if(input$poblaciones_corte == "Total") {
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones, input$fecha_poblaciones)
-        
-        dat_poblaciones() %>%
-          filter(corte == "Total") %>% 
-          filter(ano >= input$fecha_poblaciones[1] &
-                   ano <= input$fecha_poblaciones[2]) %>%
-          select(Fecha, Valor) %>%
-          arrange(desc(Fecha))
-        
-      } else if(input$poblaciones_corte != "Total") {
-        
-        req(input$poblaciones_corte, input$indicador_poblaciones, input$fecha_poblaciones)
-        
-        poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
-        
-        dat_cut <- dat_poblaciones() %>%
-          filter(corte == input$poblaciones_corte) %>%
-          janitor::remove_empty("cols") 
-        
-        dat_cut %>%     
-          filter(ano >= input$fecha_poblaciones[1] &
-                   ano <= input$fecha_poblaciones[2]) %>% 
-          select(Fecha, poblaciones_corte_var, Valor) %>%
-          arrange(desc(Fecha)) %>% 
-          pivot_wider(values_from = "Valor",
-                      names_from = poblaciones_corte_var)
-        
       }
-    })
-    
-    # Metadata 
-    poblaciones_meta <- reactive({
+      
+    } else if(input$poblaciones_corte == "Total") {
+      
+      req(input$poblaciones_corte, input$indicador_poblaciones, input$fecha_poblaciones)
       
       dat_poblaciones() %>%
-        select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
-        mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-        distinct() %>% 
-        gather(key = "", value = " ")
+        filter(corte == "Total") %>% 
+        filter(ano >= input$fecha_poblaciones[1] &
+                 ano <= input$fecha_poblaciones[2]) %>%
+        select(Fecha, Valor) %>%
+        arrange(desc(Fecha))
       
-    })
-    
-    # Excel
-    list_poblaciones <- reactive({
-      list_poblaciones <- list("Data" = poblaciones_tab(),
-                              "Metadata" = poblaciones_meta())
-    })
-    
-    # Render
-    output$table_poblaciones <- renderDT({
+    } else if(input$poblaciones_corte != "Total") {
       
-      DT::datatable(poblaciones_tab(),
-                    rownames = FALSE,
-                    caption = htmltools::tags$caption(
-                      input$indicador_poblaciones,
-                      style = "color:black; font-size:110%;")
-      ) 
+      req(input$poblaciones_corte, input$indicador_poblaciones, input$fecha_poblaciones)
       
-    })
-    
-    # * Descarga tablas   ================================================
-    
-    output$dwl_tab_poblaciones <- downloadHandler(
+      poblaciones_corte_var <- rlang::sym(to_varname(input$poblaciones_corte))
       
-      filename = function() {
-        paste("poblaciones-", input$indicador_poblaciones, ".xlsx", sep = "")
-      },
-      content = function(file) {
-        
-        openxlsx::write.xlsx(list_poblaciones(), file)
-        
-      }
-    )
+      dat_cut <- dat_poblaciones() %>%
+        filter(corte == input$poblaciones_corte) %>%
+        janitor::remove_empty("cols") 
+      
+      dat_cut %>%     
+        filter(ano >= input$fecha_poblaciones[1] &
+                 ano <= input$fecha_poblaciones[2]) %>% 
+        select(Fecha, poblaciones_corte_var, Valor) %>%
+        arrange(desc(Fecha)) %>% 
+        pivot_wider(values_from = "Valor",
+                    names_from = poblaciones_corte_var)
+      
+    }
+  })
+  
+  # Metadata 
+  poblaciones_meta <- reactive({
+    
+    dat_poblaciones() %>%
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
+      distinct() %>% 
+      gather(key = "", value = " ")
+    
+  })
+  
+  # Excel
+  list_poblaciones <- reactive({
+    list_poblaciones <- list("Data" = poblaciones_tab(),
+                             "Metadata" = poblaciones_meta())
+  })
+  
+  # Render
+  output$table_poblaciones <- renderDT({
+    
+    DT::datatable(poblaciones_tab(),
+                  rownames = FALSE,
+                  caption = htmltools::tags$caption(
+                    input$indicador_poblaciones,
+                    style = "color:black; font-size:110%;")
+    ) 
+    
+  })
+  
+  # * Descarga tablas   ================================================
+  
+  output$dwl_tab_poblaciones <- downloadHandler(
+    
+    filename = function() {
+      paste("poblaciones-", input$indicador_poblaciones, ".xlsx", sep = "")
+    },
+    content = function(file) {
+      
+      openxlsx::write.xlsx(list_poblaciones(), file)
+      
+    }
+  )
 }
 
 # Run the application
