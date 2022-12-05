@@ -581,6 +581,16 @@ ui <- fluidPage(
              ".shiny-output-error { visibility: hidden; }",
              ".shiny-output-error:before { visibility: hidden; }"), # Quita mensajes de error (ojo)
   tags$style(".fa-calculator {color:#68478d}"),
+  tags$style(".bttn-minimal.bttn-primary {
+    color: #68478d;
+  }"),
+  tags$style(".irs--shiny .irs-bar {
+    top: 25px;
+    height: 8px;
+    border-top: 1px solid #68478d;
+    border-bottom: 1px solid #68478d;
+    background: #428bca;}"),
+  
   chooseSliderSkin(color = "#68478d"),
 
   
