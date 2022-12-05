@@ -24,19 +24,20 @@ source("utils.R")
 
 theme_desca <- bs_theme(
   version = 4,
-  bg = "#FFFFFF", fg = "#21618C", 
-  primary = "#21618C",
+  bg = "#FFFFFF", fg = "#68478d", 
+  primary = "#68478d",
+  secondary = "#68478d",
   base_font = font_google("Poppins"),
   code_font = font_google("Poppins"),
   heading_font = font_google("Poppins"),
   font_scale = 0.9
 )
 
-color_defecto <- "#21618C"
+color_defecto <- "#68478d"
 # bs_theme_preview(theme_desca)
 
 # Spinner options 
-options(spinner.color = "#21618C",
+options(spinner.color = "#68478d",
         spinner.color.background="#ffffff", 
         spinner.size = 2)
 
@@ -572,13 +573,28 @@ paleta_expandida <- c(brewer.pal(8, "Dark2"), "#B76A16", "#75A61A", "#D9318E",
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
-  tags$style(".fa-calculator {color:#21618C}"),
-  tags$style(".fa-exclamation {color:#21618C}"),
-  tags$style(".fa-exclamation-triangle {color:#21618C}"),
+  tags$style(".fa-calculator {color:#68478d}"),
+  tags$style(".fa-exclamation {color:#68478d}"),
+  tags$style(".fa-exclamation-triangle {color:#68478d}"),
   tags$head(HTML("<title>Mirador DESCA</title>")),
   tags$style(type="text/css",
              ".shiny-output-error { visibility: hidden; }",
              ".shiny-output-error:before { visibility: hidden; }"), # Quita mensajes de error (ojo)
+  tags$style(".fa-calculator {color:#68478d}"),
+  chooseSliderSkin(color = "#68478d"),
+
+  
+    tags$style(".irs-bar {",
+      "  border-color: #68478d;",
+      "  background-color: #68478d;",
+      "}",
+      ".irs-bar-edge {",
+      "  border-color: #68478d;",
+      "  background-color: #68478d;",
+      "}"),
+  
+  
+  
   
   navbarPage(
     title = tags$a(
@@ -11824,11 +11840,11 @@ server <- function(input, output) {
         filter(nomindicador == input$indicador_poblaciones) %>% 
         filter(corte == "Sexo")
       
-      } else if(input$poblaciones == "Migrantes" & input$indicador_poblaciones == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente"){
+      } else if(input$poblaciones == "Niños, niñas y adolescentes" & input$indicador_poblaciones == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente"){
         
         dat %>%
           filter(nomindicador == input$indicador_poblaciones) %>% 
-          filter(corte_2 %in% "Migrantes")
+          filter(corte_2 %in% "Edad")
       
       } else if (input$poblaciones == "Niños, niñas y adolescentes"){
       
