@@ -586,8 +586,9 @@ paleta_expandida <- c(brewer.pal(8, "Dark2"), "#B76A16", "#75A61A", "#D9318E",
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
+  tags$style("@import url(https://use.fontawesome.com/releases/v5.15.4/css/all.css);"),
   tags$style(".fa-calculator {color:#68478d}"),
-  tags$style(".fa-exclamation {color:#68478d}"),
+  tags$style(".fa-exclamation {color:#68478d}; "),
   tags$style(".fa-exclamation-triangle {color:#68478d}"),
   tags$head(HTML("<title>Mirador DESCA</title>")),
   tags$style(type="text/css",

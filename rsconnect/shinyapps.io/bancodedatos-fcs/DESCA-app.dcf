@@ -5,10 +5,10 @@ account: bancodedatos-fcs
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5039135
-bundleId: 6584273
+bundleId: 6631887
 url: https://bancodedatos-fcs.shinyapps.io/DESCA-app/
-when: 1670025623.89215
-lastSyncTime: 1670025623.89215
+when: 1670941232.45843
+lastSyncTime: 1670941232.45843
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: indicadores|Sintaxis
