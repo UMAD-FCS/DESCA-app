@@ -1,0 +1,6 @@
+<style>
+body, p {
+  color: black; 
+  font-family: Poppins;
+}
+</style>
