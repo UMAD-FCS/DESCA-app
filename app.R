@@ -86,6 +86,7 @@ dat <- tibble::as_tibble(x) %>%
     nomindicador == "(Proyecto SURGE) Tasa de desempleo" ~ 1, # Add datos proyecto SURGE - OACNUDH
     nomindicador == "(Proyecto SURGE) Porcentaje de personas que viven en asentamientos" ~ 1, # Add datos proyecto SURGE - OACNUDH
     nomindicador == "(Proyecto SURGE) Porcentaje de personas en hogares con tenencia insegura" ~ 1, # Add datos proyecto SURGE - OACNUDH
+    nomindicador == "(Proyecto SURGE) Porcentaje de ocupados sin aporte a la seguridad social" ~ 1, # Add datos proyecto SURGE - OACNUDH
     TRUE ~ jerarquia_cat_2
   ))
 
@@ -11760,7 +11761,7 @@ server <- function(input, output) {
                     "Trabajo" = ind_asc_trabajo,
                     "Seguridad Social" = ind_asc_ssocial,
                     "Ambiente" = ind_asc_ambiente,
-                    "Proyecto SURGE" = ind_asc_surge)) # Add datos Proyecto SURGE OACNUDH
+                    "Proyecto SURGE - OACNUDH Uruguay" = ind_asc_surge)) # Add datos Proyecto SURGE OACNUDH
       
     } else if (input$poblaciones == "Mujeres"){
       
