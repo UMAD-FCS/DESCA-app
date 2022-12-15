@@ -80,13 +80,13 @@ dat <- tibble::as_tibble(x) %>%
   mutate(jerarquia_cat_2 = case_when(
     nomindicador == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente" ~ 1,
     nomindicador == "Indice del Estado Trófico – Embalses y Lagunas" ~ 1,
-    nomindicador == "(Proyecto SURGE) Tasa de actividad" ~ 1,
-    nomindicador == "(Proyecto SURGE) Tasa de empleo" ~ 1, # Add datos proyecto SURGE - OACNUDH
-    nomindicador == "(Proyecto SURGE) Tasa de subempleo" ~ 1, # Add datos proyecto SURGE - OACNUDH
-    nomindicador == "(Proyecto SURGE) Tasa de desempleo" ~ 1, # Add datos proyecto SURGE - OACNUDH
-    nomindicador == "(Proyecto SURGE) Porcentaje de personas que viven en asentamientos" ~ 1, # Add datos proyecto SURGE - OACNUDH
-    nomindicador == "(Proyecto SURGE) Porcentaje de personas en hogares con tenencia insegura" ~ 1, # Add datos proyecto SURGE - OACNUDH
-    nomindicador == "(Proyecto SURGE) Porcentaje de ocupados sin aporte a la seguridad social" ~ 1, # Add datos proyecto SURGE - OACNUDH
+    nomindicador == "(Proyecto SURGE - ACNUDH) Tasa de actividad" ~ 1,
+    nomindicador == "(Proyecto SURGE - ACNUDH) Tasa de empleo" ~ 1, # Add datos proyecto SURGE - ACNUDH
+    nomindicador == "(Proyecto SURGE - ACNUDH) Tasa de subempleo" ~ 1, # Add datos proyecto SURGE - ACNUDH
+    nomindicador == "(Proyecto SURGE - ACNUDH) Tasa de desempleo" ~ 1, # Add datos proyecto SURGE - ACNUDH
+    nomindicador == "(Proyecto SURGE - ACNUDH) Porcentaje de personas que viven en asentamientos" ~ 1, # Add datos proyecto SURGE - ACNUDH
+    nomindicador == "(Proyecto SURGE - ACNUDH) Porcentaje de personas en hogares con tenencia insegura" ~ 1, # Add datos proyecto SURGE - ACNUDH
+    nomindicador == "(Proyecto SURGE - ACNUDH) Porcentaje de ocupados sin aporte a la seguridad social" ~ 1, # Add datos proyecto SURGE - ACNUDH
     TRUE ~ jerarquia_cat_2
   ))
 
@@ -271,7 +271,7 @@ ind_asc_ssocial <- datpob %>%
   distinct(nomindicador) %>% 
   pull()
 
-ind_asc_surge <- datpob %>% #Add datos Proyecto SURGE OACNUDH
+ind_asc_surge <- datpob %>% #Add datos Proyecto SURGE ACNUDH
   filter(derecho == "Proyecto SURGE") %>% 
   filter(poblacion == "Afrodescendientes") %>% 
   distinct(nomindicador) %>% 
@@ -11761,7 +11761,7 @@ server <- function(input, output) {
                     "Trabajo" = ind_asc_trabajo,
                     "Seguridad Social" = ind_asc_ssocial,
                     "Ambiente" = ind_asc_ambiente,
-                    "Proyecto SURGE - OACNUDH Uruguay" = ind_asc_surge)) # Add datos Proyecto SURGE OACNUDH
+                    "Proyecto SURGE (ACNUDH)" = ind_asc_surge)) # Add datos Proyecto SURGE ACNUDH
       
     } else if (input$poblaciones == "Mujeres"){
       
