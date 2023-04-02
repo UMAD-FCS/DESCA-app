@@ -11,3 +11,13 @@ en la visualización previa que se hayan incorporado bien los cambios.
 arriba a la derecha (a la derecha de run app hay un ícono celeste) tocan eso y le dan publish
 (a la versión dentro del servidor de Banco de Datos), esto demora un poco pero al final si todo salió
 bien, abre la shiny en el buscador que usen y ya queda actualizada
+
+
+Para actualizar los gráficos en la web del Mirador DESCA:
+
+1. Modificar localmente y de manera transitoria los valores de ggsave de la app: 
+ggsave("www/indicador [nombre derecho y tipo de indicador].png", width = 40, height = 25, units = "cm")
+2. Correr la app localmente
+3. Descargar todos los gráficos de los indicadores actualizados
+4. Incoporarlos a la biblioteca del wordpress 
+5- Linkear las imagenes en los accordions
