@@ -18,6 +18,5 @@ Para actualizar los gráficos en la web del Mirador DESCA:
 1. Modificar localmente y de manera transitoria los valores de ggsave de la app: 
 ggsave("www/indicador [nombre derecho y tipo de indicador].png", width = 40, height = 25, units = "cm")
 2. Correr la app localmente
-3. Descargar todos los gráficos de los indicadores actualizados
-4. Incoporarlos a la biblioteca del wordpress 
-5- Linkear las imagenes en los accordions
+3. Descargar todos los gráficos y tablas de los indicadores actualizados
+4. Incoporarlos a las carpetas del repositorio de github (indidadores/tablas e indicadores/viz) 
