@@ -2397,7 +2397,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$edu_pp_corte != "Total") {
@@ -2423,7 +2423,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -2458,7 +2458,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -2491,7 +2491,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", edu_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -2528,7 +2528,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", edu_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_edu_pp %in% lista_vunico & input$edu_pp_corte != "Departamento") {
       
@@ -2556,7 +2556,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -2582,7 +2582,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -2649,7 +2649,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$edu_pp_corte == "Total") {
@@ -2674,7 +2674,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$edu_pp_corte == "Departamento" &
@@ -2714,7 +2714,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$edu_pp_corte != "Total") {
@@ -2749,7 +2749,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -3198,7 +3198,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$edu_r_corte != "Total") {
@@ -3224,7 +3224,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -3259,7 +3259,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -3292,7 +3292,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", edu_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -3329,7 +3329,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", edu_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_edu_r %in% lista_vunico & input$edu_r_corte != "Departamento") {
       
@@ -3357,7 +3357,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -3383,7 +3383,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -3450,7 +3450,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$edu_r_corte == "Total") {
@@ -3475,7 +3475,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$edu_r_corte == "Departamento" &
@@ -3515,7 +3515,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$edu_r_corte != "Total") {
@@ -3550,7 +3550,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador edu r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -3999,7 +3999,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$salud_pp_corte != "Total") {
@@ -4025,7 +4025,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -4060,7 +4060,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -4093,7 +4093,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", salud_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -4130,7 +4130,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", salud_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_salud_pp %in% lista_vunico & input$salud_pp_corte != "Departamento") {
       
@@ -4158,7 +4158,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -4184,7 +4184,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -4251,7 +4251,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$salud_pp_corte == "Total") {
@@ -4276,7 +4276,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$salud_pp_corte == "Departamento" &
@@ -4316,7 +4316,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$salud_pp_corte != "Total") {
@@ -4351,7 +4351,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador salud pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud pp.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -4800,7 +4800,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$salud_r_corte != "Total") {
@@ -4826,7 +4826,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -4861,7 +4861,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -4894,7 +4894,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", salud_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -4931,7 +4931,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", salud_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_salud_r %in% lista_vunico & input$salud_r_corte != "Departamento") {
       
@@ -4959,7 +4959,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -4985,7 +4985,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -5053,7 +5053,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$salud_r_corte == "Total") {
@@ -5078,7 +5078,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$salud_r_corte == "Departamento" &
@@ -5118,7 +5118,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$salud_r_corte != "Total") {
@@ -5153,7 +5153,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador salud r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -5604,7 +5604,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$ssocial_pp_corte != "Total") {
@@ -5630,7 +5630,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -5665,7 +5665,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -5698,7 +5698,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -5735,7 +5735,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", ssocial_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_ssocial_pp %in% lista_vunico & input$ssocial_pp_corte != "Departamento") {
       
@@ -5763,7 +5763,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -5789,7 +5789,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -5856,7 +5856,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ssocial_pp_corte == "Total") {
@@ -5881,7 +5881,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ssocial_pp_corte == "Departamento" &
@@ -5921,7 +5921,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ssocial_pp_corte != "Total") {
@@ -5956,7 +5956,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador ssocial pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial pp.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -6405,7 +6405,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$ssocial_r_corte != "Total") {
@@ -6431,7 +6431,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -6466,7 +6466,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -6499,7 +6499,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -6536,7 +6536,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", ssocial_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_ssocial_r %in% lista_vunico & input$ssocial_r_corte != "Departamento") {
       
@@ -6564,7 +6564,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -6590,7 +6590,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -6657,7 +6657,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ssocial_r_corte == "Total") {
@@ -6682,7 +6682,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ssocial_r_corte == "Departamento" &
@@ -6722,7 +6722,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ssocial_r_corte != "Total") {
@@ -6757,7 +6757,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador ssocial r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -7206,7 +7206,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$vivienda_pp_corte != "Total") {
@@ -7232,7 +7232,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -7267,7 +7267,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -7300,7 +7300,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", vivienda_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -7337,7 +7337,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", vivienda_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_vivienda_pp %in% lista_vunico & input$vivienda_pp_corte != "Departamento") {
       
@@ -7365,7 +7365,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -7391,7 +7391,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -7458,7 +7458,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$vivienda_pp_corte == "Total") {
@@ -7483,7 +7483,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$vivienda_pp_corte == "Departamento" &
@@ -7523,7 +7523,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$vivienda_pp_corte != "Total") {
@@ -7558,7 +7558,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador vivienda pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda pp.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -8006,7 +8006,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$vivienda_r_corte != "Total") {
@@ -8032,7 +8032,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -8067,7 +8067,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -8100,7 +8100,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", vivienda_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -8137,7 +8137,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", vivienda_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_vivienda_r %in% lista_vunico & input$vivienda_r_corte != "Departamento") {
       
@@ -8165,7 +8165,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -8191,7 +8191,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -8258,7 +8258,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$vivienda_r_corte == "Total") {
@@ -8283,7 +8283,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$vivienda_r_corte == "Departamento" &
@@ -8323,7 +8323,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$vivienda_r_corte != "Total") {
@@ -8358,7 +8358,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador vivienda r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -8807,7 +8807,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$trabajo_pp_corte != "Total") {
@@ -8833,7 +8833,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -8868,7 +8868,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -8901,7 +8901,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", trabajo_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -8938,7 +8938,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", trabajo_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_trabajo_pp %in% lista_vunico & input$trabajo_pp_corte != "Departamento") {
       
@@ -8966,7 +8966,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -8992,7 +8992,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -9059,7 +9059,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$trabajo_pp_corte == "Total") {
@@ -9084,7 +9084,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$trabajo_pp_corte == "Departamento" &
@@ -9124,7 +9124,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$trabajo_pp_corte != "Total") {
@@ -9159,7 +9159,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador trabajo pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo pp.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -9608,7 +9608,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$trabajo_r_corte != "Total") {
@@ -9634,7 +9634,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -9669,7 +9669,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -9702,7 +9702,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", trabajo_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -9739,7 +9739,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", trabajo_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_trabajo_r %in% lista_vunico & input$trabajo_r_corte != "Departamento") {
       
@@ -9767,7 +9767,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -9793,7 +9793,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -9860,7 +9860,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$trabajo_r_corte == "Total") {
@@ -9885,7 +9885,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$trabajo_r_corte == "Departamento" &
@@ -9925,7 +9925,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$trabajo_r_corte != "Total") {
@@ -9960,7 +9960,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador trabajo r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -10409,7 +10409,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$ambiente_pp_corte != "Total") {
@@ -10435,7 +10435,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -10470,7 +10470,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -10503,7 +10503,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", ambiente_pp_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -10540,7 +10540,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", ambiente_pp_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_ambiente_pp %in% lista_vunico & input$ambiente_pp_corte != "Departamento") {
       
@@ -10568,7 +10568,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -10594,7 +10594,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -10661,7 +10661,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ambiente_pp_corte == "Total") {
@@ -10686,7 +10686,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ambiente_pp_corte == "Departamento" &
@@ -10726,7 +10726,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ambiente_pp_corte != "Total") {
@@ -10761,7 +10761,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador ambiente pp.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente pp.png", width = 40, height = 25, units = "cm")
       
     }
     
@@ -11212,7 +11212,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
         
         # Según corte
       } else if(input$ambiente_r_corte != "Total") {
@@ -11238,7 +11238,7 @@ server <- function(input, output) {
           scale_colour_manual(name = "", values = paleta_expandida)
         
         print(plot)
-        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -11273,7 +11273,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
         
       } else {
         
@@ -11306,7 +11306,7 @@ server <- function(input, output) {
           facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
         
         print(plot)
-        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -11343,7 +11343,7 @@ server <- function(input, output) {
         facet_wrap(as.formula(paste("~", ambiente_r_corte_var_2)))
       
       print(plot)
-      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
       
     } else if(input$indicador_ambiente_r %in% lista_vunico & input$ambiente_r_corte != "Departamento") {
       
@@ -11371,7 +11371,7 @@ server <- function(input, output) {
                caption = wrapit(unique(dat_plot$cita)))
         
         print(plot)
-        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
         
         
       } else {
@@ -11397,7 +11397,7 @@ server <- function(input, output) {
           scale_fill_brewer(name = "", palette = "Paired")
         
         print(plot)
-        ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
         
       }
       
@@ -11464,7 +11464,7 @@ server <- function(input, output) {
       }
       
       print(plot)
-      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ambiente_r_corte == "Total") {
@@ -11489,7 +11489,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita)))
       
       print(plot)
-      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ambiente_r_corte == "Departamento" &
@@ -11529,7 +11529,7 @@ server <- function(input, output) {
              caption = wrapit(unique(dat_plot$cita), w = 80))
       
       print(plot)
-      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ambiente_r_corte != "Total") {
@@ -11564,7 +11564,7 @@ server <- function(input, output) {
         scale_colour_manual(name = "", values = paleta_expandida)
       
       print(plot)
-      ggsave("www/indicador ambiente r.png", width = 30, height = 20, units = "cm")
+      ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
       
     }
     

@@ -15,8 +15,5 @@ bien, abre la shiny en el buscador que usen y ya queda actualizada
 
 Para actualizar los gráficos en la web del Mirador DESCA:
 
-1. Modificar localmente y de manera transitoria los valores de ggsave de la app: 
-ggsave("www/indicador [nombre derecho y tipo de indicador].png", width = 40, height = 25, units = "cm")
-2. Correr la app localmente
-3. Descargar todos los gráficos y tablas de los indicadores actualizados
-4. Incoporarlos a las carpetas del repositorio de github (indidadores/tablas e indicadores/viz) 
+1. Descargar todos los gráficos y tablas de los indicadores actualizados
+2. Incoporarlos a las carpetas del repositorio de github (indidadores/tablas e indicadores/viz) con nombre CODINDICADOR
