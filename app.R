@@ -88,7 +88,19 @@ dat <- tibble::as_tibble(x) %>%
     nomindicador == "(Proyecto SURGE - ACNUDH) Porcentaje de personas en hogares con tenencia insegura" ~ 1, # Add datos proyecto SURGE - ACNUDH
     nomindicador == "(Proyecto SURGE - ACNUDH) Porcentaje de ocupados sin aporte a la seguridad social" ~ 1, # Add datos proyecto SURGE - ACNUDH
     TRUE ~ jerarquia_cat_2
+  )) %>% 
+  ## ESTO ES UNA PRUEBA NOMÁS BORRAR CON SOLUCIÓN DEFINITIVA
+  mutate(metodologia = case_when(
+    nomindicador == "Gasto público en educación como porcentaje del producto bruto interno" ~ 1,
+    nomindicador == "Gasto público en educación como porcentaje del gasto público total" ~ 1,
+    TRUE ~ 0
   ))
+
+# Indicadores con cambio metodológico ECH
+lista_met <- dat %>% 
+  filter(metodologia == 1) %>% 
+  distinct(nomindicador) %>% 
+  pull(nomindicador)
 
 # Cargar data departamento (a nivel local)
 # dep <- readRDS("Data/depto.rds")
@@ -2661,20 +2673,55 @@ server <- function(input, output) {
                  ano <= input$fecha_edu_pp[2]) %>%
         filter(corte == "Total")
       
-      plot <- ggplot(dat_plot,
-                     aes(x = fecha, y = Valor)) +
-        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-        geom_point(size = 3, colour = color_defecto) +
-        scale_x_continuous(breaks = int_breaks) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x = element_text(angle = 0),
-              legend.position = "bottom") +
-        labs(x = "",  y = "",
-             title = wrapit(input$indicador_edu_pp),
-             caption = wrapit(unique(dat_plot$cita)))
       
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
+      if(input$indicador_edu_pp %in% lista_met){
+        
+        dat_plot <- dat_plot %>% 
+          mutate(metodo = case_when(
+            fecha <= 2019 ~ "pre",
+            fecha == 2020 ~ "2020",
+            fecha == 2021 ~ "2021",
+            fecha >= 2022 ~ "post",
+          ))
+        
+        
+        plot <- ggplot(dat_plot,
+                       aes(x = fecha, y = Valor, alpha = metodo)) +
+          geom_line(size = 1, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          scale_x_continuous(breaks = int_breaks) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_edu_pp),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_alpha_manual(values = c("pre" = .4, 
+                                        "2020" = .8, 
+                                        "2021" = .8, 
+                                        "post"= .8))
+        
+        print(plot)
+        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
+        
+      } else {
+        
+        plot <- ggplot(dat_plot,
+                       aes(x = fecha, y = Valor)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          scale_x_continuous(breaks = int_breaks) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_edu_pp),
+               caption = wrapit(unique(dat_plot$cita)))
+        
+        print(plot)
+        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
+        
+      }
       
       
     } else if(input$edu_pp_corte == "Departamento" &
