@@ -2692,7 +2692,7 @@ server <- function(input, output) {
           scale_x_continuous(breaks = int_breaks) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
+                legend.position = "none") +
           labs(x = "",  y = "",
                title = wrapit(input$indicador_edu_pp),
                caption = wrapit(unique(dat_plot$cita))) +
