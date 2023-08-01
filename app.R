@@ -93,6 +93,7 @@ dat <- tibble::as_tibble(x) %>%
   mutate(metodologia = case_when(
     nomindicador == "Gasto público en educación como porcentaje del producto bruto interno" ~ 1,
     nomindicador == "Gasto público en educación como porcentaje del gasto público total" ~ 1,
+    nomindicador == "Esperanza de vida al nacer" ~ 1,
     TRUE ~ 0
   ))
 
@@ -120,6 +121,9 @@ ind_edu_pp <- dat %>%
   arrange() %>% 
   distinct(nomindicador) %>% 
   pull()
+
+# Para probar si quedó bien
+# ind_edu_pp <- c("Esperanza de vida al nacer", ind_edu_pp)
 
 ind_edu_r <- dat %>% 
   filter(derecho == "Educación",
@@ -2664,6 +2668,7 @@ server <- function(input, output) {
       ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
       
       
+      # Grafico simple normal
     } else if(input$edu_pp_corte == "Total") {
       
       req(input$indicador_edu_pp, input$fecha_edu_pp)
@@ -2673,56 +2678,54 @@ server <- function(input, output) {
                  ano <= input$fecha_edu_pp[2]) %>%
         filter(corte == "Total")
       
-      
-      if(input$indicador_edu_pp %in% lista_met){
-        
-        dat_plot <- dat_plot %>% 
-          mutate(metodo = case_when(
-            fecha <= 2019 ~ "pre",
-            fecha == 2020 ~ "2020",
-            fecha == 2021 ~ "2021",
-            fecha >= 2022 ~ "post",
-          ))
-        
-        
-        plot <- ggplot(dat_plot,
-                       aes(x = fecha, y = Valor, alpha = metodo)) +
-          geom_line(size = 1, colour = color_defecto) +
-          geom_point(size = 3, colour = color_defecto) +
-          scale_x_continuous(breaks = int_breaks) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "none") +
-          labs(x = "",  y = "",
-               title = wrapit(input$indicador_edu_pp),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_alpha_manual(values = c("pre" = .4, 
-                                        "2020" = .8, 
-                                        "2021" = .8, 
-                                        "post"= .8))
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
-        
-      } else {
-        
-        plot <- ggplot(dat_plot,
-                       aes(x = fecha, y = Valor)) +
-          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-          geom_point(size = 3, colour = color_defecto) +
-          scale_x_continuous(breaks = int_breaks) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(input$indicador_edu_pp),
-               caption = wrapit(unique(dat_plot$cita)))
-        
-        print(plot)
-        ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
-        
-      }
-      
+          if(input$indicador_edu_pp %in% lista_met){
+            
+            dat_plot <- dat_plot %>% 
+              mutate(metodo = case_when(
+                fecha <= 2019 ~ "pre",
+                fecha == 2020 ~ "2020",
+                fecha == 2021 ~ "2021",
+                fecha >= 2022 ~ "post",
+              ))
+            
+            plot <- ggplot(dat_plot,
+                           aes(x = fecha, y = Valor, alpha = metodo)) +
+              geom_line(size = 1, colour = color_defecto) +
+              geom_point(size = 3, colour = color_defecto) +
+              # scale_x_continuous(breaks = int_breaks) +
+              theme_bdd(base_size = 12) +
+              theme(axis.text.x = element_text(angle = 0),
+                    legend.position = "none") +
+              labs(x = "",  y = "",
+                   title = wrapit(input$indicador_edu_pp),
+                   caption = wrapit(unique(dat_plot$cita))) +
+              scale_alpha_manual(values = c("pre" = .3, 
+                                            "2020" = .5, 
+                                            "2021" = .6, 
+                                            "post"= .8))
+            
+            print(plot)
+            ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
+            
+          } else {
+            
+            plot <- ggplot(dat_plot,
+                           aes(x = fecha, y = Valor)) +
+              geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+              geom_point(size = 3, colour = color_defecto) +
+              scale_x_continuous(breaks = int_breaks) +
+              theme_bdd(base_size = 12) +
+              theme(axis.text.x = element_text(angle = 0),
+                    legend.position = "bottom") +
+              labs(x = "",  y = "",
+                   title = wrapit(input$indicador_edu_pp),
+                   caption = wrapit(unique(dat_plot$cita)))
+            
+            print(plot)
+            ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
+            
+          }
+          
       
     } else if(input$edu_pp_corte == "Departamento" &
               input$indicador_edu_pp %notin% lista_ind_2 ) {
@@ -2780,23 +2783,63 @@ server <- function(input, output) {
       dat_plot <- filter(dat_plot,
                          !!edu_pp_corte_var %in% input$checkbox_edu_pp)
       
-      plot <- ggplot(dat_plot,
-                     aes_string(x = "fecha", y = "Valor", colour = edu_pp_corte_var)) +
-        geom_line(size = 1, alpha = 0.5) +
-        geom_point(size = 3) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x = element_text(angle = 0),
-              legend.position = "bottom") +
-        scale_x_continuous(breaks = int_breaks) +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_edu_pp,
-                                  "según",
-                                  tolower(input$edu_pp_corte))),
-             caption = wrapit(unique(dat_plot$cita))) +
-        scale_colour_manual(name = "", values = paleta_expandida)
+            if(input$indicador_edu_pp %in% lista_met){
+              
+              dat_plot <- dat_plot %>% 
+                mutate(metodo = case_when(
+                  fecha <= 2019 ~ "pre",
+                  fecha == 2020 ~ "2020",
+                  fecha == 2021 ~ "2021",
+                  fecha >= 2022 ~ "post",
+                ))
+              
+              plot <- ggplot(dat_plot,
+                             aes_string(x = "fecha", y = "Valor", colour = edu_pp_corte_var, alpha = "metodo")) +
+                geom_line(size = 1) +
+                geom_point(size = 3) +
+                theme_bdd(base_size = 12) +
+                theme(axis.text.x = element_text(angle = 0),
+                      legend.position = "bottom") +
+                scale_x_continuous(breaks = int_breaks) +
+                labs(x = "",  y = "",
+                     title = wrapit(paste(input$indicador_edu_pp,
+                                          "según",
+                                          tolower(input$edu_pp_corte))),
+                     caption = wrapit(unique(dat_plot$cita))) +
+                scale_colour_manual(name = "", values = paleta_expandida) +
+                scale_alpha_manual(values = c("pre" = .3, 
+                                              "2020" = .5, 
+                                              "2021" = .6, 
+                                              "post"= .8)) +
+                guides(alpha = "none")
       
-      print(plot)
-      ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
+              print(plot)
+              ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
+              
+              
+            } else {
+              
+              plot <- ggplot(dat_plot,
+                             aes_string(x = "fecha", y = "Valor", colour = edu_pp_corte_var)) +
+                geom_line(size = 1, alpha = 0.5) +
+                geom_point(size = 3) +
+                theme_bdd(base_size = 12) +
+                theme(axis.text.x = element_text(angle = 0),
+                      legend.position = "bottom") +
+                scale_x_continuous(breaks = int_breaks) +
+                labs(x = "",  y = "",
+                     title = wrapit(paste(input$indicador_edu_pp,
+                                          "según",
+                                          tolower(input$edu_pp_corte))),
+                     caption = wrapit(unique(dat_plot$cita))) +
+                scale_colour_manual(name = "", values = paleta_expandida)
+              
+              print(plot)
+              ggsave("www/indicador edu pp.png", width = 40, height = 25, units = "cm")
+              
+              
+            }
+            
       
     }
     
