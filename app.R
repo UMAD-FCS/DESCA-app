@@ -869,6 +869,7 @@ ui <- fluidPage(
                     uiOutput("observacion_edu_r"))
               ),
               tags$h5(uiOutput("subtitle_edu_r")),
+              tags$h6(uiOutput("nota_edu_r")),
               br(),
               withSpinner(plotOutput("plot_edu_r", height = "500px" ),
                           type = 2),
@@ -1099,6 +1100,7 @@ ui <- fluidPage(
                     uiOutput("observacion_salud_r"))
               ),
               tags$h5(uiOutput("subtitle_salud_r")),
+              tags$h6(uiOutput("nota_salud_r")),
               br(),
               withSpinner(plotOutput("plot_salud_r", height = "500px" ),
                           type = 2),
@@ -1327,6 +1329,7 @@ ui <- fluidPage(
                     uiOutput("observacion_ssocial_r"))
               ),
               tags$h5(uiOutput("subtitle_ssocial_r")),
+              tags$h6(uiOutput("nota_ssocial_r")),
               br(),
               withSpinner(plotOutput("plot_ssocial_r", height = "500px"),
                           type = 2),
@@ -1554,6 +1557,7 @@ ui <- fluidPage(
                     uiOutput("observacion_vivienda_r"))
               ),
               tags$h5(uiOutput("subtitle_vivienda_r")),
+              tags$h6(uiOutput("nota_vivienda_r")),
               br(),
               withSpinner(plotOutput("plot_vivienda_r", height = "500px"),
                           type = 2),
@@ -1781,6 +1785,7 @@ ui <- fluidPage(
                     uiOutput("observacion_trabajo_r"))
               ),
               tags$h5(uiOutput("subtitle_trabajo_r")),
+              tags$h6(uiOutput("nota_trabajo_r")),
               br(),
               withSpinner(plotOutput("plot_trabajo_r", height = "500px"),
                           type = 2),
@@ -2008,6 +2013,7 @@ ui <- fluidPage(
                     uiOutput("observacion_ambiente_r"))
               ),
               tags$h5(uiOutput("subtitle_ambiente_r")),
+              tags$h6(uiOutput("nota_ambiente_r")),
               br(),
               withSpinner(plotOutput("plot_ambiente_r", height = "500px"),
                           type = 2),
@@ -2039,112 +2045,112 @@ ui <- fluidPage(
         type = "pills",
         id   = "CP",
         
-        tabPanel(
-          "Políticas Públicas y esfuerzo económico", 
-          icon = icon("fas fa-chart-bar"),
-          br(),
-          
-          fluidRow(
-            
-            sidebarPanel(
-              
-              width = 3,
-              
-              selectInput(
-                inputId = "indicador_alimentacion_pp",
-                label = "Seleccione indicador:",
-                choices = ind_alimentacion_pp
-              ),
-              
-              uiOutput("selector_alimentacion_pp_corte_2"),
-              
-              uiOutput("chbox_alimentacion_pp_2"),
-              
-              uiOutput("selector_alimentacion_pp_corte"),
-              
-              uiOutput("s_alimentacion_pp_fecha"),
-              
-              uiOutput("chbox_alimentacion_pp"),
-              
-              HTML("<b> Instituciones:</b>"),
-              br(),
-              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-                     tags$img(src="INDDHH-Logo.png",
-                              style=";vertical-align:top;",
-                              # title="Example Image Link", 
-                              height="75%",
-                              width = "65%")),
-              br(),
-              br(),
-              tags$a( href="https://umad.cienciassociales.edu.uy/",
-                      tags$img(src="logo_umad.png",
-                               style=";vertical-align:top;",
-                               height="75%",
-                               width = "65%")),
-              br(),
-              br(),
-              HTML("<b> Con el apoyo de:</b>"),    
-              br(),
-              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-                     tags$img(src="ohchr.png",
-                              style=";vertical-align:top;",
-                              # title="Example Image Link", 
-                              height="60%",
-                              width = "45%")),
-            ),
-            
-            mainPanel(
-              
-              tags$h3(style="display:inline-block",
-                      uiOutput("title_alimentacion_pp")),
-              div(style="display:inline-block;margin: 0px;", 
-                  dropdown(
-                    style = "minimal",
-                    status = "primary",
-                    width = "500px",
-                    right = TRUE,
-                    icon = icon("exclamation", lib = "font-awesome"),
-                    uiOutput("conindicador_alimentacion_pp"))
-              ),
-              div(style="display:inline-block", 
-                  dropdown(
-                    style = "minimal",
-                    status = "primary",
-                    width = "500px",
-                    right = TRUE,
-                    icon = icon("calculator", lib = "font-awesome"),
-                    uiOutput("calculo_alimentacion_pp"))
-              ),
-              div(style="display:inline-block;margin: 0px;", 
-                  dropdown(
-                    style = "minimal",
-                    status = "primary",
-                    width = "500px",
-                    right = TRUE,
-                    icon = icon("fas fa-exclamation-triangle"),
-                    uiOutput("observacion_alimentacion_pp"))
-              ),
-              tags$h5(uiOutput("subtitle_alimentacion_pp")),
-              br(),
-              withSpinner(plotOutput("plot_alimentacion_pp", height = "500px"),
-                          type = 2),
-              br(),
-              fluidRow(column(12, div(downloadButton(outputId = "baja_p_alimentacion_pp", 
-                                                     label = "Descarga el gráfico"),
-                                      style = "float: right"))),
-              br(),
-              br(),
-              DTOutput("table_alimentacion_pp"),
-              br(),
-              br(),
-              fluidRow(column(12, div(downloadButton("dwl_tab_alimentacion_pp", "Descarga la tabla"),
-                                      style = "float: right"))),
-              br(),
-              br()
-            )
-          )
-        ),
-        
+        # tabPanel(
+        #   "Políticas Públicas y esfuerzo económico", 
+        #   icon = icon("fas fa-chart-bar"),
+        #   br(),
+        #   
+        #   fluidRow(
+        #     
+        #     sidebarPanel(
+        #       
+        #       width = 3,
+        #       
+        #       selectInput(
+        #         inputId = "indicador_alimentacion_pp",
+        #         label = "Seleccione indicador:",
+        #         choices = ind_alimentacion_pp
+        #       ),
+        #       
+        #       uiOutput("selector_alimentacion_pp_corte_2"),
+        #       
+        #       uiOutput("chbox_alimentacion_pp_2"),
+        #       
+        #       uiOutput("selector_alimentacion_pp_corte"),
+        #       
+        #       uiOutput("s_alimentacion_pp_fecha"),
+        #       
+        #       uiOutput("chbox_alimentacion_pp"),
+        #       
+        #       HTML("<b> Instituciones:</b>"),
+        #       br(),
+        #       tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+        #              tags$img(src="INDDHH-Logo.png",
+        #                       style=";vertical-align:top;",
+        #                       # title="Example Image Link", 
+        #                       height="75%",
+        #                       width = "65%")),
+        #       br(),
+        #       br(),
+        #       tags$a( href="https://umad.cienciassociales.edu.uy/",
+        #               tags$img(src="logo_umad.png",
+        #                        style=";vertical-align:top;",
+        #                        height="75%",
+        #                        width = "65%")),
+        #       br(),
+        #       br(),
+        #       HTML("<b> Con el apoyo de:</b>"),    
+        #       br(),
+        #       tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+        #              tags$img(src="ohchr.png",
+        #                       style=";vertical-align:top;",
+        #                       # title="Example Image Link", 
+        #                       height="60%",
+        #                       width = "45%")),
+        #     ),
+        #     
+        #     mainPanel(
+        #       
+        #       tags$h3(style="display:inline-block",
+        #               uiOutput("title_alimentacion_pp")),
+        #       div(style="display:inline-block;margin: 0px;", 
+        #           dropdown(
+        #             style = "minimal",
+        #             status = "primary",
+        #             width = "500px",
+        #             right = TRUE,
+        #             icon = icon("exclamation", lib = "font-awesome"),
+        #             uiOutput("conindicador_alimentacion_pp"))
+        #       ),
+        #       div(style="display:inline-block", 
+        #           dropdown(
+        #             style = "minimal",
+        #             status = "primary",
+        #             width = "500px",
+        #             right = TRUE,
+        #             icon = icon("calculator", lib = "font-awesome"),
+        #             uiOutput("calculo_alimentacion_pp"))
+        #       ),
+        #       div(style="display:inline-block;margin: 0px;", 
+        #           dropdown(
+        #             style = "minimal",
+        #             status = "primary",
+        #             width = "500px",
+        #             right = TRUE,
+        #             icon = icon("fas fa-exclamation-triangle"),
+        #             uiOutput("observacion_alimentacion_pp"))
+        #       ),
+        #       tags$h5(uiOutput("subtitle_alimentacion_pp")),
+        #       br(),
+        #       withSpinner(plotOutput("plot_alimentacion_pp", height = "500px"),
+        #                   type = 2),
+        #       br(),
+        #       fluidRow(column(12, div(downloadButton(outputId = "baja_p_alimentacion_pp", 
+        #                                              label = "Descarga el gráfico"),
+        #                               style = "float: right"))),
+        #       br(),
+        #       br(),
+        #       DTOutput("table_alimentacion_pp"),
+        #       br(),
+        #       br(),
+        #       fluidRow(column(12, div(downloadButton("dwl_tab_alimentacion_pp", "Descarga la tabla"),
+        #                               style = "float: right"))),
+        #       br(),
+        #       br()
+        #     )
+        #   )
+        # ),
+        # 
         # * Resultados ----
         
         
@@ -2235,6 +2241,7 @@ ui <- fluidPage(
                     uiOutput("observacion_alimentacion_r"))
               ),
               tags$h5(uiOutput("subtitle_alimentacion_r")),
+              tags$h6(uiOutput("nota_alimentacion_r")),
               br(),
               withSpinner(plotOutput("plot_alimentacion_r", height = "500px"),
                           type = 2),
@@ -3477,6 +3484,11 @@ server <- function(input, output) {
   # Subtitle
   output$subtitle_edu_r <- renderUI({ 
     helpText(HTML(unique(dat_edu_r()$definicion)))
+  })
+  
+  # Nota
+  output$nota_edu_r <- renderUI({ 
+    helpText(HTML(unique(dat_edu_r()$nota)))
   })
   
   # Nombre conceptual
@@ -5203,6 +5215,11 @@ server <- function(input, output) {
   # Subtitle
   output$subtitle_salud_r <- renderUI({ 
     helpText(HTML(unique(dat_salud_r()$definicion)))
+  })
+  
+  # Nota
+  output$nota_salud_r <- renderUI({ 
+    helpText(HTML(unique(dat_salud_r()$nota)))
   })
   
   # Nombre conceptual
@@ -6933,6 +6950,11 @@ server <- function(input, output) {
     helpText(HTML(unique(dat_ssocial_r()$definicion)))
   })
   
+  # Nota
+  output$nota_ssocial_r <- renderUI({ 
+    helpText(HTML(unique(dat_ssocial_r()$nota)))
+  })
+  
   # Nombre conceptual
   output$conindicador_ssocial_r <- renderUI({ 
     helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ssocial_r()$conindicador))))
@@ -8656,6 +8678,12 @@ server <- function(input, output) {
   output$subtitle_vivienda_r <- renderUI({ 
     helpText(HTML(unique(dat_vivienda_r()$definicion)))
   })
+  
+  # Nota
+  output$nota_vivienda_r <- renderUI({ 
+    helpText(HTML(unique(dat_vivienda_r()$nota)))
+  })
+  
   
   # Nombre conceptual
   output$conindicador_vivienda_r <- renderUI({ 
@@ -10382,6 +10410,12 @@ server <- function(input, output) {
     helpText(HTML(unique(dat_trabajo_r()$definicion)))
   })
   
+  # Nota
+  output$nota_trabajo_r <- renderUI({ 
+    helpText(HTML(unique(dat_trabajo_r()$nota)))
+  })
+  
+  
   # Nombre conceptual
   output$conindicador_trabajo_r <- renderUI({ 
     helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_trabajo_r()$conindicador))))
@@ -10828,7 +10862,28 @@ server <- function(input, output) {
         print(plot)
         ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")      
         
-      }
+
+    } else {
+      
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha", y = "Valor", colour = trabajo_r_corte_var)) +
+        geom_line(size = 1, alpha = 0.5) +
+        geom_point(size = 3) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        scale_x_continuous(breaks = int_breaks) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_trabajo_r,
+                                  "según",
+                                  tolower(input$trabajo_r_corte))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_colour_manual(name = "", values = paleta_expandida)
+      
+      print(plot)
+      ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
+      
+    }
     }
   })
   
@@ -12109,6 +12164,11 @@ server <- function(input, output) {
     helpText(HTML(unique(dat_ambiente_r()$definicion)))
   })
   
+  # Nota
+  output$nota_ambiente_r <- renderUI({ 
+    helpText(HTML(unique(dat_ambiente_r()$nota)))
+  })
+  
   # Nombre conceptual
   output$conindicador_ambiente_r <- renderUI({ 
     helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_ambiente_r()$conindicador))))
@@ -12407,7 +12467,6 @@ server <- function(input, output) {
       ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
       
       
-      # Grafico simple normal
     } else if(input$ambiente_r_corte == "Total") {
       
       req(input$indicador_ambiente_r, input$fecha_ambiente_r)
@@ -12417,53 +12476,20 @@ server <- function(input, output) {
                  ano <= input$fecha_ambiente_r[2]) %>%
         filter(corte == "Total")
       
-      if(input$indicador_ambiente_r %in% lista_met){
-        
-        dat_plot <- dat_plot %>% 
-          mutate(metodo = case_when(
-            fecha <= 2019 ~ "pre",
-            fecha == 2020 ~ "2020",
-            fecha == 2021 ~ "2021",
-            fecha >= 2022 ~ "post",
-          ))
-        
-        plot <- ggplot(dat_plot,
-                       aes(x = fecha, y = Valor, alpha = metodo)) +
-          geom_line(size = 1, colour = color_defecto) +
-          geom_point(size = 3, colour = color_defecto) +
-          # scale_x_continuous(breaks = int_breaks) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "none") +
-          labs(x = "",  y = "",
-               title = wrapit(input$indicador_ambiente_r),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_alpha_manual(values = c("pre" = .3, 
-                                        "2020" = .5, 
-                                        "2021" = .6, 
-                                        "post"= .8))
-        
-        print(plot)
-        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
-        
-      } else {
-        
-        plot <- ggplot(dat_plot,
-                       aes(x = fecha, y = Valor)) +
-          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-          geom_point(size = 3, colour = color_defecto) +
-          scale_x_continuous(breaks = int_breaks) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          labs(x = "",  y = "",
-               title = wrapit(input$indicador_ambiente_r),
-               caption = wrapit(unique(dat_plot$cita)))
-        
-        print(plot)
-        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
-        
-      }
+      plot <- ggplot(dat_plot,
+                     aes(x = fecha, y = Valor)) +
+        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+        geom_point(size = 3, colour = color_defecto) +
+        scale_x_continuous(breaks = int_breaks) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(input$indicador_ambiente_r),
+             caption = wrapit(unique(dat_plot$cita)))
+      
+      print(plot)
+      ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
       
       
     } else if(input$ambiente_r_corte == "Departamento" &
@@ -12522,41 +12548,26 @@ server <- function(input, output) {
       dat_plot <- filter(dat_plot,
                          !!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
       
-      if(input$indicador_ambiente_r %in% lista_met){
-        
-        dat_plot <- dat_plot %>% 
-          mutate(metodo = case_when(
-            fecha <= 2019 ~ "pre",
-            fecha == 2020 ~ "2020",
-            fecha == 2021 ~ "2021",
-            fecha >= 2022 ~ "post",
-          ))
-        
-        plot <- ggplot(dat_plot,
-                       aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var, alpha = "metodo")) +
-          geom_line(size = 1) +
-          geom_point(size = 3) +
-          theme_bdd(base_size = 12) +
-          theme(axis.text.x = element_text(angle = 0),
-                legend.position = "bottom") +
-          scale_x_continuous(breaks = int_breaks) +
-          labs(x = "",  y = "",
-               title = wrapit(paste(input$indicador_ambiente_r,
-                                    "según",
-                                    tolower(input$ambiente_r_corte))),
-               caption = wrapit(unique(dat_plot$cita))) +
-          scale_colour_manual(name = "", values = paleta_expandida) +
-          scale_alpha_manual(values = c("pre" = .3, 
-                                        "2020" = .5, 
-                                        "2021" = .6, 
-                                        "post"= .8)) +
-          guides(alpha = "none")
-        
-        print(plot)
-        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")      
-        
-      }
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var)) +
+        geom_line(size = 1, alpha = 0.5) +
+        geom_point(size = 3) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x = element_text(angle = 0),
+              legend.position = "bottom") +
+        scale_x_continuous(breaks = int_breaks) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_ambiente_r,
+                                  "según",
+                                  tolower(input$ambiente_r_corte))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_colour_manual(name = "", values = paleta_expandida)
+      
+      print(plot)
+      ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
+      
     }
+    
   })
   
   
@@ -13833,6 +13844,11 @@ server <- function(input, output) {
   # Subtitle
   output$subtitle_alimentacion_r <- renderUI({ 
     helpText(HTML(unique(dat_alimentacion_r()$definicion)))
+  })
+  
+  # Nota
+  output$nota_alimentacion_r <- renderUI({ 
+    helpText(HTML(unique(dat_alimentacion_r()$nota)))
   })
   
   # Nombre conceptual
