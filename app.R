@@ -235,6 +235,19 @@ lista_met <- dat %>%
   distinct(nomindicador) %>% 
   pull(nomindicador)
 
+# Lista indicadores unicos de mujeres sin corte doble
+lista_mujeres_unico <- dat %>% 
+  filter(mujeres == 1) %>% 
+  distinct(nomindicador) %>% 
+  pull(nomindicador)
+
+# Lista nota
+lista_nota <- dat %>% 
+  filter(!is.na(nota)) %>% 
+  distinct(nomindicador) %>% 
+  pull()
+
+
 
 # data poblaciones sacando el preambulo del nombre del indicador con la poblacion entre ()
 datpob <- dat %>% 
@@ -2354,6 +2367,7 @@ ui <- fluidPage(
                 uiOutput("observacion_poblaciones"))
           ),
           tags$h5(uiOutput("subtitle_poblaciones")),
+          tags$h6(uiOutput("nota_poblaciones_r")),
           br(),
           withSpinner(plotOutput("plot_poblaciones", height = "500px"),
                       type = 2),
@@ -3488,7 +3502,11 @@ server <- function(input, output) {
   
   # Nota
   output$nota_edu_r <- renderUI({ 
+    
+    if(input$indicador_edu_r %in% lista_nota){
     helpText(HTML(unique(dat_edu_r()$nota)))
+    
+    } else(NULL)
   })
   
   # Nombre conceptual
@@ -5219,7 +5237,11 @@ server <- function(input, output) {
   
   # Nota
   output$nota_salud_r <- renderUI({ 
-    helpText(HTML(unique(dat_salud_r()$nota)))
+    
+    if(input$indicador_salud_r %in% lista_nota){
+      helpText(HTML(unique(dat_salud_r()$nota)))
+      
+    } else(NULL)
   })
   
   # Nombre conceptual
@@ -6952,7 +6974,11 @@ server <- function(input, output) {
   
   # Nota
   output$nota_ssocial_r <- renderUI({ 
-    helpText(HTML(unique(dat_ssocial_r()$nota)))
+    
+    if(input$indicador_ssocial_r %in% lista_nota){
+      helpText(HTML(unique(dat_ssocial_r()$nota)))
+      
+    } else(NULL)
   })
   
   # Nombre conceptual
@@ -8681,7 +8707,11 @@ server <- function(input, output) {
   
   # Nota
   output$nota_vivienda_r <- renderUI({ 
-    helpText(HTML(unique(dat_vivienda_r()$nota)))
+    
+    if(input$indicador_vivienda_r %in% lista_nota){
+      helpText(HTML(unique(dat_vivienda_r()$nota)))
+      
+    } else(NULL)
   })
   
   
@@ -10412,7 +10442,11 @@ server <- function(input, output) {
   
   # Nota
   output$nota_trabajo_r <- renderUI({ 
-    helpText(HTML(unique(dat_trabajo_r()$nota)))
+    
+    if(input$indicador_trabajo_r %in% lista_nota){
+      helpText(HTML(unique(dat_trabajo_r()$nota)))
+      
+    } else(NULL)
   })
   
   
@@ -12166,8 +12200,12 @@ server <- function(input, output) {
   
   # Nota
   output$nota_ambiente_r <- renderUI({ 
-    helpText(HTML(unique(dat_ambiente_r()$nota)))
-  })
+    
+    if(input$indicador_ambiente_r %in% lista_nota){
+      helpText(HTML(unique(dat_ambiente_r()$nota)))
+      
+    } else(NULL)
+  })  
   
   # Nombre conceptual
   output$conindicador_ambiente_r <- renderUI({ 
@@ -13848,8 +13886,12 @@ server <- function(input, output) {
   
   # Nota
   output$nota_alimentacion_r <- renderUI({ 
-    helpText(HTML(unique(dat_alimentacion_r()$nota)))
-  })
+    
+    if(input$indicador_alimentacion_r %in% lista_nota){
+      helpText(HTML(unique(dat_alimentacion_r()$nota)))
+      
+    } else(NULL)
+  })  
   
   # Nombre conceptual
   output$conindicador_alimentacion_r <- renderUI({ 
@@ -14591,11 +14633,18 @@ server <- function(input, output) {
           filter(nomindicador == input$indicador_poblaciones) %>% 
           filter(corte_2 %in% "Sexo")
       
-      # } else if (input$poblaciones == "Mujeres"){
-      # 
-      # datpob %>%
-      #   filter(nomindicador == input$indicador_poblaciones) %>% 
-      #   filter(corte == "Sexo")
+    } else if(input$poblaciones == "Mujeres" & input$indicador_poblaciones %in% lista_mujeres_unico){
+      
+      dat %>%
+        filter(nomindicador == input$indicador_poblaciones) %>% 
+        filter(mujeres == 1)
+      
+      
+      } else if (input$poblaciones == "Mujeres"){
+
+      datpob %>%
+        filter(nomindicador == input$indicador_poblaciones) %>%
+        filter(corte == "Sexo")
       
       } else if(input$poblaciones == "Niños, niñas y adolescentes" & input$indicador_poblaciones == "Distribución porcentual de personas según institución prestadora en la cual declaran tener cobertura vigente"){
         
@@ -14846,6 +14895,15 @@ server <- function(input, output) {
   output$subtitle_poblaciones <- renderUI({ 
     helpText(HTML(unique(dat_poblaciones()$definicion)))
   })
+  
+  # Nota
+  output$nota_poblaciones <- renderUI({ 
+    
+    if(input$indicador_poblaciones %in% lista_nota){
+      helpText(HTML(unique(dat_poblaciones()$nota)))
+      
+    } else(NULL)
+  })  
   
   # Nombre conceptual
   output$conindicador_poblaciones <- renderUI({ 
