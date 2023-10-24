@@ -11,7 +11,8 @@ library(pagedown)
 
 
 base <- readxl::read_excel("Base Normativa Completa.xlsx") %>%
-               filter(Derecho != "Todos") 
+                    filter(Derecho != "Todos") 
+
 
 ruta <- "notas-pdf/internacional/derechos/"
 
