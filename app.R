@@ -658,7 +658,7 @@ ui <- fluidPage(
   
   navbarPage(
     title = tags$a(
-      href="http://miradordesca.uy/", 
+      href="https://www.miradordesca.uy/", 
       tags$img(src="logodesca.png", 
                style="margin-top: -2px;", height = 30, width = 100,
                height=30,
@@ -14345,177 +14345,178 @@ server <- function(input, output) {
   
   
   # * Descarga gráficos   =============================================
-  
+
   output$baja_p_alimentacion_r <- downloadHandler(
     filename <- function() {
       paste("indicador alimentacion r", "png", sep = ".")
     },
-    
+
     content <- function(file) {
       file.copy("www/indicador alimentacion r.png", file)
     },
     contentType = "www/indicador alimentacion r"
   )
-  
-  
+
+
   # * Tablas   ========================================================
-  
+
   # Data
   alimentacion_r_tab <- reactive({
-    
+
     if(input$indicador_alimentacion_r %in%  lista_especial){
-      
+
       alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
       alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-      
+
       dat_alimentacion_r() %>%
-        filter(corte_2 == input$alimentacion_r_corte_2) %>% 
+        filter(corte_2 == input$alimentacion_r_corte_2) %>%
         select(Fecha, alimentacion_r_corte_var, alimentacion_r_corte_var_2, Valor) %>%
         arrange(desc(Fecha)) %>%
         pivot_wider(values_from = "Valor",
-                    names_from = alimentacion_r_corte_var) 
-      
+                    names_from = alimentacion_r_corte_var)
+
     } else if(input$indicador_alimentacion_r %in% lista_vunico & input$alimentacion_r_corte == "Total"){
-      
+
       req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-      
+
       dat_alimentacion_r() %>%
-        filter(corte == "Total") %>% 
+        filter(corte == "Total") %>%
         select(fecha_cat, Valor) %>%
         arrange(desc(fecha_cat)) %>%
         rename(Fecha = fecha_cat)
-      
+
     } else if(input$indicador_alimentacion_r %in% lista_vunico & input$alimentacion_r_corte != "Total") {
-      
+
       req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-      
+
       alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-      
+
       dat_cut <- dat_alimentacion_r() %>%
         filter(corte == input$alimentacion_r_corte) %>%
-        janitor::remove_empty("cols") 
-      
-      dat_cut %>%     
+        janitor::remove_empty("cols")
+
+      dat_cut %>%
         select(fecha_cat, alimentacion_r_corte_var, Valor) %>%
-        arrange(desc(fecha_cat)) %>% 
+        arrange(desc(fecha_cat)) %>%
         rename(Fecha = fecha_cat) %>%
         pivot_wider(values_from = "Valor",
                     names_from = alimentacion_r_corte_var)
-      
-      
+
+
     } else if(input$indicador_alimentacion_r %in% lista_ind_2) {
-      
+
       req(input$alimentacion_r_corte, input$indicador_alimentacion_r, input$fecha_alimentacion_r)
-      
+
       alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-      
+
       dat_cut <- dat_alimentacion_r() %>%
         filter(corte == input$alimentacion_r_corte) %>%
         filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r)
-      
+
       if(input$alimentacion_r_corte_2 == "Total"){
-        
+
         dat_cut %>%
           filter(ano >= input$fecha_alimentacion_r[1] &
                    ano <= input$fecha_alimentacion_r[2]) %>%
-          filter(corte_2 == "Total") %>% 
+          filter(corte_2 == "Total") %>%
           select(Fecha, alimentacion_r_corte_var, Valor) %>%
           arrange(desc(Fecha)) %>%
           pivot_wider(values_from = "Valor",
                       names_from = alimentacion_r_corte_var)
-        
+
       } else if(input$alimentacion_r_corte_2 != "Total") {
-        
+
         alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-        
+
         dat_cut %>%
           filter(ano >= input$fecha_alimentacion_r[1] &
                    ano <= input$fecha_alimentacion_r[2]) %>%
-          filter(corte_2 == input$alimentacion_r_corte_2) %>% 
+          filter(corte_2 == input$alimentacion_r_corte_2) %>%
           select(Fecha, alimentacion_r_corte_var, alimentacion_r_corte_var_2, Valor) %>%
           arrange(desc(Fecha)) %>%
           pivot_wider(values_from = "Valor",
-                      names_from = alimentacion_r_corte_var) 
-        
+                      names_from = alimentacion_r_corte_var)
+
       }
-      
+
     } else if(input$alimentacion_r_corte == "Total") {
-      
+
       req(input$alimentacion_r_corte, input$indicador_alimentacion_r, input$fecha_alimentacion_r)
-      
+
       dat_alimentacion_r() %>%
-        filter(corte == "Total") %>% 
+        filter(corte == "Total") %>%
         filter(ano >= input$fecha_alimentacion_r[1] &
                  ano <= input$fecha_alimentacion_r[2]) %>%
         select(Fecha, Valor) %>%
         arrange(desc(Fecha))
-      
+
     } else if(input$alimentacion_r_corte != "Total") {
-      
+
       req(input$alimentacion_r_corte, input$indicador_alimentacion_r, input$fecha_alimentacion_r)
-      
+
       alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-      
+
       dat_cut <- dat_alimentacion_r() %>%
         filter(corte == input$alimentacion_r_corte) %>%
-        janitor::remove_empty("cols") 
-      
-      dat_cut %>%     
+        janitor::remove_empty("cols")
+
+      dat_cut %>%
         filter(ano >= input$fecha_alimentacion_r[1] &
-                 ano <= input$fecha_alimentacion_r[2]) %>% 
+                 ano <= input$fecha_alimentacion_r[2]) %>%
         select(Fecha, alimentacion_r_corte_var, Valor) %>%
-        arrange(desc(Fecha)) %>% 
+        arrange(desc(Fecha)) %>%
         pivot_wider(values_from = "Valor",
                     names_from = alimentacion_r_corte_var)
-      
+
     }
   })
-  
-  # Metadata 
+
+  # Metadata
   alimentacion_r_meta <- reactive({
-    
+
     dat_alimentacion_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
-      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-      distinct() %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>%
+      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>%
+      distinct() %>%
       gather(key = "", value = " ")
-    
+
   })
-  
+
   # Excel
   list_alimentacion_r <- reactive({
     list_alimentacion_r <- list("Data" = alimentacion_r_tab(),
                             "Metadata" = alimentacion_r_meta())
   })
-  
+
   # Render
   output$table_alimentacion_r <- renderDT({
-    
+
     DT::datatable(alimentacion_r_tab(),
                   rownames = FALSE,
                   caption = htmltools::tags$caption(
                     input$indicador_alimentacion_r,
                     style = "color:black; font-size:110%;")
-    ) 
-    
+    )
+
   })
-  
+
   # * Descarga tablas   ================================================
-  
+
   output$dwl_tab_alimentacion_r <- downloadHandler(
-    
+
     filename = function() {
       paste("resultados-", input$indicador_alimentacion_r, ".xlsx", sep = "")
     },
     content = function(file) {
-      
+
       openxlsx::write.xlsx(list_alimentacion_r(), file)
-      
+
     }
   )
-  
-  
-  
+
+
+
+   
   ### 10. Poblaciones   =============================================
   
   # * Data reactiva   =================================================
@@ -15347,7 +15348,7 @@ server <- function(input, output) {
           guides(alpha = "none")
         
         print(plot)
-        ggsave("www/indicador edu pob.png", width = 40, height = 25, units = "cm")
+        ggsave("www/indicador pob.png", width = 40, height = 25, units = "cm")
         
         
       } else {

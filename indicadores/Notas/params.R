@@ -11,7 +11,7 @@ library(pagedown)
 
 
 base <- readxl::read_excel("Base Normativa Completa.xlsx") %>%
-                    filter(Derecho != "Todos") 
+                    filter(Derecho != "Todos")
 
 
 ruta <- "notas-pdf/internacional/derechos/"
@@ -37,7 +37,7 @@ filenames <- list.files("notas-pdf/internacional/derechos",
                         pattern = "*.html",
                         full.names=TRUE) 
 
-namesfiles <- substr(filenames, 1, 150) # Los modifico por comodidad
+namesfiles <- substr(filenames, 1, 200) # Los modifico por comodidad
 namesfiles <- gsub(".html", "", namesfiles)
 
 # Cargo todas las bases con la función "read_twitter_csv" de rtweet 
@@ -76,7 +76,7 @@ filenames <- list.files("notas-pdf/internacional/poblaciones",
                         pattern = "*.html",
                         full.names=TRUE) 
 
-namesfiles <- substr(filenames, 1, 150) # Los modifico por comodidad
+namesfiles <- substr(filenames, 1, 200) # Los modifico por comodidad
 namesfiles <- gsub(".html", "", namesfiles)
 
 # Cargo todas las bases con la función "read_twitter_csv" de rtweet 
@@ -115,7 +115,7 @@ filenames <- list.files(ruta,
                         pattern = "*.html",
                         full.names=TRUE) 
 
-namesfiles <- substr(filenames, 1, 150) # Los modifico por comodidad
+namesfiles <- substr(filenames, 1, 200) # Los modifico por comodidad
 namesfiles <- gsub(".html", "", namesfiles)
 
 # Cargo todas las bases con la función "read_twitter_csv" de rtweet 
@@ -155,7 +155,7 @@ filenames <- list.files(ruta,
                         pattern = "*.html",
                         full.names=TRUE) 
 
-namesfiles <- substr(filenames, 1, 150) # Los modifico por comodidad
+namesfiles <- substr(filenames, 1, 200) # Los modifico por comodidad
 namesfiles <- gsub(".html", "", namesfiles)
 
 # Cargo todas las bases con la función "read_twitter_csv" de rtweet 
@@ -169,7 +169,7 @@ for (i in seq_along(filenames)) {
 ## Leyes - Derechos ----
 
 base <- readxl::read_excel("Base Normativa Completa.xlsx", 3) %>%
-  filter(Derecho != "Todos") 
+        filter(Derecho != "Todos") 
 
 ruta <- "notas-pdf/leyes/derechos/"
 
@@ -194,7 +194,7 @@ filenames <- list.files(ruta,
                         pattern = "*.html",
                         full.names=TRUE) 
 
-namesfiles <- substr(filenames, 1, 150) # Los modifico por comodidad
+namesfiles <- substr(filenames, 1, 200) # Los modifico por comodidad
 namesfiles <- gsub(".html", "", namesfiles)
 
 # Cargo todas las bases con la función "read_twitter_csv" de rtweet 
@@ -234,7 +234,7 @@ filenames <- list.files(ruta,
                         pattern = "*.html",
                         full.names=TRUE) 
 
-namesfiles <- substr(filenames, 1, 150) # Los modifico por comodidad
+namesfiles <- substr(filenames, 1, 200) # Los modifico por comodidad
 namesfiles <- gsub(".html", "", namesfiles)
 
 # Cargo todas las bases con la función "read_twitter_csv" de rtweet 
