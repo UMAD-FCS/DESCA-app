@@ -2049,15 +2049,15 @@ ui <- fluidPage(
       )
     ),
 
-    # ## Alimentación    =====================================================
+    ## Alimentación    =====================================================
+
+    tabPanel(
+      title = "Alimentación", icon = icon("fas fa-bowl-food"),
+
+      tabsetPanel(
+        type = "pills",
+        id   = "CP",
     # 
-    # tabPanel(
-    #   title = "Alimentación", icon = icon("fas fa-bowl-food"),
-    #   
-    #   tabsetPanel(
-    #     type = "pills",
-    #     id   = "CP",
-    #     
     #     tabPanel(
     #       "Políticas Públicas y esfuerzo económico",
     #       icon = icon("fas fa-chart-bar"),
@@ -2164,118 +2164,118 @@ ui <- fluidPage(
     #       )
     #     ),
     # 
-    #     # * Resultados ----
-    #     
-    #     
-    #     tabPanel(
-    #       "Resultados", 
-    #       icon = icon("fas fa-chart-bar"),
-    #       
-    #       br(),
-    #       
-    #       fluidRow(
-    #         
-    #         sidebarPanel(
-    #           
-    #           width = 3,
-    #           
-    #           selectInput(
-    #             inputId = "indicador_alimentacion_r",
-    #             label = "Seleccione indicador:",
-    #             choices = ind_alimentacion_r
-    #           ),
-    #           
-    #           uiOutput("selector_alimentacion_r_corte_2"),
-    #           
-    #           uiOutput("chbox_alimentacion_r_2"),
-    #           
-    #           uiOutput("selector_alimentacion_r_corte"),
-    #           
-    #           uiOutput("chbox_alimentacion_r"),
-    #           
-    #           uiOutput("s_alimentacion_r_fecha"),
-    #           
-    #           HTML("<b> Instituciones:</b>"),
-    #           br(),
-    #           tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
-    #                  tags$img(src="INDDHH-Logo.png",
-    #                           style=";vertical-align:top;",
-    #                           # title="Example Image Link", 
-    #                           height="75%",
-    #                           width = "65%")),
-    #           br(),
-    #           br(),
-    #           tags$a( href="https://umad.cienciassociales.edu.uy/",
-    #                   tags$img(src="logo_umad.png",
-    #                            style=";vertical-align:top;",
-    #                            height="75%",
-    #                            width = "65%")),
-    #           br(),
-    #           br(),
-    #           HTML("<b> Con el apoyo de:</b>"),    
-    #           br(),
-    #           tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
-    #                  tags$img(src="ohchr.png",
-    #                           style=";vertical-align:top;",
-    #                           # title="Example Image Link", 
-    #                           height="60%",
-    #                           width = "45%")),
-    #         ),
-    #         
-    #         mainPanel(
-    #           
-    #           tags$h3(style="display:inline-block",
-    #                   uiOutput("title_alimentacion_r")),
-    #           div(style="display:inline-block;margin: 0px;", 
-    #               dropdown(
-    #                 style = "minimal",
-    #                 status = "primary",
-    #                 width = "500px",
-    #                 right = TRUE,
-    #                 icon = icon("exclamation", lib = "font-awesome"),
-    #                 uiOutput("conindicador_alimentacion_r"))
-    #           ),
-    #           div(style="display:inline-block", 
-    #               dropdown(
-    #                 style = "minimal",
-    #                 status = "primary",
-    #                 width = "500px",
-    #                 right = TRUE,
-    #                 icon = icon("calculator", lib = "font-awesome"),
-    #                 uiOutput("calculo_alimentacion_r"))
-    #           ),
-    #           div(style="display:inline-block;margin: 0px;", 
-    #               dropdown(
-    #                 style = "minimal",
-    #                 status = "primary",
-    #                 width = "500px",
-    #                 right = TRUE,
-    #                 icon = icon("fas fa-exclamation-triangle"),
-    #                 uiOutput("observacion_alimentacion_r"))
-    #           ),
-    #           tags$h5(uiOutput("subtitle_alimentacion_r")),
-    #           tags$h6(uiOutput("nota_alimentacion_r")),
-    #           br(),
-    #           withSpinner(plotOutput("plot_alimentacion_r", height = "500px"),
-    #                       type = 2),
-    #           br(),
-    #           fluidRow(column(12, div(downloadButton(outputId = "baja_p_alimentacion_r", 
-    #                                                  label = "Descarga el gráfico"),
-    #                                   style = "float: right"))),
-    #           br(),
-    #           br(),
-    #           DTOutput("table_alimentacion_r"),
-    #           br(),
-    #           br(),
-    #           fluidRow(column(12, div(downloadButton("dwl_tab_alimentacion_r", "Descarga la tabla"),
-    #                                   style = "float: right"))),
-    #           br(),
-    #           br()
-    #         )
-    #       )
-    #     )
-    #   )
-    # ),
+        # * Resultados ----
+
+
+        tabPanel(
+          "Resultados",
+          icon = icon("fas fa-chart-bar"),
+
+          br(),
+
+          fluidRow(
+
+            sidebarPanel(
+
+              width = 3,
+
+              selectInput(
+                inputId = "indicador_alimentacion_r",
+                label = "Seleccione indicador:",
+                choices = ind_alimentacion_r
+              ),
+
+              uiOutput("selector_alimentacion_r_corte_2"),
+
+              uiOutput("chbox_alimentacion_r_2"),
+
+              uiOutput("selector_alimentacion_r_corte"),
+
+              uiOutput("chbox_alimentacion_r"),
+
+              uiOutput("s_alimentacion_r_fecha"),
+
+              HTML("<b> Instituciones:</b>"),
+              br(),
+              tags$a(href="https://www.gub.uy/institucion-nacional-derechos-humanos-uruguay/",
+                     tags$img(src="INDDHH-Logo.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link",
+                              height="75%",
+                              width = "65%")),
+              br(),
+              br(),
+              tags$a( href="https://umad.cienciassociales.edu.uy/",
+                      tags$img(src="logo_umad.png",
+                               style=";vertical-align:top;",
+                               height="75%",
+                               width = "65%")),
+              br(),
+              br(),
+              HTML("<b> Con el apoyo de:</b>"),
+              br(),
+              tags$a(href="https://www.ohchr.org/SP/Countries/LACRegion/Pages/SouthAmerica2010.aspx",
+                     tags$img(src="ohchr.png",
+                              style=";vertical-align:top;",
+                              # title="Example Image Link",
+                              height="60%",
+                              width = "45%")),
+            ),
+
+            mainPanel(
+
+              tags$h3(style="display:inline-block",
+                      uiOutput("title_alimentacion_r")),
+              div(style="display:inline-block;margin: 0px;",
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("exclamation", lib = "font-awesome"),
+                    uiOutput("conindicador_alimentacion_r"))
+              ),
+              div(style="display:inline-block",
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("calculator", lib = "font-awesome"),
+                    uiOutput("calculo_alimentacion_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;",
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-exclamation-triangle"),
+                    uiOutput("observacion_alimentacion_r"))
+              ),
+              tags$h5(uiOutput("subtitle_alimentacion_r")),
+              tags$h6(uiOutput("nota_alimentacion_r")),
+              br(),
+              withSpinner(plotOutput("plot_alimentacion_r", height = "500px"),
+                          type = 2),
+              br(),
+              fluidRow(column(12, div(downloadButton(outputId = "baja_p_alimentacion_r",
+                                                     label = "Descarga el gráfico"),
+                                      style = "float: right"))),
+              br(),
+              br(),
+              DTOutput("table_alimentacion_r"),
+              br(),
+              br(),
+              fluidRow(column(12, div(downloadButton("dwl_tab_alimentacion_r", "Descarga la tabla"),
+                                      style = "float: right"))),
+              br(),
+              br()
+            )
+          )
+        )
+      )
+    ),
     
   
     # Poblaciones -----
@@ -3956,6 +3956,31 @@ server <- function(input, output) {
         print(plot)
         ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")      
      
+      } else {
+        
+        edu_r_corte_var <- rlang::sym(to_varname(input$edu_r_corte))
+        
+        dat_plot <- dat_edu_r() %>%
+          filter(corte == input$edu_r_corte) %>%
+          filter(!!edu_r_corte_var %in% input$checkbox_edu_r)
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = edu_r_corte_var, group = edu_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_edu_r,
+                                    "según",
+                                    tolower(input$edu_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador edu r.png", width = 40, height = 25, units = "cm")
+        
       }
     }
   })
@@ -5690,6 +5715,31 @@ server <- function(input, output) {
         
         print(plot)
         ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")      
+        
+      } else {
+        
+        salud_r_corte_var <- rlang::sym(to_varname(input$salud_r_corte))
+        
+        dat_plot <- dat_salud_r() %>%
+          filter(corte == input$salud_r_corte) %>%
+          filter(!!salud_r_corte_var %in% input$checkbox_salud_r)
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = salud_r_corte_var, group = salud_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_salud_r,
+                                    "según",
+                                    tolower(input$salud_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador salud r.png", width = 40, height = 25, units = "cm")
         
       }
     }
@@ -7427,6 +7477,31 @@ server <- function(input, output) {
         print(plot)
         ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")      
         
+      } else {
+        
+        ssocial_r_corte_var <- rlang::sym(to_varname(input$ssocial_r_corte))
+        
+        dat_plot <- dat_ssocial_r() %>%
+          filter(corte == input$ssocial_r_corte) %>%
+          filter(!!ssocial_r_corte_var %in% input$checkbox_ssocial_r)
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = ssocial_r_corte_var, group = ssocial_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ssocial_r,
+                                    "según",
+                                    tolower(input$ssocial_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador ssocial r.png", width = 40, height = 25, units = "cm")
+        
       }
     }
   })
@@ -9160,6 +9235,31 @@ server <- function(input, output) {
         
         print(plot)
         ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")      
+        
+      } else {
+        
+        vivienda_r_corte_var <- rlang::sym(to_varname(input$vivienda_r_corte))
+        
+        dat_plot <- dat_vivienda_r() %>%
+          filter(corte == input$vivienda_r_corte) %>%
+          filter(!!vivienda_r_corte_var %in% input$checkbox_vivienda_r)
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = vivienda_r_corte_var, group = vivienda_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_vivienda_r,
+                                    "según",
+                                    tolower(input$vivienda_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador vivienda r.png", width = 40, height = 25, units = "cm")
         
       }
     }
@@ -10917,7 +11017,7 @@ server <- function(input, output) {
       print(plot)
       ggsave("www/indicador trabajo r.png", width = 40, height = 25, units = "cm")
       
-    }
+      }
     }
   })
   
@@ -12781,245 +12881,245 @@ server <- function(input, output) {
   )
   
   
-  # ### 9.1. Alimentación Politicas==============================================
-  # 
-  # # * Data reactiva   =================================================    
+  ### 9.1. Alimentación Politicas==============================================
+
+  # # * Data reactiva   =================================================
   # dat_alimentacion_pp <- reactive({
-  #   
+  # 
   #   req(input$indicador_alimentacion_pp)
-  #   
+  # 
   #   dat %>%
-  #     filter(nomindicador == input$indicador_alimentacion_pp) 
-  #   
+  #     filter(nomindicador == input$indicador_alimentacion_pp)
+  # 
   # })
   # 
   # output$selector_alimentacion_pp_corte_2 <- renderUI({
-  #   
+  # 
   #   if(input$indicador_alimentacion_pp %in% lista_ind_2){
-  #     
+  # 
   #     selectInput(
   #       inputId = "alimentacion_pp_corte_2",
   #       label = "Seleccione primer corte:",
-  #       choices = dat_alimentacion_pp() %>% 
+  #       choices = dat_alimentacion_pp() %>%
   #         select(corte_2) %>%
-  #         arrange(corte_2) %>% 
-  #         unique() %>% 
+  #         arrange(corte_2) %>%
+  #         unique() %>%
   #         pull(),
-  #       selected = dat_alimentacion_pp() %>% 
-  #         filter(jerarquia == "1") %>%  
-  #         distinct(corte_2) %>% 
+  #       selected = dat_alimentacion_pp() %>%
+  #         filter(jerarquia == "1") %>%
+  #         distinct(corte_2) %>%
   #         pull()
   #     )
-  #     
+  # 
   #   } else {
-  #     
+  # 
   #     NULL
   #   }
-  #   
+  # 
   # })
   # 
   # output$chbox_alimentacion_pp_2 <- renderUI({
-  #   
+  # 
   #   if(input$indicador_alimentacion_pp %in% lista_ind_2 & input$indicador_alimentacion_pp %notin% lista_especial){
-  #     
+  # 
   #     # if(input$alimentacion_pp_corte %notin% c("Total", "Departamento") & input$indicador_alimentacion_pp %notin% lista_vunico) {
-  #     
+  # 
   #     alimentacion_pp_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_pp_corte_2))
-  #     
+  # 
   #     checkboxGroupInput(inputId = "checkbox_alimentacion_pp_2",
   #                        label = "Seleccione categorías",
   #                        inline = TRUE,
   #                        choices =  dat_alimentacion_pp() %>%
-  #                          filter(corte_2 == input$alimentacion_pp_corte_2) %>% 
+  #                          filter(corte_2 == input$alimentacion_pp_corte_2) %>%
   #                          distinct(!!alimentacion_pp_corte_var_2) %>%
   #                          pull(),
   #                        selected = dat_alimentacion_pp() %>%
-  #                          filter(corte_2 == input$alimentacion_pp_corte_2) %>% 
+  #                          filter(corte_2 == input$alimentacion_pp_corte_2) %>%
   #                          filter(jerarquia_cat_2 == "1") %>%
   #                          distinct(!!alimentacion_pp_corte_var_2) %>%
   #                          pull()
   #     )
-  #     
+  # 
   #     # } else {
-  #     #   
+  #     #
   #     #   return(NULL)
-  #     #   
+  #     #
   #     #   }
-  #     
+  # 
   #   } else {
-  #     
+  # 
   #     return(NULL)
-  #     
-  #   }      
+  # 
+  #   }
   # })
   # 
   # 
   # output$selector_alimentacion_pp_corte <- renderUI({
-  #   
+  # 
   #   selectInput(
   #     inputId = "alimentacion_pp_corte",
   #     label = "Seleccione corte:",
-  #     choices = dat_alimentacion_pp() %>% 
+  #     choices = dat_alimentacion_pp() %>%
   #       select(corte) %>%
-  #       arrange(corte) %>% 
-  #       unique() %>% 
+  #       arrange(corte) %>%
+  #       unique() %>%
   #       pull(),
-  #     selected = dat_alimentacion_pp() %>% 
-  #       filter(jerarquia == "1") %>%  
-  #       distinct(corte) %>% 
+  #     selected = dat_alimentacion_pp() %>%
+  #       filter(jerarquia == "1") %>%
+  #       distinct(corte) %>%
   #       pull()
   #   )
-  #   
+  # 
   # })
   # 
   # output$chbox_alimentacion_pp <- renderUI({
-  #   
+  # 
   #   if(input$alimentacion_pp_corte %in% lista_ind_2 & input$alimentacion_pp_corte %notin% c("Total", "Departamento") & input$indicador_alimentacion_pp %notin% lista_vunico) {
-  #     
+  # 
   #     alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
   #     alimentacion_pp_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_pp_corte_2))
-  #     
+  # 
   #     checkboxGroupInput(inputId = "checkbox_alimentacion_pp",
   #                        label = "Seleccione categorías",
   #                        inline = TRUE,
   #                        choices =  dat_alimentacion_pp() %>%
   #                          filter(!!alimentacion_pp_corte_var_2 %in% input$checkbox_alimentacion_pp_2) %>%
-  #                          filter(corte == input$alimentacion_pp_corte) %>% 
+  #                          filter(corte == input$alimentacion_pp_corte) %>%
   #                          distinct(!!alimentacion_pp_corte_var) %>%
   #                          pull(),
   #                        selected = dat_alimentacion_pp() %>%
   #                          filter(!!alimentacion_pp_corte_var_2 %in% input$checkbox_alimentacion_pp_2) %>%
-  #                          filter(corte == input$alimentacion_pp_corte) %>% 
+  #                          filter(corte == input$alimentacion_pp_corte) %>%
   #                          filter(jerarquia_cat == "1") %>%
   #                          distinct(!!alimentacion_pp_corte_var) %>%
   #                          pull()
   #     )
-  #     
+  # 
   #   } else if(input$alimentacion_pp_corte %notin% lista_ind_2 & input$alimentacion_pp_corte %notin% c("Total", "Departamento") & input$indicador_alimentacion_pp %notin% lista_vunico) {
-  #     
+  # 
   #     alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
-  #     
+  # 
   #     checkboxGroupInput(inputId = "checkbox_alimentacion_pp",
   #                        label = "Seleccione categorías",
   #                        inline = TRUE,
   #                        choices =  dat_alimentacion_pp() %>%
-  #                          filter(corte == input$alimentacion_pp_corte) %>% 
+  #                          filter(corte == input$alimentacion_pp_corte) %>%
   #                          distinct(!!alimentacion_pp_corte_var) %>%
   #                          pull(),
   #                        selected = dat_alimentacion_pp() %>%
-  #                          filter(corte == input$alimentacion_pp_corte) %>% 
+  #                          filter(corte == input$alimentacion_pp_corte) %>%
   #                          filter(jerarquia_cat == "1") %>%
   #                          distinct(!!alimentacion_pp_corte_var) %>%
   #                          pull()
   #     )
-  #     
+  # 
   #   } else {
-  #     
+  # 
   #     return(NULL)
   #   }
-  #   
+  # 
   # })
   # 
   # # Selector de fecha
   # output$s_alimentacion_pp_fecha <- renderUI({
-  #   
+  # 
   #   if(input$alimentacion_pp_corte == "Departamento" & input$indicador_alimentacion_pp %notin% lista_ind_2) {
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp)
-  #     
+  # 
   #     req(nrow(dat_alimentacion_pp()) > 0)
-  #     
+  # 
   #     selectInput(
   #       inputId = "fecha_dpto_alimentacion_pp",
   #       label = "Seleccione año:",
-  #       choices = dat_alimentacion_pp() %>% 
+  #       choices = dat_alimentacion_pp() %>%
   #         filter(nomindicador == input$indicador_alimentacion_pp) %>%
   #         drop_na(Valor) %>%
   #         select(ano) %>%
-  #         arrange(desc(ano)) %>% 
-  #         unique() %>% 
+  #         arrange(desc(ano)) %>%
+  #         unique() %>%
   #         pull(),
   #       selected = max(input$ano)
   #     )
-  #     
+  # 
   #   } else if (input$indicador_alimentacion_pp %in% lista_serie_cat){
-  #     
+  # 
   #     return(NULL)
-  #     
-  #     
+  # 
+  # 
   #   } else if (input$indicador_alimentacion_pp %in% lista_vunico){
-  #     
+  # 
   #     return(NULL)
-  #     
+  # 
   #   } else  {
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp)
   #     req(nrow(dat_alimentacion_pp()) > 0)
-  #     
+  # 
   #     tagList(
-  #       # tags$style(type = 'text/css', 
+  #       # tags$style(type = 'text/css',
   #       #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
   #       # div(id = 'big_slider',
-  #       
-  #       sliderInput("fecha_alimentacion_pp", 
-  #                   label = "Rango de tiempo", 
+  # 
+  #       sliderInput("fecha_alimentacion_pp",
+  #                   label = "Rango de tiempo",
   #                   sep = "",
   #                   dragRange = T,
-  #                   min = min(dat_alimentacion_pp()$ano), 
-  #                   max = max(dat_alimentacion_pp()$ano), 
-  #                   value = c(min(dat_alimentacion_pp()$ano), 
+  #                   min = min(dat_alimentacion_pp()$ano),
+  #                   max = max(dat_alimentacion_pp()$ano),
+  #                   value = c(min(dat_alimentacion_pp()$ano),
   #                             max(dat_alimentacion_pp()$ano))
   #       )
   #     )
-  #     
+  # 
   #   }
   # })
   # 
   # # # Selector de corte según categoría y data temporal
   # # dat_alimentacion_pp <- reactive({
-  # #   
+  # #
   # #   req(input$alimentacion_pp_corte)
-  # #   
+  # #
   # #   if(input$indicador_alimentacion_pp %in% lista_ind_2){
-  # #     
+  # #
   # #     dat_salarios <- dat_alimentacion_pp() %>%
-  # #       filter(corte_2 == input$alimentacion_pp_corte_2) %>% 
+  # #       filter(corte_2 == input$alimentacion_pp_corte_2) %>%
   # #       filter(corte == input$alimentacion_pp_corte) %>%
   # #       janitor::remove_empty("cols")
-  # #     
+  # #
   # #   } else {
-  # #     
+  # #
   # #     dat_alimentacion_pp() %>%
   # #       filter(corte == input$alimentacion_pp_corte) %>%
   # #       janitor::remove_empty("cols")
-  # #     
+  # #
   # #   }
   # # })
   # 
   # # * Metadata   ======================================================
   # 
   # # Title
-  # output$title_alimentacion_pp <- renderUI({ 
+  # output$title_alimentacion_pp <- renderUI({
   #   helpText(HTML(unique(dat_alimentacion_pp()$nomindicador)))
   # })
   # 
   # # Subtitle
-  # output$subtitle_alimentacion_pp <- renderUI({ 
+  # output$subtitle_alimentacion_pp <- renderUI({
   #   helpText(HTML(unique(dat_alimentacion_pp()$definicion)))
   # })
   # 
   # # Nombre conceptual
-  # output$conindicador_alimentacion_pp <- renderUI({ 
+  # output$conindicador_alimentacion_pp <- renderUI({
   #   helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_alimentacion_pp()$conindicador))))
   # })
   # 
   # # Calculo
-  # output$calculo_alimentacion_pp <- renderUI({ 
+  # output$calculo_alimentacion_pp <- renderUI({
   #   helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_alimentacion_pp()$calculo))))
   # })
   # 
   # # Observaciones
-  # output$observacion_alimentacion_pp <- renderUI({ 
+  # output$observacion_alimentacion_pp <- renderUI({
   #   helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_alimentacion_pp()$observaciones))))
   # })
   # 
@@ -13027,19 +13127,19 @@ server <- function(input, output) {
   # # * Gráficos   ======================================================
   # 
   # output$plot_alimentacion_pp <- renderPlot({
-  #   
+  # 
   #   req(input$indicador_alimentacion_pp, input$alimentacion_pp_corte)
-  #   
+  # 
   #   if(input$indicador_alimentacion_pp %in% lista_serie_cat){
-  #     
+  # 
   #     req(input$indicador_alimentacion_pp)
-  #     
+  # 
   #     # Total
   #     if(input$alimentacion_pp_corte == "Total"){
-  #       
+  # 
   #       dat_plot <- dat_alimentacion_pp() %>%
   #         filter(corte == "Total")
-  #       
+  # 
   #       plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
   #         geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
   #         geom_point(size = 3, colour = color_defecto) +
@@ -13049,19 +13149,19 @@ server <- function(input, output) {
   #         labs(x = "",  y = "",
   #              title = wrapit(input$indicador_alimentacion_pp),
   #              caption = wrapit(unique(dat_plot$cita)))
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
+  # 
   #       # Según corte
   #     } else if(input$alimentacion_pp_corte != "Total") {
-  #       
+  # 
   #       alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
-  #       
+  # 
   #       dat_plot <- dat_alimentacion_pp() %>%
   #         filter(corte == input$alimentacion_pp_corte) %>%
   #         filter(!!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp)
-  #       
+  # 
   #       plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
   #                                           colour = alimentacion_pp_corte_var, group = alimentacion_pp_corte_var)) +
   #         geom_line(size = 1, alpha = 0.5) +
@@ -13075,27 +13175,27 @@ server <- function(input, output) {
   #                                   tolower(input$alimentacion_pp_corte))),
   #              caption = wrapit(unique(dat_plot$cita))) +
   #         scale_colour_manual(name = "", values = paleta_expandida)
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
+  # 
   #     }
-  #     
+  # 
   #   } else if(input$indicador_alimentacion_pp %in% lista_especial ){
-  #     
-  #     if (input$alimentacion_pp_corte_2 == "Total"){        
-  #       
+  # 
+  #     if (input$alimentacion_pp_corte_2 == "Total"){
+  # 
   #       req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp)
-  #       
+  # 
   #       alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
-  #       
+  # 
   #       dat_plot <- dat_alimentacion_pp() %>%
   #         filter(ano >= input$fecha_alimentacion_pp[1] &
   #                  ano <= input$fecha_alimentacion_pp[2]) %>%
   #         filter(corte == input$alimentacion_pp_corte) %>%
-  #         # filter(!!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp) %>% 
-  #         filter(corte_2 == input$alimentacion_pp_corte_2)  
-  #       
+  #         # filter(!!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp) %>%
+  #         filter(corte_2 == input$alimentacion_pp_corte_2)
+  # 
   #       plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
   #                                           fill = alimentacion_pp_corte_var)) +
   #         geom_col(position = "dodge", width = .7, alpha = .8) +
@@ -13110,24 +13210,24 @@ server <- function(input, output) {
   #                                   unique(dat_plot$fecha_cat))),
   #              caption = wrapit(unique(dat_plot$cita))) +
   #         scale_fill_brewer(name = "", palette = "Paired")
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
+  # 
   #     } else {
-  #       
+  # 
   #       req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp)
-  #       
+  # 
   #       alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
   #       alimentacion_pp_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_pp_corte_2))
-  #       
+  # 
   #       dat_plot <- dat_alimentacion_pp() %>%
   #         filter(ano >= input$fecha_alimentacion_pp[1] &
   #                  ano <= input$fecha_alimentacion_pp[2]) %>%
   #         filter(corte == input$alimentacion_pp_corte) %>%
-  #         # filter(!!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp) %>% 
-  #         filter(corte_2 == input$alimentacion_pp_corte_2)  
-  #       
+  #         # filter(!!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp) %>%
+  #         filter(corte_2 == input$alimentacion_pp_corte_2)
+  # 
   #       plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
   #                                           fill = alimentacion_pp_corte_var)) +
   #         geom_col(position = "dodge", width = .7, alpha = .8) +
@@ -13143,19 +13243,19 @@ server <- function(input, output) {
   #              caption = wrapit(unique(dat_plot$cita))) +
   #         scale_fill_brewer(name = "", palette = "Paired") +
   #         facet_wrap(as.formula(paste("~", alimentacion_pp_corte_var_2)))
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
+  # 
   #     }
-  #     
+  # 
   #   } else if(input$indicador_alimentacion_pp %in% lista_vunico & input$indicador_alimentacion_pp %in% lista_ind_2){
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp)
-  #     
+  # 
   #     alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
   #     alimentacion_pp_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_pp_corte_2))
-  #     
+  # 
   #     dat_plot <- dat_alimentacion_pp() %>%
   #       filter(ano >= input$fecha_alimentacion_pp[1] &
   #                ano <= input$fecha_alimentacion_pp[2]) %>%
@@ -13163,7 +13263,7 @@ server <- function(input, output) {
   #       filter(!!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp) %>%
   #       filter(!!alimentacion_pp_corte_var_2 %in% input$checkbox_alimentacion_pp_2) %>%
   #       filter(corte_2 == input$alimentacion_pp_corte_2)
-  #     
+  # 
   #     plot <- ggplot(dat_plot,
   #                    aes_string(x = "fecha_cat", y = "Valor",
   #                               fill = alimentacion_pp_corte_var)) +
@@ -13180,20 +13280,20 @@ server <- function(input, output) {
   #            caption = wrapit(unique(dat_plot$cita))) +
   #       scale_fill_brewer(name = "", palette = "Paired") +
   #       facet_wrap(as.formula(paste("~", alimentacion_pp_corte_var_2)))
-  #     
+  # 
   #     print(plot)
   #     ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #     
+  # 
   #   } else if(input$indicador_alimentacion_pp %in% lista_vunico & input$alimentacion_pp_corte != "Departamento") {
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp)
-  #     
+  # 
   #     dat_plot <- dat_alimentacion_pp() %>%
   #       filter(corte == input$alimentacion_pp_corte) %>%
   #       janitor::remove_empty("cols")
-  #     
+  # 
   #     if(input$alimentacion_pp_corte == "Total"){
-  #       
+  # 
   #       plot <- ggplot(dat_plot,
   #                      aes_string(x = "fecha_cat", y = "Valor")) +
   #         geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
@@ -13208,15 +13308,15 @@ server <- function(input, output) {
   #                                   "en",
   #                                   unique(dat_plot$fecha_cat))),
   #              caption = wrapit(unique(dat_plot$cita)))
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
-  #       
+  # 
+  # 
   #     } else {
-  #       
+  # 
   #       alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
-  #       
+  # 
   #       plot <- ggplot(dat_plot,
   #                      aes_string(x = "fecha_cat", y = "Valor",
   #                                 fill = alimentacion_pp_corte_var)) +
@@ -13234,34 +13334,34 @@ server <- function(input, output) {
   #                                   unique(dat_plot$fecha_cat))),
   #              caption = wrapit(unique(dat_plot$cita))) +
   #         scale_fill_brewer(name = "", palette = "Paired")
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
+  # 
   #     }
-  #     
-  #     
+  # 
+  # 
   #   } else if(input$indicador_alimentacion_pp %in% lista_ind_2) {
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$alimentacion_pp_corte_2,
   #         input$fecha_alimentacion_pp, input$checkbox_alimentacion_pp)
-  #     
+  # 
   #     alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
   #     alimentacion_pp_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_pp_corte_2))
-  #     
+  # 
   #     dat_plot <- dat_alimentacion_pp() %>%
   #       filter(ano >= input$fecha_alimentacion_pp[1] &
   #                ano <= input$fecha_alimentacion_pp[2]) %>%
   #       filter(corte == input$alimentacion_pp_corte) %>%
   #       filter(!!alimentacion_pp_corte_var_2 %in% input$checkbox_alimentacion_pp_2) %>%
-  #       filter(!!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp) %>% 
+  #       filter(!!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp) %>%
   #       filter(corte_2 == input$alimentacion_pp_corte_2)
-  #     
+  # 
   #     if(input$alimentacion_pp_corte_2 == "Total"){
-  #       
+  # 
   #       dat_plot <- dat_plot %>%
   #         filter(corte_2 == "Total")
-  #       
+  # 
   #       plot <- ggplot(dat_plot,
   #                      aes_string(x = "fecha", y = "Valor", colour = alimentacion_pp_corte_var)) +
   #         geom_line(size = 1, alpha = 0.5) +
@@ -13276,14 +13376,14 @@ server <- function(input, output) {
   #                                   tolower(input$alimentacion_pp_corte))),
   #              caption = wrapit(unique(dat_plot$cita))) +
   #         scale_colour_manual(name = "", values = paleta_expandida)
-  #       
+  # 
   #     } else if(input$alimentacion_pp_corte_2 != "Total") {
-  #       
+  # 
   #       alimentacion_pp_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_pp_corte_2))
-  #       
+  # 
   #       dat_plot <- dat_plot %>%
   #         filter(corte_2 == input$alimentacion_pp_corte_2)
-  #       
+  # 
   #       plot <- ggplot(dat_plot,
   #                      aes_string(x = "fecha", y = "Valor", colour = alimentacion_pp_corte_var)) +
   #         geom_line(size = 1, alpha = 0.5) +
@@ -13299,33 +13399,33 @@ server <- function(input, output) {
   #              caption = wrapit(unique(dat_plot$cita))) +
   #         scale_colour_manual(name = "", values = paleta_expandida) +
   #         facet_wrap(as.formula(paste("~", alimentacion_pp_corte_var_2)))
-  #       
+  # 
   #     }
-  #     
+  # 
   #     print(plot)
   #     ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #     
-  #     
+  # 
+  # 
   #     # Grafico simple normal
   #   } else if(input$alimentacion_pp_corte == "Total") {
-  #     
+  # 
   #     req(input$indicador_alimentacion_pp, input$fecha_alimentacion_pp)
-  #     
+  # 
   #     dat_plot <- dat_alimentacion_pp() %>%
   #       filter(ano >= input$fecha_alimentacion_pp[1] &
   #                ano <= input$fecha_alimentacion_pp[2]) %>%
   #       filter(corte == "Total")
-  #     
+  # 
   #     if(input$indicador_alimentacion_pp %in% lista_met){
-  #       
-  #       dat_plot <- dat_plot %>% 
+  # 
+  #       dat_plot <- dat_plot %>%
   #         mutate(metodo = case_when(
   #           fecha <= 2019 ~ "pre",
   #           fecha == 2020 ~ "2020",
   #           fecha == 2021 ~ "2021",
   #           fecha >= 2022 ~ "post",
   #         ))
-  #       
+  # 
   #       plot <- ggplot(dat_plot,
   #                      aes(x = fecha, y = Valor, alpha = metodo)) +
   #         geom_line(size = 1, colour = color_defecto) +
@@ -13337,16 +13437,16 @@ server <- function(input, output) {
   #         labs(x = "",  y = "",
   #              title = wrapit(input$indicador_alimentacion_pp),
   #              caption = wrapit(unique(dat_plot$cita))) +
-  #         scale_alpha_manual(values = c("pre" = .3, 
-  #                                       "2020" = .5, 
-  #                                       "2021" = .6, 
+  #         scale_alpha_manual(values = c("pre" = .3,
+  #                                       "2020" = .5,
+  #                                       "2021" = .6,
   #                                       "post"= .8))
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
+  # 
   #     } else {
-  #       
+  # 
   #       plot <- ggplot(dat_plot,
   #                      aes(x = fecha, y = Valor)) +
   #         geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
@@ -13358,26 +13458,26 @@ server <- function(input, output) {
   #         labs(x = "",  y = "",
   #              title = wrapit(input$indicador_alimentacion_pp),
   #              caption = wrapit(unique(dat_plot$cita)))
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
+  # 
   #     }
-  #     
-  #     
+  # 
+  # 
   #   } else if(input$alimentacion_pp_corte == "Departamento" &
   #             input$indicador_alimentacion_pp %notin% lista_ind_2 ) {
-  #     
+  # 
   #     req(input$indicador_alimentacion_pp, input$fecha_dpto_alimentacion_pp)
-  #     
+  # 
   #     dat_plot <- dat_alimentacion_pp() %>%
   #       filter(corte == "Departamento") %>%
   #       filter(ano == input$fecha_dpto_alimentacion_pp) %>%
   #       select(departamento, Valor, fuente, cita)
-  #     
+  # 
   #     dep_j <- dep %>%
   #       left_join(dat_plot, by = c("nombre" = "departamento"))
-  #     
+  # 
   #     plot <-  ggplot(dep_j, aes(fill = Valor)) +
   #       geom_sf() +
   #       geom_sf_text(aes(label = Valor), colour = "black",
@@ -13400,37 +13500,37 @@ server <- function(input, output) {
   #                                 "en",
   #                                 input$fecha_dpto_alimentacion_pp), w = 80),
   #            caption = wrapit(unique(dat_plot$cita), w = 80))
-  #     
+  # 
   #     print(plot)
   #     ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #     
-  #     
+  # 
+  # 
   #   } else if(input$alimentacion_pp_corte != "Total") {
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp,
   #         input$fecha_alimentacion_pp, input$checkbox_alimentacion_pp)
-  #     
+  # 
   #     dat_plot <- dat_alimentacion_pp() %>%
   #       filter(ano >= input$fecha_alimentacion_pp[1] &
   #                ano <= input$fecha_alimentacion_pp[2]) %>%
   #       filter(corte == input$alimentacion_pp_corte) %>%
   #       janitor::remove_empty("cols")
-  #     
+  # 
   #     alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
-  #     
+  # 
   #     dat_plot <- filter(dat_plot,
   #                        !!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp)
-  #     
+  # 
   #     if(input$indicador_alimentacion_pp %in% lista_met){
-  #       
-  #       dat_plot <- dat_plot %>% 
+  # 
+  #       dat_plot <- dat_plot %>%
   #         mutate(metodo = case_when(
   #           fecha <= 2019 ~ "pre",
   #           fecha == 2020 ~ "2020",
   #           fecha == 2021 ~ "2021",
   #           fecha >= 2022 ~ "post",
   #         ))
-  #       
+  # 
   #       plot <- ggplot(dat_plot,
   #                      aes_string(x = "fecha", y = "Valor", colour = alimentacion_pp_corte_var, alpha = "metodo")) +
   #         geom_line(size = 1) +
@@ -13445,18 +13545,18 @@ server <- function(input, output) {
   #                                   tolower(input$alimentacion_pp_corte))),
   #              caption = wrapit(unique(dat_plot$cita))) +
   #         scale_colour_manual(name = "", values = paleta_expandida) +
-  #         scale_alpha_manual(values = c("pre" = .3, 
-  #                                       "2020" = .5, 
-  #                                       "2021" = .6, 
+  #         scale_alpha_manual(values = c("pre" = .3,
+  #                                       "2020" = .5,
+  #                                       "2021" = .6,
   #                                       "post"= .8)) +
   #         guides(alpha = "none")
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
-  #       
+  # 
+  # 
   #     } else {
-  #       
+  # 
   #       plot <- ggplot(dat_plot,
   #                      aes_string(x = "fecha", y = "Valor", colour = alimentacion_pp_corte_var)) +
   #         geom_line(size = 1, alpha = 0.5) +
@@ -13471,16 +13571,16 @@ server <- function(input, output) {
   #                                   tolower(input$alimentacion_pp_corte))),
   #              caption = wrapit(unique(dat_plot$cita))) +
   #         scale_colour_manual(name = "", values = paleta_expandida)
-  #       
+  # 
   #       print(plot)
   #       ggsave("www/indicador alimentacion pp.png", width = 40, height = 25, units = "cm")
-  #       
-  #       
+  # 
+  # 
   #     }
-  #     
-  #     
+  # 
+  # 
   #   }
-  #   
+  # 
   # })
   # 
   # 
@@ -13490,7 +13590,7 @@ server <- function(input, output) {
   #   filename <- function() {
   #     paste("indicador alimentacion pp", "png", sep = ".")
   #   },
-  #   
+  # 
   #   content <- function(file) {
   #     file.copy("www/indicador alimentacion pp.png", file)
   #   },
@@ -13502,124 +13602,124 @@ server <- function(input, output) {
   # 
   # # Data
   # alimentacion_pp_tab <- reactive({
-  #   
+  # 
   #   if(input$indicador_alimentacion_pp %in%  lista_especial){
-  #     
+  # 
   #     alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
   #     alimentacion_pp_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_pp_corte_2))
-  #     
+  # 
   #     dat_alimentacion_pp() %>%
-  #       filter(corte_2 == input$alimentacion_pp_corte_2) %>% 
+  #       filter(corte_2 == input$alimentacion_pp_corte_2) %>%
   #       select(Fecha, alimentacion_pp_corte_var, alimentacion_pp_corte_var_2, Valor) %>%
   #       arrange(desc(Fecha)) %>%
   #       pivot_wider(values_from = "Valor",
-  #                   names_from = alimentacion_pp_corte_var) 
-  #     
+  #                   names_from = alimentacion_pp_corte_var)
+  # 
   #   } else if(input$indicador_alimentacion_pp %in% lista_vunico & input$alimentacion_pp_corte == "Total"){
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp)
-  #     
+  # 
   #     dat_alimentacion_pp() %>%
-  #       filter(corte == "Total") %>% 
+  #       filter(corte == "Total") %>%
   #       select(fecha_cat, Valor) %>%
   #       arrange(desc(fecha_cat)) %>%
   #       rename(Fecha = fecha_cat)
-  #     
+  # 
   #   } else if(input$indicador_alimentacion_pp %in% lista_vunico & input$alimentacion_pp_corte != "Total") {
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp)
-  #     
+  # 
   #     alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
-  #     
+  # 
   #     dat_cut <- dat_alimentacion_pp() %>%
   #       filter(corte == input$alimentacion_pp_corte) %>%
-  #       janitor::remove_empty("cols") 
-  #     
-  #     dat_cut %>%     
+  #       janitor::remove_empty("cols")
+  # 
+  #     dat_cut %>%
   #       select(fecha_cat, alimentacion_pp_corte_var, Valor) %>%
-  #       arrange(desc(fecha_cat)) %>% 
+  #       arrange(desc(fecha_cat)) %>%
   #       rename(Fecha = fecha_cat) %>%
   #       pivot_wider(values_from = "Valor",
   #                   names_from = alimentacion_pp_corte_var)
-  #     
-  #     
+  # 
+  # 
   #   } else if(input$indicador_alimentacion_pp %in% lista_ind_2) {
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp, input$fecha_alimentacion_pp)
-  #     
+  # 
   #     alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
-  #     
+  # 
   #     dat_cut <- dat_alimentacion_pp() %>%
   #       filter(corte == input$alimentacion_pp_corte) %>%
   #       filter(!!alimentacion_pp_corte_var %in% input$checkbox_alimentacion_pp)
-  #     
+  # 
   #     if(input$alimentacion_pp_corte_2 == "Total"){
-  #       
+  # 
   #       dat_cut %>%
   #         filter(ano >= input$fecha_alimentacion_pp[1] &
   #                  ano <= input$fecha_alimentacion_pp[2]) %>%
-  #         filter(corte_2 == "Total") %>% 
+  #         filter(corte_2 == "Total") %>%
   #         select(Fecha, alimentacion_pp_corte_var, Valor) %>%
   #         arrange(desc(Fecha)) %>%
   #         pivot_wider(values_from = "Valor",
   #                     names_from = alimentacion_pp_corte_var)
-  #       
+  # 
   #     } else if(input$alimentacion_pp_corte_2 != "Total") {
-  #       
+  # 
   #       alimentacion_pp_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_pp_corte_2))
-  #       
+  # 
   #       dat_cut %>%
   #         filter(ano >= input$fecha_alimentacion_pp[1] &
   #                  ano <= input$fecha_alimentacion_pp[2]) %>%
-  #         filter(corte_2 == input$alimentacion_pp_corte_2) %>% 
+  #         filter(corte_2 == input$alimentacion_pp_corte_2) %>%
   #         select(Fecha, alimentacion_pp_corte_var, alimentacion_pp_corte_var_2, Valor) %>%
   #         arrange(desc(Fecha)) %>%
   #         pivot_wider(values_from = "Valor",
-  #                     names_from = alimentacion_pp_corte_var) 
-  #       
+  #                     names_from = alimentacion_pp_corte_var)
+  # 
   #     }
-  #     
+  # 
   #   } else if(input$alimentacion_pp_corte == "Total") {
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp, input$fecha_alimentacion_pp)
-  #     
+  # 
   #     dat_alimentacion_pp() %>%
-  #       filter(corte == "Total") %>% 
+  #       filter(corte == "Total") %>%
   #       filter(ano >= input$fecha_alimentacion_pp[1] &
   #                ano <= input$fecha_alimentacion_pp[2]) %>%
   #       select(Fecha, Valor) %>%
   #       arrange(desc(Fecha))
-  #     
+  # 
   #   } else if(input$alimentacion_pp_corte != "Total") {
-  #     
+  # 
   #     req(input$alimentacion_pp_corte, input$indicador_alimentacion_pp, input$fecha_alimentacion_pp)
-  #     
+  # 
   #     alimentacion_pp_corte_var <- rlang::sym(to_varname(input$alimentacion_pp_corte))
-  #     
+  # 
   #     dat_cut <- dat_alimentacion_pp() %>%
   #       filter(corte == input$alimentacion_pp_corte) %>%
-  #       janitor::remove_empty("cols") 
-  #     
-  #     dat_cut %>%     
+  #       janitor::remove_empty("cols")
+  # 
+  #     dat_cut %>%
   #       filter(ano >= input$fecha_alimentacion_pp[1] &
-  #                ano <= input$fecha_alimentacion_pp[2]) %>% 
+  #                ano <= input$fecha_alimentacion_pp[2]) %>%
   #       select(Fecha, alimentacion_pp_corte_var, Valor) %>%
-  #       arrange(desc(Fecha)) %>% 
+  #       arrange(desc(Fecha)) %>%
   #       pivot_wider(values_from = "Valor",
   #                   names_from = alimentacion_pp_corte_var)
-  #     
+  # 
   #   }
   # })
   # 
-  # # Metadata 
+  # # Metadata
   # alimentacion_pp_meta <- reactive({
-  #   
+  # 
   #   dat_alimentacion_pp() %>%
-  #     select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
-  #     mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
-  #     distinct() %>% 
+  #     select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>%
+  #     mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>%
+  #     distinct() %>%
   #     gather(key = "", value = " ")
-  #   
+  # 
   # })
   # 
   # # Excel
@@ -13630,890 +13730,915 @@ server <- function(input, output) {
   # 
   # # Render
   # output$table_alimentacion_pp <- renderDT({
-  #   
+  # 
   #   DT::datatable(alimentacion_pp_tab(),
   #                 rownames = FALSE,
   #                 caption = htmltools::tags$caption(
   #                   input$indicador_alimentacion_pp,
   #                   style = "color:black; font-size:110%;")
-  #   ) 
-  #   
+  #   )
+  # 
   # })
   # 
   # # * Descarga tablas   ================================================
   # 
   # output$dwl_tab_alimentacion_pp <- downloadHandler(
-  #   
+  # 
   #   filename = function() {
   #     paste("resultados-", input$indicador_alimentacion_pp, ".xlsx", sep = "")
   #   },
   #   content = function(file) {
-  #     
+  # 
   #     openxlsx::write.xlsx(list_alimentacion_pp(), file)
-  #     
+  # 
   #   }
   # )
-  # 
-  # 
-  # 
-  # 
-  # ### 9.2. Alimentación Resultados   =============================================
-  # 
-  # # * Data reactiva   =================================================
-  # 
+
+
+
+
+  ### 9.2. Alimentación Resultados   =============================================
+
+  # * Data reactiva   =================================================
+
+  dat_alimentacion_r <- reactive({
+
+    req(input$indicador_alimentacion_r)
+
+    dat %>%
+      filter(nomindicador == input$indicador_alimentacion_r)
+
+  })
+
+  output$selector_alimentacion_r_corte_2 <- renderUI({
+
+    if(input$indicador_alimentacion_r %in% lista_ind_2){
+
+      selectInput(
+        inputId = "alimentacion_r_corte_2",
+        label = "Seleccione primer corte:",
+        choices = dat_alimentacion_r() %>%
+          select(corte_2) %>%
+          arrange(corte_2) %>%
+          unique() %>%
+          pull(),
+        selected = dat_alimentacion_r() %>%
+          filter(jerarquia == "1") %>%
+          distinct(corte_2) %>%
+          pull()
+      )
+
+    } else {
+
+      NULL
+    }
+
+  })
+
+  output$chbox_alimentacion_r_2 <- renderUI({
+
+    if(input$indicador_alimentacion_r %in% lista_ind_2 & input$indicador_alimentacion_r %notin% lista_especial){
+
+      # if(input$alimentacion_r_corte %notin% c("Total", "Departamento") & input$indicador_alimentacion_r %notin% lista_vunico) {
+
+      alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
+
+      checkboxGroupInput(inputId = "checkbox_alimentacion_r_2",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_alimentacion_r() %>%
+                           filter(corte_2 == input$alimentacion_r_corte_2) %>%
+                           distinct(!!alimentacion_r_corte_var_2) %>%
+                           pull(),
+                         selected = dat_alimentacion_r() %>%
+                           filter(corte_2 == input$alimentacion_r_corte_2) %>%
+                           filter(jerarquia_cat_2 == "1") %>%
+                           distinct(!!alimentacion_r_corte_var_2) %>%
+                           pull()
+      )
+
+      # } else {
+      #
+      #   return(NULL)
+      #
+      #   }
+
+    } else {
+
+      return(NULL)
+
+    }
+  })
+
+
+  output$selector_alimentacion_r_corte <- renderUI({
+
+    selectInput(
+      inputId = "alimentacion_r_corte",
+      label = "Seleccione corte:",
+      choices = dat_alimentacion_r() %>%
+        select(corte) %>%
+        arrange(corte) %>%
+        unique() %>%
+        pull(),
+      selected = dat_alimentacion_r() %>%
+        filter(jerarquia == "1") %>%
+        distinct(corte) %>%
+        pull()
+    )
+
+  })
+
+  output$chbox_alimentacion_r <- renderUI({
+
+    if(input$alimentacion_r_corte %in% lista_ind_2 & input$alimentacion_r_corte %notin% c("Total", "Departamento") & input$indicador_alimentacion_r %notin% lista_vunico) {
+
+      alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+      alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
+
+      checkboxGroupInput(inputId = "checkbox_alimentacion_r",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_alimentacion_r() %>%
+                           filter(!!alimentacion_r_corte_var_2 %in% input$checkbox_alimentacion_r_2) %>%
+                           filter(corte == input$alimentacion_r_corte) %>%
+                           distinct(!!alimentacion_r_corte_var) %>%
+                           pull(),
+                         selected = dat_alimentacion_r() %>%
+                           filter(!!alimentacion_r_corte_var_2 %in% input$checkbox_alimentacion_r_2) %>%
+                           filter(corte == input$alimentacion_r_corte) %>%
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!alimentacion_r_corte_var) %>%
+                           pull()
+      )
+
+    } else if(input$alimentacion_r_corte %notin% lista_ind_2 & input$alimentacion_r_corte %notin% c("Total", "Departamento") & input$indicador_alimentacion_r %notin% lista_vunico) {
+
+      alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+
+      checkboxGroupInput(inputId = "checkbox_alimentacion_r",
+                         label = "Seleccione categorías",
+                         inline = TRUE,
+                         choices =  dat_alimentacion_r() %>%
+                           filter(corte == input$alimentacion_r_corte) %>%
+                           distinct(!!alimentacion_r_corte_var) %>%
+                           pull(),
+                         selected = dat_alimentacion_r() %>%
+                           filter(corte == input$alimentacion_r_corte) %>%
+                           filter(jerarquia_cat == "1") %>%
+                           distinct(!!alimentacion_r_corte_var) %>%
+                           pull()
+      )
+
+    } else {
+
+      return(NULL)
+    }
+
+  })
+
+  # Selector de fecha
+  output$s_alimentacion_r_fecha <- renderUI({
+
+    if(input$alimentacion_r_corte == "Departamento" & input$indicador_alimentacion_r %notin% lista_ind_2) {
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
+
+      req(nrow(dat_alimentacion_r()) > 0)
+
+      selectInput(
+        inputId = "fecha_dpto_alimentacion_r",
+        label = "Seleccione año:",
+        choices = dat_alimentacion_r() %>%
+          filter(nomindicador == input$indicador_alimentacion_r) %>%
+          drop_na(Valor) %>%
+          select(ano) %>%
+          arrange(desc(ano)) %>%
+          unique() %>%
+          pull(),
+        selected = max(input$ano)
+      )
+
+    } else if (input$indicador_alimentacion_r %in% lista_serie_cat){
+
+      return(NULL)
+
+
+    } else if (input$indicador_alimentacion_r %in% lista_vunico){
+
+      return(NULL)
+
+    } else  {
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
+      req(nrow(dat_alimentacion_r()) > 0)
+
+      tagList(
+        # tags$style(type = 'text/css',
+        #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
+        # div(id = 'big_slider',
+
+        sliderInput("fecha_alimentacion_r",
+                    label = "Rango de tiempo",
+                    sep = "",
+                    dragRange = T,
+                    min = min(dat_alimentacion_r()$ano),
+                    max = max(dat_alimentacion_r()$ano),
+                    value = c(min(dat_alimentacion_r()$ano),
+                              max(dat_alimentacion_r()$ano))
+        )
+      )
+
+    }
+  })
+
+  # # Selector de corte según categoría y data temporal
   # dat_alimentacion_r <- reactive({
-  #   
-  #   req(input$indicador_alimentacion_r)
-  #   
-  #   dat %>%
-  #     filter(nomindicador == input$indicador_alimentacion_r) 
-  #   
-  # })
-  # 
-  # output$selector_alimentacion_r_corte_2 <- renderUI({
-  #   
+  #
+  #   req(input$alimentacion_r_corte)
+  #
   #   if(input$indicador_alimentacion_r %in% lista_ind_2){
-  #     
-  #     selectInput(
-  #       inputId = "alimentacion_r_corte_2",
-  #       label = "Seleccione primer corte:",
-  #       choices = dat_alimentacion_r() %>% 
-  #         select(corte_2) %>%
-  #         arrange(corte_2) %>% 
-  #         unique() %>% 
-  #         pull(),
-  #       selected = dat_alimentacion_r() %>% 
-  #         filter(jerarquia == "1") %>%  
-  #         distinct(corte_2) %>% 
-  #         pull()
-  #     )
-  #     
-  #   } else {
-  #     
-  #     NULL
-  #   }
-  #   
-  # })
-  # 
-  # output$chbox_alimentacion_r_2 <- renderUI({
-  #   
-  #   if(input$indicador_alimentacion_r %in% lista_ind_2 & input$indicador_alimentacion_r %notin% lista_especial){
-  #     
-  #     # if(input$alimentacion_r_corte %notin% c("Total", "Departamento") & input$indicador_alimentacion_r %notin% lista_vunico) {
-  #     
-  #     alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-  #     
-  #     checkboxGroupInput(inputId = "checkbox_alimentacion_r_2",
-  #                        label = "Seleccione categorías",
-  #                        inline = TRUE,
-  #                        choices =  dat_alimentacion_r() %>%
-  #                          filter(corte_2 == input$alimentacion_r_corte_2) %>% 
-  #                          distinct(!!alimentacion_r_corte_var_2) %>%
-  #                          pull(),
-  #                        selected = dat_alimentacion_r() %>%
-  #                          filter(corte_2 == input$alimentacion_r_corte_2) %>% 
-  #                          filter(jerarquia_cat_2 == "1") %>%
-  #                          distinct(!!alimentacion_r_corte_var_2) %>%
-  #                          pull()
-  #     )
-  #     
-  #     # } else {
-  #     #   
-  #     #   return(NULL)
-  #     #   
-  #     #   }
-  #     
-  #   } else {
-  #     
-  #     return(NULL)
-  #     
-  #   }      
-  # })
-  # 
-  # 
-  # output$selector_alimentacion_r_corte <- renderUI({
-  #   
-  #   selectInput(
-  #     inputId = "alimentacion_r_corte",
-  #     label = "Seleccione corte:",
-  #     choices = dat_alimentacion_r() %>% 
-  #       select(corte) %>%
-  #       arrange(corte) %>% 
-  #       unique() %>% 
-  #       pull(),
-  #     selected = dat_alimentacion_r() %>% 
-  #       filter(jerarquia == "1") %>%  
-  #       distinct(corte) %>% 
-  #       pull()
-  #   )
-  #   
-  # })
-  # 
-  # output$chbox_alimentacion_r <- renderUI({
-  #   
-  #   if(input$alimentacion_r_corte %in% lista_ind_2 & input$alimentacion_r_corte %notin% c("Total", "Departamento") & input$indicador_alimentacion_r %notin% lista_vunico) {
-  #     
-  #     alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #     alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-  #     
-  #     checkboxGroupInput(inputId = "checkbox_alimentacion_r",
-  #                        label = "Seleccione categorías",
-  #                        inline = TRUE,
-  #                        choices =  dat_alimentacion_r() %>%
-  #                          filter(!!alimentacion_r_corte_var_2 %in% input$checkbox_alimentacion_r_2) %>%
-  #                          filter(corte == input$alimentacion_r_corte) %>% 
-  #                          distinct(!!alimentacion_r_corte_var) %>%
-  #                          pull(),
-  #                        selected = dat_alimentacion_r() %>%
-  #                          filter(!!alimentacion_r_corte_var_2 %in% input$checkbox_alimentacion_r_2) %>%
-  #                          filter(corte == input$alimentacion_r_corte) %>% 
-  #                          filter(jerarquia_cat == "1") %>%
-  #                          distinct(!!alimentacion_r_corte_var) %>%
-  #                          pull()
-  #     )
-  #     
-  #   } else if(input$alimentacion_r_corte %notin% lista_ind_2 & input$alimentacion_r_corte %notin% c("Total", "Departamento") & input$indicador_alimentacion_r %notin% lista_vunico) {
-  #     
-  #     alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #     
-  #     checkboxGroupInput(inputId = "checkbox_alimentacion_r",
-  #                        label = "Seleccione categorías",
-  #                        inline = TRUE,
-  #                        choices =  dat_alimentacion_r() %>%
-  #                          filter(corte == input$alimentacion_r_corte) %>% 
-  #                          distinct(!!alimentacion_r_corte_var) %>%
-  #                          pull(),
-  #                        selected = dat_alimentacion_r() %>%
-  #                          filter(corte == input$alimentacion_r_corte) %>% 
-  #                          filter(jerarquia_cat == "1") %>%
-  #                          distinct(!!alimentacion_r_corte_var) %>%
-  #                          pull()
-  #     )
-  #     
-  #   } else {
-  #     
-  #     return(NULL)
-  #   }
-  #   
-  # })
-  # 
-  # # Selector de fecha
-  # output$s_alimentacion_r_fecha <- renderUI({
-  #   
-  #   if(input$alimentacion_r_corte == "Departamento" & input$indicador_alimentacion_r %notin% lista_ind_2) {
-  #     
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-  #     
-  #     req(nrow(dat_alimentacion_r()) > 0)
-  #     
-  #     selectInput(
-  #       inputId = "fecha_dpto_alimentacion_r",
-  #       label = "Seleccione año:",
-  #       choices = dat_alimentacion_r() %>% 
-  #         filter(nomindicador == input$indicador_alimentacion_r) %>%
-  #         drop_na(Valor) %>%
-  #         select(ano) %>%
-  #         arrange(desc(ano)) %>% 
-  #         unique() %>% 
-  #         pull(),
-  #       selected = max(input$ano)
-  #     )
-  #     
-  #   } else if (input$indicador_alimentacion_r %in% lista_serie_cat){
-  #     
-  #     return(NULL)
-  #     
-  #     
-  #   } else if (input$indicador_alimentacion_r %in% lista_vunico){
-  #     
-  #     return(NULL)
-  #     
-  #   } else  {
-  #     
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-  #     req(nrow(dat_alimentacion_r()) > 0)
-  #     
-  #     tagList(
-  #       # tags$style(type = 'text/css', 
-  #       #            '#big_slider .irs-grid-text {font-size: 12px; transform: rotate(-90deg) translate(-10px);} ,.irs-grid-pol.large {height: 0px;}'),
-  #       # div(id = 'big_slider',
-  #       
-  #       sliderInput("fecha_alimentacion_r", 
-  #                   label = "Rango de tiempo", 
-  #                   sep = "",
-  #                   dragRange = T,
-  #                   min = min(dat_alimentacion_r()$ano), 
-  #                   max = max(dat_alimentacion_r()$ano), 
-  #                   value = c(min(dat_alimentacion_r()$ano), 
-  #                             max(dat_alimentacion_r()$ano))
-  #       )
-  #     )
-  #     
-  #   }
-  # })
-  # 
-  # # # Selector de corte según categoría y data temporal
-  # # dat_alimentacion_r <- reactive({
-  # #   
-  # #   req(input$alimentacion_r_corte)
-  # #   
-  # #   if(input$indicador_alimentacion_r %in% lista_ind_2){
-  # #     
-  # #     dat_salarios <- dat_alimentacion_r() %>%
-  # #       filter(corte_2 == input$alimentacion_r_corte_2) %>% 
-  # #       filter(corte == input$alimentacion_r_corte) %>%
-  # #       janitor::remove_empty("cols")
-  # #     
-  # #   } else {
-  # #     
-  # #     dat_alimentacion_r() %>%
-  # #       filter(corte == input$alimentacion_r_corte) %>%
-  # #       janitor::remove_empty("cols")
-  # #     
-  # #   }
-  # # })
-  # 
-  # # * Metadata   ======================================================
-  # 
-  # # Title
-  # output$title_alimentacion_r <- renderUI({ 
-  #   helpText(HTML(unique(dat_alimentacion_r()$nomindicador)))
-  # })
-  # 
-  # # Subtitle
-  # output$subtitle_alimentacion_r <- renderUI({ 
-  #   helpText(HTML(unique(dat_alimentacion_r()$definicion)))
-  # })
-  # 
-  # # Nota
-  # output$nota_alimentacion_r <- renderUI({ 
-  #   
-  #   if(input$indicador_alimentacion_r %in% lista_nota){
-  #     helpText(HTML(unique(dat_alimentacion_r()$nota)))
-  #     
-  #   } else(NULL)
-  # })  
-  # 
-  # # Nombre conceptual
-  # output$conindicador_alimentacion_r <- renderUI({ 
-  #   helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_alimentacion_r()$conindicador))))
-  # })
-  # 
-  # # Calculo
-  # output$calculo_alimentacion_r <- renderUI({ 
-  #   helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_alimentacion_r()$calculo))))
-  # })
-  # 
-  # # Observaciones
-  # output$observacion_alimentacion_r <- renderUI({ 
-  #   helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_alimentacion_r()$observaciones))))
-  # })
-  # 
-  # 
-  # # * Gráficos   ======================================================
-  # 
-  # output$plot_alimentacion_r <- renderPlot({
-  #   
-  #   req(input$indicador_alimentacion_r, input$alimentacion_r_corte)
-  #   
-  #   if(input$indicador_alimentacion_r %in% lista_serie_cat){
-  #     
-  #     req(input$indicador_alimentacion_r)
-  #     
-  #     # Total
-  #     if(input$alimentacion_r_corte == "Total"){
-  #       
-  #       dat_plot <- dat_alimentacion_r() %>%
-  #         filter(corte == "Total")
-  #       
-  #       plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
-  #         geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-  #         geom_point(size = 3, colour = color_defecto) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x = element_text(angle = 0),
-  #               legend.position = "bottom") +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(input$indicador_alimentacion_r),
-  #              caption = wrapit(unique(dat_plot$cita)))
-  #       
-  #       print(plot)
-  #       ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #       
-  #       # Según corte
-  #     } else if(input$alimentacion_r_corte != "Total") {
-  #       
-  #       alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #       
-  #       dat_plot <- dat_alimentacion_r() %>%
-  #         filter(corte == input$alimentacion_r_corte) %>%
-  #         filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r)
-  #       
-  #       plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-  #                                           colour = alimentacion_r_corte_var, group = alimentacion_r_corte_var)) +
-  #         geom_line(size = 1, alpha = 0.5) +
-  #         geom_point(size = 3) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x = element_text(angle = 0),
-  #               legend.position = "bottom") +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                   "según",
-  #                                   tolower(input$alimentacion_r_corte))),
-  #              caption = wrapit(unique(dat_plot$cita))) +
-  #         scale_colour_manual(name = "", values = paleta_expandida)
-  #       
-  #       print(plot)
-  #       ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #       
-  #     }
-  #     
-  #   } else if(input$indicador_alimentacion_r %in% lista_especial ){
-  #     
-  #     if (input$alimentacion_r_corte_2 == "Total"){        
-  #       
-  #       req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-  #       
-  #       alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #       
-  #       dat_plot <- dat_alimentacion_r() %>%
-  #         filter(ano >= input$fecha_alimentacion_r[1] &
-  #                  ano <= input$fecha_alimentacion_r[2]) %>%
-  #         filter(corte == input$alimentacion_r_corte) %>%
-  #         # filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r) %>% 
-  #         filter(corte_2 == input$alimentacion_r_corte_2)  
-  #       
-  #       plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-  #                                           fill = alimentacion_r_corte_var)) +
-  #         geom_col(position = "dodge", width = .7, alpha = .8) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x=element_blank(),
-  #               legend.position = "bottom") +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                   "según",
-  #                                   tolower(input$alimentacion_r_corte),
-  #                                   "en",
-  #                                   unique(dat_plot$fecha_cat))),
-  #              caption = wrapit(unique(dat_plot$cita))) +
-  #         scale_fill_brewer(name = "", palette = "Paired")
-  #       
-  #       print(plot)
-  #       ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #       
-  #     } else {
-  #       
-  #       req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-  #       
-  #       alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #       alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-  #       
-  #       dat_plot <- dat_alimentacion_r() %>%
-  #         filter(ano >= input$fecha_alimentacion_r[1] &
-  #                  ano <= input$fecha_alimentacion_r[2]) %>%
-  #         filter(corte == input$alimentacion_r_corte) %>%
-  #         # filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r) %>% 
-  #         filter(corte_2 == input$alimentacion_r_corte_2)  
-  #       
-  #       plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
-  #                                           fill = alimentacion_r_corte_var)) +
-  #         geom_col(position = "dodge", width = .7, alpha = .8) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x=element_blank(),
-  #               legend.position = "bottom") +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                   "según",
-  #                                   tolower(input$alimentacion_r_corte),
-  #                                   "en",
-  #                                   unique(dat_plot$fecha_cat))),
-  #              caption = wrapit(unique(dat_plot$cita))) +
-  #         scale_fill_brewer(name = "", palette = "Paired") +
-  #         facet_wrap(as.formula(paste("~", alimentacion_r_corte_var_2)))
-  #       
-  #       print(plot)
-  #       ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #       
-  #     }
-  #     
-  #   } else if(input$indicador_alimentacion_r %in% lista_vunico & input$indicador_alimentacion_r %in% lista_ind_2){
-  #     
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-  #     
-  #     alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #     alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-  #     
-  #     dat_plot <- dat_alimentacion_r() %>%
-  #       filter(ano >= input$fecha_alimentacion_r[1] &
-  #                ano <= input$fecha_alimentacion_r[2]) %>%
-  #       filter(corte == input$alimentacion_r_corte) %>%
-  #       filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r) %>%
-  #       filter(!!alimentacion_r_corte_var_2 %in% input$checkbox_alimentacion_r_2) %>%
-  #       filter(corte_2 == input$alimentacion_r_corte_2)
-  #     
-  #     plot <- ggplot(dat_plot,
-  #                    aes_string(x = "fecha_cat", y = "Valor",
-  #                               fill = alimentacion_r_corte_var)) +
-  #       geom_col(position = "dodge", width = .7, alpha = .8) +
-  #       theme_bdd(base_size = 12) +
-  #       theme(axis.text.x=element_blank(),
-  #             legend.position = "bottom") +
-  #       labs(x = "",  y = "",
-  #            title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                 "según",
-  #                                 tolower(input$alimentacion_r_corte),
-  #                                 "en",
-  #                                 unique(dat_plot$fecha_cat))),
-  #            caption = wrapit(unique(dat_plot$cita))) +
-  #       scale_fill_brewer(name = "", palette = "Paired") +
-  #       facet_wrap(as.formula(paste("~", alimentacion_r_corte_var_2)))
-  #     
-  #     print(plot)
-  #     ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #     
-  #   } else if(input$indicador_alimentacion_r %in% lista_vunico & input$alimentacion_r_corte != "Departamento") {
-  #     
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-  #     
-  #     dat_plot <- dat_alimentacion_r() %>%
-  #       filter(corte == input$alimentacion_r_corte) %>%
-  #       janitor::remove_empty("cols")
-  #     
-  #     if(input$alimentacion_r_corte == "Total"){
-  #       
-  #       plot <- ggplot(dat_plot,
-  #                      aes_string(x = "fecha_cat", y = "Valor")) +
-  #         geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
-  #         geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x=element_blank(),
-  #               legend.position = "bottom") +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                   "según",
-  #                                   tolower(input$alimentacion_r_corte),
-  #                                   "en",
-  #                                   unique(dat_plot$fecha_cat))),
-  #              caption = wrapit(unique(dat_plot$cita)))
-  #       
-  #       print(plot)
-  #       ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #       
-  #       
-  #     } else {
-  #       
-  #       alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #       
-  #       plot <- ggplot(dat_plot,
-  #                      aes_string(x = "fecha_cat", y = "Valor",
-  #                                 fill = alimentacion_r_corte_var)) +
-  #         geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
-  #         geom_text(aes_string(group = alimentacion_r_corte_var, label = "Valor"),
-  #                   position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x=element_blank(),
-  #               legend.position = "bottom") +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                   "según",
-  #                                   tolower(input$alimentacion_r_corte),
-  #                                   "en",
-  #                                   unique(dat_plot$fecha_cat))),
-  #              caption = wrapit(unique(dat_plot$cita))) +
-  #         scale_fill_brewer(name = "", palette = "Paired")
-  #       
-  #       print(plot)
-  #       ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #       
-  #     }
-  #     
-  #     
-  #   } else if(input$indicador_alimentacion_r %in% lista_ind_2) {
-  #     
-  #     req(input$alimentacion_r_corte, input$alimentacion_r_corte_2,
-  #         input$fecha_alimentacion_r, input$checkbox_alimentacion_r)
-  #     
-  #     alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #     alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-  #     
-  #     dat_plot <- dat_alimentacion_r() %>%
-  #       filter(ano >= input$fecha_alimentacion_r[1] &
-  #                ano <= input$fecha_alimentacion_r[2]) %>%
-  #       filter(corte == input$alimentacion_r_corte) %>%
-  #       filter(!!alimentacion_r_corte_var_2 %in% input$checkbox_alimentacion_r_2) %>%
-  #       filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r) %>% 
-  #       filter(corte_2 == input$alimentacion_r_corte_2)
-  #     
-  #     if(input$alimentacion_r_corte_2 == "Total"){
-  #       
-  #       dat_plot <- dat_plot %>%
-  #         filter(corte_2 == "Total")
-  #       
-  #       plot <- ggplot(dat_plot,
-  #                      aes_string(x = "fecha", y = "Valor", colour = alimentacion_r_corte_var)) +
-  #         geom_line(size = 1, alpha = 0.5) +
-  #         geom_point(size = 3) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x = element_text(angle = 0),
-  #               legend.position = "bottom") +
-  #         scale_x_continuous(breaks = int_breaks) +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                   "según",
-  #                                   tolower(input$alimentacion_r_corte))),
-  #              caption = wrapit(unique(dat_plot$cita))) +
-  #         scale_colour_manual(name = "", values = paleta_expandida)
-  #       
-  #     } else if(input$alimentacion_r_corte_2 != "Total") {
-  #       
-  #       alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-  #       
-  #       dat_plot <- dat_plot %>%
-  #         filter(corte_2 == input$alimentacion_r_corte_2)
-  #       
-  #       plot <- ggplot(dat_plot,
-  #                      aes_string(x = "fecha", y = "Valor", colour = alimentacion_r_corte_var)) +
-  #         geom_line(size = 1, alpha = 0.5) +
-  #         geom_point(size = 3) +
-  #         theme_bdd(base_size = 12) +
-  #         scale_x_continuous(breaks = int_breaks) +
-  #         theme(axis.text.x = element_text(angle = 0),
-  #               legend.position = "bottom") +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                   "según",
-  #                                   tolower(input$alimentacion_r_corte))),
-  #              caption = wrapit(unique(dat_plot$cita))) +
-  #         scale_colour_manual(name = "", values = paleta_expandida) +
-  #         facet_wrap(as.formula(paste("~", alimentacion_r_corte_var_2)))
-  #       
-  #     }
-  #     
-  #     print(plot)
-  #     ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #     
-  #     
-  #     # Grafico simple normal
-  #   } else if(input$alimentacion_r_corte == "Total") {
-  #     
-  #     req(input$indicador_alimentacion_r, input$fecha_alimentacion_r)
-  #     
-  #     dat_plot <- dat_alimentacion_r() %>%
-  #       filter(ano >= input$fecha_alimentacion_r[1] &
-  #                ano <= input$fecha_alimentacion_r[2]) %>%
-  #       filter(corte == "Total")
-  #     
-  #     if(input$indicador_alimentacion_r %in% lista_met){
-  #       
-  #       dat_plot <- dat_plot %>% 
-  #         mutate(metodo = case_when(
-  #           fecha <= 2019 ~ "pre",
-  #           fecha == 2020 ~ "2020",
-  #           fecha == 2021 ~ "2021",
-  #           fecha >= 2022 ~ "post",
-  #         ))
-  #       
-  #       plot <- ggplot(dat_plot,
-  #                      aes(x = fecha, y = Valor, alpha = metodo)) +
-  #         geom_line(size = 1, colour = color_defecto) +
-  #         geom_point(size = 3, colour = color_defecto) +
-  #         # scale_x_continuous(breaks = int_breaks) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x = element_text(angle = 0),
-  #               legend.position = "none") +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(input$indicador_alimentacion_r),
-  #              caption = wrapit(unique(dat_plot$cita))) +
-  #         scale_alpha_manual(values = c("pre" = .3, 
-  #                                       "2020" = .5, 
-  #                                       "2021" = .6, 
-  #                                       "post"= .8))
-  #       
-  #       print(plot)
-  #       ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #       
-  #     } else {
-  #       
-  #       plot <- ggplot(dat_plot,
-  #                      aes(x = fecha, y = Valor)) +
-  #         geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-  #         geom_point(size = 3, colour = color_defecto) +
-  #         scale_x_continuous(breaks = int_breaks) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x = element_text(angle = 0),
-  #               legend.position = "bottom") +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(input$indicador_alimentacion_r),
-  #              caption = wrapit(unique(dat_plot$cita)))
-  #       
-  #       print(plot)
-  #       ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #       
-  #     }
-  #     
-  #     
-  #   } else if(input$alimentacion_r_corte == "Departamento" &
-  #             input$indicador_alimentacion_r %notin% lista_ind_2 ) {
-  #     
-  #     req(input$indicador_alimentacion_r, input$fecha_dpto_alimentacion_r)
-  #     
-  #     dat_plot <- dat_alimentacion_r() %>%
-  #       filter(corte == "Departamento") %>%
-  #       filter(ano == input$fecha_dpto_alimentacion_r) %>%
-  #       select(departamento, Valor, fuente, cita)
-  #     
-  #     dep_j <- dep %>%
-  #       left_join(dat_plot, by = c("nombre" = "departamento"))
-  #     
-  #     plot <-  ggplot(dep_j, aes(fill = Valor)) +
-  #       geom_sf() +
-  #       geom_sf_text(aes(label = Valor), colour = "black",
-  #                    size = 4, fontface = "bold")+
-  #       viridis::scale_fill_viridis(name = "", direction = -1)+
-  #       labs(x = "",
-  #            y = "",
-  #       )+
-  #       theme_bdd(base_size = 14) +
-  #       theme(axis.line = element_blank(),
-  #             axis.text.x = element_blank(),
-  #             axis.text.y = element_blank(),
-  #             axis.ticks = element_blank(),
-  #             axis.title.x = element_blank(),
-  #             axis.title.y = element_blank(),
-  #             panel.grid.major = element_line(colour = "transparent"),
-  #       ) +
-  #       labs(x = "",  y = "",
-  #            title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                 "en",
-  #                                 input$fecha_dpto_alimentacion_r), w = 80),
-  #            caption = wrapit(unique(dat_plot$cita), w = 80))
-  #     
-  #     print(plot)
-  #     ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
-  #     
-  #     
-  #   } else if(input$alimentacion_r_corte != "Total") {
-  #     
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r,
-  #         input$fecha_alimentacion_r, input$checkbox_alimentacion_r)
-  #     
-  #     dat_plot <- dat_alimentacion_r() %>%
-  #       filter(ano >= input$fecha_alimentacion_r[1] &
-  #                ano <= input$fecha_alimentacion_r[2]) %>%
-  #       filter(corte == input$alimentacion_r_corte) %>%
-  #       janitor::remove_empty("cols")
-  #     
-  #     alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #     
-  #     dat_plot <- filter(dat_plot,
-  #                        !!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r)
-  #     
-  #     if(input$indicador_alimentacion_r %in% lista_met){
-  #       
-  #       dat_plot <- dat_plot %>% 
-  #         mutate(metodo = case_when(
-  #           fecha <= 2019 ~ "pre",
-  #           fecha == 2020 ~ "2020",
-  #           fecha == 2021 ~ "2021",
-  #           fecha >= 2022 ~ "post",
-  #         ))
-  #       
-  #       plot <- ggplot(dat_plot,
-  #                      aes_string(x = "fecha", y = "Valor", colour = alimentacion_r_corte_var, alpha = "metodo")) +
-  #         geom_line(size = 1) +
-  #         geom_point(size = 3) +
-  #         theme_bdd(base_size = 12) +
-  #         theme(axis.text.x = element_text(angle = 0),
-  #               legend.position = "bottom") +
-  #         scale_x_continuous(breaks = int_breaks) +
-  #         labs(x = "",  y = "",
-  #              title = wrapit(paste(input$indicador_alimentacion_r,
-  #                                   "según",
-  #                                   tolower(input$alimentacion_r_corte))),
-  #              caption = wrapit(unique(dat_plot$cita))) +
-  #         scale_colour_manual(name = "", values = paleta_expandida) +
-  #         scale_alpha_manual(values = c("pre" = .3, 
-  #                                       "2020" = .5, 
-  #                                       "2021" = .6, 
-  #                                       "post"= .8)) +
-  #         guides(alpha = "none")
-  #       
-  #       print(plot)
-  #       ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")      
-  #       
-  #     }
-  #   }
-  # })
-  # 
-  # 
-  # # * Descarga gráficos   =============================================
-  # 
-  # output$baja_p_alimentacion_r <- downloadHandler(
-  #   filename <- function() {
-  #     paste("indicador alimentacion r", "png", sep = ".")
-  #   },
-  # 
-  #   content <- function(file) {
-  #     file.copy("www/indicador alimentacion r.png", file)
-  #   },
-  #   contentType = "www/indicador alimentacion r"
-  # )
-  # 
-  # 
-  # # * Tablas   ========================================================
-  # 
-  # # Data
-  # alimentacion_r_tab <- reactive({
-  # 
-  #   if(input$indicador_alimentacion_r %in%  lista_especial){
-  # 
-  #     alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  #     alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-  # 
-  #     dat_alimentacion_r() %>%
+  #
+  #     dat_salarios <- dat_alimentacion_r() %>%
   #       filter(corte_2 == input$alimentacion_r_corte_2) %>%
-  #       select(Fecha, alimentacion_r_corte_var, alimentacion_r_corte_var_2, Valor) %>%
-  #       arrange(desc(Fecha)) %>%
-  #       pivot_wider(values_from = "Valor",
-  #                   names_from = alimentacion_r_corte_var)
-  # 
-  #   } else if(input$indicador_alimentacion_r %in% lista_vunico & input$alimentacion_r_corte == "Total"){
-  # 
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-  # 
-  #     dat_alimentacion_r() %>%
-  #       filter(corte == "Total") %>%
-  #       select(fecha_cat, Valor) %>%
-  #       arrange(desc(fecha_cat)) %>%
-  #       rename(Fecha = fecha_cat)
-  # 
-  #   } else if(input$indicador_alimentacion_r %in% lista_vunico & input$alimentacion_r_corte != "Total") {
-  # 
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
-  # 
-  #     alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  # 
-  #     dat_cut <- dat_alimentacion_r() %>%
   #       filter(corte == input$alimentacion_r_corte) %>%
   #       janitor::remove_empty("cols")
-  # 
-  #     dat_cut %>%
-  #       select(fecha_cat, alimentacion_r_corte_var, Valor) %>%
-  #       arrange(desc(fecha_cat)) %>%
-  #       rename(Fecha = fecha_cat) %>%
-  #       pivot_wider(values_from = "Valor",
-  #                   names_from = alimentacion_r_corte_var)
-  # 
-  # 
-  #   } else if(input$indicador_alimentacion_r %in% lista_ind_2) {
-  # 
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r, input$fecha_alimentacion_r)
-  # 
-  #     alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  # 
-  #     dat_cut <- dat_alimentacion_r() %>%
-  #       filter(corte == input$alimentacion_r_corte) %>%
-  #       filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r)
-  # 
-  #     if(input$alimentacion_r_corte_2 == "Total"){
-  # 
-  #       dat_cut %>%
-  #         filter(ano >= input$fecha_alimentacion_r[1] &
-  #                  ano <= input$fecha_alimentacion_r[2]) %>%
-  #         filter(corte_2 == "Total") %>%
-  #         select(Fecha, alimentacion_r_corte_var, Valor) %>%
-  #         arrange(desc(Fecha)) %>%
-  #         pivot_wider(values_from = "Valor",
-  #                     names_from = alimentacion_r_corte_var)
-  # 
-  #     } else if(input$alimentacion_r_corte_2 != "Total") {
-  # 
-  #       alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
-  # 
-  #       dat_cut %>%
-  #         filter(ano >= input$fecha_alimentacion_r[1] &
-  #                  ano <= input$fecha_alimentacion_r[2]) %>%
-  #         filter(corte_2 == input$alimentacion_r_corte_2) %>%
-  #         select(Fecha, alimentacion_r_corte_var, alimentacion_r_corte_var_2, Valor) %>%
-  #         arrange(desc(Fecha)) %>%
-  #         pivot_wider(values_from = "Valor",
-  #                     names_from = alimentacion_r_corte_var)
-  # 
-  #     }
-  # 
-  #   } else if(input$alimentacion_r_corte == "Total") {
-  # 
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r, input$fecha_alimentacion_r)
-  # 
+  #
+  #   } else {
+  #
   #     dat_alimentacion_r() %>%
-  #       filter(corte == "Total") %>%
-  #       filter(ano >= input$fecha_alimentacion_r[1] &
-  #                ano <= input$fecha_alimentacion_r[2]) %>%
-  #       select(Fecha, Valor) %>%
-  #       arrange(desc(Fecha))
-  # 
-  #   } else if(input$alimentacion_r_corte != "Total") {
-  # 
-  #     req(input$alimentacion_r_corte, input$indicador_alimentacion_r, input$fecha_alimentacion_r)
-  # 
-  #     alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
-  # 
-  #     dat_cut <- dat_alimentacion_r() %>%
   #       filter(corte == input$alimentacion_r_corte) %>%
   #       janitor::remove_empty("cols")
-  # 
-  #     dat_cut %>%
-  #       filter(ano >= input$fecha_alimentacion_r[1] &
-  #                ano <= input$fecha_alimentacion_r[2]) %>%
-  #       select(Fecha, alimentacion_r_corte_var, Valor) %>%
-  #       arrange(desc(Fecha)) %>%
-  #       pivot_wider(values_from = "Valor",
-  #                   names_from = alimentacion_r_corte_var)
-  # 
+  #
   #   }
   # })
-  # 
-  # # Metadata
-  # alimentacion_r_meta <- reactive({
-  # 
-  #   dat_alimentacion_r() %>%
-  #     select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>%
-  #     mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>%
-  #     distinct() %>%
-  #     gather(key = "", value = " ")
-  # 
-  # })
-  # 
-  # # Excel
-  # list_alimentacion_r <- reactive({
-  #   list_alimentacion_r <- list("Data" = alimentacion_r_tab(),
-  #                           "Metadata" = alimentacion_r_meta())
-  # })
-  # 
-  # # Render
-  # output$table_alimentacion_r <- renderDT({
-  # 
-  #   DT::datatable(alimentacion_r_tab(),
-  #                 rownames = FALSE,
-  #                 caption = htmltools::tags$caption(
-  #                   input$indicador_alimentacion_r,
-  #                   style = "color:black; font-size:110%;")
-  #   )
-  # 
-  # })
-  # 
-  # # * Descarga tablas   ================================================
-  # 
-  # output$dwl_tab_alimentacion_r <- downloadHandler(
-  # 
-  #   filename = function() {
-  #     paste("resultados-", input$indicador_alimentacion_r, ".xlsx", sep = "")
-  #   },
-  #   content = function(file) {
-  # 
-  #     openxlsx::write.xlsx(list_alimentacion_r(), file)
-  # 
-  #   }
-  # )
+
+  # * Metadata   ======================================================
+
+  # Title
+  output$title_alimentacion_r <- renderUI({
+    helpText(HTML(unique(dat_alimentacion_r()$nomindicador)))
+  })
+
+  # Subtitle
+  output$subtitle_alimentacion_r <- renderUI({
+    helpText(HTML(unique(dat_alimentacion_r()$definicion)))
+  })
+
+  # Nota
+  output$nota_alimentacion_r <- renderUI({
+
+    if(input$indicador_alimentacion_r %in% lista_nota){
+      helpText(HTML(unique(dat_alimentacion_r()$nota)))
+
+    } else(NULL)
+  })
+
+  # Nombre conceptual
+  output$conindicador_alimentacion_r <- renderUI({
+    helpText(HTML(paste("<b> Nombre conceptual:</b>", unique(dat_alimentacion_r()$conindicador))))
+  })
+
+  # Calculo
+  output$calculo_alimentacion_r <- renderUI({
+    helpText(HTML(paste("<b> Forma de cálculo:</b>", unique(dat_alimentacion_r()$calculo))))
+  })
+
+  # Observaciones
+  output$observacion_alimentacion_r <- renderUI({
+    helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_alimentacion_r()$observaciones))))
+  })
+
+
+  # * Gráficos   ======================================================
+
+  output$plot_alimentacion_r <- renderPlot({
+
+    req(input$indicador_alimentacion_r, input$alimentacion_r_corte)
+
+    if(input$indicador_alimentacion_r %in% lista_serie_cat){
+
+      req(input$indicador_alimentacion_r)
+
+      # Total
+      if(input$alimentacion_r_corte == "Total"){
+
+        dat_plot <- dat_alimentacion_r() %>%
+          filter(corte == "Total")
+
+        plot <- ggplot(dat_plot, aes(x = fecha_cat, y = Valor, group = 1)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_alimentacion_r),
+               caption = wrapit(unique(dat_plot$cita)))
+
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+        # Según corte
+      } else if(input$alimentacion_r_corte != "Total") {
+
+        alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+
+        dat_plot <- dat_alimentacion_r() %>%
+          filter(corte == input$alimentacion_r_corte) %>%
+          filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r)
+
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = alimentacion_r_corte_var, group = alimentacion_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_alimentacion_r,
+                                    "según",
+                                    tolower(input$alimentacion_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+      }
+
+    } else if(input$indicador_alimentacion_r %in% lista_especial ){
+
+      if (input$alimentacion_r_corte_2 == "Total"){
+
+        req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
+
+        alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+
+        dat_plot <- dat_alimentacion_r() %>%
+          filter(ano >= input$fecha_alimentacion_r[1] &
+                   ano <= input$fecha_alimentacion_r[2]) %>%
+          filter(corte == input$alimentacion_r_corte) %>%
+          # filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r) %>%
+          filter(corte_2 == input$alimentacion_r_corte_2)
+
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = alimentacion_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_alimentacion_r,
+                                    "según",
+                                    tolower(input$alimentacion_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+      } else {
+
+        req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
+
+        alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+        alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
+
+        dat_plot <- dat_alimentacion_r() %>%
+          filter(ano >= input$fecha_alimentacion_r[1] &
+                   ano <= input$fecha_alimentacion_r[2]) %>%
+          filter(corte == input$alimentacion_r_corte) %>%
+          # filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r) %>%
+          filter(corte_2 == input$alimentacion_r_corte_2)
+
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            fill = alimentacion_r_corte_var)) +
+          geom_col(position = "dodge", width = .7, alpha = .8) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_alimentacion_r,
+                                    "según",
+                                    tolower(input$alimentacion_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired") +
+          facet_wrap(as.formula(paste("~", alimentacion_r_corte_var_2)))
+
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+      }
+
+    } else if(input$indicador_alimentacion_r %in% lista_vunico & input$indicador_alimentacion_r %in% lista_ind_2){
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
+
+      alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+      alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
+
+      dat_plot <- dat_alimentacion_r() %>%
+        filter(ano >= input$fecha_alimentacion_r[1] &
+                 ano <= input$fecha_alimentacion_r[2]) %>%
+        filter(corte == input$alimentacion_r_corte) %>%
+        filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r) %>%
+        filter(!!alimentacion_r_corte_var_2 %in% input$checkbox_alimentacion_r_2) %>%
+        filter(corte_2 == input$alimentacion_r_corte_2)
+
+      plot <- ggplot(dat_plot,
+                     aes_string(x = "fecha_cat", y = "Valor",
+                                fill = alimentacion_r_corte_var)) +
+        geom_col(position = "dodge", width = .7, alpha = .8) +
+        theme_bdd(base_size = 12) +
+        theme(axis.text.x=element_blank(),
+              legend.position = "bottom") +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_alimentacion_r,
+                                  "según",
+                                  tolower(input$alimentacion_r_corte),
+                                  "en",
+                                  unique(dat_plot$fecha_cat))),
+             caption = wrapit(unique(dat_plot$cita))) +
+        scale_fill_brewer(name = "", palette = "Paired") +
+        facet_wrap(as.formula(paste("~", alimentacion_r_corte_var_2)))
+
+      print(plot)
+      ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+    } else if(input$indicador_alimentacion_r %in% lista_vunico & input$alimentacion_r_corte != "Departamento") {
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
+
+      dat_plot <- dat_alimentacion_r() %>%
+        filter(corte == input$alimentacion_r_corte) %>%
+        janitor::remove_empty("cols")
+
+      if(input$alimentacion_r_corte == "Total"){
+
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha_cat", y = "Valor")) +
+          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_alimentacion_r,
+                                    "según",
+                                    tolower(input$alimentacion_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita)))
+
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+
+      } else {
+
+        alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha_cat", y = "Valor",
+                                  fill = alimentacion_r_corte_var)) +
+          geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
+          geom_text(aes_string(group = alimentacion_r_corte_var, label = "Valor"),
+                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x=element_blank(),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_alimentacion_r,
+                                    "según",
+                                    tolower(input$alimentacion_r_corte),
+                                    "en",
+                                    unique(dat_plot$fecha_cat))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_fill_brewer(name = "", palette = "Paired")
+
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+      }
+
+
+    } else if(input$indicador_alimentacion_r %in% lista_ind_2) {
+
+      req(input$alimentacion_r_corte, input$alimentacion_r_corte_2,
+          input$fecha_alimentacion_r, input$checkbox_alimentacion_r)
+
+      alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+      alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
+
+      dat_plot <- dat_alimentacion_r() %>%
+        filter(ano >= input$fecha_alimentacion_r[1] &
+                 ano <= input$fecha_alimentacion_r[2]) %>%
+        filter(corte == input$alimentacion_r_corte) %>%
+        filter(!!alimentacion_r_corte_var_2 %in% input$checkbox_alimentacion_r_2) %>%
+        filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r) %>%
+        filter(corte_2 == input$alimentacion_r_corte_2)
+
+      if(input$alimentacion_r_corte_2 == "Total"){
+
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == "Total")
+
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = alimentacion_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_alimentacion_r,
+                                    "según",
+                                    tolower(input$alimentacion_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+
+      } else if(input$alimentacion_r_corte_2 != "Total") {
+
+        alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
+
+        dat_plot <- dat_plot %>%
+          filter(corte_2 == input$alimentacion_r_corte_2)
+
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = alimentacion_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          scale_x_continuous(breaks = int_breaks) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_alimentacion_r,
+                                    "según",
+                                    tolower(input$alimentacion_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) +
+          facet_wrap(as.formula(paste("~", alimentacion_r_corte_var_2)))
+
+      }
+
+      print(plot)
+      ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+
+      # Grafico simple normal
+    } else if(input$alimentacion_r_corte == "Total") {
+
+      req(input$indicador_alimentacion_r, input$fecha_alimentacion_r)
+
+      dat_plot <- dat_alimentacion_r() %>%
+        filter(ano >= input$fecha_alimentacion_r[1] &
+                 ano <= input$fecha_alimentacion_r[2]) %>%
+        filter(corte == "Total")
+
+      if(input$indicador_alimentacion_r %in% lista_met){
+
+        dat_plot <- dat_plot %>%
+          mutate(metodo = case_when(
+            fecha <= 2019 ~ "pre",
+            fecha == 2020 ~ "2020",
+            fecha == 2021 ~ "2021",
+            fecha >= 2022 ~ "post",
+          ))
+
+        plot <- ggplot(dat_plot,
+                       aes(x = fecha, y = Valor, alpha = metodo)) +
+          geom_line(size = 1, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          # scale_x_continuous(breaks = int_breaks) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "none") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_alimentacion_r),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_alpha_manual(values = c("pre" = .3,
+                                        "2020" = .5,
+                                        "2021" = .6,
+                                        "post"= .8))
+
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+      } else {
+
+        plot <- ggplot(dat_plot,
+                       aes(x = fecha, y = Valor)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          scale_x_continuous(breaks = int_breaks) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_alimentacion_r),
+               caption = wrapit(unique(dat_plot$cita)))
+
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+      }
+
+
+    } else if(input$alimentacion_r_corte == "Departamento" &
+              input$indicador_alimentacion_r %notin% lista_ind_2 ) {
+
+      req(input$indicador_alimentacion_r, input$fecha_dpto_alimentacion_r)
+
+      dat_plot <- dat_alimentacion_r() %>%
+        filter(corte == "Departamento") %>%
+        filter(ano == input$fecha_dpto_alimentacion_r) %>%
+        select(departamento, Valor, fuente, cita)
+
+      dep_j <- dep %>%
+        left_join(dat_plot, by = c("nombre" = "departamento"))
+
+      plot <-  ggplot(dep_j, aes(fill = Valor)) +
+        geom_sf() +
+        geom_sf_text(aes(label = Valor), colour = "black",
+                     size = 4, fontface = "bold")+
+        viridis::scale_fill_viridis(name = "", direction = -1)+
+        labs(x = "",
+             y = "",
+        )+
+        theme_bdd(base_size = 14) +
+        theme(axis.line = element_blank(),
+              axis.text.x = element_blank(),
+              axis.text.y = element_blank(),
+              axis.ticks = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              panel.grid.major = element_line(colour = "transparent"),
+        ) +
+        labs(x = "",  y = "",
+             title = wrapit(paste(input$indicador_alimentacion_r,
+                                  "en",
+                                  input$fecha_dpto_alimentacion_r), w = 80),
+             caption = wrapit(unique(dat_plot$cita), w = 80))
+
+      print(plot)
+      ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+
+    } else if(input$alimentacion_r_corte != "Total") {
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r,
+          input$fecha_alimentacion_r, input$checkbox_alimentacion_r)
+
+      dat_plot <- dat_alimentacion_r() %>%
+        filter(ano >= input$fecha_alimentacion_r[1] &
+                 ano <= input$fecha_alimentacion_r[2]) %>%
+        filter(corte == input$alimentacion_r_corte) %>%
+        janitor::remove_empty("cols")
+
+      alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+
+      dat_plot <- filter(dat_plot,
+                         !!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r)
+
+      if(input$indicador_alimentacion_r %in% lista_met){
+
+        dat_plot <- dat_plot %>%
+          mutate(metodo = case_when(
+            fecha <= 2019 ~ "pre",
+            fecha == 2020 ~ "2020",
+            fecha == 2021 ~ "2021",
+            fecha >= 2022 ~ "post",
+          ))
+
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = alimentacion_r_corte_var, alpha = "metodo")) +
+          geom_line(size = 1) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_alimentacion_r,
+                                    "según",
+                                    tolower(input$alimentacion_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) +
+          scale_alpha_manual(values = c("pre" = .3,
+                                        "2020" = .5,
+                                        "2021" = .6,
+                                        "post"= .8)) +
+          guides(alpha = "none")
+
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+
+      } else {
+        
+        alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+        
+        dat_plot <- dat_alimentacion_r() %>%
+          filter(corte == input$alimentacion_r_corte) %>%
+          filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r)
+        
+        plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
+                                            colour = alimentacion_r_corte_var, group = alimentacion_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_alimentacion_r,
+                                    "según",
+                                    tolower(input$alimentacion_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador alimentacion r.png", width = 40, height = 25, units = "cm")
+        
+      }
+    }
+  })
+
+
+  # * Descarga gráficos   =============================================
+
+  output$baja_p_alimentacion_r <- downloadHandler(
+    filename <- function() {
+      paste("indicador alimentacion r", "png", sep = ".")
+    },
+
+    content <- function(file) {
+      file.copy("www/indicador alimentacion r.png", file)
+    },
+    contentType = "www/indicador alimentacion r"
+  )
+
+
+  # * Tablas   ========================================================
+
+  # Data
+  alimentacion_r_tab <- reactive({
+
+    if(input$indicador_alimentacion_r %in%  lista_especial){
+
+      alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+      alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
+
+      dat_alimentacion_r() %>%
+        filter(corte_2 == input$alimentacion_r_corte_2) %>%
+        select(Fecha, alimentacion_r_corte_var, alimentacion_r_corte_var_2, Valor) %>%
+        arrange(desc(Fecha)) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = alimentacion_r_corte_var)
+
+    } else if(input$indicador_alimentacion_r %in% lista_vunico & input$alimentacion_r_corte == "Total"){
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
+
+      dat_alimentacion_r() %>%
+        filter(corte == "Total") %>%
+        select(fecha_cat, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat)
+
+    } else if(input$indicador_alimentacion_r %in% lista_vunico & input$alimentacion_r_corte != "Total") {
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r)
+
+      alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+
+      dat_cut <- dat_alimentacion_r() %>%
+        filter(corte == input$alimentacion_r_corte) %>%
+        janitor::remove_empty("cols")
+
+      dat_cut %>%
+        select(fecha_cat, alimentacion_r_corte_var, Valor) %>%
+        arrange(desc(fecha_cat)) %>%
+        rename(Fecha = fecha_cat) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = alimentacion_r_corte_var)
+
+
+    } else if(input$indicador_alimentacion_r %in% lista_ind_2) {
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r, input$fecha_alimentacion_r)
+
+      alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+
+      dat_cut <- dat_alimentacion_r() %>%
+        filter(corte == input$alimentacion_r_corte) %>%
+        filter(!!alimentacion_r_corte_var %in% input$checkbox_alimentacion_r)
+
+      if(input$alimentacion_r_corte_2 == "Total"){
+
+        dat_cut %>%
+          filter(ano >= input$fecha_alimentacion_r[1] &
+                   ano <= input$fecha_alimentacion_r[2]) %>%
+          filter(corte_2 == "Total") %>%
+          select(Fecha, alimentacion_r_corte_var, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = alimentacion_r_corte_var)
+
+      } else if(input$alimentacion_r_corte_2 != "Total") {
+
+        alimentacion_r_corte_var_2 <- rlang::sym(to_varname(input$alimentacion_r_corte_2))
+
+        dat_cut %>%
+          filter(ano >= input$fecha_alimentacion_r[1] &
+                   ano <= input$fecha_alimentacion_r[2]) %>%
+          filter(corte_2 == input$alimentacion_r_corte_2) %>%
+          select(Fecha, alimentacion_r_corte_var, alimentacion_r_corte_var_2, Valor) %>%
+          arrange(desc(Fecha)) %>%
+          pivot_wider(values_from = "Valor",
+                      names_from = alimentacion_r_corte_var)
+
+      }
+
+    } else if(input$alimentacion_r_corte == "Total") {
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r, input$fecha_alimentacion_r)
+
+      dat_alimentacion_r() %>%
+        filter(corte == "Total") %>%
+        filter(ano >= input$fecha_alimentacion_r[1] &
+                 ano <= input$fecha_alimentacion_r[2]) %>%
+        select(Fecha, Valor) %>%
+        arrange(desc(Fecha))
+
+    } else if(input$alimentacion_r_corte != "Total") {
+
+      req(input$alimentacion_r_corte, input$indicador_alimentacion_r, input$fecha_alimentacion_r)
+
+      alimentacion_r_corte_var <- rlang::sym(to_varname(input$alimentacion_r_corte))
+
+      dat_cut <- dat_alimentacion_r() %>%
+        filter(corte == input$alimentacion_r_corte) %>%
+        janitor::remove_empty("cols")
+
+      dat_cut %>%
+        filter(ano >= input$fecha_alimentacion_r[1] &
+                 ano <= input$fecha_alimentacion_r[2]) %>%
+        select(Fecha, alimentacion_r_corte_var, Valor) %>%
+        arrange(desc(Fecha)) %>%
+        pivot_wider(values_from = "Valor",
+                    names_from = alimentacion_r_corte_var)
+
+    }
+  })
+
+  # Metadata
+  alimentacion_r_meta <- reactive({
+
+    dat_alimentacion_r() %>%
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>%
+      mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>%
+      distinct() %>%
+      gather(key = "", value = " ")
+
+  })
+
+  # Excel
+  list_alimentacion_r <- reactive({
+    list_alimentacion_r <- list("Data" = alimentacion_r_tab(),
+                            "Metadata" = alimentacion_r_meta())
+  })
+
+  # Render
+  output$table_alimentacion_r <- renderDT({
+
+    DT::datatable(alimentacion_r_tab(),
+                  rownames = FALSE,
+                  caption = htmltools::tags$caption(
+                    input$indicador_alimentacion_r,
+                    style = "color:black; font-size:110%;")
+    )
+
+  })
+
+  # * Descarga tablas   ================================================
+
+  output$dwl_tab_alimentacion_r <- downloadHandler(
+
+    filename = function() {
+      paste("resultados-", input$indicador_alimentacion_r, ".xlsx", sep = "")
+    },
+    content = function(file) {
+
+      openxlsx::write.xlsx(list_alimentacion_r(), file)
+
+    }
+  )
 
 
    
