@@ -5,10 +5,8 @@ account: bancodedatos-fcs
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4840263
-bundleId: 7037903
+bundleId: 8113981
 url: https://bancodedatos-fcs.shinyapps.io/Mirador-DESCA-app/
-when: 1680410382.22102
-lastSyncTime: 1680410382.22102
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: indicadores|Sintaxis
+ignoredFiles: Sintaxis

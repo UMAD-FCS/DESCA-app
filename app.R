@@ -3235,7 +3235,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -4120,7 +4120,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -4995,7 +4995,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -5880,7 +5880,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -6757,7 +6757,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -7641,7 +7641,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -8516,7 +8516,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -9400,7 +9400,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -10275,7 +10275,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -11156,7 +11156,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -12031,7 +12031,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -12844,7 +12844,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
@@ -13718,7 +13718,7 @@ server <- function(input, output) {
   #     select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>%
   #     mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>%
   #     distinct() %>%
-  #     gather(key = "", value = " ")
+  #           gather(key = "variable", value = "valor", everything())    
   # 
   # })
   # 
@@ -14604,7 +14604,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>%
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>%
       distinct() %>%
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
 
   })
 
@@ -15637,7 +15637,7 @@ server <- function(input, output) {
       select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
-      gather(key = "", value = " ")
+            gather(key = "variable", value = "valor", everything())    
     
   })
   
