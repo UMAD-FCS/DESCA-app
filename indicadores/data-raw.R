@@ -13,6 +13,8 @@ metadata <- readxl::read_excel("Data/Base_fichas_indicadores.xlsx") %>%
   select(-DERECHO, -POBLACION, -TIPOIND, -DIMENSIÓN, -CONINDICADOR, -NOMINDICADOR,
          -FUENTE)
 
+metadata$ACTUALIZACION <- as.character(metadata$ACTUALIZACION)
+
 glimpse(metadata)
 
 ind_con_ceros <- c(220105, 220106, 230501, 130201, 430305)
@@ -56,7 +58,7 @@ dat$Departamento <- factor(dat$Departamento, levels = levels(dat$Departamento)[c
 dat <- dat %>% 
   left_join(metadata, by = "CODINDICADOR") %>% 
   relocate(FECHA, DEFINICIÓN, CÁLCULO, UNIDAD, COBERTURA_GEO,
-           COBERTURA_TEMPORAL, FRECUENCIA_REPORTE, CITA, UMBRAL, APERTURA, OBSERVACIONES, WEB,
+           COBERTURA_TEMPORAL, FRECUENCIA_REPORTE, CITA, UMBRAL, APERTURA, OBSERVACIONES, ACTUALIZACION, WEB,
            WEB_POB, SEXO_POB, ASCENDENCIA_POB, EDAD_POB) %>% 
   # filter(WEB == 1) %>%
   janitor::clean_names()

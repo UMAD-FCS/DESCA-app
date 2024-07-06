@@ -639,10 +639,20 @@ ui <- fluidPage(
     height: 8px;
     border-top: 1px solid #68478d;
     border-bottom: 1px solid #68478d;
-    background: #428bca;}"),
+    background: #68478d;}"),
   
   chooseSliderSkin(color = "#68478d"),
 
+  tags$style(".selectize-dropdown-content .option:hover {
+      background-color: #68478d !important;
+        color: white !important;
+    }"),
+  
+  # /* Cambiar el color de las opciones dentro del selectInput */
+    tags$style( ".selectize-dropdown-content .option {
+      background-color: white !important;
+        color: #68478d !important;
+    }"),
   
     tags$style(".irs-bar {",
       "  border-color: #68478d;",
@@ -769,6 +779,15 @@ ui <- fluidPage(
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_edu_pp"))
               ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_edu_pp"))
+              ),
               tags$h5(uiOutput("subtitle_edu_pp")),
               br(),
               withSpinner(plotOutput("plot_edu_pp", height = "500px"),
@@ -880,6 +899,15 @@ ui <- fluidPage(
                     right = TRUE,
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_edu_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_edu_r"))
               ),
               tags$h5(uiOutput("subtitle_edu_r")),
               tags$h6(uiOutput("nota_edu_r")),
@@ -1001,6 +1029,15 @@ ui <- fluidPage(
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_salud_pp"))
               ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_salud_pp"))
+              ),
               tags$h5(uiOutput("subtitle_salud_pp")),
               br(),
               withSpinner(plotOutput("plot_salud_pp", height = "500px" ),
@@ -1111,6 +1148,15 @@ ui <- fluidPage(
                     right = TRUE,
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_salud_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_salud_r"))
               ),
               tags$h5(uiOutput("subtitle_salud_r")),
               tags$h6(uiOutput("nota_salud_r")),
@@ -1232,6 +1278,15 @@ ui <- fluidPage(
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_ssocial_pp"))
               ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_ssocial_pp"))
+              ),
               tags$h5(uiOutput("subtitle_ssocial_pp")),
               br(),
               withSpinner(plotOutput("plot_ssocial_pp", height = "500px" ),
@@ -1340,6 +1395,15 @@ ui <- fluidPage(
                     right = TRUE,
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_ssocial_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_ssocial_r"))
               ),
               tags$h5(uiOutput("subtitle_ssocial_r")),
               tags$h6(uiOutput("nota_ssocial_r")),
@@ -1459,6 +1523,15 @@ ui <- fluidPage(
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_vivienda_pp"))
               ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_vivienda_pp"))
+              ),
               tags$h5(uiOutput("subtitle_vivienda_pp")),
               br(),
               withSpinner(plotOutput("plot_vivienda_pp", height = "500px"),
@@ -1568,6 +1641,15 @@ ui <- fluidPage(
                     right = TRUE,
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_vivienda_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_vivienda_r"))
               ),
               tags$h5(uiOutput("subtitle_vivienda_r")),
               tags$h6(uiOutput("nota_vivienda_r")),
@@ -1687,6 +1769,15 @@ ui <- fluidPage(
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_trabajo_pp"))
               ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_trabajo_pp"))
+              ),
               tags$h5(uiOutput("subtitle_trabajo_pp")),
               br(),
               withSpinner(plotOutput("plot_trabajo_pp", height = "500px"),
@@ -1796,6 +1887,15 @@ ui <- fluidPage(
                     right = TRUE,
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_trabajo_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_trabajo_r"))
               ),
               tags$h5(uiOutput("subtitle_trabajo_r")),
               tags$h6(uiOutput("nota_trabajo_r")),
@@ -1915,6 +2015,15 @@ ui <- fluidPage(
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_ambiente_pp"))
               ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_ambiente_pp"))
+              ),
               tags$h5(uiOutput("subtitle_ambiente_pp")),
               br(),
               withSpinner(plotOutput("plot_ambiente_pp", height = "500px"),
@@ -2024,6 +2133,15 @@ ui <- fluidPage(
                     right = TRUE,
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_ambiente_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_ambiente_r"))
               ),
               tags$h5(uiOutput("subtitle_ambiente_r")),
               tags$h6(uiOutput("nota_ambiente_r")),
@@ -2143,6 +2261,16 @@ ui <- fluidPage(
     #                 icon = icon("fas fa-exclamation-triangle"),
     #                 uiOutput("observacion_alimentacion_pp"))
     #           ),
+    #           div(style="display:inline-block;margin: 0px;", 
+    #             dropdown(
+    #                 style = "minimal",
+    #                 status = "primary",
+    #                 width = "500px",
+    #                 right = TRUE,
+    #                 icon = icon("fas fa-arrows-rotate"),
+    #                 uiOutput("actualizacion_ambiente_pp"))
+    #           ),
+    
     #           tags$h5(uiOutput("subtitle_alimentacion_pp")),
     #           br(),
     #           withSpinner(plotOutput("plot_alimentacion_pp", height = "500px"),
@@ -2252,6 +2380,15 @@ ui <- fluidPage(
                     right = TRUE,
                     icon = icon("fas fa-exclamation-triangle"),
                     uiOutput("observacion_alimentacion_r"))
+              ),
+              div(style="display:inline-block;margin: 0px;", 
+                  dropdown(
+                    style = "minimal",
+                    status = "primary",
+                    width = "500px",
+                    right = TRUE,
+                    icon = icon("fas fa-arrows-rotate"),
+                    uiOutput("actualizacion_alimentacion_r"))
               ),
               tags$h5(uiOutput("subtitle_alimentacion_r")),
               tags$h6(uiOutput("nota_alimentacion_r")),
@@ -2365,6 +2502,15 @@ ui <- fluidPage(
                 right = TRUE,
                 icon = icon("fas fa-exclamation-triangle"),
                 uiOutput("observacion_poblaciones"))
+          ),
+          div(style="display:inline-block;margin: 0px;",
+              dropdown(
+                style = "minimal",
+                status = "primary",
+                width = "500px",
+                right = TRUE,
+                icon = icon("fas fa-arrows-rotate"),
+                uiOutput("actualizacion_poblaciones"))
           ),
           tags$h5(uiOutput("subtitle_poblaciones")),
           tags$h6(uiOutput("nota_poblaciones_r")),
@@ -2638,6 +2784,11 @@ server <- function(input, output) {
   # Observaciones
   output$observacion_edu_pp <- renderUI({ 
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_edu_pp()$observaciones))))
+  })
+  
+  # Actualización
+  output$actualizacion_edu_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_edu_pp()$actualizacion))))
   })
   
   
@@ -3232,7 +3383,7 @@ server <- function(input, output) {
   edu_pp_meta <- reactive({
     
     dat_edu_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -3522,6 +3673,11 @@ server <- function(input, output) {
   # Observaciones
   output$observacion_edu_r <- renderUI({ 
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_edu_r()$observaciones))))
+  })
+  
+  # Actualización
+  output$actualizacion_edu_r <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_edu_r()$actualizacion))))
   })
   
   
@@ -4117,7 +4273,7 @@ server <- function(input, output) {
   edu_r_meta <- reactive({
     
     dat_edu_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -4398,6 +4554,11 @@ server <- function(input, output) {
   # Observaciones
   output$observacion_salud_pp <- renderUI({ 
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_salud_pp()$observaciones))))
+  })
+  
+  # Actualización
+  output$actualizacion_salud_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_salud_pp()$actualizacion))))
   })
   
   
@@ -4992,7 +5153,7 @@ server <- function(input, output) {
   salud_pp_meta <- reactive({
     
     dat_salud_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -5282,6 +5443,11 @@ server <- function(input, output) {
   # Observaciones
   output$observacion_salud_r <- renderUI({ 
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_salud_r()$observaciones))))
+  })
+  
+  # Actualización
+  output$actualizacion_salud_r <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_salud_r()$actualizacion))))
   })
   
   
@@ -5877,7 +6043,7 @@ server <- function(input, output) {
   salud_r_meta <- reactive({
     
     dat_salud_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -6160,6 +6326,11 @@ server <- function(input, output) {
   # Observaciones
   output$observacion_ssocial_pp <- renderUI({ 
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ssocial_pp()$observaciones))))
+  })
+  
+  # Actualización
+  output$actualizacion_ssocial_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_ssocial_pp()$actualizacion))))
   })
   
   
@@ -6754,7 +6925,7 @@ server <- function(input, output) {
   ssocial_pp_meta <- reactive({
     
     dat_ssocial_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -7046,6 +7217,10 @@ server <- function(input, output) {
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ssocial_r()$observaciones))))
   })
   
+  # Actualización
+  output$actualizacion_ssocial_r <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_ssocial_r()$actualizacion))))
+  })
   
   # * Gráficos   ======================================================
   
@@ -7638,7 +7813,7 @@ server <- function(input, output) {
   ssocial_r_meta <- reactive({
     
     dat_ssocial_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -7921,6 +8096,10 @@ server <- function(input, output) {
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_vivienda_pp()$observaciones))))
   })
   
+  # Actualización
+  output$actualizacion_vivienda_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_vivienda_pp()$actualizacion))))
+  })
   
   # * Gráficos   ======================================================
   
@@ -8513,7 +8692,7 @@ server <- function(input, output) {
   vivienda_pp_meta <- reactive({
     
     dat_vivienda_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -8803,6 +8982,11 @@ server <- function(input, output) {
   # Observaciones
   output$observacion_vivienda_r <- renderUI({ 
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_vivienda_r()$observaciones))))
+  })
+  
+  # Actualización
+  output$actualizacion_vivienda_r <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_vivienda_r()$actualizacion))))
   })
   
   
@@ -9397,7 +9581,7 @@ server <- function(input, output) {
   vivienda_r_meta <- reactive({
     
     dat_vivienda_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -9680,6 +9864,10 @@ server <- function(input, output) {
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_trabajo_pp()$observaciones))))
   })
   
+  # Actualización
+  output$actualizacion_trabajo_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_trabajo_pp()$actualizacion))))
+  })
   
   # * Gráficos   ======================================================
   
@@ -10272,7 +10460,7 @@ server <- function(input, output) {
   trabajo_pp_meta <- reactive({
     
     dat_trabajo_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -10565,6 +10753,10 @@ server <- function(input, output) {
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_trabajo_r()$observaciones))))
   })
   
+  # Actualización
+  output$actualizacion_trabajo_r <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_trabajo_r()$actualizacion))))
+  })
   
   # * Gráficos   ======================================================
   
@@ -11153,7 +11345,7 @@ server <- function(input, output) {
   trabajo_r_meta <- reactive({
     
     dat_trabajo_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -11436,6 +11628,10 @@ server <- function(input, output) {
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ambiente_pp()$observaciones))))
   })
   
+  # Actualización
+  output$actualizacion_ambiente_pp <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_ambiente_pp()$actualizacion))))
+  })
   
   # * Gráficos   ======================================================
   
@@ -12028,7 +12224,7 @@ server <- function(input, output) {
   ambiente_pp_meta <- reactive({
     
     dat_ambiente_pp() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -12323,6 +12519,10 @@ server <- function(input, output) {
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_ambiente_r()$observaciones))))
   })
   
+  # Actualización
+  output$actualizacion_ambiente_r <- renderUI({ 
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_ambiente_r()$actualizacion))))
+  })
   
   # * Gráficos   ======================================================
   
@@ -12841,7 +13041,7 @@ server <- function(input, output) {
   ambiente_r_meta <- reactive({
     
     dat_ambiente_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")
@@ -13123,7 +13323,11 @@ server <- function(input, output) {
   #   helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_alimentacion_pp()$observaciones))))
   # })
   # 
-  # 
+  #   # Actualización
+  # output$actualizacion_alimentacion_pp <- renderUI({ 
+  #   helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_alimentacion_pp()$actualizacion))))
+  # })
+  
   # # * Gráficos   ======================================================
   # 
   # output$plot_alimentacion_pp <- renderPlot({
@@ -13715,7 +13919,7 @@ server <- function(input, output) {
   # alimentacion_pp_meta <- reactive({
   # 
   #   dat_alimentacion_pp() %>%
-  #     select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>%
+  #     select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>%
   #     mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>%
   #     distinct() %>%
   #     gather(key = " ", value = " ")
@@ -14009,7 +14213,11 @@ server <- function(input, output) {
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_alimentacion_r()$observaciones))))
   })
 
-
+    # Actualización
+  output$actualizacion_alimentacion_r <- renderUI({
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_alimentacion_r()$actualizacion))))
+  })
+  
   # * Gráficos   ======================================================
 
   output$plot_alimentacion_r <- renderPlot({
@@ -14601,7 +14809,7 @@ server <- function(input, output) {
   alimentacion_r_meta <- reactive({
 
     dat_alimentacion_r() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>%
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>%
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>%
       distinct() %>%
       gather(key = " ", value = " ")
@@ -15046,6 +15254,10 @@ server <- function(input, output) {
     helpText(HTML(paste("<b> Observaciones:</b>", unique(dat_poblaciones()$observaciones))))
   })
   
+  # Actualización
+  output$actualizacion_poblaciones <- renderUI({
+    helpText(HTML(paste("<b> Última actualización:</b>", unique(dat_poblaciones()$actualizacion))))
+  })
   
   # * Gráficos   ======================================================
   
@@ -15634,7 +15846,7 @@ server <- function(input, output) {
   poblaciones_meta <- reactive({
     
     dat_poblaciones() %>%
-      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, cita) %>% 
+      select(nomindicador, derecho, conindicador, tipoind, definicion, calculo, observaciones, actualizacion, cita) %>% 
       mutate(`Mirador DESCA - UMAD/FCS – INDDHH` = " ") %>% 
       distinct() %>% 
       gather(key = " ", value = " ")

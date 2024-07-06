@@ -45,9 +45,9 @@ theme_bdd <- function(
 
 }
 
-blue_bdd <- "#0075BE"
-blue_bdd2 <- "#3290cb"
-blue_bdd3 <- "#4c9ed1"
+blue_bdd <- "#68478d"
+blue_bdd2 <- "#8364a5"
+blue_bdd3 <- "#a593b9"
 
 theme_ggparliament_bdd <- function(legend = TRUE,
                                    background_colour = FALSE,
