@@ -251,10 +251,10 @@ lista_nota <- dat %>%
 
 # data poblaciones sacando el preambulo del nombre del indicador con la poblacion entre ()
 datpob <- dat %>% 
-  mutate(nomindicador = str_replace_all(nomindicador, "\\(Migrantes\\)", ""),
-         nomindicador = str_replace_all(nomindicador, "\\(Personas LGBTI\\)", ""),
+  mutate(nomindicador = str_replace_all(nomindicador, "\\(Personas LGBTI\\)", ""),
          nomindicador = str_replace_all(nomindicador, "\\(Personas privadas de libertad\\)", ""),
-         nomindicador = str_replace_all(nomindicador, "\\(Personas con discapacidad\\)", ""))
+         nomindicador = str_replace_all(nomindicador, "\\(Personas con discapacidad\\)", ""),
+         nomindicador = str_replace_all(nomindicador, "\\(Migrantes\\)", ""))
 
 # Lista indicadores de población
 ind_poblaciones <- datpob %>% 

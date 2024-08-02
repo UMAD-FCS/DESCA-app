@@ -31,7 +31,7 @@ dat <- readxl::read_excel("Data/Base_mirador_desca.xlsx",
                                         "text", "text", "text", "text", "text",
                                         "text", "text", "text", "text", "text",
                                         "text", "text", "text", "text", "text", 
-                                        "text", "text", "text")) %>%
+                                        "text", "text", "text", "text")) %>%
   mutate(FECHA = as.Date(ISOdate(AÑO, 1, 1))) %>% 
   mutate(VALOR = ifelse(VALOR  > 0.00001 & VALOR < 0.1, round(VALOR, digits = 3),
                         ifelse(VALOR >= 0.1 & VALOR  < 1, round(VALOR, digits = 2),
@@ -52,7 +52,7 @@ dat$Región <- as.factor(dat$Región)
 dat$Región <- factor(dat$Región, levels = levels(dat$Región)[c(2, 1, 3)])
 
 dat$Departamento <- as.factor(dat$Departamento)
-dat$Departamento <- factor(dat$Departamento, levels = levels(dat$Departamento)[c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 19)])
+#dat$Departamento <- factor(dat$Departamento, levels = levels(dat$Departamento)[c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 19)])
 
 
 dat <- dat %>% 
