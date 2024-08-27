@@ -87,7 +87,8 @@ dat <- tibble::as_tibble(x) %>%
     nomindicador == "(Proyecto SURGE - ACNUDH) Porcentaje de personas que viven en asentamientos" ~ 1, # Add datos proyecto SURGE - ACNUDH
     nomindicador == "(Proyecto SURGE - ACNUDH) Porcentaje de personas en hogares con tenencia insegura" ~ 1, # Add datos proyecto SURGE - ACNUDH
     nomindicador == "(Proyecto SURGE - ACNUDH) Porcentaje de ocupados sin aporte a la seguridad social" ~ 1, # Add datos proyecto SURGE - ACNUDH
-    nomindicador == "Tasa de actividad de varones y mujeres jefe, jefa y cónyuge entre 14 y 49 años de edad según sexo y presencia de menores de 13 años en el hogar" ~ 1, 
+    nomindicador == "Tasa de actividad de varones y mujeres jefe, jefa y cónyuge entre 14 y 49 años de edad según sexo y presencia de menores de 13 años en el hogar" ~ 1,
+    nomindicador  == "Tasa de participación de mujeres y varones entre 14 y 49 años, según presencia de menores de 13 en el hogar"  ~ 1,
     TRUE ~ jerarquia_cat_2
   )) 
 
