@@ -12807,6 +12807,7 @@ server <- function(input, output) {
       ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
       
       
+      # Grafico simple normal
     } else if(input$ambiente_r_corte == "Total") {
       
       req(input$indicador_ambiente_r, input$fecha_ambiente_r)
@@ -12816,20 +12817,53 @@ server <- function(input, output) {
                  ano <= input$fecha_ambiente_r[2]) %>%
         filter(corte == "Total")
       
-      plot <- ggplot(dat_plot,
-                     aes(x = fecha, y = Valor)) +
-        geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
-        geom_point(size = 3, colour = color_defecto) +
-        scale_x_continuous(breaks = int_breaks) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x = element_text(angle = 0),
-              legend.position = "bottom") +
-        labs(x = "",  y = "",
-             title = wrapit(input$indicador_ambiente_r),
-             caption = wrapit(unique(dat_plot$cita)))
-      
-      print(plot)
-      ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
+      if(input$indicador_ambiente_r %in% lista_met){
+        
+        dat_plot <- dat_plot %>% 
+          mutate(metodo = case_when(
+            fecha <= 2019 ~ "pre",
+            fecha == 2020 ~ "2020",
+            fecha == 2021 ~ "2021",
+            fecha >= 2022 ~ "post",
+          ))
+        
+        plot <- ggplot(dat_plot,
+                       aes(x = fecha, y = Valor, alpha = metodo)) +
+          geom_line(size = 1, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          # scale_x_continuous(breaks = int_breaks) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "none") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_ambiente_r),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_alpha_manual(values = c("pre" = .3, 
+                                        "2020" = .5, 
+                                        "2021" = .6, 
+                                        "post"= .8))
+        
+        print(plot)
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
+        
+      } else {
+        
+        plot <- ggplot(dat_plot,
+                       aes(x = fecha, y = Valor)) +
+          geom_line(size = 1, alpha = 0.5, colour = color_defecto) +
+          geom_point(size = 3, colour = color_defecto) +
+          scale_x_continuous(breaks = int_breaks) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          labs(x = "",  y = "",
+               title = wrapit(input$indicador_ambiente_r),
+               caption = wrapit(unique(dat_plot$cita)))
+        
+        print(plot)
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
+        
+      }
       
       
     } else if(input$ambiente_r_corte == "Departamento" &
@@ -12888,27 +12922,63 @@ server <- function(input, output) {
       dat_plot <- filter(dat_plot,
                          !!ambiente_r_corte_var %in% input$checkbox_ambiente_r)
       
-      plot <- ggplot(dat_plot,
-                     aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var)) +
-        geom_line(size = 1, alpha = 0.5) +
-        geom_point(size = 3) +
-        theme_bdd(base_size = 12) +
-        theme(axis.text.x = element_text(angle = 0),
-              legend.position = "bottom") +
-        scale_x_continuous(breaks = int_breaks) +
-        labs(x = "",  y = "",
-             title = wrapit(paste(input$indicador_ambiente_r,
-                                  "según",
-                                  tolower(input$ambiente_r_corte))),
-             caption = wrapit(unique(dat_plot$cita))) +
-        scale_colour_manual(name = "", values = paleta_expandida)
-      
-      print(plot)
-      ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
-      
+      if(input$indicador_ambiente_r %in% lista_met){
+        
+        dat_plot <- dat_plot %>% 
+          mutate(metodo = case_when(
+            fecha <= 2019 ~ "pre",
+            fecha == 2020 ~ "2020",
+            fecha == 2021 ~ "2021",
+            fecha >= 2022 ~ "post",
+          ))
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var, alpha = "metodo")) +
+          geom_line(size = 1) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ambiente_r,
+                                    "según",
+                                    tolower(input$ambiente_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida) +
+          scale_alpha_manual(values = c("pre" = .3, 
+                                        "2020" = .5, 
+                                        "2021" = .6, 
+                                        "post"= .8)) +
+          guides(alpha = "none")
+        
+        print(plot)
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")      
+        
+        
+      } else {
+        
+        plot <- ggplot(dat_plot,
+                       aes_string(x = "fecha", y = "Valor", colour = ambiente_r_corte_var)) +
+          geom_line(size = 1, alpha = 0.5) +
+          geom_point(size = 3) +
+          theme_bdd(base_size = 12) +
+          theme(axis.text.x = element_text(angle = 0),
+                legend.position = "bottom") +
+          scale_x_continuous(breaks = int_breaks) +
+          labs(x = "",  y = "",
+               title = wrapit(paste(input$indicador_ambiente_r,
+                                    "según",
+                                    tolower(input$ambiente_r_corte))),
+               caption = wrapit(unique(dat_plot$cita))) +
+          scale_colour_manual(name = "", values = paleta_expandida)
+        
+        print(plot)
+        ggsave("www/indicador ambiente r.png", width = 40, height = 25, units = "cm")
+        
+      }
     }
-    
-  })
+  })  
   
   
   # * Descarga gráficos   =============================================
