@@ -251,11 +251,28 @@ lista_nota <- dat %>%
 
 
 # data poblaciones sacando el preambulo del nombre del indicador con la poblacion entre ()
-datpob <- dat %>% 
-  mutate(nomindicador = str_replace_all(nomindicador, "\\(Personas LGBTI\\)", ""),
-         nomindicador = str_replace_all(nomindicador, "\\(Personas privadas de libertad\\)", ""),
-         nomindicador = str_replace_all(nomindicador, "\\(Personas con discapacidad\\)", ""),
-         nomindicador = str_replace_all(nomindicador, "\\(Migrantes\\)", ""))
+# datpob <- dat %>%
+#   mutate(nomindicador = str_replace_all(nomindicador, "\\(Personas LGBTI\\)", ""),
+#          nomindicador = str_replace_all(nomindicador, "\\(Personas privadas de libertad\\)", ""),
+#          nomindicador = str_replace_all(nomindicador, "\\(Personas con discapacidad\\)", ""),
+#          nomindicador = str_replace_all(nomindicador, "\\(Migrantes\\)", ""))
+
+
+# data poblaciones sacando el preambulo del nombre del indicador con la poblacion entre ()
+# se modifica para solucionar problema de nomindicador repetido en Migrantesr y Personas con discapacidad
+datpob <- dat %>%
+  mutate(
+    nomindicador = str_replace_all(nomindicador, "\\(Personas LGBTI\\)", ""),
+    nomindicador = str_replace_all(nomindicador, "\\(Personas privadas de libertad\\)", ""),
+    nomindicador = str_replace_all(nomindicador, "\\(Personas con discapacidad\\)", ""),
+    # Solo eliminar (Migrantes) si NO es Tasa de empleo o Tasa de desempleo
+    nomindicador = if_else(
+      str_detect(nomindicador, "\\(Migrantes\\)") &
+        !str_detect(nomindicador, "Tasa de empleo|Tasa de desempleo|Tasa de actividad|Porcentaje de personas de 20 años o más que no culminaron educación media superior"),
+      str_replace_all(nomindicador, "\\(Migrantes\\)", ""),
+      nomindicador
+    )
+  )
 
 # Lista indicadores de población
 ind_poblaciones <- datpob %>% 
@@ -593,7 +610,9 @@ lista_vunico_pob <- datpob %>%
   group_by(nomindicador) %>% 
   distinct(fecha_cat) %>% 
   summarise(n = n()) %>% 
-  filter(n == 1) %>% 
+  filter(n <= 2) %>% 
+  #filter(n == 1) %>% 
+  filter(!grepl("Metodología comparada 2011-2023", nomindicador)) %>% # excluyo unos específicos de poblacion con discapcidad
   pull(nomindicador)
 
 
@@ -15404,7 +15423,7 @@ server <- function(input, output) {
         
         plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
                                             fill = poblaciones_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
+          geom_col(position = "dodge", width = .7, alpha = .8, color = "black") +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
@@ -15436,7 +15455,7 @@ server <- function(input, output) {
         
         plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
                                             fill = poblaciones_corte_var)) +
-          geom_col(position = "dodge", width = .7, alpha = .8) +
+          geom_col(position = "dodge", width = .7, alpha = .8, color = "black") +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
@@ -15473,7 +15492,7 @@ server <- function(input, output) {
       plot <- ggplot(dat_plot,
                      aes_string(x = "fecha_cat", y = "Valor",
                                 fill = poblaciones_corte_var)) +
-        geom_col(position = "dodge", width = .7, alpha = .8) +
+        geom_col(position = "dodge", width = .7, alpha = .8, color = "black") +
         theme_bdd(base_size = 12) +
         theme(axis.text.x=element_blank(),
               legend.position = "bottom") +
@@ -15502,7 +15521,7 @@ server <- function(input, output) {
         
         plot <- ggplot(dat_plot,
                        aes_string(x = "fecha_cat", y = "Valor")) +
-          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto) +
+          geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto, color = "black") +
           geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
