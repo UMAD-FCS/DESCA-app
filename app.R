@@ -15424,6 +15424,9 @@ server <- function(input, output) {
         plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
                                             fill = poblaciones_corte_var)) +
           geom_col(position = "dodge", width = .7, alpha = .8, color = "black") +
+          geom_text(aes_string(group = poblaciones_corte_var, label = "Valor"),
+                    position = position_dodge(width = 0.7),  # Mismo width que geom_col
+                    vjust = -0.4, fontface = "bold", size = 5) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
@@ -15456,6 +15459,9 @@ server <- function(input, output) {
         plot <- ggplot(dat_plot, aes_string(x = "fecha_cat", y = "Valor",
                                             fill = poblaciones_corte_var)) +
           geom_col(position = "dodge", width = .7, alpha = .8, color = "black") +
+          geom_text(aes_string(group = poblaciones_corte_var, label = "Valor"),
+                    position = position_dodge(width = 0.7),  # Mismo width que geom_col
+                    vjust = -0.4, fontface = "bold", size = 5) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
@@ -15493,6 +15499,9 @@ server <- function(input, output) {
                      aes_string(x = "fecha_cat", y = "Valor",
                                 fill = poblaciones_corte_var)) +
         geom_col(position = "dodge", width = .7, alpha = .8, color = "black") +
+        geom_text(aes_string(group = poblaciones_corte_var, label = "Valor"),
+                  position = position_dodge(width = 0.7),  # Mismo width que geom_col
+                  vjust = -0.4, fontface = "bold", size = 5) +
         theme_bdd(base_size = 12) +
         theme(axis.text.x=element_blank(),
               legend.position = "bottom") +
@@ -15522,7 +15531,9 @@ server <- function(input, output) {
         plot <- ggplot(dat_plot,
                        aes_string(x = "fecha_cat", y = "Valor")) +
           geom_col(position = "dodge", width = .4, alpha = .8, fill = color_defecto, color = "black") +
-          geom_text(aes(label = Valor), vjust = -0.4, fontface = "bold", size = 5) +
+          geom_text(aes_string(group = poblaciones_corte_var, label = "Valor"),
+                    position = position_dodge(width = 0.7),  # Mismo width que geom_col
+                    vjust = -0.4, fontface = "bold", size = 5) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
@@ -15547,7 +15558,8 @@ server <- function(input, output) {
                                   fill = poblaciones_corte_var)) +
           geom_col(position = "dodge", alpha = .8, stroke = 1, color = "black") +
           geom_text(aes_string(group = poblaciones_corte_var, label = "Valor"),
-                    position = position_dodge2(width = .9), vjust = -.4, fontface = "bold", size = 5) +
+                    position = position_dodge(width = 0.7),  # Mismo width que geom_col
+                    vjust = -0.4, fontface = "bold", size = 5) +
           theme_bdd(base_size = 12) +
           theme(axis.text.x=element_blank(),
                 legend.position = "bottom") +
